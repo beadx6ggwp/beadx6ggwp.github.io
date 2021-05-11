@@ -23,6 +23,5 @@ echo ${webURL} >> ${githubDir}/${docs}/CNAME
 cd ${githubDir}
 git status
 git add .
-git log
 git commit -m "upload blog"
 git push -u origin main
