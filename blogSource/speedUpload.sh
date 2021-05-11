@@ -15,3 +15,12 @@ mv ${blogDir}/public/* ${githubDir}/docs
 cp -rf ${blogDir}/* ${githubDir}/blogSource
 #add CNAME
 echo ${webURL} >> ${githubDir}/${docs}/CNAME
+
+# ------push github use ssh-----
+# 記得要先將remote從https換成ssh
+# git remote set-url origin git@github.com:beadx6ggwp/beadx6ggwp.github.io.git
+
+# cd ${githubDir}
+# git add .
+# git commit -m "upload blog"
+# git push -u origin main

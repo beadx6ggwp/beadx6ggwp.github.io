@@ -17,7 +17,7 @@ menu:
 
 ## Blog簡介
 
-正在自學Computer Graphics，在這紀錄一些個人筆記
+正在自學Computer Graphics，在這紀錄一些個人筆記.
 
 [GitHub](https://github.com/beadx6ggwp).
 
