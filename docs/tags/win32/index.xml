@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Win32 on 展維隨筆</title>
+    <link>https://davidhsu666.com/tags/win32/</link>
+    <description>Recent content in Win32 on 展維隨筆</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 11 Dec 2020 05:01:26 +0800</lastBuildDate><atom:link href="https://davidhsu666.com/tags/win32/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[Win32筆記] 建立視窗 #1</title>
+      <link>https://davidhsu666.com/archives/win32note01/</link>
+      <pubDate>Fri, 11 Dec 2020 05:01:26 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/win32note01/</guid>
+      <description>Win32 目錄 1.建立entry point, WinMain() 2. 向系統註冊此視窗程式 WNDCLASS 3. 建立與顯示視窗 CreateWindow 4. 訊息監聽(Event Handler) WinProc 完整範例Code  參考 : MSDN Get Started with Win32 and C++
+1.建立entry point, WinMain() // int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow) // wWinMain為UniCode模式，WinMain為Ansi模式  int CALLBACK WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow){ // ...  return 0; } #define CALLBACK __stdcall: 簡單來說__stdcall就是專門用來call WinAPI的，詳細還有待研究
+參數:</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='使用JS撰寫的可編輯框架'><title>從零開始的基礎RPG框架</title>
+
+<link rel='canonical' href='https://davidhsu666.com/archives/2dgame-nonename/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='從零開始的基礎RPG框架'>
+<meta property='og:description' content='使用JS撰寫的可編輯框架'>
+<meta property='og:url' content='https://davidhsu666.com/archives/2dgame-nonename/'>
+<meta property='og:site_name' content='展維隨筆'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='JS' /><meta property='article:published_time' content='2020-12-04T02:16:07&#43;08:00'/><meta property='article:modified_time' content='2020-12-04T02:16:07&#43;08:00'/><meta property='og:image' content='https://davidhsu666.com/archives/2dgame-nonename/img/123213487.png' />
+<meta name="twitter:title" content="從零開始的基礎RPG框架">
+<meta name="twitter:description" content="使用JS撰寫的可編輯框架"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://davidhsu666.com/archives/2dgame-nonename/img/123213487.png' />
+    <link rel="icon" href="https://davidhsu666.com/resource/favicon-32x32.png">
+
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YJXR109WY7"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-YJXR109WY7', { 'anonymize_ip': false });
+}
+</script>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap');
+     
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;800&display=swap');
+    :root {
+        --article-font-family: 'Roboto',"Noto Serif TC", var(--base-font-family);
+    }
+</style>
+        
+    </head>
+    <body class="">
+        
+        <script src="/js/custom.js"></script>
+        <button class="btn" onclick="scrollTop1()" id="goTopBtn" title="Go to top">TOP</button>
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.body.dataset.scheme = 'dark';
+        } else {
+            document.body.dataset.scheme = 'light';
+        }
+    })();
+</script><div class="container main-container flex on-phone--column extended article-page with-toolbar">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切換選單">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/thinking_hu84577f8e2354056019efb2e4fba9d39e_126194_300x0_resize_box_2.png" width="300"
+                            height="292" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🤔</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="https://davidhsu666.com/">展維隨筆</a></h1>
+        <h2 class="site-description">網頁維修中</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/test/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>test</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>暗色模式</span>
+            </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <div id="article-toolbar">
+        <a href="https://davidhsu666.com/" class="back-home">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+            <span>Back</span>
+        </a>
+    </div>
+
+    <article class="has-image main-article">
+    
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/archives/2dgame-nonename/">
+                <img src="/archives/2dgame-nonename/img/123213487.png"
+                        
+                        width="776" 
+                        height="454" 
+                        loading="lazy"
+                        alt="Featured image of post 從零開始的基礎RPG框架" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/project/" style="background-color: #FF8C42; color: #000;">
+                作品
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/archives/2dgame-nonename/">從零開始的基礎RPG框架</a>
+    </h2>
+
+    
+    <h3 class="article-subtitle">
+        使用JS撰寫的可編輯框架
+    </h3>
+    <footer class="article-time">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <time class="article-time--published">Dec 04, 2020</time>
+    </footer></div>
+</header>
+
+    
+    <section class="article-content">
+    <h1 id="從零開始的基礎rpg框架">從零開始的基礎RPG框架</h1>
+<p><a class="link" href="https://github.com/beadcaptain/2DGameNoneName"  target="_blank" rel="noopener"
+    >Sourcecode</a> : 運行SourceCode時將此目錄丟到Apache中即可</p>
+<h2 id="遊戲demo連結">遊戲Demo連結</h2>
+<p>操作方式: 上下左右、空白鍵衝刺、 Z 攻擊、X 遠程、T 開啟Debug、WASD移動視角、R 重製視角</p>
+<ul>
+<li><a class="link" href="/downloads/GameEngineT/engineDemo/game" target="_blank" rel="noopener">ver01(game)</a> :
+可以讀取地圖的第一版</li>
+<li><a class="link" href="/downloads/GameEngineT/engineDemo/game0" target="_blank" rel="noopener">基礎展示(game0)</a> :
+用簡易的基礎地圖展示所有功能</li>
+<li><a class="link" href="/downloads/GameEngineT/engineDemo/game2" target="_blank" rel="noopener">上下坡事件觸發器(game2)</a> :
+<figure style="flex-grow: 134; flex-basis: 321px">
+		<a href="/archives/2dgame-nonename/img/ezgif-2-31a7bcbaa844.gif" data-size="480x358"><img src="/archives/2dgame-nonename/img/ezgif-2-31a7bcbaa844.gif"
+				
+				width="480"
+				height="358"
+				loading="lazy"
+				alt="透過觸發器更改人物所在圖層，正確判斷上下坡的碰撞">
+		</a>
+		
+		<figcaption>透過觸發器更改人物所在圖層，正確判斷上下坡的碰撞</figcaption>
+		
+	</figure></li>
+<li><a class="link" href="/downloads/GameEngineT/engineDemo/gameshow1" target="_blank" rel="noopener">完整的場景(gameshow1)</a> :
+<figure style="flex-grow: 133; flex-basis: 320px">
+		<a href="/archives/2dgame-nonename/img/ezgif-3-bce1577204ed.gif" data-size="600x450"><img src="/archives/2dgame-nonename/img/ezgif-3-bce1577204ed.gif"
+				
+				width="600"
+				height="450"
+				loading="lazy"
+				alt="右邊兩個圓形為加速事件觸發器，碰到即可變更速度">
+		</a>
+		
+		<figcaption>右邊兩個圓形為加速事件觸發器，碰到即可變更速度</figcaption>
+		
+	</figure></li>
+<li><a class="link" href="/downloads/GameEngineT/engineDemo/gameshow2" target="_blank" rel="noopener">多邊形碰撞場景(gameshow2)</a> :
+<figure style="flex-grow: 131; flex-basis: 315px">
+		<a href="/archives/2dgame-nonename/img/ezgif-6-c053731f03d2.gif" data-size="480x365"><img src="/archives/2dgame-nonename/img/ezgif-6-c053731f03d2.gif"
+				
+				width="480"
+				height="365"
+				loading="lazy"
+				alt="滑鼠拖曳後按左鍵發射小球，來觀看多邊形碰撞回饋">
+		</a>
+		
+		<figcaption>滑鼠拖曳後按左鍵發射小球，來觀看多邊形碰撞回饋</figcaption>
+		
+	</figure></li>
+</ul>
+<h2 id="目前進度">目前進度</h2>
+<ul>
+<li>攝影機</li>
+<li>動態碰撞盒</li>
+<li>事件觸發器</li>
+<li>自訂地圖存取</li>
+<li>Debug(圖層、碰撞層顯示)</li>
+</ul>
+<h2 id="攝影機debug">攝影機、Debug</h2>
+<ul>
+<li>加入Debug功能方便測試</li>
+<li>只顯示視線範圍內的物件</li>
+<li>渲染物件的動態圖層顯示</li>
+<li>可隨意設定攝影機的追蹤範圍與目標，例如視角綁定在小鳥身上</li>
+</ul>
+<p><figure style="flex-grow: 133; flex-basis: 320px">
+		<a href="/archives/2dgame-nonename/img/ezgif-3-cd4aa3844865.gif" data-size="600x450"><img src="/archives/2dgame-nonename/img/ezgif-3-cd4aa3844865.gif"
+				
+				width="600"
+				height="450"
+				loading="lazy"
+				alt="WASD控制攝影機">
+		</a>
+		
+		<figcaption>WASD控制攝影機</figcaption>
+		
+	</figure>
+<figure style="flex-grow: 127; flex-basis: 306px">
+		<a href="/archives/2dgame-nonename/img/ezgif-3-221c8ab63b6e.gif" data-size="480x376"><img src="/archives/2dgame-nonename/img/ezgif-3-221c8ab63b6e.gif"
+				
+				width="480"
+				height="376"
+				loading="lazy"
+				alt="透過Z-index畫家排序來處理多圖層">
+		</a>
+		
+		<figcaption>透過Z-index畫家排序來處理多圖層</figcaption>
+		
+	</figure></p>
+<h2 id="碰撞盒多邊形碰撞與回饋">碰撞盒:多邊形碰撞與回饋</h2>
+<p><a class="link" href="http://davidhsu666.com/archives/gamecollisiondetection/"  target="_blank" rel="noopener"
+    >http://davidhsu666.com/archives/gamecollisiondetection/</a></p>
+<p>透過分離軸定理，解決普通AABB碰撞檢測無法處裡的多邊形與圓形</p>
+<p>建立自製碰撞函示庫，並透過最小穿透量來處理物體間的分離，將碰撞盒整合至物體中並加以應用</p>
+<p><figure style="flex-grow: 136; flex-basis: 327px">
+		<a href="/archives/2dgame-nonename/img/SATgif04.gif.gif" data-size="480x352"><img src="/archives/2dgame-nonename/img/SATgif04.gif.gif"
+				
+				width="480"
+				height="352"
+				loading="lazy"
+				>
+		</a>
+		
+	</figure>
+<figure style="flex-grow: 167; flex-basis: 402px">
+		<a href="/archives/2dgame-nonename/img/xojIN67.gif" data-size="480x286"><img src="/archives/2dgame-nonename/img/xojIN67.gif"
+				
+				width="480"
+				height="286"
+				loading="lazy"
+				>
+		</a>
+		
+	</figure></p>
+<h2 id="動態碰撞盒敵人移動事件觸發器">動態碰撞盒、敵人移動、事件觸發器</h2>
+<p>-透過動態碰撞盒處理揮砍的動作</p>
+<p>-加入狀態切換管理，攻擊開始-&gt;攻擊中-&gt;攻擊結束</p>
+<ul>
+<li>透過事件觸發器處理各式地圖事件</li>
+<li>像是地圖上下坡，需要切換碰撞層，與NPC對話區域的觸發器，或是走斜坡時會被減速等等</li>
+</ul>
+<p><figure style="flex-grow: 140; flex-basis: 336px">
+		<a href="/archives/2dgame-nonename/img/ezgif-3-c1626b3a5c0e.gif" data-size="504x360"><img src="/archives/2dgame-nonename/img/ezgif-3-c1626b3a5c0e.gif"
+				
+				width="504"
+				height="360"
+				loading="lazy"
+				alt="發射劍氣">
+		</a>
+		
+		<figcaption>發射劍氣</figcaption>
+		
+	</figure>
+<figure style="flex-grow: 124; flex-basis: 299px">
+		<a href="/archives/2dgame-nonename/img/ezgif-3-3d08f2873a8f.gif" data-size="600x481"><img src="/archives/2dgame-nonename/img/ezgif-3-3d08f2873a8f.gif"
+				
+				width="600"
+				height="481"
+				loading="lazy"
+				alt="事件觸發器-加速">
+		</a>
+		
+		<figcaption>事件觸發器-加速</figcaption>
+		
+	</figure></p>
+<h2 id="地圖編輯與讀取">地圖編輯與讀取</h2>
+<p>透過json檔案生成對應的地圖物件，如動畫、碰撞、物件等</p>
+<p>依照編輯時的圖層，建立對應的顯示順序</p>
+<p>而每個Group相隔10的Z-index，圖中Group2、Group4分別有橋下與橋上的碰撞層，所以只要更改人物的Z-index即可實現上下區域的碰撞切換</p>
+<p>並支援自訂多邊形，圖中左下角的噴水池為自訂多邊形所包成的碰撞體，基礎展示(game0)中的石頭也是</p>
+<p><figure style="flex-grow: 77; flex-basis: 185px">
+		<a href="/archives/2dgame-nonename/img/1232.jpg" data-size="795x1029"><img src="/archives/2dgame-nonename/img/1232.jpg"
+				
+				width="795"
+				height="1029"
+				loading="lazy"
+				alt="地圖的編輯">
+		</a>
+		
+		<figcaption>地圖的編輯</figcaption>
+		
+	</figure></p>
+<h2 id="大致運行方式">大致運行方式</h2>
+<p>所有物體皆繼承自Entity :</p>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="nx">Entity</span><span class="o">:</span>
+<span class="p">{</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s2">&#34;monster&#34;</span>                            <span class="c1">// 此Entity的名稱或類別
+</span><span class="c1"></span>    <span class="nx">pos</span><span class="o">:</span> <span class="p">{</span> <span class="nx">x</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">y</span><span class="o">:</span> <span class="mi">0</span> <span class="p">},</span>
+    <span class="nx">vel</span><span class="o">:</span> <span class="p">{</span> <span class="nx">x</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">y</span><span class="o">:</span> <span class="mi">0</span> <span class="p">},</span>
+    <span class="nx">acc</span><span class="o">:</span> <span class="p">{</span> <span class="nx">x</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">y</span><span class="o">:</span> <span class="mi">0</span> <span class="p">},</span>
+    <span class="nx">zindex</span><span class="o">:</span> <span class="mi">20</span><span class="p">,</span>
+    <span class="nx">collider</span><span class="o">:</span> <span class="p">{</span>                         <span class="c1">// 碰撞盒範圍，不規則多邊形則指定相對位置頂點
+</span><span class="c1"></span>        <span class="nx">x</span><span class="o">:</span> <span class="o">-</span><span class="mi">15</span><span class="p">,</span> <span class="nx">y</span><span class="o">:</span> <span class="o">-</span><span class="mi">15</span><span class="p">,</span>
+        <span class="nx">w</span><span class="o">:</span> <span class="mi">30</span><span class="p">,</span> <span class="nx">h</span><span class="o">:</span> <span class="mi">30</span>
+    <span class="p">},</span>
+    <span class="nx">bounceToMap</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>                 <span class="c1">// 是否與地圖發生向量鏡射的反彈回饋
+</span><span class="c1"></span>    <span class="nx">collisionToMap</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>               <span class="c1">// 是否與地圖發生碰撞
+</span><span class="c1"></span>    <span class="nx">world</span><span class="o">:</span> <span class="nx">Worldmap</span><span class="p">,</span>                    <span class="c1">// 所在的地圖
+</span><span class="c1"></span>    <span class="nx">animation</span><span class="o">:</span> <span class="p">{</span>                        <span class="c1">// 圖片的設置
+</span><span class="c1"></span>        <span class="nx">frameWidth</span><span class="o">:</span> <span class="mi">44</span><span class="p">,</span>
+        <span class="nx">frameHeight</span><span class="o">:</span> <span class="mi">40</span><span class="p">,</span>
+        <span class="nx">renderScale</span><span class="o">:</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="nx">imgName</span><span class="o">:</span> <span class="s1">&#39;coin&#39;</span><span class="p">,</span>
+        <span class="nx">speed</span><span class="o">:</span> <span class="mi">15</span><span class="p">,</span>
+        <span class="nx">action</span><span class="o">:</span> <span class="p">{</span>                       <span class="c1">// 設定個動作的循環
+</span><span class="c1"></span>            <span class="s1">&#39;default&#39;</span><span class="o">:</span> <span class="s1">&#39;0-9&#39;</span><span class="p">,</span>           <span class="c1">// 可連續設置也可跳號指定
+</span><span class="c1"></span>            <span class="s1">&#39;atk&#39;</span><span class="o">:</span><span class="s1">&#39;11,12,14,19&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;imgMode&#39;</span><span class="p">,</span><span class="s1">&#39;25&#39;</span>              <span class="c1">// 靜態圖片模式
+</span><span class="c1"></span>        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nx">survivalMode</span> <span class="o">:</span> <span class="kc">false</span><span class="p">,</span>               <span class="c1">// 是否消失
+</span><span class="c1"></span>    <span class="nx">survivalTime</span> <span class="o">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>                  <span class="c1">// 設定存在時間
+</span><span class="c1"></span>    <span class="nx">hitActionData</span> <span class="o">:</span><span class="p">{</span>                    <span class="c1">// 事件觸發器: 設定此Endity在更新時要和誰互動的事件
+</span><span class="c1"></span>        <span class="nx">target</span><span class="o">:</span> <span class="p">[...],</span>                  <span class="c1">// 設定那些物體會觸發
+</span><span class="c1"></span>        <span class="nx">action</span><span class="o">:</span> <span class="p">(</span><span class="nx">ent1</span><span class="p">,</span> <span class="nx">ent2</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// ent1為自己、ent2為其他entity
+</span><span class="c1"></span>            <span class="c1">// 設定兩物體接觸後的處理，如碰撞分離、更改速度等等的事件觸發器
+</span><span class="c1"></span>        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><p>事件觸發器的使用，以地圖中的Tile與玩家/怪物的碰撞為例:</p>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="nx">TileEntity</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;layerObj&#39;</span><span class="p">,</span>
+        <span class="nx">pos</span><span class="o">:</span> <span class="p">{</span> <span class="nx">x</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">y</span><span class="o">:</span> <span class="mi">0</span> <span class="p">},</span>    <span class="c1">// 設定為每塊Tile所在的位置
+</span><span class="c1"></span>        <span class="nx">collisionToMap</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+        <span class="nx">hitActionData</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">parent</span><span class="o">:</span> <span class="k">this</span><span class="p">,</span>       <span class="c1">// 觸發器的本體是誰
+</span><span class="c1"></span>            <span class="nx">target</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;player&#39;</span><span class="p">,</span><span class="s1">&#39;enemy1&#39;</span><span class="p">],</span>    <span class="c1">// 設定和player與enemy兩種Entity反應
+</span><span class="c1"></span>            <span class="c1">// 對target中的物體執行對應動作
+</span><span class="c1"></span>            <span class="nx">action</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">ent1</span><span class="p">,</span> <span class="nx">ent2</span><span class="p">)</span> <span class="p">{</span>
+                <span class="c1">// 取得自己與其他Entity的碰撞盒
+</span><span class="c1"></span>                <span class="kd">let</span> <span class="nx">collider1</span> <span class="o">=</span> <span class="nx">ent1</span><span class="p">.</span><span class="nx">getCollisionBox</span><span class="p">();</span>
+                <span class="kd">let</span> <span class="nx">collider2</span> <span class="o">=</span> <span class="nx">ent2</span><span class="p">.</span><span class="nx">getCollisionBox</span><span class="p">();</span>
+                <span class="c1">// 碰撞檢測
+</span><span class="c1"></span>                <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">box2box</span><span class="p">(</span><span class="nx">collider1</span><span class="p">.</span><span class="nx">getBoundingBox</span><span class="p">(),</span> <span class="nx">collider2</span><span class="p">.</span><span class="nx">getBoundingBox</span><span class="p">()))</span> <span class="k">return</span><span class="p">;</span>
+                <span class="c1">// 處理碰撞後的推擠判斷與向量鏡射
+</span><span class="c1"></span>                <span class="kd">let</span> <span class="nx">mtv</span> <span class="o">=</span> <span class="nx">collider1</span><span class="p">.</span><span class="nx">collideWith</span><span class="p">(</span><span class="nx">collider2</span><span class="p">);</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">mtv</span><span class="p">.</span><span class="nx">axis</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="kd">let</span> <span class="nx">v</span> <span class="o">=</span> <span class="nx">separate</span><span class="p">(</span><span class="nx">collider1</span><span class="p">,</span> <span class="nx">collider2</span><span class="p">,</span> <span class="nx">mtv</span><span class="p">)</span>
+                    <span class="nx">ent2</span><span class="p">.</span><span class="nx">pos</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">v</span><span class="p">);</span>
+                    <span class="nx">mtvBounce</span><span class="p">(</span><span class="nx">ent2</span><span class="p">,</span> <span class="nx">mtv</span><span class="p">)</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="nx">drawBase</span><span class="o">:</span> <span class="kc">true</span>
+    <span class="p">}</span>
+</code></pre></div><p>當所有物體，不管是玩家、敵人、地圖Tile等，有了這個萬用的Entity後，即可透過簡單的方式更新各自Entity的循環</p>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="c1">// 程式中的主循環
+</span><span class="c1"></span><span class="kd">function</span> <span class="nx">update</span><span class="p">(</span><span class="nx">dt</span><span class="p">,</span> <span class="nx">tickcount</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">entities</span> <span class="o">=</span> <span class="nx">world</span><span class="p">.</span><span class="nx">gameObjs</span><span class="p">;</span>
+    <span class="c1">// 更新所有物體
+</span><span class="c1"></span>    <span class="k">for</span> <span class="p">(</span><span class="kr">const</span> <span class="nx">entity</span> <span class="k">of</span> <span class="nx">entities</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">entity</span><span class="p">.</span><span class="nx">update</span><span class="p">(</span><span class="nx">dt</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="c1">// 逐一檢測各Entity的事件觸發器
+</span><span class="c1"></span>    <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">entities</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">entity</span> <span class="o">=</span> <span class="nx">entities</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+        <span class="kd">let</span> <span class="nx">had</span> <span class="o">=</span> <span class="nx">entity</span><span class="p">.</span><span class="nx">hitActionData</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">had</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span> <span class="c1">// 此物體沒有觸發器的話就直接跳過
+</span><span class="c1"></span>        <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">j</span> <span class="o">=</span> <span class="nx">entities</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">let</span> <span class="nx">entity2</span> <span class="o">=</span> <span class="nx">entities</span><span class="p">[</span><span class="nx">j</span><span class="p">];</span>
+            <span class="c1">// 判斷這個物體是否在觸發器的目標中
+</span><span class="c1"></span>            <span class="k">if</span> <span class="p">(</span><span class="nx">had</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">&#39;ALL&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">||</span> <span class="nx">had</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">entity2</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+                <span class="c1">// 執行觸發器對應的處理
+</span><span class="c1"></span>                <span class="nx">had</span><span class="p">.</span><span class="nx">action</span><span class="p">(</span><span class="nx">entity</span><span class="p">,</span> <span class="nx">entity2</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 檢測那些物體該被移除
+</span><span class="c1"></span>    <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">entities</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kr">const</span> <span class="nx">entity</span> <span class="o">=</span> <span class="nx">entities</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">entity</span><span class="p">.</span><span class="nx">isDead</span><span class="p">)</span> <span class="nx">entities</span><span class="p">.</span><span class="nx">splice</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="c1">// camera.follow(dt, player);
+</span><span class="c1"></span>    <span class="nx">cameraControl</span><span class="p">();</span><span class="c1">// 更新攝影機位置
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></div><h2 id="碰撞效能的優化">碰撞效能的優化</h2>
+<p><a class="link" href="http://davidhsu666.com/archives/quadtree_in_2d"  target="_blank" rel="noopener"
+    >Quadtree_in_2d</a></p>
+<p>如果每個物體之間都進行碰撞檢測，會消耗大量的效能，複雜度來到O(N^2)</p>
+<p>例如: 兩物體在地圖的對角線，根本不會碰撞，但還是執行檢測</p>
+<p>透過四叉樹(Quad Tree)來進行空間上的劃分</p>
+<p>將複雜度降低至O(N log(N))</p>
+<p><figure style="flex-grow: 214; flex-basis: 514px">
+		<a href="/archives/2dgame-nonename/img/Quad_007.png" data-size="759x354"><img src="/archives/2dgame-nonename/img/Quad_007.png"
+				
+				width="759"
+				height="354"
+				loading="lazy"
+				>
+		</a>
+		
+	</figure>
+<figure style="flex-grow: 101; flex-basis: 243px">
+		<a href="/archives/2dgame-nonename/img/Ih4eMyv.gif" data-size="480x474"><img src="/archives/2dgame-nonename/img/Ih4eMyv.gif"
+				
+				width="480"
+				height="474"
+				loading="lazy"
+				>
+		</a>
+		
+	</figure></p>
+<h2 id="架構與後續規劃">架構與後續規劃</h2>
+<ul>
+<li>UI選單、Menu、功能列操作</li>
+<li>對話方塊與對話事件(對話樹)</li>
+<li>腳本編輯與腳本觸發器，如RPG遊戲中的串場事件</li>
+<li>優化物件架構，方便修改</li>
+</ul>
+<p><figure style="flex-grow: 125; flex-basis: 300px">
+		<a href="/archives/2dgame-nonename/img/img1.jpg" data-size="803x641"><img src="/archives/2dgame-nonename/img/img1.jpg"
+				
+				width="803"
+				height="641"
+				loading="lazy"
+				alt="簡易架構圖">
+		</a>
+		
+		<figcaption>簡易架構圖</figcaption>
+		
+	</figure></p>
+<h2 id="檔案架構">檔案架構</h2>
+<pre><code>├─asset
+│  ├─data
+│  ├─img
+│  ├─sound
+│  └─tile
+│
+│  Camera.js
+│  Collision.js
+│  Enemy.js
+│  Entity.js
+│  index.html
+│  main.js
+│  Particle.js
+│  Player.js
+│  player2.js
+│  Setting.js
+│  Shape.js
+│  Tilemap.js
+│
+└─lib
+        AssetLoader.js
+        drawString.js
+        Game.js
+        SpriteAnimation.js
+        stats.min.js
+        utils.js
+        vec.js
+</code></pre><h2 id="參考資料">參考資料</h2>
+<p><a href="https://gablaxian.com/articles/creating-a-game-with-javascript/introduction">https://gablaxian.com/articles/creating-a-game-with-javascript/introduction</a>
+<a href="http://isaacsukin.com/news/2015/01/detailed-explanation-javascript-game-loops-and-timing">http://isaacsukin.com/news/2015/01/detailed-explanation-javascript-game-loops-and-timing</a></p>
+
+</section>
+
+    
+    
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/js/">JS</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3&#43;Aro6EYUG4&#43;cU&#43;KJWu/X"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"integrity="sha384-g7c&#43;Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI&#43;sEnkvrMWph2EDg4"crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC&#43;Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa"crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ]
+        });})
+</script>
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">相關文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="has-image">
+    <a href="/archives/js-firework-%E8%B7%A8%E5%B9%B4%E7%85%99%E7%81%AB/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/js-firework-%E8%B7%A8%E5%B9%B4%E7%85%99%E7%81%AB/img/firework3.4873367300eba4e23a67ed45398a59b1_hu3335cf2f48d91b433c9e2f4e95cfd49d_5662312_250x150_fill_box_smart1.gif" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="" 
+                        data-hash="md5-SHM2cwDrpOI6Z&#43;1FOYpZsQ==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">JS Firework 跨年煙火</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/archives/js-superball/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/js-superball/img/smallballgame1.a8ac98a69312552d90d31a4f8c13f0e3_hu809fcfe459e19c68a439ae2b91a42e42_35450_250x150_fill_box_smart1_2.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="js-superball" 
+                        data-hash="md5-qKyYppMSVS2Q0xpPjBPw4w==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">JS 超級球球SuperBall</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "beadx6ggwp" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2021 展維隨筆
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.3.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

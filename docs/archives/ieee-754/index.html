@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='浮點數誤差IEEE-754 在程式語言中，浮點數基本都是用 float 與 double來表示，但都會存在誤差
+float t1 = 0.69 * 10; cout &amp;lt;&amp;lt; setprecision(32) &amp;lt;&amp;lt; t1 &amp;lt;&amp;lt; endl; if(t1 == 6.9) cout &amp;lt;&amp;lt; &amp;#34;相等&amp;#34; &amp;lt;&amp;lt; endl; else cout &amp;lt;&amp;lt; &amp;#34;不相等&amp;#34; &amp;lt;&amp;lt; endl; // output // =&amp;gt; 6.900000095367431640625 // =&amp;gt; 不相等 正常6.9 * 10 應該要等於6.9，但是答案卻是不相等?
+這個原因跟浮點數的儲存原理有關，讓我們開始吧!
+何謂IEEE-754 自電腦發明以來，曾出現過各種不同的浮點數表示法，但目前最通用的是IEEE二進制運算標準(IEEE Standard for Binary Floating-Point Arithmetic , 簡稱IEEE-754)
+在IEEE-754標準中定義了四種浮點數格式，但我只講基本的兩種，分別為單精準度float(32bit)和雙精準度double(64bit)。其中單精準度有24位有效儲存數字，而雙精準則有53位有效數字，相對於十進位來說，分別是7位(224 = 107)和16位(253 = 1016)。
+為了方便說明，所以先解釋什麼是正規化
+正規化就像是數學中的科學記號，如123456通常會表示成1.23456 x 105，而指數部分也有可能是負的，如 0.123456 就會變成 1.23456 x 10-1。
+二進位的正規化 :'><title>浮點數誤差IEEE-754</title>
+
+<link rel='canonical' href='https://davidhsu666.com/archives/ieee-754/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='浮點數誤差IEEE-754'>
+<meta property='og:description' content='浮點數誤差IEEE-754 在程式語言中，浮點數基本都是用 float 與 double來表示，但都會存在誤差
+float t1 = 0.69 * 10; cout &amp;lt;&amp;lt; setprecision(32) &amp;lt;&amp;lt; t1 &amp;lt;&amp;lt; endl; if(t1 == 6.9) cout &amp;lt;&amp;lt; &amp;#34;相等&amp;#34; &amp;lt;&amp;lt; endl; else cout &amp;lt;&amp;lt; &amp;#34;不相等&amp;#34; &amp;lt;&amp;lt; endl; // output // =&amp;gt; 6.900000095367431640625 // =&amp;gt; 不相等 正常6.9 * 10 應該要等於6.9，但是答案卻是不相等?
+這個原因跟浮點數的儲存原理有關，讓我們開始吧!
+何謂IEEE-754 自電腦發明以來，曾出現過各種不同的浮點數表示法，但目前最通用的是IEEE二進制運算標準(IEEE Standard for Binary Floating-Point Arithmetic , 簡稱IEEE-754)
+在IEEE-754標準中定義了四種浮點數格式，但我只講基本的兩種，分別為單精準度float(32bit)和雙精準度double(64bit)。其中單精準度有24位有效儲存數字，而雙精準則有53位有效數字，相對於十進位來說，分別是7位(224 = 107)和16位(253 = 1016)。
+為了方便說明，所以先解釋什麼是正規化
+正規化就像是數學中的科學記號，如123456通常會表示成1.23456 x 105，而指數部分也有可能是負的，如 0.123456 就會變成 1.23456 x 10-1。
+二進位的正規化 :'>
+<meta property='og:url' content='https://davidhsu666.com/archives/ieee-754/'>
+<meta property='og:site_name' content='展維隨筆'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2018-05-22T10:29:44&#43;08:00'/><meta property='article:modified_time' content='2018-05-22T10:29:44&#43;08:00'/><meta property='og:image' content='https://davidhsu666.com/archives/ieee-754/img/ieee754.jpg' />
+<meta name="twitter:title" content="浮點數誤差IEEE-754">
+<meta name="twitter:description" content="浮點數誤差IEEE-754 在程式語言中，浮點數基本都是用 float 與 double來表示，但都會存在誤差
+float t1 = 0.69 * 10; cout &amp;lt;&amp;lt; setprecision(32) &amp;lt;&amp;lt; t1 &amp;lt;&amp;lt; endl; if(t1 == 6.9) cout &amp;lt;&amp;lt; &amp;#34;相等&amp;#34; &amp;lt;&amp;lt; endl; else cout &amp;lt;&amp;lt; &amp;#34;不相等&amp;#34; &amp;lt;&amp;lt; endl; // output // =&amp;gt; 6.900000095367431640625 // =&amp;gt; 不相等 正常6.9 * 10 應該要等於6.9，但是答案卻是不相等?
+這個原因跟浮點數的儲存原理有關，讓我們開始吧!
+何謂IEEE-754 自電腦發明以來，曾出現過各種不同的浮點數表示法，但目前最通用的是IEEE二進制運算標準(IEEE Standard for Binary Floating-Point Arithmetic , 簡稱IEEE-754)
+在IEEE-754標準中定義了四種浮點數格式，但我只講基本的兩種，分別為單精準度float(32bit)和雙精準度double(64bit)。其中單精準度有24位有效儲存數字，而雙精準則有53位有效數字，相對於十進位來說，分別是7位(224 = 107)和16位(253 = 1016)。
+為了方便說明，所以先解釋什麼是正規化
+正規化就像是數學中的科學記號，如123456通常會表示成1.23456 x 105，而指數部分也有可能是負的，如 0.123456 就會變成 1.23456 x 10-1。
+二進位的正規化 :"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://davidhsu666.com/archives/ieee-754/img/ieee754.jpg' />
+    <link rel="icon" href="https://davidhsu666.com/resource/favicon-32x32.png">
+
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YJXR109WY7"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-YJXR109WY7', { 'anonymize_ip': false });
+}
+</script>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap');
+     
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;800&display=swap');
+    :root {
+        --article-font-family: 'Roboto',"Noto Serif TC", var(--base-font-family);
+    }
+</style>
+        
+    </head>
+    <body class="">
+        
+        <script src="/js/custom.js"></script>
+        <button class="btn" onclick="scrollTop1()" id="goTopBtn" title="Go to top">TOP</button>
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.body.dataset.scheme = 'dark';
+        } else {
+            document.body.dataset.scheme = 'light';
+        }
+    })();
+</script><div class="container main-container flex on-phone--column extended article-page with-toolbar">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切換選單">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/thinking_hu84577f8e2354056019efb2e4fba9d39e_126194_300x0_resize_box_2.png" width="300"
+                            height="292" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🤔</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="https://davidhsu666.com/">展維隨筆</a></h1>
+        <h2 class="site-description">網頁維修中</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/test/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>test</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>暗色模式</span>
+            </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <div id="article-toolbar">
+        <a href="https://davidhsu666.com/" class="back-home">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+            <span>Back</span>
+        </a>
+    </div>
+
+    <article class="has-image main-article">
+    
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/archives/ieee-754/">
+                <img src="/archives/ieee-754/img/ieee754.jpg"
+                        
+                        width="1255" 
+                        height="216" 
+                        loading="lazy"
+                        alt="Featured image of post 浮點數誤差IEEE-754" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/codingnote/" style="background-color: #EDFF44; color: #000;">
+                程式筆記
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/archives/ieee-754/">浮點數誤差IEEE-754</a>
+    </h2>
+
+    <footer class="article-time">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <time class="article-time--published">May 22, 2018</time>
+    </footer></div>
+</header>
+
+    
+    <section class="article-content">
+    <h1 id="浮點數誤差ieee-754">浮點數誤差IEEE-754</h1>
+<p>在程式語言中，浮點數基本都是用 float 與 double來表示，但都會存在誤差</p>
+<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="kt">float</span> <span class="n">t1</span> <span class="o">=</span> <span class="mf">0.69</span> <span class="o">*</span> <span class="mi">10</span><span class="p">;</span>
+	
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">setprecision</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">t1</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+
+<span class="k">if</span><span class="p">(</span><span class="n">t1</span> <span class="o">==</span> <span class="mf">6.9</span><span class="p">)</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;相等&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="k">else</span> 
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;不相等&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+
+<span class="c1">// output
+</span><span class="c1">// =&gt; 6.900000095367431640625
+</span><span class="c1">// =&gt; 不相等
+</span></code></pre></div><p>正常6.9 * 10 應該要等於6.9，但是答案卻是不相等?</p>
+<p>這個原因跟浮點數的儲存原理有關，讓我們開始吧!</p>
+<h2 id="何謂ieee-754">何謂IEEE-754</h2>
+<p>自電腦發明以來，曾出現過各種不同的浮點數表示法，但目前最通用的是IEEE二進制運算標準(IEEE Standard for Binary Floating-Point Arithmetic , 簡稱IEEE-754)</p>
+<p>在IEEE-754標準中定義了四種浮點數格式，但我只講基本的兩種，分別為單精準度float(32bit)和雙精準度double(64bit)。其中單精準度有24位有效儲存數字，而雙精準則有53位有效數字，相對於十進位來說，分別是7位(2<sup>24</sup> = 10<sup>7</sup>)和16位(2<sup>53</sup> = 10<sup>16</sup>)。</p>
+<p>為了方便說明，所以先解釋什麼是正規化</p>
+<p>正規化就像是數學中的科學記號，如123456通常會表示成1.23456 x 10<sup>5</sup>，而指數部分也有可能是負的，如 0.123456 就會變成 1.23456 x 10<sup>-1</sup>。</p>
+<p>二進位的正規化 :</p>
+<p>這邊以13.125為例，先13轉換為2進制，可得1101，再將0.125轉為2進制</p>
+<ul>
+<li>0.125 x 2 = 0.25 … 整數為0 -&gt; 0</li>
+<li>0.25 x 2 =0.5 … 整數為0 -&gt; 0</li>
+<li>0.5 x 2 = 1 … 整數為1 -&gt; 1</li>
+</ul>
+<p>所以13.125 = 1101.001，經過正規化後可得 1.101001 x 2<sup>3</sup></p>
+<p>在IEEE-754中，浮點數通常由三個部分組成 :</p>
+<ul>
+<li>符號(S) : 用來表示正/負(0/1)。</li>
+<li>指數(E) : 正規化後的次方數，採用超127格式，即將原本的次方數加上127，因為次方數有可能是負的，加上在電腦中要表示負號時，必須拿一個位元來表示，所以就將-128~+127改為0~255，所以基準點就從0變成127。</li>
+<li>尾數(M) : 正規化後的小數點。</li>
+</ul>
+<p>以下範例皆為單精準度 :</p>
+<p><figure style="flex-grow: 581; flex-basis: 1394px">
+		<a href="/archives/ieee-754/img/ieee754.jpg" data-size="1255x216"><img src="/archives/ieee-754/img/ieee754.jpg"
+				
+				width="1255"
+				height="216"
+				loading="lazy"
+				>
+		</a>
+		
+	</figure></p>
+<h2 id="浮點數與10進制的轉換">浮點數與10進制的轉換</h2>
+<p>以剛剛的 13.125 轉浮點數為例 :</p>
+<ol>
+<li>由於13.125為正，所以符號(S) = 0</li>
+<li>先將數值轉成二進位並正規化 13.125 = 1101.001 = 1.101001 x 2<sup>3</sup></li>
+<li>計算指數(E) = 127 + 3 = 01111111 + 11 = 10000010</li>
+<li>計算尾數(M) = 101001，因為正規化後一定是1.xxxx，所以不需要儲存個位數</li>
+<li>將各個數值填入浮點數規格中<br>
+S——–E———————M———————–<br>
+0 10000010 101001 0000 0000 0000 0000 0</li>
+</ol>
+<p>這樣就就完成了10進制轉IEEE-754浮點數</p>
+<br>
+<p>而浮點數轉10進制也是一樣</p>
+<p>將剛剛的0 10000010 10100100000000000000000轉10進制 :</p>
+<ol>
+<li>由於S = 0，所以此數為正</li>
+<li>中間8位元的超127指數(E)為 10000010<sub>2</sub>，將其還原130 – 127 = 10000010<sub>2</sub> – 0111111<sub>2</sub> 可得 3 = 11<sub>2</sub>
+所以要將尾數乘上2<sup>3</sup></li>
+<li>最右邊23個為位元值為101001……，將隱藏的個位數還原，可得1.101001……</li>
+<li>最後將還原後的尾數乘上指數 1.101001<sub>2</sub> x 2<sup>3</sup>，並轉為10進位，即可得到 13.125</li>
+</ol>
+<p>所以我們可以知道，以32bit的單精度浮點數來說，可以儲存的最大位數為 尾數 23+隱藏個位數 1 = 24位。</p>
+<h2 id="關於浮點數的精度">關於浮點數的精度</h2>
+<p>因為有些10進制小數無法完美的用2進制表示，只能用無限的位數來趨近於10進制小數，當我們以24位數為上限時，在儲存時就會省略一些位數，導致還原時的數字不夠精準。</p>
+<p>從以下範例可以得知精確的數字總共7位數</p>
+<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt; </span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;iomanip&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span> 
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="kt">float</span> <span class="n">t1</span> <span class="o">=</span> <span class="mf">0.69</span> <span class="o">*</span> <span class="mi">10</span><span class="p">;</span>
+ 	<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">setprecision</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">t1</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+ 	<span class="c1">//output =&gt; 6.900000095367431640625
+</span><span class="c1"></span> 	
+ 	<span class="kt">float</span> <span class="n">t2</span> <span class="o">=</span> <span class="mf">0.1234567</span><span class="p">;</span>
+ 	<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">setprecision</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">t2</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+ 	<span class="c1">//output =&gt; 0.12345670163631439208984375
+</span><span class="c1"></span> 	
+ 	<span class="kt">float</span> <span class="n">t3</span> <span class="o">=</span> <span class="mf">123.4567</span><span class="p">;</span>
+ 	<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">setprecision</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">t3</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+ 	<span class="c1">//output =&gt; 123.45670318603515625
+</span><span class="c1"></span>	
+	<span class="kt">float</span> <span class="n">t4</span> <span class="o">=</span> <span class="mi">16777216</span><span class="p">,</span> <span class="n">t5</span><span class="o">=</span><span class="mf">0.5</span><span class="p">;</span>
+	<span class="kt">float</span> <span class="n">t6</span> <span class="o">=</span> <span class="n">t4</span> <span class="o">+</span> <span class="n">t5</span><span class="p">;</span>
+ 	<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">setprecision</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">t6</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+ 	<span class="c1">//output =&gt; 16777216
+</span><span class="c1"></span> 	
+ 	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><h2 id="參考資源">參考資源</h2>
+<ul>
+<li>IEEE 浮點運算標準 : <a class="link" href="http://math.ecnu.edu.cn/~jypan/Teaching/Cpp/doc/IEEE_float.pdf"  target="_blank" rel="noopener"
+    >here</a></li>
+<li>C 語言取出/設定浮點數正規化欄位 : <a class="link" href="https://goo.gl/3RpUZK"  target="_blank" rel="noopener"
+    >here</a></li>
+<li>C/C++ 浮點數特殊值 : <a class="link" href="https://goo.gl/mbWZoD"  target="_blank" rel="noopener"
+    >here</a></li>
+<li>[C&amp;C++] 浮點數精準度 (Floating-Point Precision) : <a class="link" href="https://goo.gl/sjK8vR"  target="_blank" rel="noopener"
+    >here</a></li>
+<li>IEEE-754 浮點數的表示法 : <a class="link" href="http://jmiiv.blogspot.tw/2008/08/ieee-754.html"  target="_blank" rel="noopener"
+    >here</a></li>
+<li>MSDN IEEE 浮點表示 : <a class="link" href="https://msdn.microsoft.com/zh-tw/library/0b34tf65.aspx"  target="_blank" rel="noopener"
+    >here</a></li>
+<li>Binary floating point and .NET : <a class="link" href="http://csharpindepth.com/Articles/General/FloatingPoint.aspx"  target="_blank" rel="noopener"
+    >here</a></li>
+<li>What Every Computer Scientist Should Know About Floating-Point Arithmetic : <a class="link" href="http://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html"  target="_blank" rel="noopener"
+    >here</a></li>
+<li>C语言浮点型数据存储结构 : <a class="link" href="https://blog.csdn.net/whzhaochao/article/details/12885875"  target="_blank" rel="noopener"
+    >here</a></li>
+<li>IEEE754规范的舍入方案怎么理解呢？ : <a class="link" href="https://www.zhihu.com/question/68131179"  target="_blank" rel="noopener"
+    >here</a></li>
+</ul>
+
+</section>
+
+    
+    
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3&#43;Aro6EYUG4&#43;cU&#43;KJWu/X"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"integrity="sha384-g7c&#43;Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI&#43;sEnkvrMWph2EDg4"crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC&#43;Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa"crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ]
+        });})
+</script>
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">相關文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="has-image">
+    <a href="/archives/win32note01/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/win32note01/img/1602103707812.7553d01bdd8e04ae277fd5a402e941a8_huf41b96d2886df92c7e1e1280e6daa8eb_36021_250x150_fill_q75_box_smart1.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="win32note01" 
+                        data-hash="md5-dVPQG92OBK4nf9WkAulBqA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">[Win32筆記] 建立視窗 #1</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/archives/skills-competition-software/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/skills-competition-software/img/skill_img1.0b9e6b7158ea6a0a2528399ba2303f54_hu19eefd48ce774c36ccb19d58e43766bf_138141_250x150_fill_q75_box_smart1.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="skills-competition-software" 
+                        data-hash="md5-C55rcVjqagolKDmbojA/VA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">工科賽-軟體設計 歷屆試題解答</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/archives/math-for-game-vector-reflection/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/math-for-game-vector-reflection/img/13fig21.b79848615792b34f8c0d1dc38db6ae46_hu9951623b7b3c57f683995ab87fcf3709_19062_250x150_fill_box_smart1.gif" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="math-for-game-vector-reflection" 
+                        data-hash="md5-t5hIYVeSs0&#43;MDR3DjbauRg==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Vector reflection向量鏡射 基本的碰撞反彈回饋</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/archives/quadtree_in_2d/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/quadtree_in_2d/img/Quad_013.a7ee28c0eeb895aba73c942cef9f742e_hu646d8ae9c65ce621115142c45ba5d5ba_35828_250x150_fill_box_smart1_2.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="quadtree_in_2d" 
+                        data-hash="md5-p&#43;4owO64launPJQs7590Lg==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">碰撞檢測的優化-四叉樹(Quadtree)</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/archives/csharp-bfs-solve-8-puzzle/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle07.5f0cbaf1fb16c4a1c365aebf4f493188_hu0b5eea423e222ebc3e48e168702d93a0_282255_250x150_fill_q75_box_smart1.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="csharp-bfs-solve-8-puzzle" 
+                        data-hash="md5-Xwy68fsWxKHDZa6/T0kxiA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">BFS解8-Puzzle問題</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "beadx6ggwp" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2021 展維隨筆
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.3.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

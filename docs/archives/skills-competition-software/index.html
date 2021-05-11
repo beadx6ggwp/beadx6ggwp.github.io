@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='工科賽解答'><title>工科賽-軟體設計 歷屆試題解答</title>
+
+<link rel='canonical' href='https://davidhsu666.com/archives/skills-competition-software/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='工科賽-軟體設計 歷屆試題解答'>
+<meta property='og:description' content='工科賽解答'>
+<meta property='og:url' content='https://davidhsu666.com/archives/skills-competition-software/'>
+<meta property='og:site_name' content='展維隨筆'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:published_time' content='2019-11-06T09:38:44&#43;08:00'/><meta property='article:modified_time' content='2019-11-06T09:38:44&#43;08:00'/><meta property='og:image' content='https://davidhsu666.com/archives/skills-competition-software/img/skill_img1.jpg' />
+<meta name="twitter:title" content="工科賽-軟體設計 歷屆試題解答">
+<meta name="twitter:description" content="工科賽解答"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://davidhsu666.com/archives/skills-competition-software/img/skill_img1.jpg' />
+    <link rel="icon" href="https://davidhsu666.com/resource/favicon-32x32.png">
+
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YJXR109WY7"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-YJXR109WY7', { 'anonymize_ip': false });
+}
+</script>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap');
+     
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;800&display=swap');
+    :root {
+        --article-font-family: 'Roboto',"Noto Serif TC", var(--base-font-family);
+    }
+</style>
+        
+    </head>
+    <body class="">
+        
+        <script src="/js/custom.js"></script>
+        <button class="btn" onclick="scrollTop1()" id="goTopBtn" title="Go to top">TOP</button>
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.body.dataset.scheme = 'dark';
+        } else {
+            document.body.dataset.scheme = 'light';
+        }
+    })();
+</script><div class="container main-container flex on-phone--column extended article-page with-toolbar">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切換選單">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/thinking_hu84577f8e2354056019efb2e4fba9d39e_126194_300x0_resize_box_2.png" width="300"
+                            height="292" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🤔</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="https://davidhsu666.com/">展維隨筆</a></h1>
+        <h2 class="site-description">網頁維修中</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/test/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>test</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>暗色模式</span>
+            </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <div id="article-toolbar">
+        <a href="https://davidhsu666.com/" class="back-home">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+            <span>Back</span>
+        </a>
+    </div>
+
+    <article class="has-image main-article">
+    
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/archives/skills-competition-software/">
+                <img src="/archives/skills-competition-software/img/skill_img1.jpg"
+                        
+                        width="1320" 
+                        height="1064" 
+                        loading="lazy"
+                        alt="Featured image of post 工科賽-軟體設計 歷屆試題解答" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/codingnote/" style="background-color: #EDFF44; color: #000;">
+                程式筆記
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/archives/skills-competition-software/">工科賽-軟體設計 歷屆試題解答</a>
+    </h2>
+
+    
+    <h3 class="article-subtitle">
+        工科賽解答
+    </h3>
+    <footer class="article-time">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <time class="article-time--published">Nov 06, 2019</time>
+    </footer></div>
+</header>
+
+    
+    <section class="article-content">
+    <h1 id="工科賽-軟體設計-歷屆試題解答">工科賽-軟體設計 歷屆試題解答</h1>
+<p><figure style="flex-grow: 124; flex-basis: 297px">
+		<a href="/archives/skills-competition-software/img/skill_img1.jpg" data-size="1320x1064"><img src="/archives/skills-competition-software/img/skill_img1.jpg"
+				
+				width="1320"
+				height="1064"
+				loading="lazy"
+				>
+		</a>
+		
+	</figure></p>
+<h2 id="前言">前言:</h2>
+<p>名次不高，這篇文只是單純分享，想看高手的心得，直接Google “ACM ICPC 心得”</p>
+<p>我是106屆工科軟體競賽選手，覺得高職選手的資源不是很多，如果沒有老師、學長指導、沒有解答、也沒有累積相關知識技術的底，想拿前段名次會辛苦很多。</p>
+<p>先簡單講講，所以可能有點亂，主要是該寫甚麼我也不清楚，工科軟體跟TOI比起來，知名度跟難度都差滿多的，所以也沒什麼人在關注或是討論題目，資源自然就少，大多只能靠學長或老師傳承解答。</p>
+<p>高職的比賽，沒興趣不太建議靠比賽升學，做選手學東西就行，因為沒有很好的名次加上備審，不好上前段國立，所有國立科大資工開放的總名額大概只有30個左右，採計的比賽也不只工科賽，所以就算前15名也不見得能上國立。</p>
+<h2 id="全國工科技藝競賽-軟體設計在比什麼">全國工科技藝競賽 軟體設計在比什麼:</h2>
+<p>簡單來講就是用程式邏輯來解各種應用問題，但比UVA、IOI簡單，比較偏向應用一些吧，可以翻下面的題庫來看看在比什麼。 像是8-Puzzl轉盤，要在解題的時候去思考，如何讓電腦找到最少步數，相比傳統解題競賽，較著重在功能呈現上。</p>
+<p><figure style="flex-grow: 148; flex-basis: 355px">
+		<a href="/archives/skills-competition-software/img/8-Puzzle-BFS.gif" data-size="344x232"><img src="/archives/skills-competition-software/img/8-Puzzle-BFS.gif"
+				
+				width="344"
+				height="232"
+				loading="lazy"
+				alt="BFS解8-Puzzle">
+		</a>
+		
+		<figcaption>BFS解8-Puzzle</figcaption>
+		
+	</figure></p>
+<p>相關文章: <a class="link" href="http://davidhsu666.com/archives/csharp-bfs-solve-8-puzzle/"  target="_blank" rel="noopener"
+    >用BFS解8-Puzzle問題</a></p>
+<h2 id="準備方式">準備方式:</h2>
+<p>語言建議用C#(至少要會哪些之後再補好了)。</p>
+<p>建議是在暑假的時候先看完一到兩本演算法或資料結構的書(推薦<a class="link" href="https://www.tenlong.com.tw/products/9789863474364"  target="_blank" rel="noopener"
+    >啊哈!圖解演算法</a>、<a class="link" href="https://www.tenlong.com.tw/products/9789866072116"  target="_blank" rel="noopener"
+    >大話資料結構</a>)，每天看一個段落，理解後就實做一次，很快就能看完了，以我來說大約一個月。</p>
+<p>差不多開學後，開始練習工科賽題目，我是覺得工科賽歷屆題目就直接拿來計時比較實在，不然沒人幫你出題目，要想出能提升自己技術的題目內容其實挺難的，然後在11月前把工科北軟歷屆解完。</p>
+<p>11月前記得也要寫學科，學科這邊就不用寫太多，覺得自己的相關知識差不多後，寫工科的99~104，如果每張不看解答或查資料，都有90左右，就差不多了，建議寫完就算對了也要在旁邊補上解法，這樣到時候比賽前複習才比較方便。</p>
+<p>接著11月初，如果你是台北人，建議參加北軟，模擬一些臨場感，因為當你有所準備時，上場真的會很緊張，不然也沒什麼機會能模擬比賽了….。就算不是也沒關係，北軟比完會釋出題目，把它全部做完。</p>
+<p>接著補一些自己當初不會或是卡住的內容，花點時間研究，並給自己出模擬試題，檢查自己哪些觀念不太夠。</p>
+<p>如果你都完成了，就準備比賽拿金手吧。</p>
+<h2 id="雜談">雜談:</h2>
+<p>要拿金手比IOI培訓營簡單很多，感覺教育部也沒特別規定高職的程式設計課程要怎麼上，就變成看學校老師個人造化的感覺。</p>
+<p>別校選手說他們老師也是不推薦比賽，他參賽的原因只是科排第一，被科主任盧過來的。</p>
+<p>全台60幾所高職報名軟體設計，真正有在訓練選手的也就那幾間，感覺其他很多都是被學校盧過來參加，或是覺得有趣隨便報名，反正校內選拔也沒人在搶，所以比賽水平自然沒有IOI那麼高。</p>
+<p>大概是這樣吧，我自己還有一些想法跟心得，只是不曉得怎麼寫。 剩下看要問什麼吧，一些比較深的演算法，我答不出來可以去<a class="link" href="https://forum.gamer.com.tw/C.php?page=1&amp;bsn=60076&amp;snA=3146926"  target="_blank" rel="noopener"
+    >這一串問</a>，滿多人可以幫忙的。</p>
+<p>電腦修護那塊，我伺服器沒什麼研究，單晶片當初有協助同校選手，所以還算幫得上忙吧，有問題可以問問看。</p>
+<h2 id="解答">解答:</h2>
+<p>歷屆題目的程式碼，這些題目解答都是我自己寫的，雖然寫得很爛，但至少能解出題目要求的解答，所以寫法有看不懂的地方，我看一下題目跟Code都能回答。</p>
+<p>這邊放北軟的歷屆，主要是我覺得北軟的題型跟工科賽幾乎一樣，而且出題老師也跟工科賽有重疊，因為這幾年都有類似的題目出現，加上北軟在工科賽之前比，非常值得做參考。</p>
+<p><mark>工科賽軟體設計</mark>:
+<br>歷屆題目 : <a class="link" href="https://drive.google.com/drive/folders/0B7jQGIvVP5gtWEVuVUtxb2tUR3M"  target="_blank" rel="noopener"
+    >Here</a>
+<br>96~106屆參考解答 : <a class="link" href="https://github.com/md9830415/Skills-Competition-Software"  target="_blank" rel="noopener"
+    >Here</a></p>
+<p><mark>北市軟體設計競賽(高工)</mark>:
+<br>歷屆題目 : <a class="link" href="https://drive.google.com/drive/folders/0B7jQGIvVP5gtbXdwZUNoVHRJTjQ"  target="_blank" rel="noopener"
+    >Here</a>
+<br>99~106屆參考解答 : <a class="link" href="https://github.com/md9830415/Taipei-Software-Competition"  target="_blank" rel="noopener"
+    >Here</a></p>
+
+</section>
+
+    
+    
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3&#43;Aro6EYUG4&#43;cU&#43;KJWu/X"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"integrity="sha384-g7c&#43;Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI&#43;sEnkvrMWph2EDg4"crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC&#43;Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa"crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ]
+        });})
+</script>
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">相關文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="has-image">
+    <a href="/archives/win32note01/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/win32note01/img/1602103707812.7553d01bdd8e04ae277fd5a402e941a8_huf41b96d2886df92c7e1e1280e6daa8eb_36021_250x150_fill_q75_box_smart1.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="win32note01" 
+                        data-hash="md5-dVPQG92OBK4nf9WkAulBqA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">[Win32筆記] 建立視窗 #1</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/archives/math-for-game-vector-reflection/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/math-for-game-vector-reflection/img/13fig21.b79848615792b34f8c0d1dc38db6ae46_hu9951623b7b3c57f683995ab87fcf3709_19062_250x150_fill_box_smart1.gif" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="math-for-game-vector-reflection" 
+                        data-hash="md5-t5hIYVeSs0&#43;MDR3DjbauRg==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Vector reflection向量鏡射 基本的碰撞反彈回饋</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/archives/quadtree_in_2d/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/quadtree_in_2d/img/Quad_013.a7ee28c0eeb895aba73c942cef9f742e_hu646d8ae9c65ce621115142c45ba5d5ba_35828_250x150_fill_box_smart1_2.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="quadtree_in_2d" 
+                        data-hash="md5-p&#43;4owO64launPJQs7590Lg==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">碰撞檢測的優化-四叉樹(Quadtree)</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/archives/csharp-bfs-solve-8-puzzle/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle07.5f0cbaf1fb16c4a1c365aebf4f493188_hu0b5eea423e222ebc3e48e168702d93a0_282255_250x150_fill_q75_box_smart1.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="csharp-bfs-solve-8-puzzle" 
+                        data-hash="md5-Xwy68fsWxKHDZa6/T0kxiA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">BFS解8-Puzzle問題</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/archives/ieee-754/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/ieee-754/img/ieee754.7a1ce0f2887386a004532f4d5a130922_hubf759c6ef8462aeb875bc4cfa77b9775_40684_250x150_fill_q75_box_smart1.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="ieee-754" 
+                        data-hash="md5-ehzg8ohzhqAEUy9NWhMJIg==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">浮點數誤差IEEE-754</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "beadx6ggwp" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2021 展維隨筆
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.3.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

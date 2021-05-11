@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on 展維隨筆</title>
+    <link>https://davidhsu666.com/categories/</link>
+    <description>Recent content in Categories on 展維隨筆</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 11 Dec 2020 05:01:26 +0800</lastBuildDate><atom:link href="https://davidhsu666.com/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>程式筆記</title>
+      <link>https://davidhsu666.com/categories/codingnote/</link>
+      <pubDate>Fri, 11 Dec 2020 05:01:26 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/categories/codingnote/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>作品</title>
+      <link>https://davidhsu666.com/categories/project/</link>
+      <pubDate>Fri, 04 Dec 2020 02:16:07 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/categories/project/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Test</title>
+      <link>https://davidhsu666.com/categories/test/</link>
+      <pubDate>Sun, 19 Apr 2015 03:35:50 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/categories/test/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ProblemSolving on 展維隨筆</title>
+    <link>https://davidhsu666.com/tags/problemsolving/</link>
+    <description>Recent content in ProblemSolving on 展維隨筆</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 22 Jun 2018 10:04:35 +0800</lastBuildDate><atom:link href="https://davidhsu666.com/tags/problemsolving/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>BFS解8-Puzzle問題</title>
+      <link>https://davidhsu666.com/archives/csharp-bfs-solve-8-puzzle/</link>
+      <pubDate>Fri, 22 Jun 2018 10:04:35 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/csharp-bfs-solve-8-puzzle/</guid>
+      <description>目錄  前言 儲存結構和移動判斷 用BFS窮舉狀態 執行結果 參考資源  1. 前言 先來簡單的介紹一下什麼是8-Puzzle。
+數字推盤遊戲(n-puzzle)是最早一種的滑塊類遊戲，常見的類型有十五數字推盤遊戲和八數字推盤遊戲等，也有以圖畫代替數字的推盤遊戲。
+ Wiki上的8Puzzle 
+如上圖所示，滑塊只能往空位移動。
+大概了解遊玩方法後，就來試著解決8-Puzzle問題吧!
+解法的步驟大概是這樣 :
+ 先完成移動判斷和節點狀態的儲存結構 用BFS窮舉狀態，並把當前狀態記錄下來篩選重複路徑 只要有一組路徑符合結果，該路徑就是最佳解(因BFS的特性是每次平均向外擴展，所以最先碰到終點的就是最佳解之一) 否則搜尋完畢後皆沒有找到符合的狀態，無解 最後透過父節點的回溯取得輸出路徑，即可得到最短路徑和分解步驟  2. 儲存結構和移動判斷 首先是儲存狀態，用二維陣列來儲存比較直觀，但是用一維陣列來儲存的話，我覺得在一些處理上比較方便，所以我採用一維陣列。
+ 資料結構 
+像是上面的這個狀態這樣，將0表示為空格，可以儲存成 { 8, 6, 4, 0, 7, 2, 5, 1, 3}。
+因為要透過BFS搜尋來取得路徑，所以需要建立一個節點的結構，這樣才能儲存當前狀態，並紀錄上個狀態 :
+public class Node { public byte[] status; // 當前狀態  public Node father; // 紀錄上個狀態，如果father = null 該點為根節點  public Node(byte[] status, Node father) { this.</description>
+    </item>
+    
+    <item>
+      <title>快速判斷N是否為2的次方數</title>
+      <link>https://davidhsu666.com/archives/ispowerby2/</link>
+      <pubDate>Wed, 21 Mar 2018 09:31:46 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/ispowerby2/</guid>
+      <description>快速判斷N是否為2的次方數 前陣子遇到一個題目 : 請你判斷一個正整數N是否為2的次方。
+我遇到這題目時，直覺想到的就是，透過迴圈從1開始檢查所有2的次方數，像這樣 :
+bool isPowerBy2_(int n) { for (int i = 1; i &amp;lt;= n; i *= 2) if (i == n) return true; return false; } // output: // isPowerBy2(1) =&amp;gt; true // isPowerBy2(2) =&amp;gt; true // isPowerBy2(4) =&amp;gt; true // isPowerBy2(-1) =&amp;gt; false // isPowerBy2(0) =&amp;gt; false // isPowerBy2(3) =&amp;gt; false 雖然這樣就解決了，但我一直在想是否有效率更高的方法。
+我們先來觀察2的次方數轉成2進制的樣子 :
+1 =&amp;gt; 0000 0001 , 1 – 1 =&amp;gt; 0000 0000 2 =&amp;gt; 0000 0010 , 2 – 1 =&amp;gt; 0000 0001 4 =&amp;gt; 0000 0100 , 4 – 1 =&amp;gt; 0000 0011 8 =&amp;gt; 0000 1000 , 8 – 1 =&amp;gt; 0000 0111 16 =&amp;gt; 0001 0000 , 16 – 1 =&amp;gt; 0000 1111 32 =&amp;gt; 0010 0000 , 32 – 1 =&amp;gt; 0001 1111 可以發現，只要該數是2的次方時，除了MSB(最高位元)是 1 其餘都是0，</description>
+    </item>
+    
+  </channel>
+</rss>

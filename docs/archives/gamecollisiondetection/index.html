@@ -1,0 +1,1708 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='應該很多人對電腦遊戲中如何處理碰撞處理感興趣，希望大家在讀完這篇文章後能了解如何精確的偵測物體碰撞。'><title>遊戲中的碰撞檢測Collision Detection</title>
+
+<link rel='canonical' href='https://davidhsu666.com/archives/gamecollisiondetection/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='遊戲中的碰撞檢測Collision Detection'>
+<meta property='og:description' content='應該很多人對電腦遊戲中如何處理碰撞處理感興趣，希望大家在讀完這篇文章後能了解如何精確的偵測物體碰撞。'>
+<meta property='og:url' content='https://davidhsu666.com/archives/gamecollisiondetection/'>
+<meta property='og:site_name' content='展維隨筆'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Collision' /><meta property='article:published_time' content='2018-03-21T05:52:36&#43;08:00'/><meta property='article:modified_time' content='2018-03-21T05:52:36&#43;08:00'/><meta property='og:image' content='https://davidhsu666.com/archives/gamecollisiondetection/img/SAT09.jpg' />
+<meta name="twitter:title" content="遊戲中的碰撞檢測Collision Detection">
+<meta name="twitter:description" content="應該很多人對電腦遊戲中如何處理碰撞處理感興趣，希望大家在讀完這篇文章後能了解如何精確的偵測物體碰撞。"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://davidhsu666.com/archives/gamecollisiondetection/img/SAT09.jpg' />
+    <link rel="icon" href="https://davidhsu666.com/resource/favicon-32x32.png">
+
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YJXR109WY7"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-YJXR109WY7', { 'anonymize_ip': false });
+}
+</script>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap');
+     
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;800&display=swap');
+    :root {
+        --article-font-family: 'Roboto',"Noto Serif TC", var(--base-font-family);
+    }
+</style>
+        
+    </head>
+    <body class="">
+        
+        <script src="/js/custom.js"></script>
+        <button class="btn" onclick="scrollTop1()" id="goTopBtn" title="Go to top">TOP</button>
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.body.dataset.scheme = 'dark';
+        } else {
+            document.body.dataset.scheme = 'light';
+        }
+    })();
+</script><div class="container main-container flex on-phone--column extended article-page with-toolbar">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切換選單">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/thinking_hu84577f8e2354056019efb2e4fba9d39e_126194_300x0_resize_box_2.png" width="300"
+                            height="292" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🤔</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="https://davidhsu666.com/">展維隨筆</a></h1>
+        <h2 class="site-description">網頁維修中</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/test/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>test</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>暗色模式</span>
+            </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <div id="article-toolbar">
+        <a href="https://davidhsu666.com/" class="back-home">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+            <span>Back</span>
+        </a>
+    </div>
+
+    <article class="has-image main-article">
+    
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/archives/gamecollisiondetection/">
+                <img src="/archives/gamecollisiondetection/img/SAT09.jpg"
+                        
+                        width="400" 
+                        height="250" 
+                        loading="lazy"
+                        alt="Featured image of post 遊戲中的碰撞檢測Collision Detection" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/codingnote/" style="background-color: #EDFF44; color: #000;">
+                程式筆記
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/archives/gamecollisiondetection/">遊戲中的碰撞檢測Collision Detection</a>
+    </h2>
+
+    
+    <h3 class="article-subtitle">
+        應該很多人對電腦遊戲中如何處理碰撞處理感興趣，希望大家在讀完這篇文章後能了解如何精確的偵測物體碰撞。
+    </h3>
+    <footer class="article-time">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <time class="article-time--published">Mar 21, 2018</time>
+    </footer></div>
+</header>
+
+    
+    <section class="article-content">
+    <h1 id="遊戲中的碰撞檢測collision-detection">遊戲中的碰撞檢測Collision Detection</h1>
+<!-- 錨點規則: 空格替換為"-" 標題中其餘符號直接省略 -->
+<!-- ## 目錄
+1. [矩形碰撞檢測](#1-矩形碰撞檢測)
+2. [什麼是分離軸檢測?](#2-什麼是分離軸檢測)
+3. [知識補充1–向量](#3-知識補充1向量)
+4. [知識補充2–旋轉變換](#4-知識補充2旋轉變換)
+5. [如何取得分離軸上的投影?](#5-如何取得分離軸上的投影)
+6. [編寫程式碼-投影、旋轉與判斷](#6-編寫程式碼-投影旋轉與判斷)
+7. [如何取得分離軸?](#7-如何取得分離軸)
+8. [粗糙的矩形檢測](#8-粗糙的矩形檢測)
+9. [編寫程式碼–多邊形與多邊形](#9-編寫程式碼多邊形與多邊形)
+10. [編寫程式碼–多邊形與圓](#10-編寫程式碼多邊形與圓)
+11. [SAT的總結](#11-sat的總結)
+12. [多物體的碰撞優化](#12-多物體的碰撞優化)
+13. [動態物體間的碰撞檢測](#13-動態物體間的碰撞檢測)
+14. [Source Code](#14-source-code)
+15. [結尾感想](#15-結尾感想)
+16. [參考資源](#參考資源) -->
+<div>
+    <h2>目錄</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-矩形碰撞檢測">1. 矩形碰撞檢測</a></li>
+    <li><a href="#2-什麼是分離軸檢測">2. 什麼是分離軸檢測?</a></li>
+    <li><a href="#3-知識補充1向量">3. 知識補充1–向量</a></li>
+    <li><a href="#4-知識補充2旋轉變換">4. 知識補充2–旋轉變換</a></li>
+    <li><a href="#5-如何取得分離軸上的投影">5. 如何取得分離軸上的投影?</a></li>
+    <li><a href="#6-編寫程式碼-投影旋轉與判斷">6. 編寫程式碼-投影、旋轉與判斷</a></li>
+    <li><a href="#7-如何取得分離軸">7. 如何取得分離軸?</a></li>
+    <li><a href="#8-粗糙的矩形檢測">8. 粗糙的矩形檢測</a></li>
+    <li><a href="#9-編寫程式碼多邊形與多邊形">9. 編寫程式碼–多邊形與多邊形</a></li>
+    <li><a href="#10-編寫程式碼多邊形與圓">10. 編寫程式碼–多邊形與圓</a></li>
+    <li><a href="#11-sat的總結">11. SAT的總結</a></li>
+    <li><a href="#12-多物體的碰撞優化">12. 多物體的碰撞優化</a></li>
+    <li><a href="#13-動態物體間的碰撞檢測">13. 動態物體間的碰撞檢測</a></li>
+    <li><a href="#14-source-code">14. Source Code</a></li>
+    <li><a href="#15-結尾感想">15. 結尾感想</a></li>
+    <li><a href="#參考資源">參考資源:</a></li>
+  </ul>
+</nav>
+    <hr>
+</div>
+
+<p>而這篇文有三個主要目的 :</p>
+<ol>
+<li>對遊戲中的碰撞感興趣，卻不會寫程式的人可以了解原理</li>
+<li>讓有能力實作的人，可以跟著文章寫出精確的多邊形碰撞檢測</li>
+<li>自己的學習筆記</li>
+</ol>
+<p>讓我們開始吧。</p>
+<p>這次要來介紹的主題是分離軸碰撞檢測(Separating Axis Theorem, SAT)<br>
+分離軸定理通常用語檢測兩個多邊形或多邊形與圓之間的碰撞，跟所有演算法一樣他具有一定的優勢與缺點。<br>
+我會慢慢講解背後的原理，並使用程式碼做簡易的範例。</p>
+<p>範例所使用的語言為Java Script，加上自製的向量函式庫，但我想觀念懂了應該不會有太大問題。</p>
+<h2 id="1-矩形碰撞檢測">1. 矩形碰撞檢測</h2>
+<p>我想先從最簡單的碰撞檢測開始講，這樣比較好讓各位了解為什麼需要分離軸檢測，所以先從一般的矩形碰撞開始。</p>
+<p>AABB碰撞檢測(Axis-aligned Bounding Box):
+為了方邊物體之間進行碰撞檢測運算，通常會對物體創建一個長方形將其包圍，AABB包圍盒也被稱為軸對齊包圍盒。</p>
+<p>一般二維的AABB包圍盒具備兩項特點:</p>
+<ol>
+<li>以矩形包圍物體</li>
+<li>矩形的每條邊，皆與坐標系的軸垂直</li>
+</ol>
+<p>簡單來說就是用矩形把物體包起來，檢查矩形之間是否發生碰撞</p>
+<p>如下圖，黑框及為包圍盒，在做碰撞檢測時，只需要檢查包圍盒之間是否發生碰撞:</p>
+<p><figure style="flex-grow: 274; flex-basis: 657px">
+		<a href="/archives/gamecollisiondetection/img/SAT00.jpg" data-size="636x232"><img src="/archives/gamecollisiondetection/img/SAT00.jpg"
+				
+				width="636"
+				height="232"
+				loading="lazy"
+				alt="AABB碰撞盒中的物體">
+		</a>
+		
+		<figcaption>AABB碰撞盒中的物體</figcaption>
+		
+	</figure></p>
+<p>那我們就直接來看看AABB碰撞盒是如何運作的吧。</p>
+<p>這裡有兩個矩形A、B，Box A最小邊為A.min、最大邊為A.max，而Box B同理。</p>
+<p><figure style="flex-grow: 170; flex-basis: 410px">
+		<a href="/archives/gamecollisiondetection/img/SAT03.jpg" data-size="388x227"><img src="/archives/gamecollisiondetection/img/SAT03.jpg"
+				
+				width="388"
+				height="227"
+				loading="lazy"
+				alt="A.max &lt; B.min">
+		</a>
+		
+		<figcaption>A.max &lt; B.min</figcaption>
+		
+	</figure></p>
+<p>如上圖所示，當A.max &lt; B.min時，代表兩物體之間仍有縫隙，沒有發生碰撞。</p>
+<p><figure style="flex-grow: 160; flex-basis: 384px">
+		<a href="/archives/gamecollisiondetection/img/SAT04.jpg" data-size="400x250"><img src="/archives/gamecollisiondetection/img/SAT04.jpg"
+				
+				width="400"
+				height="250"
+				loading="lazy"
+				alt="A.max &gt; B.min">
+		</a>
+		
+		<figcaption>A.max &gt; B.min</figcaption>
+		
+	</figure></p>
+<p>上圖可以明顯地看到A與B發生碰撞，當<strong>A.max &gt; B.min</strong>時，代表兩物體之間沒有縫隙，發生碰撞。</p>
+<p><figure style="flex-grow: 160; flex-basis: 384px">
+		<a href="/archives/gamecollisiondetection/img/SAT05.jpg" data-size="400x250"><img src="/archives/gamecollisiondetection/img/SAT05.jpg"
+				
+				width="400"
+				height="250"
+				loading="lazy"
+				alt="B.max &gt; A.min">
+		</a>
+		
+		<figcaption>B.max &gt; A.min</figcaption>
+		
+	</figure></p>
+<p>但前面只討論B在A右側，當B在A的左側時，條件就要稍微改一下，當B在A的左側時，B.max &gt; A.min時發生碰撞。</p>
+<p>將兩張圖的結果合在一起，整理成code:</p>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="k">if</span> <span class="p">(</span><span class="nx">A</span><span class="p">.</span><span class="nx">max</span> <span class="o">&gt;</span> <span class="nx">B</span><span class="p">.</span><span class="nx">min</span> <span class="o">&amp;&amp;</span> <span class="nx">B</span><span class="p">.</span><span class="nx">max</span> <span class="o">&gt;</span> <span class="nx">A</span><span class="p">.</span><span class="nx">min</span><span class="p">)</span>
+    <span class="nx">Console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;Collided&#34;</span><span class="p">);</span>
+</code></pre></div><p>為什麼使用 AND 來判斷?</p>
+<p>只要A在B的右邊，那麼A.max就會永遠大於B.min，因為A.max &gt; B.min是用在A在左邊的碰撞判斷，所以只要沒有發生碰撞，就代表只有一個條件會是True，碰撞無法成立，所以使用 AND。</p>
+<p>那麼當A在B的上面或下面呢?</p>
+<p><figure style="flex-grow: 160; flex-basis: 384px">
+		<a href="/archives/gamecollisiondetection/img/SAT06.jpg" data-size="400x250"><img src="/archives/gamecollisiondetection/img/SAT06.jpg"
+				
+				width="400"
+				height="250"
+				loading="lazy"
+				alt="複合情況">
+		</a>
+		
+		<figcaption>複合情況</figcaption>
+		
+	</figure></p>
+<p>方法是一樣，對Y軸上的min、max判斷即可。</p>
+<p>讓我們對著圖片來看程式碼 :</p>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">RectCollision</span><span class="p">(</span><span class="nx">r1</span><span class="p">,</span> <span class="nx">r2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 這邊因為(X,Y)在方塊中心，所以在取得min、max時，要 +/- width/2
+</span><span class="c1"></span>    <span class="c1">// Rect1
+</span><span class="c1"></span>    <span class="kd">var</span> <span class="nx">minX1</span> <span class="o">=</span> <span class="nx">r1</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">r1</span><span class="p">.</span><span class="nx">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="nx">maxX1</span> <span class="o">=</span> <span class="nx">r1</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="nx">r1</span><span class="p">.</span><span class="nx">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="nx">minY1</span> <span class="o">=</span> <span class="nx">r1</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">r1</span><span class="p">.</span><span class="nx">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="nx">maxY1</span> <span class="o">=</span> <span class="nx">r1</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="nx">r1</span><span class="p">.</span><span class="nx">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="c1">// Rect2
+</span><span class="c1"></span>    <span class="kd">var</span> <span class="nx">minX2</span> <span class="o">=</span> <span class="nx">r2</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">r2</span><span class="p">.</span><span class="nx">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="nx">maxX2</span> <span class="o">=</span> <span class="nx">r2</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="nx">r2</span><span class="p">.</span><span class="nx">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="nx">minY2</span> <span class="o">=</span> <span class="nx">r2</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">r2</span><span class="p">.</span><span class="nx">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="nx">maxY2</span> <span class="o">=</span> <span class="nx">r2</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="nx">r2</span><span class="p">.</span><span class="nx">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+ 
+    <span class="k">if</span> <span class="p">(</span><span class="nx">maxX1</span> <span class="o">&gt;</span> <span class="nx">minX2</span> <span class="o">&amp;&amp;</span> <span class="nx">maxX2</span> <span class="o">&gt;</span> <span class="nx">minX1</span> <span class="o">&amp;&amp;</span>
+        <span class="nx">maxY1</span> <span class="o">&gt;</span> <span class="nx">minY2</span> <span class="o">&amp;&amp;</span> <span class="nx">maxY2</span> <span class="o">&gt;</span> <span class="nx">minY1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">// 完整原始碼在結尾與感想的最後。
+</span></code></pre></div><p>測試結果:
+<figure style="flex-grow: 126; flex-basis: 303px">
+		<a href="/archives/gamecollisiondetection/img/SATgif01.gif" data-size="480x379"><img src="/archives/gamecollisiondetection/img/SATgif01.gif"
+				
+				width="480"
+				height="379"
+				loading="lazy"
+				alt="矩形AABB結果">
+		</a>
+		
+		<figcaption>矩形AABB結果</figcaption>
+		
+	</figure></p>
+<p>那麼另外一種情況如何?
+<figure style="flex-grow: 160; flex-basis: 384px">
+		<a href="/archives/gamecollisiondetection/img/SAT07.jpg" data-size="400x250"><img src="/archives/gamecollisiondetection/img/SAT07.jpg"
+				
+				width="400"
+				height="250"
+				loading="lazy"
+				alt="出現旋轉的情況">
+		</a>
+		
+		<figcaption>出現旋轉的情況</figcaption>
+		
+	</figure>
+如上圖，我們能明顯的看出兩物體沒有發生碰撞，但是用<strong>AABB</strong>碰撞檢測，答案卻是…發生碰撞。</p>
+<p>AABB碰撞檢測算法雖然計算方法簡單、速度快，但卻有幾個問題:</p>
+<ol>
+<li><strong>當物體旋轉時就無法檢查</strong></li>
+<li><strong>只能檢查矩型物體</strong></li>
+</ol>
+<p>那麼要如何解決這兩個問題呢?<br>
+就是本文的主題「SAT碰撞檢測」，這個方法可以完美的解決這兩個問題。</p>
+<p>讓我們進入下一階段。</p>
+<h2 id="2-什麼是分離軸檢測">2. 什麼是分離軸檢測?</h2>
+<p>如果有兩個凸多邊形，在任意角度下的投影皆有重疊，代表物體發生碰撞，否則只要有縫隙，就代表沒有碰撞。</p>
+<p><figure style="flex-grow: 327; flex-basis: 786px">
+		<a href="/archives/gamecollisiondetection/img/SAT35.jpg" data-size="1324x404"><img src="/archives/gamecollisiondetection/img/SAT35.jpg"
+				
+				width="1324"
+				height="404"
+				loading="lazy"
+				alt="投影之間有縫隙">
+		</a>
+		
+		<figcaption>投影之間有縫隙</figcaption>
+		
+	</figure></p>
+<p>簡單來說，就是如果能在兩個物體間找到一條線來分離它們，那麼就代表這兩個物體之間沒有發生碰撞。</p>
+<p><figure style="flex-grow: 166; flex-basis: 400px">
+		<a href="/archives/gamecollisiondetection/img/SAT01.jpg" data-size="500x300"><img src="/archives/gamecollisiondetection/img/SAT01.jpg"
+				
+				width="500"
+				height="300"
+				loading="lazy"
+				alt="常見狀況">
+		</a>
+		
+		<figcaption>常見狀況</figcaption>
+		
+	</figure></p>
+<p>上圖中你可以看到第一排的物體之間有縫隙，所以能夠輕鬆地畫出一條線來分離它們，但第二排就沒辦法，因為這兩個物體已經相撞，之間沒有縫隙，所以找不出一條線來當分離線。</p>
+<p>而分離線不只一條 :</p>
+<p><figure style="flex-grow: 100; flex-basis: 240px">
+		<a href="/archives/gamecollisiondetection/img/SAT02.jpg" data-size="200x200"><img src="/archives/gamecollisiondetection/img/SAT02.jpg"
+				
+				width="200"
+				height="200"
+				loading="lazy"
+				alt="沒有發生碰撞的物體之間，有無限多分離線">
+		</a>
+		
+		<figcaption>沒有發生碰撞的物體之間，有無限多分離線</figcaption>
+		
+	</figure></p>
+<p>到目前為止已經大概了解什麼是分離線，那要如何利用分離線來做碰撞檢測? 很簡單，只要檢查兩物體之間是否存在分離線即可，因為只要<strong>找到一條分離線就代表物體之間有縫隙</strong>，表示沒有發生碰撞。</p>
+<p><figure style="flex-grow: 160; flex-basis: 384px">
+		<a href="/archives/gamecollisiondetection/img/SAT08.jpg" data-size="400x250"><img src="/archives/gamecollisiondetection/img/SAT08.jpg"
+				
+				width="400"
+				height="250"
+				loading="lazy"
+				alt="分離軸與分離線">
+		</a>
+		
+		<figcaption>分離軸與分離線</figcaption>
+		
+	</figure></p>
+<p>而所謂的分離軸就是與分離線垂直的一條線，<strong>透過分離軸上物體的投影是否重疊</strong>，來判斷是否發生碰撞。</p>
+<p>所以我們能透過分離軸檢查旋轉的物體。</p>
+<p><figure style="flex-grow: 160; flex-basis: 384px">
+		<a href="/archives/gamecollisiondetection/img/SAT09.jpg" data-size="400x250"><img src="/archives/gamecollisiondetection/img/SAT09.jpg"
+				
+				width="400"
+				height="250"
+				loading="lazy"
+				alt="物體在P向量上的投影">
+		</a>
+		
+		<figcaption>物體在P向量上的投影</figcaption>
+		
+	</figure></p>
+<p>假設向量P是45度的延長線，由上圖可知，如果我們將A、B的「<strong>四個角投影在P向量上</strong>」，可以得到它們的min、max，接下來就能透過min、max來判斷碰撞。</p>
+<p>這時應該會有幾個問題:</p>
+<ol>
+<li>如何取得分離軸上的投影min、max?</li>
+<li>如何取得分離軸P?</li>
+</ol>
+<p>但是在解決那兩個問題前，先來看看前面這段話「<strong>四個角投影在P向量上</strong>」:</p>
+<ol>
+<li>要如何取得旋轉後的4個角?</li>
+<li>要如何計算其中一個角落在P向量上的投影?</li>
+</ol>
+<p>所以在前往下一個階段之前，要先補充一些數學的知識。</p>
+<h2 id="3-知識補充1向量">3. 知識補充1–向量</h2>
+<p>知識補充1與2這兩段，可以先跳過，不影響閱讀，等到有看不懂的地方再回來看也行。<br>
+為了解釋如何取得投影與分離軸，所以需要先補充向量的知識。</p>
+<p>數學向量忘記的話，這裡推薦幾部教學影片:</p>
+<p>南投高中數學課 : <a class="link" href="https://goo.gl/cpzCv5"  target="_blank" rel="noopener"
+    >向量內積公式說明</a>、<a class="link" href="https://goo.gl/JPFro9"  target="_blank" rel="noopener"
+    >單位向量的說明</a></p>
+<p>Q仔高中數學教室 : <a class="link" href="https://goo.gl/DbnBpW"  target="_blank" rel="noopener"
+    >向量的內積</a>、<a class="link" href="https://goo.gl/YiuzVz"  target="_blank" rel="noopener"
+    >向量內積的幾何意義與座標表示法</a></p>
+<p>向量的內積:
+<figure style="flex-grow: 115; flex-basis: 277px">
+		<a href="/archives/gamecollisiondetection/img/SAT10.jpg" data-size="295x255"><img src="/archives/gamecollisiondetection/img/SAT10.jpg"
+				
+				width="295"
+				height="255"
+				loading="lazy"
+				alt="A與B的內積">
+		</a>
+		
+		<figcaption>A與B的內積</figcaption>
+		
+	</figure></p>
+<p>我們可以透過兩向量之間的夾角來計算點積:
+$$
+A\cdot B=\left | A \right |\left | B \right |cos \theta
+$$
+或使用座標來計算:
+$$
+\vec{A}\cdot \vec{B}=A_{x}B_{x}+A_{y}B_{y}
+$$
+有了這兩個公式後，就可以開始來證明文章需要的公式了</p>
+<h3 id="正射影-">正射影 :</h3>
+<p><figure style="flex-grow: 103; flex-basis: 248px">
+		<a href="/archives/gamecollisiondetection/img/SAT11.jpg" data-size="295x285"><img src="/archives/gamecollisiondetection/img/SAT11.jpg"
+				
+				width="295"
+				height="285"
+				loading="lazy"
+				alt="A在B上的投影">
+		</a>
+		
+		<figcaption>A在B上的投影</figcaption>
+		
+	</figure>
+$$
+A\cdot B=\left | A \right |\left | B \right |cos \theta
+$$
+$$
+cos \theta = \frac{A\cdot B}{\left | \vec{A} \right |\left | \vec{B} \right |}=\frac{\left |\vec{P}  \right |}{\left |\vec{A}  \right |}
+$$
+然後我們就會得到向量P的長度
+$$
+\left |\vec{P}  \right |=\frac{(\vec{A} \cdot \vec{B})\left |\vec{A}  \right |}{\left |\vec{A}  \right |\left |\vec{B}  \right |}=\frac{\vec{A}\cdot \vec{B}}{\left |\vec{B}  \right |}
+$$
+但這裡求出的P是長度(正射影長)，只有大小，沒有方向</p>
+<p>回到上圖可以觀察出P向量的方向是延著B向量，所以只要讓 純量P 乘上 單位向量B，就能得到A在B上的正射影。
+$$
+\vec{P} = \frac{\vec{A} \cdot \vec{B}}{\left | \vec{B} \right |}\ast \frac{\vec{B}}{\left | \vec{B} \right |}=\frac{(\vec{A} \cdot \vec{B})\vec{B}}{\left | \vec{B} \right |^{2}}
+$$</p>
+<p>所謂的單位向量就是大小為1的方向向量，而純量只有大小，兩個相乘即可得到長度為P且方向為B的向量 (如果還是不太懂的話可以自己畫圖證明看看)。</p>
+<p>所以正射影是<strong>A向量在B向量上的分量</strong>。</p>
+<p>了解正射影後，就能取得物體在分離軸上的投影了。</p>
+<h3 id="法向量-">法向量 :</h3>
+<p>定義:垂直於平面的向量。</p>
+<p>$$
+\vec{A}\cdot \vec{B}=A_{x}B_{x}+A_{y}B_{y}
+$$</p>
+<p>從點積公式可以得出，<strong>當兩向量垂直時，向量內積會是零</strong>。</p>
+<p>假設A向量為(3, 4)，求A的法向量，那麼我們只要將A帶進去，並湊一個能滿足等式為零的參數就是法向量。</p>
+<p>$$
+(3)(B_{x}) + (4)(B_{y}) = 0
+$$</p>
+<p>這時B向量會有無限多組合，但是有其中兩組(4, -3)、(-4, 3)，<strong>剛好就是A向量的座標互換並加負號</strong>。</p>
+<p>所以我們可以得到下圖結果:
+<figure style="flex-grow: 137; flex-basis: 329px">
+		<a href="/archives/gamecollisiondetection/img/SAT15.jpg" data-size="487x355"><img src="/archives/gamecollisiondetection/img/SAT15.jpg"
+				
+				width="487"
+				height="355"
+				loading="lazy"
+				alt="向量P的左/右法向量">
+		</a>
+		
+		<figcaption>向量P的左/右法向量</figcaption>
+		
+	</figure></p>
+<p>了解如何取得法向量後，就能取得需要檢查的分離軸了。</p>
+<p>有了向量、內積、正射影長、法向量這些基本資訊後，先來建立一個簡易的向量函式庫吧</p>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">Vector</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">x</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">y</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">// 取得這個自己的長度
+</span><span class="c1"></span><span class="nx">Vector</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">length</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sqrt</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">*</span> <span class="k">this</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">// 取得自己與vec2的內積
+</span><span class="c1"></span><span class="nx">Vector</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">dot</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">vec2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">*</span> <span class="nx">vec2</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">*</span> <span class="nx">vec2</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">// 取得自己在vec2上的正射影長
+</span><span class="c1"></span><span class="nx">Vector</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">projectLengthOnto</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">vec2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">dotProduct</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">dot</span><span class="p">(</span><span class="nx">vec2</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">vec2</span><span class="p">.</span><span class="nx">length</span><span class="p">();</span>
+    <span class="k">return</span> <span class="nx">dotProduct</span> <span class="o">/</span> <span class="nx">len</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">// 取得自己的左法向量
+</span><span class="c1"></span><span class="nx">Vector</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">normalL</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">Vector</span><span class="p">(</span><span class="o">-</span><span class="k">this</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">x</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">// 取得自己的右法向量
+</span><span class="c1"></span><span class="nx">Vector</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">normalR</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">Vector</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="o">-</span><span class="k">this</span><span class="p">.</span><span class="nx">x</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div><p>使用方式:</p>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">vec1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Vector</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">);</span><span class="c1">// 建立vec1向量
+</span><span class="c1"></span><span class="kd">var</span> <span class="nx">vec2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Vector</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span><span class="c1">// 建立vec2向量
+</span><span class="c1"></span><span class="nx">vec1</span><span class="p">.</span><span class="nx">length</span><span class="p">()</span> <span class="c1">// =&gt; 5
+</span><span class="c1"></span><span class="nx">vec1</span><span class="p">.</span><span class="nx">dot</span><span class="p">(</span><span class="nx">vec2</span><span class="p">)</span> <span class="c1">// =&gt; 3
+</span><span class="c1"></span><span class="nx">vec1</span><span class="p">.</span><span class="nx">projectLengthOnto</span><span class="p">(</span><span class="nx">vec2</span><span class="p">)</span> <span class="c1">// =&gt;3
+</span><span class="c1"></span><span class="nx">vec1</span><span class="p">.</span><span class="nx">normalL</span><span class="p">()</span> <span class="c1">// = (-4, 3)
+</span><span class="c1"></span><span class="nx">vec1</span><span class="p">.</span><span class="nx">normalR</span><span class="p">()</span> <span class="c1">// = (4, -3)
+</span></code></pre></div><h2 id="4-知識補充2旋轉變換">4. 知識補充2–旋轉變換</h2>
+<p>為了解釋如何取得物體旋轉後的角落，所以需要先補充旋轉變換的知識。</p>
+<p>其作用為以原點為中心旋轉θ角:
+<figure style="flex-grow: 100; flex-basis: 240px">
+		<a href="/archives/gamecollisiondetection/img/SAT14.jpg" data-size="400x400"><img src="/archives/gamecollisiondetection/img/SAT14.jpg"
+				
+				width="400"
+				height="400"
+				loading="lazy"
+				alt="將P繞著O旋轉θ角至P&#39;">
+		</a>
+		
+		<figcaption>將P繞著O旋轉θ角至P'</figcaption>
+		
+	</figure></p>
+<p>如上圖，座標平面上$L = \overline{OP}$
+且點$P(x_{1}, y_{1})$滿足$x_{1} = L*\cos \alpha, y_{1} = L*\sin \alpha$</p>
+<p>那麼，以原點O為中心，將這個點以逆時針旋轉 $\theta$角後得到${P}'(x_{2}, y_{2})$</p>
+<p>方法一:</p>
+<p>先取得$\overline{OP}$與$\alpha$，那麼${P}'$就是$( L*\cos (\alpha +\theta ), L*\sin (\alpha +\theta ) )$</p>
+<p>但在電腦中取得OP長要透過畢氏定理開根號來取得，加上只有P點不知道α角的時候，要用Math.atan2(y, x)先取得α的角度後再計算，比較麻煩。</p>
+<p>所以有一個改良版:
+<figure style="flex-grow: 100; flex-basis: 240px">
+		<a href="/archives/gamecollisiondetection/img/SAT36.jpg" data-size="400x400"><img src="/archives/gamecollisiondetection/img/SAT36.jpg"
+				
+				width="400"
+				height="400"
+				loading="lazy"
+				alt="透過和角公式改良">
+		</a>
+		
+		<figcaption>透過和角公式改良</figcaption>
+		
+	</figure></p>
+<p>和角公式:</p>
+<p>$$
+\begin{cases}
+\cos(\alpha+\theta )= \cos \alpha \cos \theta - \sin \alpha \sin \theta \\
+\sin(\alpha+\theta ) = \sin \alpha\cos \theta + \cos \alpha\sin \theta
+\end{cases}
+$$</p>
+<p>所以</p>
+<p>$$
+\begin{cases}
+\cos(\alpha+\theta ) = \frac{x_{2}}{L} = \frac{x_{1}}{L}\times \cos\theta - \frac{y_{1}}{L} \times \sin\theta \\
+\sin(\alpha+\theta ) = \frac{y_{2}}{L} = \frac{y_{1}}{L}\times \cos\theta - \frac{x_{1}}{L} \times \sin\theta
+\end{cases}
+$$</p>
+<p>同乘L後即可得到
+$$
+\begin{cases}
+x_{2}= x_{1}\cos \theta-y_{1} \sin\theta \\
+y_{2}= y_{1}\cos \theta+x_{1} \sin\theta
+\end{cases}
+$$</p>
+<p>而這個就是我們要的旋轉公式</p>
+<p>矩陣表示法:</p>
+<p>$$
+\begin{bmatrix} x_{2} \\ y_{2} \end{bmatrix} = \begin{bmatrix}\cos \theta &amp;  - \sin \theta \\ \sin \theta &amp; \cos \theta \end{bmatrix}\begin{bmatrix} x_{1} \\ y_{1} \end{bmatrix}
+$$</p>
+<p>而這矩陣就是所謂的旋轉矩陣，未來電腦圖學會很常用到。</p>
+<br>
+<p>講解完後，把這段公式加入我們的向量函式庫吧。</p>
+<p>angle為弧度，並以原點(0,0)為中心旋轉angle角:</p>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="nx">Vector</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">rotate</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">angle</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">new_x</span> <span class="o">=</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">cos</span><span class="p">(</span><span class="nx">angle</span><span class="p">))</span> <span class="o">-</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sin</span><span class="p">(</span><span class="nx">angle</span><span class="p">));</span>
+    <span class="kd">var</span> <span class="nx">new_y</span> <span class="o">=</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sin</span><span class="p">(</span><span class="nx">angle</span><span class="p">))</span> <span class="o">+</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">cos</span><span class="p">(</span><span class="nx">angle</span><span class="p">));</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">new_x</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">new_y</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><h2 id="5-如何取得分離軸上的投影">5. 如何取得分離軸上的投影?</h2>
+<p>有了投影公式後，接下來只要把A、B的四個角投影在P向量上就能知道min、max了。</p>
+<p><figure style="flex-grow: 160; flex-basis: 384px">
+		<a href="/archives/gamecollisiondetection/img/SAT09.jpg" data-size="400x250"><img src="/archives/gamecollisiondetection/img/SAT09.jpg"
+				
+				width="400"
+				height="250"
+				loading="lazy"
+				>
+		</a>
+		
+	</figure></p>
+<p>這時卻出現了一個狀況，如果兩個物體方向不一樣呢?</p>
+<p><figure style="flex-grow: 160; flex-basis: 384px">
+		<a href="/archives/gamecollisiondetection/img/SAT12.jpg" data-size="400x250"><img src="/archives/gamecollisiondetection/img/SAT12.jpg"
+				
+				width="400"
+				height="250"
+				loading="lazy"
+				>
+		</a>
+		
+	</figure></p>
+<p>由上圖可知，當兩物體方向不同時，只要在<strong>4個角落中選一個最小和最大的</strong>，就是min、max。</p>
+<p>那我們要如何透過投影來判斷碰撞?</p>
+<p><figure style="flex-grow: 160; flex-basis: 384px">
+		<a href="/archives/gamecollisiondetection/img/SAT13.jpg" data-size="400x250"><img src="/archives/gamecollisiondetection/img/SAT13.jpg"
+				
+				width="400"
+				height="250"
+				loading="lazy"
+				>
+		</a>
+		
+	</figure></p>
+<p>由上圖可以看到，A.max、B.min在P向量上的投影圖。</p>
+<p>當B.min &gt; A.max時，代表他們之間有分離線，所以沒有碰撞。當位置交換時，A.min &gt; B.max時代表有間距。</p>
+<p>讓我們把結果整理成code :</p>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="k">if</span> <span class="p">(</span><span class="nx">B</span><span class="p">.</span><span class="nx">min</span> <span class="o">&gt;</span> <span class="nx">A</span><span class="p">.</span><span class="nx">max</span> <span class="o">||</span> <span class="nx">A</span><span class="p">.</span><span class="nx">min</span> <span class="o">&gt;</span> <span class="nx">B</span><span class="p">.</span><span class="nx">max</span><span class="p">)</span>
+    <span class="nx">Console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;分離&#34;</span><span class="p">);</span><span class="c1">// isSeparated
+</span><span class="c1"></span><span class="k">else</span>
+    <span class="nx">Console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;碰撞&#34;</span><span class="p">);</span><span class="c1">// isCollided
+</span></code></pre></div><p>這邊選擇True為分離是因為這是分離軸檢測，我認為這樣比較符合。</p>
+<p>了解如何取得min、max，並如何判斷後，就可以進入下個階段了。</p>
+<h2 id="6-編寫程式碼-投影旋轉與判斷">6. 編寫程式碼-投影、旋轉與判斷</h2>
+<p>第一步，我們需要取得矩形上的四個角，這時就需要前面的「知識補充2-旋轉變換」</p>
+<p><figure style="flex-grow: 200; flex-basis: 480px">
+		<a href="/archives/gamecollisiondetection/img/SAT37.jpg" data-size="800x400"><img src="/archives/gamecollisiondetection/img/SAT37.jpg"
+				
+				width="800"
+				height="400"
+				loading="lazy"
+				alt="不如預期的旋轉">
+		</a>
+		
+		<figcaption>不如預期的旋轉</figcaption>
+		
+	</figure></p>
+<p>如果直接將四個角套用旋轉公式的話，就會像左圖一樣，物體繞中心旋轉。</p>
+<p>但我們想要的是右圖中，物體原地旋轉的效果，所以要將旋轉公式做點更動。</p>
+<p><figure style="flex-grow: 200; flex-basis: 480px">
+		<a href="/archives/gamecollisiondetection/img/SAT18.jpg" data-size="600x300"><img src="/archives/gamecollisiondetection/img/SAT18.jpg"
+				
+				width="600"
+				height="300"
+				loading="lazy"
+				alt="先平移旋轉後再平移">
+		</a>
+		
+		<figcaption>先平移旋轉後再平移</figcaption>
+		
+	</figure></p>
+<p>如上圖的步驟，我們需要的旋轉是<strong>以矩形中心為參考點做旋轉</strong>，而原公式以原點做旋轉，所以需要先將物體平移到原點，旋轉完後再將其平移回來。</p>
+<p><figure style="flex-grow: 211; flex-basis: 507px">
+		<a href="/archives/gamecollisiondetection/img/SAT19.jpg" data-size="400x189"><img src="/archives/gamecollisiondetection/img/SAT19.jpg"
+				
+				width="400"
+				height="189"
+				loading="lazy"
+				alt="正確的繞中心旋轉">
+		</a>
+		
+		<figcaption>正確的繞中心旋轉</figcaption>
+		
+	</figure></p>
+<p>$$
+\begin{cases} x_{1}' = [(x_{1}-x_{0})\cos\theta-(y_{1}-y_{0})\sin\theta] + x_{0} \\ y_{1}' = [(y_{1}-y_{0})\cos\theta+(x_{1}-x_{0})\sin\theta] + y_{0} \end{cases}
+$$</p>
+<p>把這個公式加入向量函式庫:</p>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="c1">// angle:弧度, refP:參考點
+</span><span class="c1">// 作用: 以refP為參考點，旋轉angle角
+</span><span class="c1"></span><span class="nx">Vector</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">rotateRefPoint</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">angle</span><span class="p">,</span> <span class="nx">refP</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">new_x</span> <span class="o">=</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">refP</span><span class="p">.</span><span class="nx">x</span><span class="p">)</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">cos</span><span class="p">(</span><span class="nx">angle</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">refP</span><span class="p">.</span><span class="nx">y</span><span class="p">)</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sin</span><span class="p">(</span><span class="nx">angle</span><span class="p">)</span> <span class="o">+</span> <span class="nx">refP</span><span class="p">.</span><span class="nx">x</span><span class="p">;</span>
+    <span class="kd">let</span> <span class="nx">new_y</span> <span class="o">=</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">refP</span><span class="p">.</span><span class="nx">y</span><span class="p">)</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">cos</span><span class="p">(</span><span class="nx">angle</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">refP</span><span class="p">.</span><span class="nx">x</span><span class="p">)</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">sin</span><span class="p">(</span><span class="nx">angle</span><span class="p">)</span> <span class="o">+</span> <span class="nx">refP</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">new_x</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">new_y</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><p>然後讓我們來建立一個基本的物體:</p>
+<p>先簡單寫出Box的結構</p>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">Box</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">w</span><span class="p">,</span> <span class="nx">h</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">pos</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Vector</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">);</span><span class="c1">// 中心
+</span><span class="c1"></span>    <span class="k">this</span><span class="p">.</span><span class="nx">w</span> <span class="o">=</span> <span class="nx">w</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">h</span> <span class="o">=</span> <span class="nx">h</span><span class="p">;</span>
+    <span class="c1">// 以順時針紀錄矩形的四個角
+</span><span class="c1"></span>    <span class="k">this</span><span class="p">.</span><span class="nx">corners</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="k">new</span> <span class="nx">Vector</span><span class="p">(</span><span class="nx">w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="nx">h</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+        <span class="k">new</span> <span class="nx">Vector</span><span class="p">(</span><span class="nx">w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">h</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+        <span class="k">new</span> <span class="nx">Vector</span><span class="p">(</span><span class="o">-</span><span class="nx">w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">h</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+        <span class="k">new</span> <span class="nx">Vector</span><span class="p">(</span><span class="o">-</span><span class="nx">w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="nx">h</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="p">];</span>
+    <span class="c1">// 假設角度是45
+</span><span class="c1"></span>    <span class="k">this</span><span class="p">.</span><span class="nx">directionAngle</span> <span class="o">=</span> <span class="nx">toRadio</span><span class="p">(</span><span class="mi">45</span><span class="p">);</span><span class="c1">// 將45換成弧度
+</span><span class="c1"></span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">getVertices</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">vertices</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="c1">// 順時針走訪角落
+</span><span class="c1"></span>        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">corners</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">p1</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">corners</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+
+            <span class="kd">var</span> <span class="nx">vec</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Vector</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">pos</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="nx">p1</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">pos</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="nx">p1</span><span class="p">.</span><span class="nx">y</span><span class="p">);</span>
+            <span class="c1">// 將各個角以物體中心為參考點來旋轉
+</span><span class="c1"></span>            <span class="nx">vec</span><span class="p">.</span><span class="nx">rotateRefPoint</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">directionAngle</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">pos</span><span class="p">);</span>
+
+            <span class="nx">vertices</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">vec</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="c1">// 最後回傳以物體中心為參考點選轉後的角落
+</span><span class="c1"></span>        <span class="k">return</span> <span class="nx">vertices</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><p>接下來只要呼叫getVertices()就能取得<strong>旋轉後</strong>四個角的陣列了 :</p>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="c1">// 取得box1的4個角
+</span><span class="c1"></span><span class="kd">var</span> <span class="nx">boxA_Vertices</span> <span class="o">=</span> <span class="nx">boxA</span><span class="p">.</span><span class="nx">getVertices</span><span class="p">();</span>
+</code></pre></div><p>第二步，參考&quot;如何取得分離軸上的投影&quot;的說明，取得box1在分離軸上的min、max投影。而box2也是一樣的方法 :</p>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="c1">// 假設分離軸為45度角
+</span><span class="c1"></span><span class="kd">var</span> <span class="nx">axis</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Vector</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="c1">// 取得box1的4個角
+</span><span class="c1"></span><span class="kd">var</span> <span class="nx">boxA_Vertices</span> <span class="o">=</span> <span class="nx">box1</span><span class="p">.</span><span class="nx">getVertices</span><span class="p">();</span>
+
+<span class="c1">// 先以第一個角當初始值
+</span><span class="c1">// vec.projectLengthOnto(axis) : 取得vec在axis上的投影長
+</span><span class="c1"></span><span class="kd">var</span> <span class="nx">min_proj_boxA</span> <span class="o">=</span> <span class="nx">boxA_Vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">projectLengthOnto</span><span class="p">(</span><span class="nx">axis</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">min_index_boxA</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">max_proj_boxA</span> <span class="o">=</span> <span class="nx">boxA_Vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">projectLengthOnto</span><span class="p">(</span><span class="nx">axis</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">max_index_boxA</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="c1">// 再從剩下的3個角選出最大和最小投影
+</span><span class="c1"></span><span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">current</span> <span class="o">=</span> <span class="nx">boxA_Vertices</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">projectLengthOnto</span><span class="p">(</span><span class="nx">axis</span><span class="p">);</span>
+
+    <span class="c1">// 選擇最小投影
+</span><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="nx">current</span> <span class="o">&lt;</span> <span class="nx">min</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">min_proj_boxA</span> <span class="o">=</span> <span class="nx">current</span><span class="p">;</span>
+        <span class="nx">min_index_boxA</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">// 選擇最大投影
+</span><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="nx">current</span> <span class="o">&gt;</span> <span class="nx">max</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">max_proj_boxA</span> <span class="o">=</span> <span class="nx">current</span><span class="p">;</span>
+        <span class="nx">max_index_boxA</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><p><figure style="flex-grow: 160; flex-basis: 384px">
+		<a href="/archives/gamecollisiondetection/img/SAT20.jpg" data-size="400x250"><img src="/archives/gamecollisiondetection/img/SAT20.jpg"
+				
+				width="400"
+				height="250"
+				loading="lazy"
+				>
+		</a>
+		
+	</figure></p>
+<p>最後，當我們有了box1和box2的min、max後，就可以檢查他們是否在axis這個軸上碰撞</p>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="k">if</span> <span class="p">(</span><span class="nx">min_proj_boxB</span> <span class="o">&gt;</span> <span class="nx">max_proj_boxA</span> <span class="o">||</span> <span class="nx">min_proj_boxA</span> <span class="o">&gt;</span> <span class="nx">max_proj_boxB</span><span class="p">)</span>
+    <span class="nx">Console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;分離&#34;</span><span class="p">);</span><span class="c1">// isSeparated
+</span><span class="c1"></span><span class="k">else</span>
+    <span class="nx">Console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;碰撞&#34;</span><span class="p">);</span><span class="c1">// isCollided
+</span></code></pre></div><p>讓我們把剛剛&quot;第二步&quot;的min、max取得整理一下，變成可呼叫的方法:</p>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="c1">// getMinMax(頂點陣列,分離軸)
+</span><span class="c1"></span><span class="kd">function</span> <span class="nx">getMinMax</span><span class="p">(</span><span class="nx">vertices</span><span class="p">,</span> <span class="nx">axis</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 先以第一個角落投影為標準
+</span><span class="c1"></span>    <span class="kd">var</span> <span class="nx">min_DotProduct</span> <span class="o">=</span> <span class="nx">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">projectLengthOnto</span><span class="p">(</span><span class="nx">axis</span><span class="p">),</span>
+        <span class="nx">max_DotProduct</span> <span class="o">=</span> <span class="nx">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">projectLengthOnto</span><span class="p">(</span><span class="nx">axis</span><span class="p">);</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">vertices</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 取得當前要比對的投影長度
+</span><span class="c1"></span>        <span class="kd">var</span> <span class="nx">temp</span> <span class="o">=</span> <span class="nx">vertices</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">projectLengthOnto</span><span class="p">(</span><span class="nx">axis</span><span class="p">);</span>
+        <span class="c1">// 如果比當前最小的更小，紀錄它
+</span><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="nx">temp</span> <span class="o">&lt;</span> <span class="nx">min_DotProduct</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">min_DotProduct</span> <span class="o">=</span> <span class="nx">temp</span><span class="p">;</span>
+            <span class="nx">min_index</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="c1">// 如果比當前最小的更大，紀錄它
+</span><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="nx">temp</span> <span class="o">&gt;</span> <span class="nx">max_DotProduct</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">max_DotProduct</span> <span class="o">=</span> <span class="nx">temp</span><span class="p">;</span>
+            <span class="nx">max_index</span> <span class="o">=</span> <span class="nx">i</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">min</span><span class="o">:</span> <span class="nx">min_DotProduct</span><span class="p">,</span>
+        <span class="nx">max</span><span class="o">:</span> <span class="nx">max_DotProduct</span>
+    <span class="p">};</span>
+    <span class="c1">// 最後傳回一個物件包含min、max屬性
+</span><span class="c1"></span>    <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><h2 id="7-如何取得分離軸">7. 如何取得分離軸?</h2>
+<p>在SAT介紹的時候也提到，兩物體間有無限多條分離軸，難不成要真的從0度~360度的分離軸全部投影一變嗎?</p>
+<p>其實不需要，我們只需要沿著物體所有邊上的<strong>法向量當作分離軸</strong>作檢查，即可判斷。</p>
+<p><figure style="flex-grow: 150; flex-basis: 360px">
+		<a href="/archives/gamecollisiondetection/img/SAT21.jpg" data-size="600x400"><img src="/archives/gamecollisiondetection/img/SAT21.jpg"
+				
+				width="600"
+				height="400"
+				loading="lazy"
+				>
+		</a>
+		
+	</figure></p>
+<p>由上圖可知，如果我們將三角形向左平移，直到與五角形投影重疊時，代表他們發生碰撞。</p>
+<p>而綠色那條分離線，可以當作五角形守備的領域，只要有東西進到這裡，就代表碰撞。</p>
+<p><figure style="flex-grow: 150; flex-basis: 360px">
+		<a href="/archives/gamecollisiondetection/img/SAT22.jpg" data-size="600x400"><img src="/archives/gamecollisiondetection/img/SAT22.jpg"
+				
+				width="600"
+				height="400"
+				loading="lazy"
+				alt="五角形需要的分離軸為綠色虛線">
+		</a>
+		
+		<figcaption>五角形需要的分離軸為綠色虛線</figcaption>
+		
+	</figure></p>
+<p>如上圖，將五角形每個邊上的檢查線都畫出來後，只要取跟檢查線垂直的軸，就是我們需要的分離軸。</p>
+<p><strong>只要有任何物體進入綠色分離線的包圍區，就代表物體與五角形發生碰撞</strong>。</p>
+<br>
+<p>那麼要如何取得邊上的法向量?</p>
+<p>這時候就是補充知識1-法向量派上用場的時候了。</p>
+<p><figure style="flex-grow: 103; flex-basis: 249px">
+		<a href="/archives/gamecollisiondetection/img/SAT23.jpg" data-size="394x379"><img src="/archives/gamecollisiondetection/img/SAT23.jpg"
+				
+				width="394"
+				height="379"
+				loading="lazy"
+				alt="正方形的邊法向量">
+		</a>
+		
+		<figcaption>正方形的邊法向量</figcaption>
+		
+	</figure></p>
+<p>如上圖，對每個邊向量取法向量即可，而我這邊以順時針、取左法向量為例子。</p>
+<p>可以發現，在矩形中會有兩組方向相反的法向量，所以可以透過優化找出重複的法向量增加效率，但通常只對矩形有效果。</p>
+<p>先讓讓我們在Box物件中再加入getNorms()這個方法 :</p>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">Box</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">w</span><span class="p">,</span> <span class="nx">h</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...省略...
+</span><span class="c1"></span>    <span class="k">this</span><span class="p">.</span><span class="nx">getNorms</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>        
+        <span class="kd">var</span> <span class="nx">vertices</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getVertices</span><span class="p">();</span><span class="c1">// 取得頂點
+</span><span class="c1"></span>        <span class="kd">var</span> <span class="nx">norms</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="kd">var</span> <span class="nx">p1</span><span class="p">,</span> <span class="nx">p2</span><span class="p">,</span> <span class="nx">n</span><span class="p">;</span>
+
+        <span class="c1">// 順時鐘
+</span><span class="c1"></span>        <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">vertices</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">p1</span> <span class="o">=</span> <span class="nx">vertices</span><span class="p">[</span><span class="nx">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span> 
+            <span class="nx">p2</span> <span class="o">=</span> <span class="nx">vertices</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+            <span class="c1">// 取得這個邊的左法向量
+</span><span class="c1"></span>            <span class="nx">n</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Vector</span><span class="p">(</span><span class="nx">p2</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">p1</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">p2</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">p1</span><span class="p">.</span><span class="nx">y</span><span class="p">).</span><span class="nx">normalL</span><span class="p">();</span>
+            <span class="c1">// 加入這個法向量
+</span><span class="c1"></span>            <span class="nx">norms</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">n</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="c1">// 補上最後一個邊
+</span><span class="c1"></span>        <span class="nx">p1</span> <span class="o">=</span> <span class="nx">vertices</span><span class="p">[</span><span class="nx">vertices</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">];</span>
+        <span class="nx">p2</span> <span class="o">=</span> <span class="nx">vertices</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+        <span class="nx">n</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Vector</span><span class="p">(</span><span class="nx">p2</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">p1</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">p2</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">p1</span><span class="p">.</span><span class="nx">y</span><span class="p">).</span><span class="nx">normalL</span><span class="p">();</span>
+        <span class="nx">norms</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">n</span><span class="p">);</span>
+        <span class="c1">// 最後傳回這個物體所有邊上的左法向量
+</span><span class="c1"></span>        <span class="k">return</span> <span class="nx">norms</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><p>有了頂點取得的方式、投影大小的判斷加上邊上法向量的取得，我相信你已經有足夠的知識來完成SAT碰撞檢測了。</p>
+<h2 id="8-粗糙的矩形檢測">8. 粗糙的矩形檢測</h2>
+<p>讓我們來看看針對矩形的程式碼，這段程式碼單純是了解檢查過程，如果你對判斷的方法不是很清楚的話希望你花一些時間看一下，後面會在寫出一個整理過的寫法。</p>
+<p><figure style="flex-grow: 112; flex-basis: 271px">
+		<a href="/archives/gamecollisiondetection/img/SAT24.jpg" data-size="400x354"><img src="/archives/gamecollisiondetection/img/SAT24.jpg"
+				
+				width="400"
+				height="354"
+				loading="lazy"
+				alt="實際應用在旋轉中的矩形">
+		</a>
+		
+		<figcaption>實際應用在旋轉中的矩形</figcaption>
+		
+	</figure></p>
+<p>這裡我假設A方塊的法向量是P、Q，B方塊的法向量是S、R，手動對它們一一檢查</p>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">SAT_Collision</span><span class="p">(</span><span class="nx">boxA</span><span class="p">,</span> <span class="nx">boxB</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">vertices_boxA</span> <span class="o">=</span> <span class="nx">boxA</span><span class="p">.</span><span class="nx">getVertices</span><span class="p">();</span>
+    <span class="kd">var</span> <span class="nx">vertices_boxB</span> <span class="o">=</span> <span class="nx">boxB</span><span class="p">.</span><span class="nx">getVertices</span><span class="p">();</span>
+    <span class="kd">var</span> <span class="nx">norms_boxA</span> <span class="o">=</span> <span class="nx">boxA</span><span class="p">.</span><span class="nx">getNorm</span><span class="p">();</span>
+    <span class="kd">var</span> <span class="nx">norms_boxB</span> <span class="o">=</span> <span class="nx">boxB</span><span class="p">.</span><span class="nx">getNorm</span><span class="p">();</span>
+
+    <span class="c1">// 假設boxA的法向量為P、Q，boxB為R、S
+</span><span class="c1"></span>    <span class="c1">// boxA、boxB在P、Q檢查軸上的投影
+</span><span class="c1"></span>    <span class="kd">var</span> <span class="nx">MinMax_PA</span> <span class="o">=</span> <span class="nx">getMinMax</span><span class="p">(</span><span class="nx">vertices_boxA</span><span class="p">,</span> <span class="nx">norms_boxA</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+    <span class="kd">var</span> <span class="nx">MinMax_PB</span> <span class="o">=</span> <span class="nx">getMinMax</span><span class="p">(</span><span class="nx">vertices_boxB</span><span class="p">,</span> <span class="nx">norms_boxA</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span> 
+    <span class="kd">var</span> <span class="nx">MinMax_QA</span> <span class="o">=</span> <span class="nx">getMinMax</span><span class="p">(</span><span class="nx">vertices_boxA</span><span class="p">,</span> <span class="nx">norms_boxA</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+    <span class="kd">var</span> <span class="nx">MinMax_QB</span> <span class="o">=</span> <span class="nx">getMinMax</span><span class="p">(</span><span class="nx">vertices_boxB</span><span class="p">,</span> <span class="nx">norms_boxA</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+
+    <span class="c1">// boxA、boxB在R、S檢查軸上的投影
+</span><span class="c1"></span>    <span class="kd">var</span> <span class="nx">MinMax_RA</span> <span class="o">=</span> <span class="nx">getMinMax</span><span class="p">(</span><span class="nx">vertices_boxA</span><span class="p">,</span> <span class="nx">norms_boxB</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+    <span class="kd">var</span> <span class="nx">MinMax_RB</span> <span class="o">=</span> <span class="nx">getMinMax</span><span class="p">(</span><span class="nx">vertices_boxB</span><span class="p">,</span> <span class="nx">norms_boxB</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span> 
+    <span class="kd">var</span> <span class="nx">MinMax_SA</span> <span class="o">=</span> <span class="nx">getMinMax</span><span class="p">(</span><span class="nx">vertices_boxA</span><span class="p">,</span> <span class="nx">norms_boxB</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+    <span class="kd">var</span> <span class="nx">MinMax_SB</span> <span class="o">=</span> <span class="nx">getMinMax</span><span class="p">(</span><span class="nx">vertices_boxB</span><span class="p">,</span> <span class="nx">norms_boxB</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+    
+    <span class="c1">// 在分離軸上是否分離
+</span><span class="c1"></span>    <span class="kd">var</span> <span class="nx">separate_P</span> <span class="o">=</span> <span class="nx">MinMax_PB</span><span class="p">.</span><span class="nx">min_proj</span> <span class="o">&gt;</span> <span class="nx">MinMax_PA</span><span class="p">.</span><span class="nx">max_proj</span> <span class="o">||</span>
+                     <span class="nx">MinMax_PA</span><span class="p">.</span><span class="nx">min_proj</span> <span class="o">&gt;</span> <span class="nx">MinMax_PB</span><span class="p">.</span><span class="nx">max_proj</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">separate_Q</span> <span class="o">=</span> <span class="nx">MinMax_QB</span><span class="p">.</span><span class="nx">min_proj</span> <span class="o">&gt;</span> <span class="nx">MinMax_QA</span><span class="p">.</span><span class="nx">max_proj</span> <span class="o">||</span>
+                     <span class="nx">MinMax_QA</span><span class="p">.</span><span class="nx">min_proj</span> <span class="o">&gt;</span> <span class="nx">MinMax_QB</span><span class="p">.</span><span class="nx">max_proj</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">separate_R</span> <span class="o">=</span> <span class="nx">MinMax_RB</span><span class="p">.</span><span class="nx">min_proj</span> <span class="o">&gt;</span> <span class="nx">MinMax_RA</span><span class="p">.</span><span class="nx">max_proj</span> <span class="o">||</span>
+                     <span class="nx">MinMax_RA</span><span class="p">.</span><span class="nx">min_proj</span> <span class="o">&gt;</span> <span class="nx">MinMax_RB</span><span class="p">.</span><span class="nx">max_proj</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">separate_S</span> <span class="o">=</span> <span class="nx">MinMax_SB</span><span class="p">.</span><span class="nx">min_proj</span> <span class="o">&gt;</span> <span class="nx">MinMax_SA</span><span class="p">.</span><span class="nx">max_proj</span> <span class="o">||</span>
+                     <span class="nx">MinMax_SA</span><span class="p">.</span><span class="nx">min_proj</span> <span class="o">&gt;</span> <span class="nx">MinMax_SB</span><span class="p">.</span><span class="nx">max_proj</span><span class="p">;</span>
+
+    <span class="kd">var</span> <span class="nx">isSeparated</span> <span class="o">=</span> <span class="nx">separate_P</span> <span class="o">||</span> <span class="nx">separate_Q</span> <span class="o">||</span> <span class="nx">separate_R</span> <span class="o">||</span> <span class="nx">separate_S</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">isSeparated</span><span class="p">)</span>
+        <span class="nx">Console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;分離&#34;</span><span class="p">);</span><span class="c1">// isSeparated
+</span><span class="c1"></span>    <span class="k">else</span>
+        <span class="nx">Console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&#34;碰撞&#34;</span><span class="p">);</span><span class="c1">// isCollided
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></div><p>測試結果:</p>
+<p><figure style="flex-grow: 130; flex-basis: 313px">
+		<a href="/archives/gamecollisiondetection/img/SATgif02.gif" data-size="480x368"><img src="/archives/gamecollisiondetection/img/SATgif02.gif"
+				
+				width="480"
+				height="368"
+				loading="lazy"
+				alt="兩個旋轉矩形的碰撞檢測">
+		</a>
+		
+		<figcaption>兩個旋轉矩形的碰撞檢測</figcaption>
+		
+	</figure></p>
+<p>但上面那個只適用在矩形上，而且Code又醜又長，所以把它整理一下。</p>
+<h2 id="9-編寫程式碼多邊形與多邊形">9. 編寫程式碼–多邊形與多邊形</h2>
+<p>雖然這裡的寫法也還是沒有完全優化，其實你可以將normal_polygonA、B合併後在一起走訪，但我想範例這樣比較容易了解。</p>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="c1">// true:兩物體分離, false:兩物體碰撞
+</span><span class="c1"></span><span class="kd">function</span> <span class="nx">SAT_Collision</span><span class="p">(</span><span class="nx">polygonA</span><span class="p">,</span> <span class="nx">polygonB</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 取得多邊形每個邊上的法向量，回傳陣列
+</span><span class="c1"></span>    <span class="kd">var</span> <span class="nx">normal_polygonA</span> <span class="o">=</span> <span class="nx">polygonA</span><span class="p">.</span><span class="nx">getNorm</span><span class="p">(),</span>
+        <span class="nx">normal_polygonB</span> <span class="o">=</span> <span class="nx">polygonB</span><span class="p">.</span><span class="nx">getNorm</span><span class="p">();</span>
+    <span class="c1">// 取得多邊形的頂點陣列，回傳陣列
+</span><span class="c1"></span>    <span class="kd">var</span> <span class="nx">vertices_polygonA</span> <span class="o">=</span> <span class="nx">polygonA</span><span class="p">.</span><span class="nx">getVertices</span><span class="p">(),</span>
+        <span class="nx">vertices_polygonB</span> <span class="o">=</span> <span class="nx">polygonB</span><span class="p">.</span><span class="nx">getVertices</span><span class="p">();</span>
+
+    <span class="kd">var</span> <span class="nx">isSeparated</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+    <span class="c1">// 透過迴圈走訪多邊形A的法向量，來檢查是否分離
+</span><span class="c1"></span>    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">normal_polygonA</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">minMax_A</span> <span class="o">=</span> <span class="nx">getMinMax</span><span class="p">(</span><span class="nx">vertices_polygonA</span><span class="p">,</span> <span class="nx">normal_polygonA</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+        <span class="kd">var</span> <span class="nx">minMax_B</span> <span class="o">=</span> <span class="nx">getMinMax</span><span class="p">(</span><span class="nx">vertices_polygonB</span><span class="p">,</span> <span class="nx">normal_polygonA</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+
+        <span class="nx">isSeparated</span> <span class="o">=</span> <span class="p">(</span><span class="nx">minMax_B</span><span class="p">.</span><span class="nx">min</span> <span class="o">&gt;</span> <span class="nx">minMax_A</span><span class="p">.</span><span class="nx">max</span> <span class="o">||</span> <span class="nx">minMax_A</span><span class="p">.</span><span class="nx">min</span> <span class="o">&gt;</span> <span class="nx">minMax_B</span><span class="p">.</span><span class="nx">max</span><span class="p">);</span>
+        <span class="c1">// 只要發現有一條分離線，就代表物體沒有發生碰撞
+</span><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="nx">isSeparated</span><span class="p">)</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 透過迴圈走訪多邊形B的法向量，來檢查是否分離
+</span><span class="c1"></span>    <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">normal_polygonB</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">minMax_A</span> <span class="o">=</span> <span class="nx">getMinMax</span><span class="p">(</span><span class="nx">vertices_polygonA</span><span class="p">,</span> <span class="nx">normal_polygonB</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+        <span class="kd">var</span> <span class="nx">minMax_B</span> <span class="o">=</span> <span class="nx">getMinMax</span><span class="p">(</span><span class="nx">vertices_polygonB</span><span class="p">,</span> <span class="nx">normal_polygonB</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+
+        <span class="nx">isSeparated</span> <span class="o">=</span> <span class="p">(</span><span class="nx">minMax_B</span><span class="p">.</span><span class="nx">min</span> <span class="o">&gt;</span> <span class="nx">minMax_A</span><span class="p">.</span><span class="nx">max</span> <span class="o">||</span> <span class="nx">minMax_A</span><span class="p">.</span><span class="nx">min</span> <span class="o">&gt;</span> <span class="nx">minMax_B</span><span class="p">.</span><span class="nx">max</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">isSeparated</span><span class="p">)</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="c1">// 如果所有法向量都檢查過後，沒有發現分離，代表兩物體碰撞
+</span><span class="c1"></span>    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><p>由Code可以看到，<strong>只要物體間有分離，就可以跳出並回傳結果</strong>，不需要再去檢查B的法向量。</p>
+<p>要注意這邊的isSeparated在分離時為Ture、碰撞時為False，如果你要以碰撞作檢查的話<strong>記得加上NOT</strong>。</p>
+<p>使用範例:</p>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">update</span><span class="p">(</span><span class="nx">dt</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">polygonA</span><span class="p">.</span><span class="nx">update</span><span class="p">(</span><span class="nx">dt</span><span class="p">);</span>
+    <span class="nx">polygonB</span><span class="p">.</span><span class="nx">update</span><span class="p">(</span><span class="nx">dt</span><span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">isCollided</span> <span class="o">=</span> <span class="o">!</span><span class="nx">SAT_Collision</span><span class="p">(</span><span class="nx">polygonA</span><span class="p">,</span> <span class="nx">polygonB</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">isCollided</span><span class="p">){</span>
+        <span class="c1">// ...發生碰撞後要做的事...
+</span><span class="c1"></span>    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><p>測試結果:</p>
+<p><figure style="flex-grow: 130; flex-basis: 313px">
+		<a href="/archives/gamecollisiondetection/img/SATgif03.gif" data-size="480x368"><img src="/archives/gamecollisiondetection/img/SATgif03.gif"
+				
+				width="480"
+				height="368"
+				loading="lazy"
+				>
+		</a>
+		
+	</figure>
+<figure style="flex-grow: 136; flex-basis: 327px">
+		<a href="/archives/gamecollisiondetection/img/SATgif04.gif" data-size="480x352"><img src="/archives/gamecollisiondetection/img/SATgif04.gif"
+				
+				width="480"
+				height="352"
+				loading="lazy"
+				>
+		</a>
+		
+	</figure></p>
+<p>原始碼在最後。</p>
+<h2 id="10-編寫程式碼多邊形與圓">10. 編寫程式碼–多邊形與圓</h2>
+<p>已經完成範例，但還沒編寫文章</p>
+<p>假設今天是N多邊形與圓形，大致的做法就是，一樣取得多邊形的法向量做分離軸檢測，然後最後再多補上一條分離軸，為圓心到多邊形最近的頂點，這樣就能正確的判斷圓形。</p>
+<h2 id="11-sat的總結">11. SAT的總結</h2>
+<p>關於SAT的優缺點:</p>
+<ol>
+<li>SAT的方法是些假設兩物體是分離的，並在檢查中只要成功找到正確的分離軸，就直接跳出，所以當物體都是分離狀態時，SAT的效率是非常高的。</li>
+<li>只要物體之間有碰撞，SAT就必須檢查所有的法向量，來確保物體之間沒有分離線，越多的物體發生碰撞，效率也就越低。</li>
+<li>因為SAT是採用所有法向量來作檢測，當多邊形的邊越多時，效率也會越來越低，但可以透過找出正負相反的法向量來減少檢查次數。</li>
+<li>SAT雖然無法檢查凹多邊形，但是能透過將多個凸多邊形組合成凹多邊形的形狀，來作碰撞檢測。
+<figure style="flex-grow: 305; flex-basis: 732px">
+		<a href="/archives/gamecollisiondetection/img/SAT38.jpg" data-size="1227x402"><img src="/archives/gamecollisiondetection/img/SAT38.jpg"
+				
+				width="1227"
+				height="402"
+				loading="lazy"
+				alt="如上圖中的賽車，雖然它的形狀是凹邊形，但能透果右邊的方式來做精密的碰撞檢測">
+		</a>
+		
+		<figcaption>如上圖中的賽車，雖然它的形狀是凹邊形，但能透果右邊的方式來做精密的碰撞檢測</figcaption>
+		
+	</figure></li>
+<li>SAT在運算時能夠取得碰撞物體間的<strong>最小穿透量</strong>(MTV, Minimum translation vector)，所以能夠處理物體間的<strong>碰撞回饋</strong>，並進一步地達成剛體動力學的模擬。
+<figure style="flex-grow: 160; flex-basis: 384px">
+		<a href="/archives/gamecollisiondetection/img/SAT26.jpg" data-size="400x250"><img src="/archives/gamecollisiondetection/img/SAT26.jpg"
+				
+				width="400"
+				height="250"
+				loading="lazy"
+				alt="當我們希望物體不要發生穿透時，就會需要所謂的MTV，當物體穿透時，選一個最小的穿透量，將它平移回去">
+		</a>
+		
+		<figcaption>當我們希望物體不要發生穿透時，就會需要所謂的MTV，當物體穿透時，選一個最小的穿透量，將它平移回去</figcaption>
+		
+	</figure></li>
+</ol>
+<p>所以SAT碰撞在做過效能調整後，是很好的碰撞檢測演算法，靈活度也很高，是很多物理引擎會採用的檢測法之一。</p>
+<p>還有另一個凸邊形的高效演算法GJK以疊代地生成單形以對兩個凸集求閔可夫斯基和，有興趣可以研究看看。</p>
+<p>如果對碰撞方法有興趣的話可以參考這篇:</p>
+<p>Bullet physics engin軟體工程師-<em>Erwin Coumans</em> : <a class="link" href="https://web.archive.org/web/20210120035950/http://www.continuousphysics.com/ftp/pub/test/files/physics/papers/hcts1999-ERIC-collisions.pdf"  target="_blank" rel="noopener"
+    >Collision Detection for Real-Time Simulation</a></p>
+<p>其他相關資源:</p>
+<ul>
+<li><a class="link" href="https://web.archive.org/web/20210120035950/http://www.dyn4j.org/2010/01/sat/#sat-top"  target="_blank" rel="noopener"
+    >SAT (Separating Axis Theorem)</a></li>
+<li><a class="link" href="https://web.archive.org/web/20210120035950/http://wiki.roblox.com/index.php?title=2D_Collision_Detection#Method_2:_Separating_axis_theorem_.28SAT.29"  target="_blank" rel="noopener"
+    >2D Collision Detection</a></li>
+<li><a class="link" href="https://web.archive.org/web/20210120035950/http://elancev.name/oliver/2D%20polygon.htm#tut2"  target="_blank" rel="noopener"
+    >2D polygon-based collision detection and response</a></li>
+<li><a class="link" href="https://web.archive.org/web/20210120035950/https://www.toptal.com/game/video-game-physics-part-ii-collision-detection-for-solid-objects"  target="_blank" rel="noopener"
+    >Video Game Physics Tutorial</a></li>
+</ul>
+<h2 id="12-多物體的碰撞優化">12. 多物體的碰撞優化</h2>
+<p>當我們要檢查多個物體碰撞時，通常會直接對所有物體互相進行判斷，就像下面這段Code:</p>
+<p>基本枚舉法的Code:</p>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="c1">// shapes是指所有的物體陣列
+</span><span class="c1"></span><span class="kd">function</span> <span class="nx">update</span><span class="p">(</span><span class="nx">dt</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...更新物體狀態...
+</span><span class="c1"></span>    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">shapes</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="o">&lt;</span> <span class="nx">shapes</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+			<span class="c1">// 如果是同個物體就跳過
+</span><span class="c1"></span>            <span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">==</span> <span class="nx">j</span><span class="p">)</span> <span class="k">continue</span><span class="p">;</span>
+
+            <span class="kd">var</span> <span class="nx">isCollided</span> <span class="o">=</span> <span class="o">!</span><span class="nx">SAT_Collision</span><span class="p">(</span><span class="nx">shapes</span><span class="p">[</span><span class="nx">i</span><span class="p">],</span> <span class="nx">shapes</span><span class="p">[</span><span class="nx">j</span><span class="p">]);</span>
+            <span class="k">if</span><span class="p">(</span><span class="nx">isCollided</span><span class="p">){</span>
+                <span class="c1">// ...碰撞事件...
+</span><span class="c1"></span>            <span class="p">}</span>            
+        <span class="p">}</span>
+    <span class="p">}</span>    
+<span class="p">}</span>
+</code></pre></div><p>用這種最直觀的方式檢查，時間複雜度會達到O(n!)，當場景複雜，需要檢測的物體變多後，用枚舉的方式檢測可能會導致遊戲延遲。</p>
+<p>其中最大的問題就是，當場景中有兩個距離非常遠的物體，遠到根本不可能發生碰撞，卻照樣對他們進行檢測，導致效能的浪費。</p>
+<h3 id="簡單的介紹一個優化方法--aabb-tree-">簡單的介紹一個優化方法 – AABB Tree :</h3>
+<p><figure style="flex-grow: 186; flex-basis: 447px">
+		<a href="/archives/gamecollisiondetection/img/SAT31.jpg" data-size="746x400"><img src="/archives/gamecollisiondetection/img/SAT31.jpg"
+				
+				width="746"
+				height="400"
+				loading="lazy"
+				alt="簡易AABB Tree">
+		</a>
+		
+		<figcaption>簡易AABB Tree</figcaption>
+		
+	</figure></p>
+<p>建立ABT的方法跟建立二元樹的方法一樣，來看執行步驟:</p>
+<ul>
+<li>Step1. 把A加入樹中，作為根結點。</li>
+<li>Step2. 把B加入樹中，判斷是否與根結點A有碰撞，如果有的話就在繼續比較子節點，如果都沒有與子節點有碰撞，就把B加入子節點後，如果與節點都沒有碰撞的話，就把A、B當作一個新區域，並生成A、B的父節點(橘色圈圈)。</li>
+<li>Step3. 把C加入樹中，方法跟Step2一樣，最後得到上圖中的樹。</li>
+</ul>
+<p>假如我要檢查A物體時，只需要檢查同在橘色區域的B物體即可。</p>
+<p>AABB Tree在建立時，就先把有機會碰撞的放在同一區，有了這樣的結構後，要判斷碰撞的效率就提高了，因為只需判斷與該物體同區域的物體即可，並不需要全部檢查，使得時間複雜度縮減到O(log n)。</p>
+<p>而其他多物體碰撞的演算法還有:<br>
+四叉樹(Quad Trees)、八叉樹(octree)、二元分割樹(BSP tree)、kd樹、球體樹(sphere tree)、R樹(R tree)、碰撞投影、光線投影等等…，有興趣的可以在自己研究。</p>
+<h2 id="13-動態物體間的碰撞檢測">13. 動態物體間的碰撞檢測</h2>
+<p>這裡為大家提供一些解決的方向，我目前知道有這種解決方法，但礙於能力不足，只研究到觀念部分。</p>
+<p>在我們前面講的碰撞檢測方法都只適用在靜態，什麼意思呢?</p>
+<p>在遊戲中做的碰撞檢測其實是以離散時間來模擬，因此在每個瞬間，物體的位置和方向是靜止的，就像快照一樣，若物體的移動速度與其相對尺寸來說不是太快的話，這種方法是可行的，事實上在許多物理引擎中，都是使用這種方法。</p>
+<p>但對於較小且高速的移動物體，這種方法就會失效，想像現在有個很小的物體，他每次更新時的移動幅度大於碰撞體的尺寸，就會發生「穿隧」的問題。</p>
+<p><figure style="flex-grow: 204; flex-basis: 490px">
+		<a href="/archives/gamecollisiondetection/img/SAT32.jpg" data-size="913x447"><img src="/archives/gamecollisiondetection/img/SAT32.jpg"
+				
+				width="913"
+				height="447"
+				loading="lazy"
+				alt="如上圖所示，細小且快速的物體移動時，其路徑可能留下縫隙，導致碰撞失效。">
+		</a>
+		
+		<figcaption>如上圖所示，細小且快速的物體移動時，其路徑可能留下縫隙，導致碰撞失效。</figcaption>
+		
+	</figure></p>
+<p>解決方法</p>
+<p>掃描形狀(swept shape):</p>
+<p>對一個物體的位置、速率與加速度取線性穿插，得到一個時間段的物體快照，再透過掃描的形狀做檢測。</p>
+<p><figure style="flex-grow: 267; flex-basis: 641px">
+		<a href="/archives/gamecollisiondetection/img/SAT33.jpg" data-size="981x367"><img src="/archives/gamecollisiondetection/img/SAT33.jpg"
+				
+				width="981"
+				height="367"
+				loading="lazy"
+				alt="如上圖，中間的移動量就是兩次快照間的穿隧量，而球體的掃描體變成膠囊狀，三角形的掃描體變成三角柱。">
+		</a>
+		
+		<figcaption>如上圖，中間的移動量就是兩次快照間的穿隧量，而球體的掃描體變成膠囊狀，三角形的掃描體變成三角柱。</figcaption>
+		
+	</figure>
+<figure style="flex-grow: 367; flex-basis: 882px">
+		<a href="/archives/gamecollisiondetection/img/SAT34.jpg" data-size="1007x274"><img src="/archives/gamecollisiondetection/img/SAT34.jpg"
+				
+				width="1007"
+				height="274"
+				loading="lazy"
+				alt="若要掃描的物體正在旋轉，也能透過線性穿插來建立掃描形狀">
+		</a>
+		
+		<figcaption>若要掃描的物體正在旋轉，也能透過線性穿插來建立掃描形狀</figcaption>
+		
+	</figure></p>
+<p>形狀掃描對動態物體來說，是一個有效的檢測技術，能保證不錯過快照之間的碰撞。</p>
+<p>缺點是，若物體的行進路線為曲線甚至旋轉，僅透過線性穿插計算，其結果是不準確的，所以要再根據狀況使用更精準的技術。</p>
+<p>其實還有很多更好的解決方案，有興趣的可以在自己研究。</p>
+<h2 id="14-source-code">14. Source Code</h2>
+<p>執行範例:</p>
+<p>我的SAT碰撞執行範例 : <a class="link" href="/downloads/Collision-SAT/ver0.2.1-polygon-merge/" target="_blank" rel="noopener">ver0.2.1-polygon-merge</a></p>
+<p>Source Code:</p>
+<ul>
+<li>文章中的範例Source Code: <a class="link" href="https://github.com/md9830415/Collision-Detection-article"  target="_blank" rel="noopener"
+    >https://github.com/md9830415/Collision-Detection-article</a></li>
+<li>自製的向量函式庫 : <a class="link" href="https://github.com/md9830415/JS-Vector2D"  target="_blank" rel="noopener"
+    >https://github.com/md9830415/JS-Vector2D</a></li>
+<li>SAT碰撞檢測 Code: <a class="link" href="https://github.com/beadx6ggwp/Collision-SAT"  target="_blank" rel="noopener"
+    >https://github.com/beadx6ggwp/Collision-SAT</a></li>
+</ul>
+<p>額外應用:</p>
+<ul>
+<li>最小位移量MTV Code: <a class="link" href="https://github.com/beadx6ggwp/Collision-MTV"  target="_blank" rel="noopener"
+    >https://github.com/beadx6ggwp/Collision-MTV</a>
+<img src="/" alt=""  /></li>
+</ul>
+<h2 id="15-結尾感想">15. 結尾感想</h2>
+<p>那麼為什麼要對碰撞這麼刁鑽，就是為了能模擬物理效果，當碰撞的處理達到一定的程度後，就可以邁向下一個階段「剛體動力學」與「物理模擬」，讓電腦中的物體越來越接近現實，有趣吧。</p>
+<p>光是碰撞的處理就有這麼多複雜的技術問題，就可以了解高階遊戲開發工程師是多麼厲害的一群人了。</p>
+<p>為了做出更好的遊戲，還要很多東西要學，為了能有效的使用電腦資源，要學會作業系統架構、演算法、資料結構並精通程式語言，要能在螢幕中顯示各種效果、視角操控，還要學習電腦圖學、線性代數，為了處理物理模擬，還要學習古典物理、高等微積分，而這些東西到了三維空間後，又更加複雜，還有專案管理等等附加技能，加上遊戲工程師們也不斷的在進化，搞不好一輩子都學不完呢。</p>
+<hr>
+<p>終於寫完了，這篇文中我嘗試用各種插圖來解釋一些觀念，不知不覺就打了這麼多，我Coding技巧很差，範例執行的效率可能沒有很好，但我想對這篇文想表達的內容影響不大。</p>
+<p>最後，感謝你的觀看，希望你在閱讀後能有些收穫。</p>
+<p>對這文章有任何問題，歡迎在下方留言提出意見，或是E-mail與我聯絡davidmd9830415@gmail.com。</p>
+<p>大概就是這樣了，掰掰。</p>
+<hr>
+<p>首次發表時間 : 2017/8 高二升三暑假準備工科賽時製作</p>
+<h2 id="參考資源">參考資源:</h2>
+<ul>
+<li>Game Engine Architecture, Second Edition.pdf : <a class="link" href="http://www.gameenginebook.com/"  target="_blank" rel="noopener"
+    >here</a></li>
+<li>Video Game Physics Tutorial : <a class="link" href="https://www.toptal.com/game/video-game-physics-part-ii-collision-detection-for-solid-objects"  target="_blank" rel="noopener"
+    >here</a></li>
+<li>Collision Detection for Real-Time Simulation : <a class="link" href="http://www.continuousphysics.com/ftp/pub/test/files/physics/papers/hcts1999-ERIC-collisions.pdf"  target="_blank" rel="noopener"
+    >here</a></li>
+<li>Collision Detection – contact generation and GPU acceleration : <a class="link" href="http://sglab.kaist.ac.kr/~sungeui/Collision_tutorial/Erwin.pdf"  target="_blank" rel="noopener"
+    >here</a></li>
+<li>Physics – Collision in 2 dimensions : <a class="link" href="http://www.euclideanspace.com/physics/dynamics/collision/twod/"  target="_blank" rel="noopener"
+    >here</a></li>
+<li>Collision Detection Using the Separating Axis Theorem : <a class="link" href="https://gamedevelopment.tutsplus.com/tutorials/collision-detection-using-the-separating-axis-theorem--gamedev-169"  target="_blank" rel="noopener"
+    >here</a></li>
+<li>SAT (Separating Axis Theorem) : <a class="link" href="http://www.dyn4j.org/2010/01/sat/"  target="_blank" rel="noopener"
+    >here</a></li>
+<li>2D Collision Detection : <a class="link" href="http://wiki.roblox.com/index.php?title=2D_Collision_Detection#Method_2:_Separating_axis_theorem_.28SAT.29"  target="_blank" rel="noopener"
+    >here</a></li>
+<li>2D polygon-based collision detection and response : <a class="link" href="http://elancev.name/oliver/2D%20polygon.htm"  target="_blank" rel="noopener"
+    >here</a></li>
+<li>Collision detection : <a class="link" href="https://learnopengl.com/#!In-Practice/2D-Game/Collisions/Collision-detection"  target="_blank" rel="noopener"
+    >here</a></li>
+<li>Collision resolution : <a class="link" href="https://learnopengl.com/#!In-Practice/2D-Game/Collisions/Collision-resolution"  target="_blank" rel="noopener"
+    >here</a></li>
+<li>Introductory Guide to AABB Tree Collision Detection : <a class="link" href="http://www.azurefromthetrenches.com/introductory-guide-to-aabb-tree-collision-detection/"  target="_blank" rel="noopener"
+    >here</a></li>
+<li>How to Create a Custom Physics Engine : <a class="link" href="https://gamedevelopment.tutsplus.com/series/how-to-create-a-custom-physics-engine--gamedev-12715"  target="_blank" rel="noopener"
+    >here</a></li>
+<li>Vector maths – a primer for games programmers : <a class="link" href="https://wildbunny.co.uk/vector-maths-a-primer-for-games-programmers/"  target="_blank" rel="noopener"
+    >here</a></li>
+<li>平面上基本的線性變換：旋轉、鏡射、伸縮、推移 : <a class="link" href="http://highscope.ch.ntu.edu.tw/wordpress/?p=51374"  target="_blank" rel="noopener"
+    >here</a></li>
+<li>二階方陣表示的線性變換 : <a class="link" href="http://math1.ck.tp.edu.tw/%E9%99%B3%E5%98%AF%E8%99%8E/%E5%B0%8F%E8%99%8E/99%E8%AA%B2%E7%B6%B1/%E7%AC%AC%E5%9B%9B%E5%86%8A/%E9%87%8D%E9%BB%9E/99%E8%AA%B2%E7%B6%B1%E6%95%99%E5%AD%B8%E9%87%8D%E9%BB%9E%E6%95%B4%E7%90%864-3-4%E7%9F%A9%E9%99%A3-%E4%BA%8C%E9%9A%8E%E6%96%B9%E9%99%A3%E8%A1%A8%E7%A4%BA%E7%9A%84%E7%B7%9A%E6%80%A7%E8%AE%8A%E6%8F%9B.pdf"  target="_blank" rel="noopener"
+    >here</a></li>
+<li>AABB包围盒算法,在2D碰撞检测中的实现 : <a class="link" href="https://segmentfault.com/a/1190000006802081"  target="_blank" rel="noopener"
+    >here</a></li>
+<li>“等一下，我碰！”——常见的2D碰撞检测 : <a class="link" href="https://github.com/JChehe/blog/issues/8"  target="_blank" rel="noopener"
+    >here</a></li>
+<li>Core HTML5 Canvas: Graphics, Animation, and Game Development</li>
+</ul>
+
+</section>
+
+    
+    
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/collision/">collision</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3&#43;Aro6EYUG4&#43;cU&#43;KJWu/X"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"integrity="sha384-g7c&#43;Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI&#43;sEnkvrMWph2EDg4"crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC&#43;Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa"crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ]
+        });})
+</script>
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">相關文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="has-image">
+    <a href="/archives/win32note01/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/win32note01/img/1602103707812.7553d01bdd8e04ae277fd5a402e941a8_huf41b96d2886df92c7e1e1280e6daa8eb_36021_250x150_fill_q75_box_smart1.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="win32note01" 
+                        data-hash="md5-dVPQG92OBK4nf9WkAulBqA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">[Win32筆記] 建立視窗 #1</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/archives/skills-competition-software/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/skills-competition-software/img/skill_img1.0b9e6b7158ea6a0a2528399ba2303f54_hu19eefd48ce774c36ccb19d58e43766bf_138141_250x150_fill_q75_box_smart1.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="skills-competition-software" 
+                        data-hash="md5-C55rcVjqagolKDmbojA/VA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">工科賽-軟體設計 歷屆試題解答</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/archives/math-for-game-vector-reflection/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/math-for-game-vector-reflection/img/13fig21.b79848615792b34f8c0d1dc38db6ae46_hu9951623b7b3c57f683995ab87fcf3709_19062_250x150_fill_box_smart1.gif" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="math-for-game-vector-reflection" 
+                        data-hash="md5-t5hIYVeSs0&#43;MDR3DjbauRg==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Vector reflection向量鏡射 基本的碰撞反彈回饋</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/archives/quadtree_in_2d/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/quadtree_in_2d/img/Quad_013.a7ee28c0eeb895aba73c942cef9f742e_hu646d8ae9c65ce621115142c45ba5d5ba_35828_250x150_fill_box_smart1_2.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="quadtree_in_2d" 
+                        data-hash="md5-p&#43;4owO64launPJQs7590Lg==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">碰撞檢測的優化-四叉樹(Quadtree)</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/archives/csharp-bfs-solve-8-puzzle/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle07.5f0cbaf1fb16c4a1c365aebf4f493188_hu0b5eea423e222ebc3e48e168702d93a0_282255_250x150_fill_q75_box_smart1.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="csharp-bfs-solve-8-puzzle" 
+                        data-hash="md5-Xwy68fsWxKHDZa6/T0kxiA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">BFS解8-Puzzle問題</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "beadx6ggwp" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2021 展維隨筆
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.3.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

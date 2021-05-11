@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Graphics on 展維隨筆</title>
+    <link>https://davidhsu666.com/tags/graphics/</link>
+    <description>Recent content in Graphics on 展維隨筆</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 21 Mar 2018 10:48:34 +0800</lastBuildDate><atom:link href="https://davidhsu666.com/tags/graphics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Doublebuffer雙重緩衝</title>
+      <link>https://davidhsu666.com/archives/doublebuffer/</link>
+      <pubDate>Wed, 21 Mar 2018 10:48:34 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/doublebuffer/</guid>
+      <description>我在網路上搜尋到一些解決方法，在這裡做個整理。
+正常更新畫面的方法都是先將畫面清空後，再將新的畫面畫上去，
+導致清空的剎那，好像畫面閃爍了
+ 
+解決方法:
+ 畫面重繪時，不直接在螢幕上重繪，而是先畫在緩衝區，等整個畫面都重繪完成，才一次放到螢幕上。 想像我們用兩張紙來做更新，一張紙是當前畫面，另一張是緩衝區，在更新時把圖畫在第二章紙上，畫完後再一次把這張紙覆蓋到主畫面。  1.把DoubleBuffered 屬性設為 true。(參考自C# MSDN使用表單和控制項的雙重緩衝)
+public Form1() { InitializeComponent(); this.DoubleBuffered = true; } 2.使用 BufferedGraphicsContext 。(參考自MSDN手動管理緩衝的圖形)
+float x = 0, y = 0; public Form1() { InitializeComponent(); timer1.Interval = 1000 / 60; timer1.Start(); } private void timer1_Tick(object sender, EventArgs e) { x += 1; BufferedGraphicsContext currentContext = BufferedGraphicsManager.Current; BufferedGraphics myBuffer = currentContext.Allocate(this.CreateGraphics(), this.DisplayRectangle); //清除繪圖畫面，並用原本的背景色填充，否則背景呈現黑色  myBuffer.Graphics.Clear(this.BackColor); //在圖形緩衝區中畫圖  myBuffer.Graphics.DrawEllipse(Pens.Blue, x, y, 70, 70); //將圖形緩衝區的內容畫到指定的畫布上  myBuffer.</description>
+    </item>
+    
+  </channel>
+</rss>

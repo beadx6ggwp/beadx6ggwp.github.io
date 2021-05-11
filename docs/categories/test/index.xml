@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Test on 展維隨筆</title>
+    <link>https://davidhsu666.com/categories/test/</link>
+    <description>Recent content in Test on 展維隨筆</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 19 Apr 2015 03:35:50 +0800</lastBuildDate><atom:link href="https://davidhsu666.com/categories/test/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>JustTest</title>
+      <link>https://davidhsu666.com/archives/just-test/</link>
+      <pubDate>Sun, 19 Apr 2015 03:35:50 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/just-test/</guid>
+      <description>這裡是第一篇文章的測試 相簿測試
+ Photo1   Photo2   Photo1   Photo2 
+ Photo1   Photo2 
+ 
+code test
+std::cout &amp;lt;&amp;lt; &amp;#34;hello world&amp;#34;; </description>
+    </item>
+    
+  </channel>
+</rss>

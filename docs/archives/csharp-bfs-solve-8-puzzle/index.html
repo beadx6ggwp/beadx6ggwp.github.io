@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='之前因為8-Puzzle問題卡了一段時間，之後才了解其實用BFS解的話，難度就降到跟解迷宮差不多了'><title>BFS解8-Puzzle問題</title>
+
+<link rel='canonical' href='https://davidhsu666.com/archives/csharp-bfs-solve-8-puzzle/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='BFS解8-Puzzle問題'>
+<meta property='og:description' content='之前因為8-Puzzle問題卡了一段時間，之後才了解其實用BFS解的話，難度就降到跟解迷宮差不多了'>
+<meta property='og:url' content='https://davidhsu666.com/archives/csharp-bfs-solve-8-puzzle/'>
+<meta property='og:site_name' content='展維隨筆'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ProblemSolving' /><meta property='article:published_time' content='2018-06-22T10:04:35&#43;08:00'/><meta property='article:modified_time' content='2018-06-22T10:04:35&#43;08:00'/><meta property='og:image' content='https://davidhsu666.com/archives/csharp-bfs-solve-8-puzzle/img/8puzzle07.jpg' />
+<meta name="twitter:title" content="BFS解8-Puzzle問題">
+<meta name="twitter:description" content="之前因為8-Puzzle問題卡了一段時間，之後才了解其實用BFS解的話，難度就降到跟解迷宮差不多了"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://davidhsu666.com/archives/csharp-bfs-solve-8-puzzle/img/8puzzle07.jpg' />
+    <link rel="icon" href="https://davidhsu666.com/resource/favicon-32x32.png">
+
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YJXR109WY7"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-YJXR109WY7', { 'anonymize_ip': false });
+}
+</script>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap');
+     
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;800&display=swap');
+    :root {
+        --article-font-family: 'Roboto',"Noto Serif TC", var(--base-font-family);
+    }
+</style>
+        
+    </head>
+    <body class="">
+        
+        <script src="/js/custom.js"></script>
+        <button class="btn" onclick="scrollTop1()" id="goTopBtn" title="Go to top">TOP</button>
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.body.dataset.scheme = 'dark';
+        } else {
+            document.body.dataset.scheme = 'light';
+        }
+    })();
+</script><div class="container main-container flex on-phone--column extended article-page with-toolbar">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切換選單">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/thinking_hu84577f8e2354056019efb2e4fba9d39e_126194_300x0_resize_box_2.png" width="300"
+                            height="292" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🤔</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="https://davidhsu666.com/">展維隨筆</a></h1>
+        <h2 class="site-description">網頁維修中</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/test/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>test</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>暗色模式</span>
+            </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <div id="article-toolbar">
+        <a href="https://davidhsu666.com/" class="back-home">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+            <span>Back</span>
+        </a>
+    </div>
+
+    <article class="has-image main-article">
+    
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/archives/csharp-bfs-solve-8-puzzle/">
+                <img src="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle07.jpg"
+                        
+                        width="1046" 
+                        height="763" 
+                        loading="lazy"
+                        alt="Featured image of post BFS解8-Puzzle問題" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/codingnote/" style="background-color: #EDFF44; color: #000;">
+                程式筆記
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/archives/csharp-bfs-solve-8-puzzle/">BFS解8-Puzzle問題</a>
+    </h2>
+
+    
+    <h3 class="article-subtitle">
+        之前因為8-Puzzle問題卡了一段時間，之後才了解其實用BFS解的話，難度就降到跟解迷宮差不多了
+    </h3>
+    <footer class="article-time">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <time class="article-time--published">Jun 22, 2018</time>
+    </footer></div>
+</header>
+
+    
+    <section class="article-content">
+    <h2 id="目錄">目錄</h2>
+<ol>
+<li><a class="link" href="#1-%e5%89%8d%e8%a8%80" >前言</a></li>
+<li><a class="link" href="#2-%e5%84%b2%e5%ad%98%e7%b5%90%e6%a7%8b%e5%92%8c%e7%a7%bb%e5%8b%95%e5%88%a4%e6%96%b7" >儲存結構和移動判斷</a></li>
+<li><a class="link" href="#3-%e7%94%a8bfs%e7%aa%ae%e8%88%89%e7%8b%80%e6%85%8b" >用BFS窮舉狀態</a></li>
+<li><a class="link" href="#4-%e5%9f%b7%e8%a1%8c%e7%b5%90%e6%9e%9c" >執行結果</a></li>
+<li><a class="link" href="#5-%e5%8f%83%e8%80%83%e8%b3%87%e6%ba%90" >參考資源</a></li>
+</ol>
+<h2 id="1-前言">1. 前言</h2>
+<p>先來簡單的介紹一下什麼是8-Puzzle。</p>
+<p>數字推盤遊戲(n-puzzle)是最早一種的滑塊類遊戲，常見的類型有十五數字推盤遊戲和八數字推盤遊戲等，也有以圖畫代替數字的推盤遊戲。</p>
+<p><figure style="flex-grow: 100; flex-basis: 240px">
+		<a href="/archives/csharp-bfs-solve-8-puzzle/img/Batgirl.gif" data-size="220x220"><img src="/archives/csharp-bfs-solve-8-puzzle/img/Batgirl.gif"
+				
+				width="220"
+				height="220"
+				loading="lazy"
+				alt="Wiki上的8Puzzle">
+		</a>
+		
+		<figcaption>Wiki上的8Puzzle</figcaption>
+		
+	</figure></p>
+<p>如上圖所示，滑塊只能往空位移動。</p>
+<p>大概了解遊玩方法後，就來試著解決8-Puzzle問題吧!</p>
+<p>解法的步驟大概是這樣 :</p>
+<ol>
+<li>先完成移動判斷和節點狀態的儲存結構</li>
+<li>用BFS窮舉狀態，並把當前狀態記錄下來篩選重複路徑</li>
+<li>只要有一組路徑符合結果，該路徑就是最佳解(因BFS的特性是每次平均向外擴展，所以最先碰到終點的就是最佳解之一)</li>
+<li>否則搜尋完畢後皆沒有找到符合的狀態，無解</li>
+<li>最後透過父節點的回溯取得輸出路徑，即可得到最短路徑和分解步驟</li>
+</ol>
+<h2 id="2-儲存結構和移動判斷">2. 儲存結構和移動判斷</h2>
+<p>首先是儲存狀態，用二維陣列來儲存比較直觀，但是用一維陣列來儲存的話，我覺得在一些處理上比較方便，所以我採用一維陣列。</p>
+<p><figure style="flex-grow: 105; flex-basis: 254px">
+		<a href="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle02-1.jpg" data-size="359x339"><img src="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle02-1.jpg"
+				
+				width="359"
+				height="339"
+				loading="lazy"
+				alt="資料結構">
+		</a>
+		
+		<figcaption>資料結構</figcaption>
+		
+	</figure></p>
+<p>像是上面的這個狀態這樣，將0表示為空格，可以儲存成 { 8, 6, 4, 0, 7, 2, 5, 1, 3}。</p>
+<p>因為要透過BFS搜尋來取得路徑，所以需要建立一個節點的結構，這樣才能儲存當前狀態，並紀錄上個狀態 :</p>
+<div class="highlight"><pre class="chroma"><code class="language-C#" data-lang="C#"><span class="k">public</span> <span class="k">class</span> <span class="nc">Node</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="kt">byte</span><span class="p">[]</span> <span class="n">status</span><span class="p">;</span> <span class="c1">// 當前狀態
+</span><span class="c1"></span>    <span class="k">public</span> <span class="n">Node</span> <span class="n">father</span><span class="p">;</span> <span class="c1">// 紀錄上個狀態，如果father = null 該點為根節點
+</span><span class="c1"></span>    <span class="k">public</span> <span class="n">Node</span><span class="p">(</span><span class="kt">byte</span><span class="p">[]</span> <span class="n">status</span><span class="p">,</span> <span class="n">Node</span> <span class="n">father</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">status</span> <span class="p">=</span> <span class="n">status</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">father</span> <span class="p">=</span> <span class="n">father</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 把陣列轉換成數字序列，比對時就不用兩將陣列元素一一檢查了
+</span><span class="c1"></span>    <span class="c1">// 像是 stauts = {8, 6, 4, 0, 7, 2, 5, 1, 3}，轉後後即可得到864072513
+</span><span class="c1"></span>    <span class="k">public</span> <span class="kt">int</span> <span class="n">ToToSequence</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">result</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;</span> <span class="n">status</span><span class="p">.</span><span class="n">Length</span><span class="p">;</span> <span class="n">i</span><span class="p">++)</span>
+            <span class="n">result</span> <span class="p">=</span> <span class="n">result</span> <span class="p">*</span> <span class="m">10</span> <span class="p">+</span> <span class="n">status</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><p>再來是移動判斷，滑塊在移動時，可以看成是空白方塊在移動。</p>
+<p><figure style="flex-grow: 99; flex-basis: 239px">
+		<a href="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle04.jpg" data-size="295x296"><img src="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle04.jpg"
+				
+				width="295"
+				height="296"
+				loading="lazy"
+				>
+		</a>
+		
+	</figure></p>
+<p>如上圖，0 可以往上、右、下移動，但是不能往左，那麼要如何判斷0能往哪個方向走呢?</p>
+<p><figure style="flex-grow: 157; flex-basis: 379px">
+		<a href="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle05-2.jpg" data-size="597x378"><img src="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle05-2.jpg"
+				
+				width="597"
+				height="378"
+				loading="lazy"
+				>
+		</a>
+		
+	</figure></p>
+<p>如上圖，當 index = 3 時，可以得知在二維時座標是 (0, 1)。</p>
+<p>能取得對應位置後，就能夠寫出移動判斷，像是當空位在最左邊時Col = 0，那麼就不能往左走，因為在最左邊了，在最下面時Row = 2，不能往下走，因為已經到底了。</p>
+<p>所以可以得出:</p>
+<ul>
+<li>Col != 0，可以往左走</li>
+<li>Col != 2，可以往右走</li>
+<li>Row != 0，可以往上走</li>
+<li>Row != 2，可以往下走</li>
+</ul>
+<p>但是只有判斷能不能走還不夠，因為當空格移動時，必須跟那個位置的數字交換，並記錄下原本的狀態 :</p>
+<div class="highlight"><pre class="chroma"><code class="language-C#" data-lang="C#"><span class="n">List</span><span class="p">&lt;</span><span class="n">Node</span><span class="p">&gt;</span> <span class="n">GetNext</span><span class="p">(</span><span class="n">Node</span> <span class="n">now</span><span class="p">)</span><span class="c1">// 傳入當前版面，回傳0所有移動後的狀態
+</span><span class="c1"></span><span class="p">{</span>
+    <span class="kt">int</span> <span class="n">index</span> <span class="p">=</span> <span class="n">Array</span><span class="p">.</span><span class="n">IndexOf</span><span class="p">&lt;</span><span class="kt">byte</span><span class="p">&gt;(</span><span class="n">now</span><span class="p">.</span><span class="n">status</span><span class="p">,</span> <span class="m">0</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="n">col</span> <span class="p">=</span> <span class="n">index</span> <span class="p">%</span> <span class="m">3</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">row</span> <span class="p">=</span> <span class="n">index</span> <span class="p">/</span> <span class="m">3</span><span class="p">;</span>
+
+    <span class="n">List</span><span class="p">&lt;</span><span class="n">Node</span><span class="p">&gt;</span> <span class="n">nextPush</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">Node</span><span class="p">&gt;();</span>
+    <span class="kt">byte</span><span class="p">[]</span> <span class="n">next</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">row</span> <span class="p">!=</span> <span class="m">0</span><span class="p">)</span> <span class="c1">// Top
+</span><span class="c1"></span>    <span class="p">{</span>
+        <span class="n">next</span> <span class="p">=</span> <span class="p">(</span><span class="kt">byte</span><span class="p">[])</span><span class="n">now</span><span class="p">.</span><span class="n">status</span><span class="p">.</span><span class="n">Clone</span><span class="p">();</span>        
+        <span class="n">swap</span><span class="p">(</span><span class="k">ref</span> <span class="n">next</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="k">ref</span> <span class="n">next</span><span class="p">[</span><span class="n">index</span> <span class="p">-</span> <span class="m">3</span><span class="p">]);</span><span class="c1">// 跟上面交換        
+</span><span class="c1"></span>        <span class="n">nextPush</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="k">new</span> <span class="n">Node</span><span class="p">(</span><span class="n">next</span><span class="p">,</span> <span class="n">now</span><span class="p">));</span><span class="c1">// 加入這個新狀態
+</span><span class="c1"></span>    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">col</span> <span class="p">!=</span> <span class="m">2</span><span class="p">)</span> <span class="c1">// Right
+</span><span class="c1"></span>    <span class="p">{</span>
+        <span class="n">next</span> <span class="p">=</span> <span class="p">(</span><span class="kt">byte</span><span class="p">[])</span><span class="n">now</span><span class="p">.</span><span class="n">status</span><span class="p">.</span><span class="n">Clone</span><span class="p">();</span>        
+        <span class="n">swap</span><span class="p">(</span><span class="k">ref</span> <span class="n">next</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="k">ref</span> <span class="n">next</span><span class="p">[</span><span class="n">index</span> <span class="p">+</span> <span class="m">1</span><span class="p">]);</span><span class="c1">// 跟右邊交換
+</span><span class="c1"></span>        <span class="n">nextPush</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="k">new</span> <span class="n">Node</span><span class="p">(</span><span class="n">next</span><span class="p">,</span> <span class="n">now</span><span class="p">));</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">row</span> <span class="p">!=</span> <span class="m">2</span><span class="p">)</span> <span class="c1">// Bottom
+</span><span class="c1"></span>    <span class="p">{</span>
+        <span class="n">next</span> <span class="p">=</span> <span class="p">(</span><span class="kt">byte</span><span class="p">[])</span><span class="n">now</span><span class="p">.</span><span class="n">status</span><span class="p">.</span><span class="n">Clone</span><span class="p">();</span>        
+        <span class="n">swap</span><span class="p">(</span><span class="k">ref</span> <span class="n">next</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="k">ref</span> <span class="n">next</span><span class="p">[</span><span class="n">index</span> <span class="p">+</span> <span class="m">3</span><span class="p">]);</span><span class="c1">// 跟下面交換
+</span><span class="c1"></span>        <span class="n">nextPush</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="k">new</span> <span class="n">Node</span><span class="p">(</span><span class="n">next</span><span class="p">,</span> <span class="n">now</span><span class="p">));</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">col</span> <span class="p">!=</span> <span class="m">0</span><span class="p">)</span> <span class="c1">// Left
+</span><span class="c1"></span>    <span class="p">{</span>
+        <span class="n">next</span> <span class="p">=</span> <span class="p">(</span><span class="kt">byte</span><span class="p">[])</span><span class="n">now</span><span class="p">.</span><span class="n">status</span><span class="p">.</span><span class="n">Clone</span><span class="p">();</span>        
+        <span class="n">swap</span><span class="p">(</span><span class="k">ref</span> <span class="n">next</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="k">ref</span> <span class="n">next</span><span class="p">[</span><span class="n">index</span> <span class="p">-</span> <span class="m">1</span><span class="p">]);</span><span class="c1">// 跟左邊交換
+</span><span class="c1"></span>        <span class="n">nextPush</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="k">new</span> <span class="n">Node</span><span class="p">(</span><span class="n">next</span><span class="p">,</span> <span class="n">now</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">nextPush</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><p>在交換前要先複製一份，因為陣列參數是傳參考，直接交換會修改到原本的狀態，所以要先Clone後再傳給新狀態做交換。</p>
+<p>而上面程式碼中 new Node(next, now)，意思是建立一個新節點next，而他的前一個狀態是剛剛傳進來的now。</p>
+<p><figure style="flex-grow: 191; flex-basis: 460px">
+		<a href="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle06.jpg" data-size="903x471"><img src="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle06.jpg"
+				
+				width="903"
+				height="471"
+				loading="lazy"
+				>
+		</a>
+		
+	</figure></p>
+<p>如上圖，假設now是根結點，而next是下個節點，那麼new Node(next, now)後就會像這樣。</p>
+<h2 id="3-用bfs窮舉狀態">3. 用BFS窮舉狀態</h2>
+<p>有了移動判段後，接下來的解法就跟用BFS解迷宮差不多了 :</p>
+<div class="highlight"><pre class="chroma"><code class="language-C#" data-lang="C#"><span class="c1">// 傳入原本的版面和目標版面，回傳最短路徑
+</span><span class="c1"></span><span class="n">List</span><span class="p">&lt;</span><span class="n">Node</span><span class="p">&gt;</span> <span class="n">Solve</span><span class="p">(</span><span class="kt">byte</span><span class="p">[]</span> <span class="n">source</span><span class="p">,</span> <span class="kt">byte</span><span class="p">[]</span> <span class="n">goal</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">Queue</span><span class="p">&lt;</span><span class="n">Node</span><span class="p">&gt;</span> <span class="n">queue</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Queue</span><span class="p">&lt;</span><span class="n">Node</span><span class="p">&gt;();</span>
+
+    <span class="c1">// 使用狀態序列來儲存已走過的路徑，防止往回走
+</span><span class="c1"></span>    <span class="n">SortedList</span><span class="p">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">bool</span><span class="p">&gt;</span> <span class="n">book</span> <span class="p">=</span> <span class="k">new</span> <span class="n">SortedList</span><span class="p">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">bool</span><span class="p">&gt;();</span>
+
+    <span class="n">Node</span> <span class="n">end</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Node</span><span class="p">(</span><span class="n">goal</span><span class="p">,</span> <span class="k">null</span><span class="p">);</span><span class="c1">// 終點
+</span><span class="c1"></span>    <span class="n">Node</span> <span class="n">start</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Node</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="k">null</span><span class="p">);</span><span class="c1">// 起點
+</span><span class="c1"></span>
+    <span class="n">queue</span><span class="p">.</span><span class="n">Enqueue</span><span class="p">(</span><span class="n">start</span><span class="p">);</span><span class="c1">// 推入起點
+</span><span class="c1"></span>    <span class="n">book</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">start</span><span class="p">.</span><span class="n">ToSequence</span><span class="p">(),</span> <span class="k">true</span><span class="p">);</span><span class="c1">// 標示起點已走過，防止走回頭路
+</span><span class="c1"></span>
+    <span class="kt">int</span> <span class="n">endStatus</span> <span class="p">=</span> <span class="n">end</span><span class="p">.</span><span class="n">ToSequence</span><span class="p">();</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">queue</span><span class="p">.</span><span class="n">Count</span> <span class="p">&gt;</span> <span class="m">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// 取得當前搜索狀態，並移出佇列
+</span><span class="c1"></span>        <span class="n">Node</span> <span class="n">now</span> <span class="p">=</span> <span class="n">queue</span><span class="p">.</span><span class="n">Dequeue</span><span class="p">();</span>
+
+        <span class="c1">// 如果抵達終點，那就輸出路徑
+</span><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="n">now</span><span class="p">.</span><span class="n">ToSequence</span><span class="p">()</span> <span class="p">==</span> <span class="n">endStatus</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">PathTrace</span><span class="p">(</span><span class="n">now</span><span class="p">);</span>
+
+        <span class="c1">// 取得能走的位置
+</span><span class="c1"></span>        <span class="n">List</span><span class="p">&lt;</span><span class="n">Node</span><span class="p">&gt;</span> <span class="n">nextPath</span> <span class="p">=</span> <span class="n">GetNext</span><span class="p">(</span><span class="n">now</span><span class="p">);</span>                                
+        <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">path</span> <span class="k">in</span> <span class="n">nextPath</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="kt">int</span> <span class="n">sign</span> <span class="p">=</span> <span class="n">path</span><span class="p">.</span><span class="n">ToSequence</span><span class="p">();</span>
+
+            <span class="c1">// 判斷當前節點狀態是否擴展過了
+</span><span class="c1"></span>            <span class="k">if</span> <span class="p">(!</span><span class="n">book</span><span class="p">.</span><span class="n">Keys</span><span class="p">.</span><span class="n">Contains</span><span class="p">(</span><span class="n">sign</span><span class="p">))</span>
+            <span class="p">{</span>
+                <span class="c1">// 推入當前狀態，並標記該路徑已走過，因為每個狀態只需要擴展一次就夠了                
+</span><span class="c1"></span>                <span class="n">queue</span><span class="p">.</span><span class="n">Enqueue</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
+                <span class="n">book</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">sign</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 如果窮舉完都沒找到，代表無解
+</span><span class="c1"></span>    <span class="k">return</span> <span class="k">null</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="n">List</span><span class="p">&lt;</span><span class="n">Node</span><span class="p">&gt;</span> <span class="n">PathTrace</span><span class="p">(</span><span class="n">Node</span> <span class="n">now</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// 回朔路徑
+</span><span class="c1"></span>    <span class="n">List</span><span class="p">&lt;</span><span class="n">Node</span><span class="p">&gt;</span> <span class="n">path</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">Node</span><span class="p">&gt;();</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">now</span><span class="p">.</span><span class="n">father</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">path</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="n">now</span><span class="p">);</span>
+        <span class="n">now</span> <span class="p">=</span> <span class="n">now</span><span class="p">.</span><span class="n">father</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">path</span><span class="p">.</span><span class="n">Reverse</span><span class="p">();</span>
+    <span class="k">return</span> <span class="n">path</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><p>路徑的儲存使用SortedList而不是正常的List，因為List在加入物件時並不會特別處理，所以在搜尋時就只能慢慢比較，而 SortedList的結構類似二元搜尋樹，在新增資料時就會依照設定的Key值做排序後再插入，所以在搜尋時的複雜度就能夠降到O(log2 n)，想了解更多的話請看最後的參考資源。</p>
+<p>到這邊大概就能了解為什麼要用ToSequence()來儲存路徑了，因為資料不會重複，所以搭配SortedList就比List快的多。</p>
+<p>使用方法:</p>
+<div class="highlight"><pre class="chroma"><code class="language-C#" data-lang="C#"><span class="kt">byte</span><span class="p">[]</span> <span class="n">source</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="p">[]</span> <span class="p">{</span> <span class="m">8</span><span class="p">,</span> <span class="m">6</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">7</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">3</span> <span class="p">};</span>
+<span class="kt">byte</span><span class="p">[]</span> <span class="n">goal</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="p">[]</span> <span class="p">{</span> <span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">6</span><span class="p">,</span> <span class="m">7</span><span class="p">,</span> <span class="m">8</span><span class="p">,</span> <span class="m">0</span> <span class="p">};</span>
+
+<span class="n">List</span><span class="p">&lt;</span><span class="n">Node</span><span class="p">&gt;</span> <span class="n">path</span> <span class="p">=</span> <span class="n">Solve</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">goal</span><span class="p">);</span>
+
+<span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$&#34;最少步驟為:{path.Count}&#34;</span><span class="p">);</span>
+</code></pre></div><p>給定原本面狀態跟輸出狀態，即可得到最短路徑的List，而輸出路徑只要走訪一遍Path即可得到。</p>
+<p>其實執行的原理很簡單，就是一直窮舉所有狀態，直到符合結果為止</p>
+<p><figure style="flex-grow: 137; flex-basis: 329px">
+		<a href="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle07.jpg" data-size="1046x763"><img src="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle07.jpg"
+				
+				width="1046"
+				height="763"
+				loading="lazy"
+				>
+		</a>
+		
+	</figure></p>
+<h2 id="4-執行結果">4. 執行結果</h2>
+<p><figure style="flex-grow: 148; flex-basis: 355px">
+		<a href="/archives/csharp-bfs-solve-8-puzzle/img/8-Puzzle-BFS.gif" data-size="344x232"><img src="/archives/csharp-bfs-solve-8-puzzle/img/8-Puzzle-BFS.gif"
+				
+				width="344"
+				height="232"
+				loading="lazy"
+				>
+		</a>
+		
+	</figure></p>
+<p>Source Code : <a class="link" href="https://github.com/beadx6ggwp/Skills-Competition-Software/tree/master/101/101-5-OK"  target="_blank" rel="noopener"
+    >Here</a></p>
+<p>雖然用BFS就能解了，但效率很差，之後會再研究看看A*演算法。</p>
+<h2 id="5-參考資源">5. 參考資源</h2>
+<ul>
+<li>What’s the difference between SortedList and SortedDictionary? : <a class="link" href="https://stackoverflow.com/questions/935621/whats-the-difference-between-sortedlist-and-sorteddictionary"  target="_blank" rel="noopener"
+    >here</a></li>
+<li>各Collection陣列個別特性列表 : <a class="link" href="https://dotblogs.com.tw/jeff-yeh/2009/12/07/12322"  target="_blank" rel="noopener"
+    >here</a></li>
+<li>8-Puzzle : <a class="link" href="https://www.cs.princeton.edu/courses/archive/spr10/cos226/assignments/8puzzle.html"  target="_blank" rel="noopener"
+    >here</a></li>
+<li>ACM 15-puzzle : <a class="link" href="http://mudream.logdown.com/posts/256859/note-15-puzzle"  target="_blank" rel="noopener"
+    >here</a></li>
+<li>Inndy GitHub : <a class="link" href="https://github.com/Inndy"  target="_blank" rel="noopener"
+    >here</a></li>
+</ul>
+
+</section>
+
+    
+    
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/problemsolving/">ProblemSolving</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3&#43;Aro6EYUG4&#43;cU&#43;KJWu/X"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"integrity="sha384-g7c&#43;Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI&#43;sEnkvrMWph2EDg4"crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC&#43;Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa"crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ]
+        });})
+</script>
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">相關文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="">
+    <a href="/archives/ispowerby2/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">快速判斷N是否為2的次方數</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/archives/win32note01/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/win32note01/img/1602103707812.7553d01bdd8e04ae277fd5a402e941a8_huf41b96d2886df92c7e1e1280e6daa8eb_36021_250x150_fill_q75_box_smart1.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="win32note01" 
+                        data-hash="md5-dVPQG92OBK4nf9WkAulBqA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">[Win32筆記] 建立視窗 #1</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/archives/skills-competition-software/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/skills-competition-software/img/skill_img1.0b9e6b7158ea6a0a2528399ba2303f54_hu19eefd48ce774c36ccb19d58e43766bf_138141_250x150_fill_q75_box_smart1.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="skills-competition-software" 
+                        data-hash="md5-C55rcVjqagolKDmbojA/VA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">工科賽-軟體設計 歷屆試題解答</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/archives/math-for-game-vector-reflection/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/math-for-game-vector-reflection/img/13fig21.b79848615792b34f8c0d1dc38db6ae46_hu9951623b7b3c57f683995ab87fcf3709_19062_250x150_fill_box_smart1.gif" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="math-for-game-vector-reflection" 
+                        data-hash="md5-t5hIYVeSs0&#43;MDR3DjbauRg==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Vector reflection向量鏡射 基本的碰撞反彈回饋</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/archives/quadtree_in_2d/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/quadtree_in_2d/img/Quad_013.a7ee28c0eeb895aba73c942cef9f742e_hu646d8ae9c65ce621115142c45ba5d5ba_35828_250x150_fill_box_smart1_2.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="quadtree_in_2d" 
+                        data-hash="md5-p&#43;4owO64launPJQs7590Lg==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">碰撞檢測的優化-四叉樹(Quadtree)</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "beadx6ggwp" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2021 展維隨筆
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.3.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

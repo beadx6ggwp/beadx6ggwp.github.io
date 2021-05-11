@@ -1,0 +1,87 @@
+/*!
+*   Hugo Theme Stack
+*
+*   @author: Jimmy Cai
+*   @website: https://jimmycai.com
+*   @link: https://github.com/CaiJimmy/hugo-theme-stack
+*/
+
+@import "breakpoints.scss";
+@import "variables.scss";
+@import "grid.scss";
+
+@import "external/normalize.scss";
+
+@import "partials/menu.scss";
+@import "partials/article.scss";
+@import "partials/widgets.scss";
+@import "partials/footer.scss";
+@import "partials/pagination.scss";
+@import "partials/sidebar.scss";
+@import "partials/base.scss";
+@import "partials/layout/archives.scss";
+@import "partials/layout/article.scss";
+@import "partials/layout/list.scss";
+@import "partials/layout/404.scss";
+@import "partials/layout/search.scss";
+
+@import "custom.scss";
+
+a {
+    text-decoration: none;
+    color: var(--accent-color);
+
+    &:hover {
+        color: var(--accent-color-darker);
+    }
+
+    &.link {
+        box-shadow: 0px -2px 0px rgba(var(--link-background-color), var(--link-background-opacity)) inset;
+        transition: all 0.3s ease;
+
+        &:hover {
+            box-shadow: 0px -10px 0px rgba(var(--link-background-color), var(--link-background-opacity-hover)) inset;
+        }
+    }
+}
+
+.section-title {
+    text-transform: uppercase;
+    margin-top: 0;
+    margin-bottom: 10px;
+    display: block;
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: var(--body-text-color);
+
+    a {
+        color: var(--body-text-color);
+    }
+}
+
+#goTopBtn {
+    display: none; /* Hidden by default */
+    position: fixed; /* Fixed/sticky position */
+    bottom: 25px; /* Place the button at the bottom of the page */
+    right: 25px; /* Place the button 30px from the right */
+    z-index: 99; /* Make sure it does not overlap */
+    border: none; /* Remove borders */
+    outline: none; /* Remove outline */
+    cursor: pointer; /* Add a mouse pointer on hover */
+    padding: 10px; /* Some padding */
+    border-radius: 0.3em; /* Rounded corners */
+    font-size: 12px; /* Increase font size */
+  }
+/* Button */
+.btn {
+	padding: 5px 10px;
+	font-weight: 700;
+	color: #fff;
+	white-space: pre-line;
+	background: rgba(120, 120, 120, 0.3)
+}
+
+.btn:hover {
+	color: #fff;
+	background: #e64946;
+}

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>collision on 展維隨筆</title>
+    <link>https://davidhsu666.com/tags/collision/</link>
+    <description>Recent content in collision on 展維隨筆</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 26 Apr 2019 03:58:47 +0800</lastBuildDate><atom:link href="https://davidhsu666.com/tags/collision/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>遊戲中的碰撞檢測Collision Detection</title>
+      <link>https://davidhsu666.com/archives/gamecollisiondetection/</link>
+      <pubDate>Wed, 21 Mar 2018 05:52:36 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/gamecollisiondetection/</guid>
+      <description>遊戲中的碰撞檢測Collision Detection 目錄 1. 矩形碰撞檢測 2. 什麼是分離軸檢測? 3. 知識補充1–向量 4. 知識補充2–旋轉變換 5. 如何取得分離軸上的投影? 6. 編寫程式碼-投影、旋轉與判斷 7. 如何取得分離軸? 8. 粗糙的矩形檢測 9. 編寫程式碼–多邊形與多邊形 10. 編寫程式碼–多邊形與圓 11. SAT的總結 12. 多物體的碰撞優化 13. 動態物體間的碰撞檢測 14. Source Code 15. 結尾感想 參考資源:  而這篇文有三個主要目的 :
+ 對遊戲中的碰撞感興趣，卻不會寫程式的人可以了解原理 讓有能力實作的人，可以跟著文章寫出精確的多邊形碰撞檢測 自己的學習筆記  讓我們開始吧。
+這次要來介紹的主題是分離軸碰撞檢測(Separating Axis Theorem, SAT)
+分離軸定理通常用語檢測兩個多邊形或多邊形與圓之間的碰撞，跟所有演算法一樣他具有一定的優勢與缺點。
+我會慢慢講解背後的原理，並使用程式碼做簡易的範例。
+範例所使用的語言為Java Script，加上自製的向量函式庫，但我想觀念懂了應該不會有太大問題。
+1. 矩形碰撞檢測 我想先從最簡單的碰撞檢測開始講，這樣比較好讓各位了解為什麼需要分離軸檢測，所以先從一般的矩形碰撞開始。
+AABB碰撞檢測(Axis-aligned Bounding Box): 為了方邊物體之間進行碰撞檢測運算，通常會對物體創建一個長方形將其包圍，AABB包圍盒也被稱為軸對齊包圍盒。
+一般二維的AABB包圍盒具備兩項特點:
+ 以矩形包圍物體 矩形的每條邊，皆與坐標系的軸垂直  簡單來說就是用矩形把物體包起來，檢查矩形之間是否發生碰撞</description>
+    </item>
+    
+    <item>
+      <title>Vector reflection向量鏡射 基本的碰撞反彈回饋</title>
+      <link>https://davidhsu666.com/archives/math-for-game-vector-reflection/</link>
+      <pubDate>Fri, 26 Apr 2019 03:58:47 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/math-for-game-vector-reflection/</guid>
+      <description>Vector Reflection 這篇文應該是要跟MTV(Minimum Translation Vector)的碰撞回饋一起寫，但MTV發起來有點長，懶得打，先記錄Vector Reflection
+為什麼需要取得鏡射向量(Vector reflection) 一個簡單的例子，當乒乓球擊中球拍時，要如何取得反彈後的向量，而光影模擬時也會需要取得光線反射的向量，這時向量反射就非常重要了。
+因為這篇內容比較基礎，所以一些基本部份就省略了
+如何取得Vector reflection  V1打到Axis上，並反彈至V2 
+先定義一些資訊:
+ V1 = 物體的速度 V2 = 物體反彈後的速度 N = 擊中平面的法向量  如何取得擊中平面的法向量 N 呢?
+很簡單，透過兩垂直向量點積為0的特性就可以得到，假設Axis是(3, 4)的向量，那平面法向量就會是(-y, x) = (-4, 3) 或是 (y, -x) = (4, -3)  左/右法向量 
+再來看如何取得 V2
+將V1與V2之間畫一條線，並組合成一個平行四邊形，這樣就很明顯得到 V2 = 2N&#39; + V1，那麼接下來的問題就會是如何取得N&#39;。  img 
+先只單看V1跟法向量N，可以發現N&#39; 其實就是V1在法向量N上面的投影$proj_{\hat n}V_{1}$，所以可以透過基本三角函數來取得
+但$\cos \theta$需要另外計算夾角，所以有個更好的方法來代替，在點積公式中，使其中一個向量為單位向量，因為長度為1可直接省略，所以$\left |V_{1} \right | \cos \theta = V_{1} \cdot \hat{n}$，要加負號是因為$V1$與$\hat{n}$為反方向，$\left |V_{1} \right | \cos \theta$會是帶負號的純量，但我們需要的$\hat{n}$是與$V_{1}$反向的，所以加上負號:</description>
+    </item>
+    
+    <item>
+      <title>碰撞檢測的優化-四叉樹(Quadtree)</title>
+      <link>https://davidhsu666.com/archives/quadtree_in_2d/</link>
+      <pubDate>Sat, 27 Oct 2018 07:31:13 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/quadtree_in_2d/</guid>
+      <description>碰撞檢測的優化-四叉樹(Quadtree) 目錄 1. 什麼是QuadTree? 2. 插入流程: 3. 搜尋流程: 4. 實作QuadTree–插入 5. 實作QuadTree–搜尋 6. 實際應用 7. 總結 8. 參考資源  許多遊戲都會需要碰撞檢測來判斷兩物體的碰撞，但這些演算法通常是較為昂貴的操作，如果無法有效率的選擇檢測目標，很可能會大幅降低執行的速度。(像是之前提到的SAT碰撞檢測)
+在之前的”多邊形碰撞檢測”文中，也有提到當檢測物體越來越多時，基本逐一檢測的效率會越來越差，複雜度約為O(n^2)，就算排除重複檢測過的物體，只要是逐一檢測的方法就一定會走訪所有物件。
+ 
+從上圖可以得知直接全部檢測的話是4 x 5 = 20，如果扣掉重複，至少是4 + 3 + 2 + 1 = 10，但真正的問題是，就算1和3距離這麼遠，也照樣會檢查它們，那有沒有方法能解決這種狀況呢?
+這就是文章的主要內容，QuadTree。
+1. 什麼是QuadTree? 四叉樹(QuadTree)是一種劃分2D區域的樹狀資料結構，類似一般的二元樹，但子節點是4個，而不是2個。
+區域的劃分架構類似這樣 :
+ 將區域分成四塊   每塊再往下劃分   加入多個物體後的效果   運行效果，點圖放大 
+並限制每個區域能容納的上限，當超過後就將該區域再往下分割4塊，這樣就能夠將每個物體進行區域分類，這樣在檢查的時候就可以鎖定部分區域的物體，從而增加效率。
+2. 插入流程: 假設我先設定每個區域只能容納4個物體，只要超過該容量，就要分割該區域。
+左圖方形區域已經有4個物體，想再加入第5個時，就必須分割成4個子區域，再將第5顆分類到最近的左上角區域中，如右圖:
+ 超過容量時擴展子樹 
+以此類推，當要放入第9顆物體時，發現黑色區域也滿了，所以就再往下分割紅色區域，並放入離該物體最近的右下角區域中，如下圖:
+ 此區域也超過後，繼續擴展下去</description>
+    </item>
+    
+  </channel>
+</rss>

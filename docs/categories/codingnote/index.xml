@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>程式筆記 on 展維隨筆</title>
+    <link>https://davidhsu666.com/categories/codingnote/</link>
+    <description>Recent content in 程式筆記 on 展維隨筆</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 11 Dec 2020 05:01:26 +0800</lastBuildDate><atom:link href="https://davidhsu666.com/categories/codingnote/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>遊戲中的碰撞檢測Collision Detection</title>
+      <link>https://davidhsu666.com/archives/gamecollisiondetection/</link>
+      <pubDate>Wed, 21 Mar 2018 05:52:36 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/gamecollisiondetection/</guid>
+      <description>遊戲中的碰撞檢測Collision Detection 目錄 1. 矩形碰撞檢測 2. 什麼是分離軸檢測? 3. 知識補充1–向量 4. 知識補充2–旋轉變換 5. 如何取得分離軸上的投影? 6. 編寫程式碼-投影、旋轉與判斷 7. 如何取得分離軸? 8. 粗糙的矩形檢測 9. 編寫程式碼–多邊形與多邊形 10. 編寫程式碼–多邊形與圓 11. SAT的總結 12. 多物體的碰撞優化 13. 動態物體間的碰撞檢測 14. Source Code 15. 結尾感想 參考資源:  而這篇文有三個主要目的 :
+ 對遊戲中的碰撞感興趣，卻不會寫程式的人可以了解原理 讓有能力實作的人，可以跟著文章寫出精確的多邊形碰撞檢測 自己的學習筆記  讓我們開始吧。
+這次要來介紹的主題是分離軸碰撞檢測(Separating Axis Theorem, SAT)
+分離軸定理通常用語檢測兩個多邊形或多邊形與圓之間的碰撞，跟所有演算法一樣他具有一定的優勢與缺點。
+我會慢慢講解背後的原理，並使用程式碼做簡易的範例。
+範例所使用的語言為Java Script，加上自製的向量函式庫，但我想觀念懂了應該不會有太大問題。
+1. 矩形碰撞檢測 我想先從最簡單的碰撞檢測開始講，這樣比較好讓各位了解為什麼需要分離軸檢測，所以先從一般的矩形碰撞開始。
+AABB碰撞檢測(Axis-aligned Bounding Box): 為了方邊物體之間進行碰撞檢測運算，通常會對物體創建一個長方形將其包圍，AABB包圍盒也被稱為軸對齊包圍盒。
+一般二維的AABB包圍盒具備兩項特點:
+ 以矩形包圍物體 矩形的每條邊，皆與坐標系的軸垂直  簡單來說就是用矩形把物體包起來，檢查矩形之間是否發生碰撞</description>
+    </item>
+    
+    <item>
+      <title>[Win32筆記] 建立視窗 #1</title>
+      <link>https://davidhsu666.com/archives/win32note01/</link>
+      <pubDate>Fri, 11 Dec 2020 05:01:26 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/win32note01/</guid>
+      <description>Win32 目錄 1.建立entry point, WinMain() 2. 向系統註冊此視窗程式 WNDCLASS 3. 建立與顯示視窗 CreateWindow 4. 訊息監聽(Event Handler) WinProc 完整範例Code  參考 : MSDN Get Started with Win32 and C++
+1.建立entry point, WinMain() // int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow) // wWinMain為UniCode模式，WinMain為Ansi模式  int CALLBACK WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow){ // ...  return 0; } #define CALLBACK __stdcall: 簡單來說__stdcall就是專門用來call WinAPI的，詳細還有待研究
+參數:</description>
+    </item>
+    
+    <item>
+      <title>工科賽-軟體設計 歷屆試題解答</title>
+      <link>https://davidhsu666.com/archives/skills-competition-software/</link>
+      <pubDate>Wed, 06 Nov 2019 09:38:44 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/skills-competition-software/</guid>
+      <description>工科賽-軟體設計 歷屆試題解答  
+前言: 名次不高，這篇文只是單純分享，想看高手的心得，直接Google “ACM ICPC 心得”
+我是106屆工科軟體競賽選手，覺得高職選手的資源不是很多，如果沒有老師、學長指導、沒有解答、也沒有累積相關知識技術的底，想拿前段名次會辛苦很多。
+先簡單講講，所以可能有點亂，主要是該寫甚麼我也不清楚，工科軟體跟TOI比起來，知名度跟難度都差滿多的，所以也沒什麼人在關注或是討論題目，資源自然就少，大多只能靠學長或老師傳承解答。
+高職的比賽，沒興趣不太建議靠比賽升學，做選手學東西就行，因為沒有很好的名次加上備審，不好上前段國立，所有國立科大資工開放的總名額大概只有30個左右，採計的比賽也不只工科賽，所以就算前15名也不見得能上國立。
+全國工科技藝競賽 軟體設計在比什麼: 簡單來講就是用程式邏輯來解各種應用問題，但比UVA、IOI簡單，比較偏向應用一些吧，可以翻下面的題庫來看看在比什麼。 像是8-Puzzl轉盤，要在解題的時候去思考，如何讓電腦找到最少步數，相比傳統解題競賽，較著重在功能呈現上。
+ BFS解8-Puzzle 
+相關文章: 用BFS解8-Puzzle問題
+準備方式: 語言建議用C#(至少要會哪些之後再補好了)。
+建議是在暑假的時候先看完一到兩本演算法或資料結構的書(推薦啊哈!圖解演算法、大話資料結構)，每天看一個段落，理解後就實做一次，很快就能看完了，以我來說大約一個月。
+差不多開學後，開始練習工科賽題目，我是覺得工科賽歷屆題目就直接拿來計時比較實在，不然沒人幫你出題目，要想出能提升自己技術的題目內容其實挺難的，然後在11月前把工科北軟歷屆解完。
+11月前記得也要寫學科，學科這邊就不用寫太多，覺得自己的相關知識差不多後，寫工科的99~104，如果每張不看解答或查資料，都有90左右，就差不多了，建議寫完就算對了也要在旁邊補上解法，這樣到時候比賽前複習才比較方便。
+接著11月初，如果你是台北人，建議參加北軟，模擬一些臨場感，因為當你有所準備時，上場真的會很緊張，不然也沒什麼機會能模擬比賽了….。就算不是也沒關係，北軟比完會釋出題目，把它全部做完。
+接著補一些自己當初不會或是卡住的內容，花點時間研究，並給自己出模擬試題，檢查自己哪些觀念不太夠。
+如果你都完成了，就準備比賽拿金手吧。
+雜談: 要拿金手比IOI培訓營簡單很多，感覺教育部也沒特別規定高職的程式設計課程要怎麼上，就變成看學校老師個人造化的感覺。
+別校選手說他們老師也是不推薦比賽，他參賽的原因只是科排第一，被科主任盧過來的。
+全台60幾所高職報名軟體設計，真正有在訓練選手的也就那幾間，感覺其他很多都是被學校盧過來參加，或是覺得有趣隨便報名，反正校內選拔也沒人在搶，所以比賽水平自然沒有IOI那麼高。
+大概是這樣吧，我自己還有一些想法跟心得，只是不曉得怎麼寫。 剩下看要問什麼吧，一些比較深的演算法，我答不出來可以去這一串問，滿多人可以幫忙的。
+電腦修護那塊，我伺服器沒什麼研究，單晶片當初有協助同校選手，所以還算幫得上忙吧，有問題可以問問看。
+解答: 歷屆題目的程式碼，這些題目解答都是我自己寫的，雖然寫得很爛，但至少能解出題目要求的解答，所以寫法有看不懂的地方，我看一下題目跟Code都能回答。
+這邊放北軟的歷屆，主要是我覺得北軟的題型跟工科賽幾乎一樣，而且出題老師也跟工科賽有重疊，因為這幾年都有類似的題目出現，加上北軟在工科賽之前比，非常值得做參考。
+工科賽軟體設計: 歷屆題目 : Here 96~106屆參考解答 : Here
+北市軟體設計競賽(高工): 歷屆題目 : Here 99~106屆參考解答 : Here</description>
+    </item>
+    
+    <item>
+      <title>Vector reflection向量鏡射 基本的碰撞反彈回饋</title>
+      <link>https://davidhsu666.com/archives/math-for-game-vector-reflection/</link>
+      <pubDate>Fri, 26 Apr 2019 03:58:47 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/math-for-game-vector-reflection/</guid>
+      <description>Vector Reflection 這篇文應該是要跟MTV(Minimum Translation Vector)的碰撞回饋一起寫，但MTV發起來有點長，懶得打，先記錄Vector Reflection
+為什麼需要取得鏡射向量(Vector reflection) 一個簡單的例子，當乒乓球擊中球拍時，要如何取得反彈後的向量，而光影模擬時也會需要取得光線反射的向量，這時向量反射就非常重要了。
+因為這篇內容比較基礎，所以一些基本部份就省略了
+如何取得Vector reflection  V1打到Axis上，並反彈至V2 
+先定義一些資訊:
+ V1 = 物體的速度 V2 = 物體反彈後的速度 N = 擊中平面的法向量  如何取得擊中平面的法向量 N 呢?
+很簡單，透過兩垂直向量點積為0的特性就可以得到，假設Axis是(3, 4)的向量，那平面法向量就會是(-y, x) = (-4, 3) 或是 (y, -x) = (4, -3)  左/右法向量 
+再來看如何取得 V2
+將V1與V2之間畫一條線，並組合成一個平行四邊形，這樣就很明顯得到 V2 = 2N&#39; + V1，那麼接下來的問題就會是如何取得N&#39;。  img 
+先只單看V1跟法向量N，可以發現N&#39; 其實就是V1在法向量N上面的投影$proj_{\hat n}V_{1}$，所以可以透過基本三角函數來取得
+但$\cos \theta$需要另外計算夾角，所以有個更好的方法來代替，在點積公式中，使其中一個向量為單位向量，因為長度為1可直接省略，所以$\left |V_{1} \right | \cos \theta = V_{1} \cdot \hat{n}$，要加負號是因為$V1$與$\hat{n}$為反方向，$\left |V_{1} \right | \cos \theta$會是帶負號的純量，但我們需要的$\hat{n}$是與$V_{1}$反向的，所以加上負號:</description>
+    </item>
+    
+    <item>
+      <title>碰撞檢測的優化-四叉樹(Quadtree)</title>
+      <link>https://davidhsu666.com/archives/quadtree_in_2d/</link>
+      <pubDate>Sat, 27 Oct 2018 07:31:13 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/quadtree_in_2d/</guid>
+      <description>碰撞檢測的優化-四叉樹(Quadtree) 目錄 1. 什麼是QuadTree? 2. 插入流程: 3. 搜尋流程: 4. 實作QuadTree–插入 5. 實作QuadTree–搜尋 6. 實際應用 7. 總結 8. 參考資源  許多遊戲都會需要碰撞檢測來判斷兩物體的碰撞，但這些演算法通常是較為昂貴的操作，如果無法有效率的選擇檢測目標，很可能會大幅降低執行的速度。(像是之前提到的SAT碰撞檢測)
+在之前的”多邊形碰撞檢測”文中，也有提到當檢測物體越來越多時，基本逐一檢測的效率會越來越差，複雜度約為O(n^2)，就算排除重複檢測過的物體，只要是逐一檢測的方法就一定會走訪所有物件。
+ 
+從上圖可以得知直接全部檢測的話是4 x 5 = 20，如果扣掉重複，至少是4 + 3 + 2 + 1 = 10，但真正的問題是，就算1和3距離這麼遠，也照樣會檢查它們，那有沒有方法能解決這種狀況呢?
+這就是文章的主要內容，QuadTree。
+1. 什麼是QuadTree? 四叉樹(QuadTree)是一種劃分2D區域的樹狀資料結構，類似一般的二元樹，但子節點是4個，而不是2個。
+區域的劃分架構類似這樣 :
+ 將區域分成四塊   每塊再往下劃分   加入多個物體後的效果   運行效果，點圖放大 
+並限制每個區域能容納的上限，當超過後就將該區域再往下分割4塊，這樣就能夠將每個物體進行區域分類，這樣在檢查的時候就可以鎖定部分區域的物體，從而增加效率。
+2. 插入流程: 假設我先設定每個區域只能容納4個物體，只要超過該容量，就要分割該區域。
+左圖方形區域已經有4個物體，想再加入第5個時，就必須分割成4個子區域，再將第5顆分類到最近的左上角區域中，如右圖:
+ 超過容量時擴展子樹 
+以此類推，當要放入第9顆物體時，發現黑色區域也滿了，所以就再往下分割紅色區域，並放入離該物體最近的右下角區域中，如下圖:
+ 此區域也超過後，繼續擴展下去</description>
+    </item>
+    
+    <item>
+      <title>BFS解8-Puzzle問題</title>
+      <link>https://davidhsu666.com/archives/csharp-bfs-solve-8-puzzle/</link>
+      <pubDate>Fri, 22 Jun 2018 10:04:35 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/csharp-bfs-solve-8-puzzle/</guid>
+      <description>目錄  前言 儲存結構和移動判斷 用BFS窮舉狀態 執行結果 參考資源  1. 前言 先來簡單的介紹一下什麼是8-Puzzle。
+數字推盤遊戲(n-puzzle)是最早一種的滑塊類遊戲，常見的類型有十五數字推盤遊戲和八數字推盤遊戲等，也有以圖畫代替數字的推盤遊戲。
+ Wiki上的8Puzzle 
+如上圖所示，滑塊只能往空位移動。
+大概了解遊玩方法後，就來試著解決8-Puzzle問題吧!
+解法的步驟大概是這樣 :
+ 先完成移動判斷和節點狀態的儲存結構 用BFS窮舉狀態，並把當前狀態記錄下來篩選重複路徑 只要有一組路徑符合結果，該路徑就是最佳解(因BFS的特性是每次平均向外擴展，所以最先碰到終點的就是最佳解之一) 否則搜尋完畢後皆沒有找到符合的狀態，無解 最後透過父節點的回溯取得輸出路徑，即可得到最短路徑和分解步驟  2. 儲存結構和移動判斷 首先是儲存狀態，用二維陣列來儲存比較直觀，但是用一維陣列來儲存的話，我覺得在一些處理上比較方便，所以我採用一維陣列。
+ 資料結構 
+像是上面的這個狀態這樣，將0表示為空格，可以儲存成 { 8, 6, 4, 0, 7, 2, 5, 1, 3}。
+因為要透過BFS搜尋來取得路徑，所以需要建立一個節點的結構，這樣才能儲存當前狀態，並紀錄上個狀態 :
+public class Node { public byte[] status; // 當前狀態  public Node father; // 紀錄上個狀態，如果father = null 該點為根節點  public Node(byte[] status, Node father) { this.</description>
+    </item>
+    
+    <item>
+      <title>浮點數誤差IEEE-754</title>
+      <link>https://davidhsu666.com/archives/ieee-754/</link>
+      <pubDate>Tue, 22 May 2018 10:29:44 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/ieee-754/</guid>
+      <description>浮點數誤差IEEE-754 在程式語言中，浮點數基本都是用 float 與 double來表示，但都會存在誤差
+float t1 = 0.69 * 10; cout &amp;lt;&amp;lt; setprecision(32) &amp;lt;&amp;lt; t1 &amp;lt;&amp;lt; endl; if(t1 == 6.9) cout &amp;lt;&amp;lt; &amp;#34;相等&amp;#34; &amp;lt;&amp;lt; endl; else cout &amp;lt;&amp;lt; &amp;#34;不相等&amp;#34; &amp;lt;&amp;lt; endl; // output // =&amp;gt; 6.900000095367431640625 // =&amp;gt; 不相等 正常6.9 * 10 應該要等於6.9，但是答案卻是不相等?
+這個原因跟浮點數的儲存原理有關，讓我們開始吧!
+何謂IEEE-754 自電腦發明以來，曾出現過各種不同的浮點數表示法，但目前最通用的是IEEE二進制運算標準(IEEE Standard for Binary Floating-Point Arithmetic , 簡稱IEEE-754)
+在IEEE-754標準中定義了四種浮點數格式，但我只講基本的兩種，分別為單精準度float(32bit)和雙精準度double(64bit)。其中單精準度有24位有效儲存數字，而雙精準則有53位有效數字，相對於十進位來說，分別是7位(224 = 107)和16位(253 = 1016)。
+為了方便說明，所以先解釋什麼是正規化
+正規化就像是數學中的科學記號，如123456通常會表示成1.23456 x 105，而指數部分也有可能是負的，如 0.123456 就會變成 1.23456 x 10-1。
+二進位的正規化 :</description>
+    </item>
+    
+    <item>
+      <title>Doublebuffer雙重緩衝</title>
+      <link>https://davidhsu666.com/archives/doublebuffer/</link>
+      <pubDate>Wed, 21 Mar 2018 10:48:34 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/doublebuffer/</guid>
+      <description>我在網路上搜尋到一些解決方法，在這裡做個整理。
+正常更新畫面的方法都是先將畫面清空後，再將新的畫面畫上去，
+導致清空的剎那，好像畫面閃爍了
+ 
+解決方法:
+ 畫面重繪時，不直接在螢幕上重繪，而是先畫在緩衝區，等整個畫面都重繪完成，才一次放到螢幕上。 想像我們用兩張紙來做更新，一張紙是當前畫面，另一張是緩衝區，在更新時把圖畫在第二章紙上，畫完後再一次把這張紙覆蓋到主畫面。  1.把DoubleBuffered 屬性設為 true。(參考自C# MSDN使用表單和控制項的雙重緩衝)
+public Form1() { InitializeComponent(); this.DoubleBuffered = true; } 2.使用 BufferedGraphicsContext 。(參考自MSDN手動管理緩衝的圖形)
+float x = 0, y = 0; public Form1() { InitializeComponent(); timer1.Interval = 1000 / 60; timer1.Start(); } private void timer1_Tick(object sender, EventArgs e) { x += 1; BufferedGraphicsContext currentContext = BufferedGraphicsManager.Current; BufferedGraphics myBuffer = currentContext.Allocate(this.CreateGraphics(), this.DisplayRectangle); //清除繪圖畫面，並用原本的背景色填充，否則背景呈現黑色  myBuffer.Graphics.Clear(this.BackColor); //在圖形緩衝區中畫圖  myBuffer.Graphics.DrawEllipse(Pens.Blue, x, y, 70, 70); //將圖形緩衝區的內容畫到指定的畫布上  myBuffer.</description>
+    </item>
+    
+    <item>
+      <title>快速判斷N是否為2的次方數</title>
+      <link>https://davidhsu666.com/archives/ispowerby2/</link>
+      <pubDate>Wed, 21 Mar 2018 09:31:46 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/ispowerby2/</guid>
+      <description>快速判斷N是否為2的次方數 前陣子遇到一個題目 : 請你判斷一個正整數N是否為2的次方。
+我遇到這題目時，直覺想到的就是，透過迴圈從1開始檢查所有2的次方數，像這樣 :
+bool isPowerBy2_(int n) { for (int i = 1; i &amp;lt;= n; i *= 2) if (i == n) return true; return false; } // output: // isPowerBy2(1) =&amp;gt; true // isPowerBy2(2) =&amp;gt; true // isPowerBy2(4) =&amp;gt; true // isPowerBy2(-1) =&amp;gt; false // isPowerBy2(0) =&amp;gt; false // isPowerBy2(3) =&amp;gt; false 雖然這樣就解決了，但我一直在想是否有效率更高的方法。
+我們先來觀察2的次方數轉成2進制的樣子 :
+1 =&amp;gt; 0000 0001 , 1 – 1 =&amp;gt; 0000 0000 2 =&amp;gt; 0000 0010 , 2 – 1 =&amp;gt; 0000 0001 4 =&amp;gt; 0000 0100 , 4 – 1 =&amp;gt; 0000 0011 8 =&amp;gt; 0000 1000 , 8 – 1 =&amp;gt; 0000 0111 16 =&amp;gt; 0001 0000 , 16 – 1 =&amp;gt; 0000 1111 32 =&amp;gt; 0010 0000 , 32 – 1 =&amp;gt; 0001 1111 可以發現，只要該數是2的次方時，除了MSB(最高位元)是 1 其餘都是0，</description>
+    </item>
+    
+  </channel>
+</rss>

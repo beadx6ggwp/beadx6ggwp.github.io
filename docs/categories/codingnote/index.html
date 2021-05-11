@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='紀錄一些學習過程'><title>Category: 程式筆記 - 展維隨筆</title>
+
+<link rel='canonical' href='https://davidhsu666.com/categories/codingnote/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='Category: 程式筆記 - 展維隨筆'>
+<meta property='og:description' content='紀錄一些學習過程'>
+<meta property='og:url' content='https://davidhsu666.com/categories/codingnote/'>
+<meta property='og:site_name' content='展維隨筆'>
+<meta property='og:type' content='website'><meta property='og:updated_time' content=' 2020-12-11T05:01:26&#43;08:00 '/><meta property='og:image' content='https://davidhsu666.com/resource/categories/CodingNote2.jpg' />
+<meta name="twitter:title" content="Category: 程式筆記 - 展維隨筆">
+<meta name="twitter:description" content="紀錄一些學習過程"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://davidhsu666.com/resource/categories/CodingNote2.jpg' /><link rel="alternate" type="application/rss&#43;xml" href="https://davidhsu666.com/categories/codingnote/index.xml">
+    <link rel="icon" href="https://davidhsu666.com/resource/favicon-32x32.png">
+
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YJXR109WY7"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-YJXR109WY7', { 'anonymize_ip': false });
+}
+</script>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap');
+     
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;800&display=swap');
+    :root {
+        --article-font-family: 'Roboto',"Noto Serif TC", var(--base-font-family);
+    }
+</style>
+        
+    </head>
+    <body class="">
+        
+        <script src="/js/custom.js"></script>
+        <button class="btn" onclick="scrollTop1()" id="goTopBtn" title="Go to top">TOP</button>
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.body.dataset.scheme = 'dark';
+        } else {
+            document.body.dataset.scheme = 'light';
+        }
+    })();
+</script><div class="container main-container flex on-phone--column extended ">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切換選單">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/thinking_hu84577f8e2354056019efb2e4fba9d39e_126194_300x0_resize_box_2.png" width="300"
+                            height="292" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🤔</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="https://davidhsu666.com/">展維隨筆</a></h1>
+        <h2 class="site-description">網頁維修中</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/test/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>test</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>暗色模式</span>
+            </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <h3 class="section-title">
+        
+            Categories
+        
+    </h3>
+
+    <div class="section-card">
+        <div class="section-details">
+            <h3 class="section-count">9 pages</h3>
+            <h1 class="section-term">程式筆記</h1>
+            
+                <h2 class="section-description">紀錄一些學習過程</h2>
+            
+        </div>
+            <div class="section-image">
+                
+                    <img src="/resource/categories/CodingNote2.jpg" loading="lazy" />
+                
+            </div>
+        
+    </div>
+    
+    <section class="article-list--compact">
+        
+            <article>
+    <a href="/archives/gamecollisiondetection/">
+        <div class="article-details">
+            <h2 class="article-title">遊戲中的碰撞檢測Collision Detection</h2>
+            <footer class="article-time">
+                <time datetime='2018-03-21T05:52:36&#43;08:00'>Mar 21, 2018</time>
+            </footer>
+        </div>
+            <div class="article-image">
+                <img src="/archives/gamecollisiondetection/img/SAT09.jpg" 
+                        width="400"
+                        height="250" 
+                        loading="lazy">
+                
+            </div>
+        
+    </a>
+</article>
+        
+            <article>
+    <a href="/archives/win32note01/">
+        <div class="article-details">
+            <h2 class="article-title">[Win32筆記] 建立視窗 #1</h2>
+            <footer class="article-time">
+                <time datetime='2020-12-11T05:01:26&#43;08:00'>Dec 11, 2020</time>
+            </footer>
+        </div>
+            <div class="article-image">
+                <img src="/archives/win32note01/img/1602103707812.jpg" 
+                        width="432"
+                        height="243" 
+                        loading="lazy">
+                
+            </div>
+        
+    </a>
+</article>
+        
+            <article>
+    <a href="/archives/skills-competition-software/">
+        <div class="article-details">
+            <h2 class="article-title">工科賽-軟體設計 歷屆試題解答</h2>
+            <footer class="article-time">
+                <time datetime='2019-11-06T09:38:44&#43;08:00'>Nov 06, 2019</time>
+            </footer>
+        </div>
+            <div class="article-image">
+                <img src="/archives/skills-competition-software/img/skill_img1.jpg" 
+                        width="1320"
+                        height="1064" 
+                        loading="lazy">
+                
+            </div>
+        
+    </a>
+</article>
+        
+            <article>
+    <a href="/archives/math-for-game-vector-reflection/">
+        <div class="article-details">
+            <h2 class="article-title">Vector reflection向量鏡射 基本的碰撞反彈回饋</h2>
+            <footer class="article-time">
+                <time datetime='2019-04-26T03:58:47&#43;08:00'>Apr 26, 2019</time>
+            </footer>
+        </div>
+            <div class="article-image">
+                <img src="/archives/math-for-game-vector-reflection/img/13fig21.gif" 
+                        width="500"
+                        height="309" 
+                        loading="lazy">
+                
+            </div>
+        
+    </a>
+</article>
+        
+            <article>
+    <a href="/archives/quadtree_in_2d/">
+        <div class="article-details">
+            <h2 class="article-title">碰撞檢測的優化-四叉樹(Quadtree)</h2>
+            <footer class="article-time">
+                <time datetime='2018-10-27T07:31:13&#43;08:00'>Oct 27, 2018</time>
+            </footer>
+        </div>
+            <div class="article-image">
+                <img src="/archives/quadtree_in_2d/img/Quad_013.png" 
+                        width="1315"
+                        height="520" 
+                        loading="lazy">
+                
+            </div>
+        
+    </a>
+</article>
+        
+            <article>
+    <a href="/archives/csharp-bfs-solve-8-puzzle/">
+        <div class="article-details">
+            <h2 class="article-title">BFS解8-Puzzle問題</h2>
+            <footer class="article-time">
+                <time datetime='2018-06-22T10:04:35&#43;08:00'>Jun 22, 2018</time>
+            </footer>
+        </div>
+            <div class="article-image">
+                <img src="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle07.jpg" 
+                        width="1046"
+                        height="763" 
+                        loading="lazy">
+                
+            </div>
+        
+    </a>
+</article>
+        
+            <article>
+    <a href="/archives/ieee-754/">
+        <div class="article-details">
+            <h2 class="article-title">浮點數誤差IEEE-754</h2>
+            <footer class="article-time">
+                <time datetime='2018-05-22T10:29:44&#43;08:00'>May 22, 2018</time>
+            </footer>
+        </div>
+            <div class="article-image">
+                <img src="/archives/ieee-754/img/ieee754.jpg" 
+                        width="1255"
+                        height="216" 
+                        loading="lazy">
+                
+            </div>
+        
+    </a>
+</article>
+        
+    </section>
+    <nav class='pagination'>
+        
+        
+
+        
+            
+                <span class='page-link current'>1</span>
+                
+            
+            
+                    <a class='page-link' href='/categories/codingnote/page/2/'>2</a>
+                
+            
+    </nav>
+
+<footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2021 展維隨筆
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.3.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+            </main>
+    
+    
+    <aside class="sidebar right-sidebar sticky">
+        
+            <form action="/search/" class="search-form widget" >
+        <p>
+            <label>搜尋</label>
+            <input name="keyword" required placeholder="輸入關鍵字..." />
+        
+            <button title="搜尋">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+            </button>
+        </p>
+    </form>
+        
+            <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-infinity" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M9.828 9.172a4 4 0 1 0 0 5.656 a10 10 0 0 0 2.172 -2.828a10 10 0 0 1 2.172 -2.828 a4 4 0 1 1 0 5.656a10 10 0 0 1 -2.172 -2.828a10 10 0 0 0 -2.172 -2.828" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">整理</h2>
+
+        
+        
+        
+        
+        
+        <div class="widget-archive--list">
+            <div class="archives-year">
+                    <a href="/archives/#2020">
+                        
+                            <span class="year">2020</span>
+                            <span class="count">2</span>
+                        
+                    </a> 
+                </div>
+            <div class="archives-year">
+                    <a href="/archives/#2019">
+                        
+                            <span class="year">2019</span>
+                            <span class="count">2</span>
+                        
+                    </a> 
+                </div>
+            <div class="archives-year">
+                    <a href="/archives/#2018">
+                        
+                            <span class="year">2018</span>
+                            <span class="count">8</span>
+                        
+                    </a> 
+                </div>
+            <div class="archives-year">
+                    <a href="/archives/#2015">
+                        
+                            <span class="year">2015</span>
+                            <span class="count">3</span>
+                        
+                    </a> 
+                </div>
+            
+        </div>
+    </section>
+        
+            <section class="widget tagCloud">
+    <div class="widget-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11 3L20 12a1.5 1.5 0 0 1 0 2L14 20a1.5 1.5 0 0 1 -2 0L3 11v-4a4 4 0 0 1 4 -4h4" />
+  <circle cx="9" cy="9" r="2" />
+</svg>
+
+
+
+    </div>
+    <h2 class="widget-title section-title">標籤</h2>
+
+    <div class="tagCloud-tags">
+        
+            <a href="/tags/collision/" class="font_size_3">
+                collision
+            </a>
+        
+            <a href="/tags/problemsolving/" class="font_size_2">
+                ProblemSolving
+            </a>
+        
+            <a href="/tags/c&#43;&#43;/" class="font_size_1">
+                C&#43;&#43;
+            </a>
+        
+            <a href="/tags/graphics/" class="font_size_1">
+                Graphics
+            </a>
+        
+            <a href="/tags/js/" class="font_size_1">
+                JS
+            </a>
+        
+            <a href="/tags/win32/" class="font_size_1">
+                Win32
+            </a>
+        
+    </div>
+</section>
+        
+    </aside>
+
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

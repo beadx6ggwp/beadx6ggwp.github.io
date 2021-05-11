@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>作品 on 展維隨筆</title>
+    <link>https://davidhsu666.com/categories/project/</link>
+    <description>Recent content in 作品 on 展維隨筆</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 04 Dec 2020 02:16:07 +0800</lastBuildDate><atom:link href="https://davidhsu666.com/categories/project/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>從零開始的基礎RPG框架</title>
+      <link>https://davidhsu666.com/archives/2dgame-nonename/</link>
+      <pubDate>Fri, 04 Dec 2020 02:16:07 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/2dgame-nonename/</guid>
+      <description>從零開始的基礎RPG框架 Sourcecode : 運行SourceCode時將此目錄丟到Apache中即可
+遊戲Demo連結 操作方式: 上下左右、空白鍵衝刺、 Z 攻擊、X 遠程、T 開啟Debug、WASD移動視角、R 重製視角
+ ver01(game) : 可以讀取地圖的第一版 基礎展示(game0) : 用簡易的基礎地圖展示所有功能 上下坡事件觸發器(game2) :  透過觸發器更改人物所在圖層，正確判斷上下坡的碰撞  完整的場景(gameshow1) :  右邊兩個圓形為加速事件觸發器，碰到即可變更速度  多邊形碰撞場景(gameshow2) :  滑鼠拖曳後按左鍵發射小球，來觀看多邊形碰撞回饋   目前進度  攝影機 動態碰撞盒 事件觸發器 自訂地圖存取 Debug(圖層、碰撞層顯示)  攝影機、Debug  加入Debug功能方便測試 只顯示視線範圍內的物件 渲染物件的動態圖層顯示 可隨意設定攝影機的追蹤範圍與目標，例如視角綁定在小鳥身上   WASD控制攝影機   透過Z-index畫家排序來處理多圖層 
+碰撞盒:多邊形碰撞與回饋 http://davidhsu666.com/archives/gamecollisiondetection/
+透過分離軸定理，解決普通AABB碰撞檢測無法處裡的多邊形與圓形
+建立自製碰撞函示庫，並透過最小穿透量來處理物體間的分離，將碰撞盒整合至物體中並加以應用
+   
+動態碰撞盒、敵人移動、事件觸發器 -透過動態碰撞盒處理揮砍的動作
+-加入狀態切換管理，攻擊開始-&amp;gt;攻擊中-&amp;gt;攻擊結束
+ 透過事件觸發器處理各式地圖事件 像是地圖上下坡，需要切換碰撞層，與NPC對話區域的觸發器，或是走斜坡時會被減速等等   發射劍氣   事件觸發器-加速</description>
+    </item>
+    
+    <item>
+      <title>JS Firework 跨年煙火</title>
+      <link>https://davidhsu666.com/archives/js-firework-%E8%B7%A8%E5%B9%B4%E7%85%99%E7%81%AB/</link>
+      <pubDate>Fri, 31 Aug 2018 10:55:51 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/js-firework-%E8%B7%A8%E5%B9%B4%E7%85%99%E7%81%AB/</guid>
+      <description>JS Firework 跨年煙火  
+買不起煙火沒關西，自己模擬一個就行了。 最近剛好學會一些特效，就順便寫個簡易粒子效果，來做個跨年煙火。
+可以到此連結遊玩，使用滑鼠左鍵施放煙火 :
+連結 : Click Here
+GitHub : Click Here
+Happy new year !!! </description>
+    </item>
+    
+    <item>
+      <title>JS 超級球球SuperBall</title>
+      <link>https://davidhsu666.com/archives/js-superball/</link>
+      <pubDate>Wed, 21 Mar 2018 11:05:37 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/js-superball/</guid>
+      <description>JS 超級球球SuperBall 這小遊戲是我第一個破千行程式碼的專案，前前後後花了2個月左右，花了很多時間在想架構跟遊戲特效的呈現，到目前的進度算是有點成果，放到網站做個記錄。
+遊戲連結 ver.0.2.3 : Click Here
+遊玩方式 移動 : 鍵盤上下左右
+攻擊 : 自動攻擊
+目標 : 通過 8 關
+敵人
+ 藍球 : 普通型 紅球 : 速度型 綠球 : 坦克型  這三種敵人都有四種大小，且擁有分裂功能，最多分裂四次
+道具:
+ 黃色方塊 : 強化 增加攻擊速度，在累積到一定量時會進化，增加子彈數量，掉落機率10% 白色方塊 : 全屏敵人緩速30%，掉落機率1.5% 紅色方塊 : 補包，增加一格血量，稀有道具，掉落機率0.1%   任務成功   任務失敗 
+ 遊戲畫面</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Pages on 展維隨筆</title>
+    <link>https://davidhsu666.com/page/</link>
+    <description>Recent content in Pages on 展維隨筆</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 28 May 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://davidhsu666.com/page/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Archives</title>
+      <link>https://davidhsu666.com/archives/</link>
+      <pubDate>Tue, 28 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>https://davidhsu666.com/about/</link>
+      <pubDate>Thu, 28 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://davidhsu666.com/about/</guid>
+      <description>目前網站掛掉，正在嘗試修復中
+順便換個新環境，使用HUGO架設靜態網站
+GitHub.</description>
+    </item>
+    
+    <item>
+      <title>test</title>
+      <link>https://davidhsu666.com/test/</link>
+      <pubDate>Thu, 28 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://davidhsu666.com/test/</guid>
+      <description>Test ttt
+justTest 測試一二三</description>
+    </item>
+    
+    <item>
+      <title>Search</title>
+      <link>https://davidhsu666.com/search/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://davidhsu666.com/search/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

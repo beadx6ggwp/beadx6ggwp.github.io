@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='解決畫面更新時發生的閃爍'><title>Doublebuffer雙重緩衝</title>
+
+<link rel='canonical' href='https://davidhsu666.com/archives/doublebuffer/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='Doublebuffer雙重緩衝'>
+<meta property='og:description' content='解決畫面更新時發生的閃爍'>
+<meta property='og:url' content='https://davidhsu666.com/archives/doublebuffer/'>
+<meta property='og:site_name' content='展維隨筆'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Graphics' /><meta property='article:published_time' content='2018-03-21T10:48:34&#43;08:00'/><meta property='article:modified_time' content='2018-03-21T10:48:34&#43;08:00'/><meta property='og:image' content='https://davidhsu666.com/archives/doublebuffer/img/doublebuffering-wiki.jpg' />
+<meta name="twitter:title" content="Doublebuffer雙重緩衝">
+<meta name="twitter:description" content="解決畫面更新時發生的閃爍"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://davidhsu666.com/archives/doublebuffer/img/doublebuffering-wiki.jpg' />
+    <link rel="icon" href="https://davidhsu666.com/resource/favicon-32x32.png">
+
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YJXR109WY7"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-YJXR109WY7', { 'anonymize_ip': false });
+}
+</script>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap');
+     
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;800&display=swap');
+    :root {
+        --article-font-family: 'Roboto',"Noto Serif TC", var(--base-font-family);
+    }
+</style>
+        
+    </head>
+    <body class="">
+        
+        <script src="/js/custom.js"></script>
+        <button class="btn" onclick="scrollTop1()" id="goTopBtn" title="Go to top">TOP</button>
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.body.dataset.scheme = 'dark';
+        } else {
+            document.body.dataset.scheme = 'light';
+        }
+    })();
+</script><div class="container main-container flex on-phone--column extended article-page with-toolbar">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切換選單">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/thinking_hu84577f8e2354056019efb2e4fba9d39e_126194_300x0_resize_box_2.png" width="300"
+                            height="292" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🤔</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="https://davidhsu666.com/">展維隨筆</a></h1>
+        <h2 class="site-description">網頁維修中</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/test/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>test</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>暗色模式</span>
+            </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <div id="article-toolbar">
+        <a href="https://davidhsu666.com/" class="back-home">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+            <span>Back</span>
+        </a>
+    </div>
+
+    <article class="has-image main-article">
+    
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/archives/doublebuffer/">
+                <img src="/archives/doublebuffer/img/doublebuffering-wiki.jpg"
+                        
+                        width="849" 
+                        height="148" 
+                        loading="lazy"
+                        alt="Featured image of post Doublebuffer雙重緩衝" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/codingnote/" style="background-color: #EDFF44; color: #000;">
+                程式筆記
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/archives/doublebuffer/">Doublebuffer雙重緩衝</a>
+    </h2>
+
+    
+    <h3 class="article-subtitle">
+        解決畫面更新時發生的閃爍
+    </h3>
+    <footer class="article-time">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <time class="article-time--published">Mar 21, 2018</time>
+    </footer></div>
+</header>
+
+    
+    <section class="article-content">
+    <p>我在網路上搜尋到一些解決方法，在這裡做個整理。</p>
+<p>正常更新畫面的方法都是先將畫面清空後，再將新的畫面畫上去，</p>
+<p>導致清空的剎那，好像畫面閃爍了</p>
+<p><figure style="flex-grow: 131; flex-basis: 315px">
+		<a href="/archives/doublebuffer/img/double.png" data-size="987x750"><img src="/archives/doublebuffer/img/double.png"
+				
+				width="987"
+				height="750"
+				loading="lazy"
+				>
+		</a>
+		
+	</figure></p>
+<p>解決方法:</p>
+<ol>
+<li>畫面重繪時，不直接在螢幕上重繪，而是先畫在緩衝區，等整個畫面都重繪完成，才一次放到螢幕上。</li>
+<li>想像我們用兩張紙來做更新，一張紙是當前畫面，另一張是緩衝區，在更新時把圖畫在第二章紙上，畫完後再一次把這張紙覆蓋到主畫面。</li>
+</ol>
+<p>1.把DoubleBuffered 屬性設為 true。(參考自<a class="link" href="https://msdn.microsoft.com/zh-tw/library/3t7htc9c.aspx"  target="_blank" rel="noopener"
+    >C# MSDN使用表單和控制項的雙重緩衝</a>)</p>
+<div class="highlight"><pre class="chroma"><code class="language-C#" data-lang="C#"><span class="k">public</span> <span class="n">Form1</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">InitializeComponent</span><span class="p">();</span>
+    <span class="k">this</span><span class="p">.</span><span class="n">DoubleBuffered</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><p>2.使用 BufferedGraphicsContext 。(參考自<a class="link" href="https://msdn.microsoft.com/zh-tw/library/ka0yazs1.aspx"  target="_blank" rel="noopener"
+    >MSDN手動管理緩衝的圖形</a>)</p>
+<div class="highlight"><pre class="chroma"><code class="language-C#" data-lang="C#"><span class="kt">float</span> <span class="n">x</span> <span class="p">=</span> <span class="m">0</span><span class="p">,</span> <span class="n">y</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+
+<span class="k">public</span> <span class="n">Form1</span><span class="p">()</span>
+<span class="p">{</span>
+   <span class="n">InitializeComponent</span><span class="p">();</span>
+   <span class="n">timer1</span><span class="p">.</span><span class="n">Interval</span> <span class="p">=</span> <span class="m">1000</span> <span class="p">/</span> <span class="m">60</span><span class="p">;</span>
+   <span class="n">timer1</span><span class="p">.</span><span class="n">Start</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="k">private</span> <span class="k">void</span> <span class="n">timer1_Tick</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">EventArgs</span> <span class="n">e</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="n">x</span> <span class="p">+=</span> <span class="m">1</span><span class="p">;</span>
+
+   <span class="n">BufferedGraphicsContext</span> <span class="n">currentContext</span> <span class="p">=</span> <span class="n">BufferedGraphicsManager</span><span class="p">.</span><span class="n">Current</span><span class="p">;</span>
+   <span class="n">BufferedGraphics</span> <span class="n">myBuffer</span> <span class="p">=</span> <span class="n">currentContext</span><span class="p">.</span><span class="n">Allocate</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">CreateGraphics</span><span class="p">(),</span> <span class="k">this</span><span class="p">.</span><span class="n">DisplayRectangle</span><span class="p">);</span>
+
+   <span class="c1">//清除繪圖畫面，並用原本的背景色填充，否則背景呈現黑色
+</span><span class="c1"></span>   <span class="n">myBuffer</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">Clear</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">BackColor</span><span class="p">);</span>
+
+   <span class="c1">//在圖形緩衝區中畫圖
+</span><span class="c1"></span>   <span class="n">myBuffer</span><span class="p">.</span><span class="n">Graphics</span><span class="p">.</span><span class="n">DrawEllipse</span><span class="p">(</span><span class="n">Pens</span><span class="p">.</span><span class="n">Blue</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="m">70</span><span class="p">,</span> <span class="m">70</span><span class="p">);</span>
+
+   <span class="c1">//將圖形緩衝區的內容畫到指定的畫布上
+</span><span class="c1"></span>   <span class="n">myBuffer</span><span class="p">.</span><span class="n">Render</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">CreateGraphics</span><span class="p">());</span>
+
+   <span class="c1">//釋放緩衝區的資源
+</span><span class="c1"></span>   <span class="n">myBuffer</span><span class="p">.</span><span class="n">Dispose</span><span class="p">();</span>
+   <span class="k">this</span><span class="p">.</span><span class="n">Refresh</span><span class="p">();</span>
+   <span class="k">this</span><span class="p">.</span><span class="n">Invalidate</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div><p>3.使用Bitmap。(參考自<a class="link" href="https://www.youtube.com/user/garfgary"  target="_blank" rel="noopener"
+    >Gary Lin 的 C# 遊戲程式設計</a>)</p>
+<p>較推薦使用這種方式</p>
+<div class="highlight"><pre class="chroma"><code class="language-C#" data-lang="C#"><span class="kt">float</span> <span class="n">x</span> <span class="p">=</span> <span class="m">0</span><span class="p">,</span> <span class="n">y</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+<span class="n">Graphics</span> <span class="n">backGraphics</span><span class="p">;</span>
+<span class="n">Bitmap</span> <span class="n">backBmp</span><span class="p">;</span>
+<span class="k">public</span> <span class="n">Form1</span><span class="p">()</span>
+<span class="p">{</span>
+   <span class="n">InitializeComponent</span><span class="p">();</span>
+
+   <span class="n">backBmp</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Bitmap</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">DisplayRectangle</span><span class="p">.</span><span class="n">Width</span>
+   <span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="n">DisplayRectangle</span><span class="p">.</span><span class="n">Height</span><span class="p">);</span>
+
+   <span class="n">backGraphics</span> <span class="p">=</span> <span class="n">Graphics</span><span class="p">.</span><span class="n">FromImage</span><span class="p">(</span><span class="n">backBmp</span><span class="p">);</span>
+
+   <span class="n">timer1</span><span class="p">.</span><span class="n">Interval</span> <span class="p">=</span> <span class="m">1000</span> <span class="p">/</span> <span class="m">60</span><span class="p">;</span>
+   <span class="n">timer1</span><span class="p">.</span><span class="n">Start</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="k">private</span> <span class="k">void</span> <span class="n">timer1_Tick</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">EventArgs</span> <span class="n">e</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="c1">//清空畫面，否則前一次的畫面會保留在上面
+</span><span class="c1"></span>   <span class="n">backGraphics</span><span class="p">.</span><span class="n">Clear</span><span class="p">(</span><span class="n">Color</span><span class="p">.</span><span class="n">White</span><span class="p">);</span>
+   <span class="n">x</span><span class="p">+=</span><span class="m">1</span><span class="p">;</span>
+   <span class="n">backGraphics</span><span class="p">.</span><span class="n">DrawEllipse</span><span class="p">(</span><span class="n">Pens</span><span class="p">.</span><span class="n">Blue</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="m">50</span><span class="p">,</span> <span class="m">50</span><span class="p">);</span>
+
+   <span class="c1">//將backBmp上的圖畫到Form上
+</span><span class="c1"></span>   <span class="k">this</span><span class="p">.</span><span class="n">CreateGraphics</span><span class="p">().</span><span class="n">DrawImageUnscaled</span><span class="p">(</span><span class="n">backBmp</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+</section>
+
+    
+    
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/graphics/">Graphics</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3&#43;Aro6EYUG4&#43;cU&#43;KJWu/X"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"integrity="sha384-g7c&#43;Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI&#43;sEnkvrMWph2EDg4"crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC&#43;Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa"crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ]
+        });})
+</script>
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">相關文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="has-image">
+    <a href="/archives/win32note01/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/win32note01/img/1602103707812.7553d01bdd8e04ae277fd5a402e941a8_huf41b96d2886df92c7e1e1280e6daa8eb_36021_250x150_fill_q75_box_smart1.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="win32note01" 
+                        data-hash="md5-dVPQG92OBK4nf9WkAulBqA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">[Win32筆記] 建立視窗 #1</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/archives/skills-competition-software/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/skills-competition-software/img/skill_img1.0b9e6b7158ea6a0a2528399ba2303f54_hu19eefd48ce774c36ccb19d58e43766bf_138141_250x150_fill_q75_box_smart1.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="skills-competition-software" 
+                        data-hash="md5-C55rcVjqagolKDmbojA/VA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">工科賽-軟體設計 歷屆試題解答</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/archives/math-for-game-vector-reflection/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/math-for-game-vector-reflection/img/13fig21.b79848615792b34f8c0d1dc38db6ae46_hu9951623b7b3c57f683995ab87fcf3709_19062_250x150_fill_box_smart1.gif" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="math-for-game-vector-reflection" 
+                        data-hash="md5-t5hIYVeSs0&#43;MDR3DjbauRg==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Vector reflection向量鏡射 基本的碰撞反彈回饋</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/archives/quadtree_in_2d/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/quadtree_in_2d/img/Quad_013.a7ee28c0eeb895aba73c942cef9f742e_hu646d8ae9c65ce621115142c45ba5d5ba_35828_250x150_fill_box_smart1_2.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="quadtree_in_2d" 
+                        data-hash="md5-p&#43;4owO64launPJQs7590Lg==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">碰撞檢測的優化-四叉樹(Quadtree)</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/archives/csharp-bfs-solve-8-puzzle/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle07.5f0cbaf1fb16c4a1c365aebf4f493188_hu0b5eea423e222ebc3e48e168702d93a0_282255_250x150_fill_q75_box_smart1.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="csharp-bfs-solve-8-puzzle" 
+                        data-hash="md5-Xwy68fsWxKHDZa6/T0kxiA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">BFS解8-Puzzle問題</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "beadx6ggwp" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2021 展維隨筆
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.3.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

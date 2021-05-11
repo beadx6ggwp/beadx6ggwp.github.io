@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='介紹如何優化大量物體的物體碰撞'><title>碰撞檢測的優化-四叉樹(Quadtree)</title>
+
+<link rel='canonical' href='https://davidhsu666.com/archives/quadtree_in_2d/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='碰撞檢測的優化-四叉樹(Quadtree)'>
+<meta property='og:description' content='介紹如何優化大量物體的物體碰撞'>
+<meta property='og:url' content='https://davidhsu666.com/archives/quadtree_in_2d/'>
+<meta property='og:site_name' content='展維隨筆'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='collision' /><meta property='article:published_time' content='2018-10-27T07:31:13&#43;08:00'/><meta property='article:modified_time' content='2018-10-27T07:31:13&#43;08:00'/><meta property='og:image' content='https://davidhsu666.com/archives/quadtree_in_2d/img/Quad_013.png' />
+<meta name="twitter:title" content="碰撞檢測的優化-四叉樹(Quadtree)">
+<meta name="twitter:description" content="介紹如何優化大量物體的物體碰撞"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://davidhsu666.com/archives/quadtree_in_2d/img/Quad_013.png' />
+    <link rel="icon" href="https://davidhsu666.com/resource/favicon-32x32.png">
+
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YJXR109WY7"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-YJXR109WY7', { 'anonymize_ip': false });
+}
+</script>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap');
+     
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;800&display=swap');
+    :root {
+        --article-font-family: 'Roboto',"Noto Serif TC", var(--base-font-family);
+    }
+</style>
+        
+    </head>
+    <body class="">
+        
+        <script src="/js/custom.js"></script>
+        <button class="btn" onclick="scrollTop1()" id="goTopBtn" title="Go to top">TOP</button>
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.body.dataset.scheme = 'dark';
+        } else {
+            document.body.dataset.scheme = 'light';
+        }
+    })();
+</script><div class="container main-container flex on-phone--column extended article-page with-toolbar">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切換選單">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/thinking_hu84577f8e2354056019efb2e4fba9d39e_126194_300x0_resize_box_2.png" width="300"
+                            height="292" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🤔</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="https://davidhsu666.com/">展維隨筆</a></h1>
+        <h2 class="site-description">網頁維修中</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/test/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>test</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>暗色模式</span>
+            </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <div id="article-toolbar">
+        <a href="https://davidhsu666.com/" class="back-home">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+            <span>Back</span>
+        </a>
+    </div>
+
+    <article class="has-image main-article">
+    
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/archives/quadtree_in_2d/">
+                <img src="/archives/quadtree_in_2d/img/Quad_013.png"
+                        
+                        width="1315" 
+                        height="520" 
+                        loading="lazy"
+                        alt="Featured image of post 碰撞檢測的優化-四叉樹(Quadtree)" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/codingnote/" style="background-color: #EDFF44; color: #000;">
+                程式筆記
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/archives/quadtree_in_2d/">碰撞檢測的優化-四叉樹(Quadtree)</a>
+    </h2>
+
+    
+    <h3 class="article-subtitle">
+        介紹如何優化大量物體的物體碰撞
+    </h3>
+    <footer class="article-time">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <time class="article-time--published">Oct 27, 2018</time>
+    </footer></div>
+</header>
+
+    
+    <section class="article-content">
+    <h1 id="碰撞檢測的優化-四叉樹quadtree">碰撞檢測的優化-四叉樹(Quadtree)</h1>
+<!-- ## 目錄
+1. [什麼是QuadTree?](#1-什麼是quadtree)
+2. [插入流程](#2-插入流程)
+3. [搜尋流程](#3-搜尋流程)
+4. [實作QuadTree–插入](#4-實作quadtree插入)
+5. [實作QuadTree–搜尋](#5-實作quadtree搜尋)
+6. [實際應用](#6-實際應用)
+7. [總結](#7-總結)
+8. [參考資源](#8-參考資源) -->
+<div>
+    <h2>目錄</h2>
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-什麼是quadtree">1. 什麼是QuadTree?</a></li>
+    <li><a href="#2-插入流程">2. 插入流程:</a></li>
+    <li><a href="#3-搜尋流程">3. 搜尋流程:</a></li>
+    <li><a href="#4-實作quadtree插入">4. 實作QuadTree–插入</a></li>
+    <li><a href="#5-實作quadtree搜尋">5. 實作QuadTree–搜尋</a></li>
+    <li><a href="#6-實際應用">6. 實際應用</a></li>
+    <li><a href="#7-總結">7. 總結</a></li>
+    <li><a href="#8-參考資源">8. 參考資源</a></li>
+  </ul>
+</nav>
+    <hr>
+</div>
+
+<p>許多遊戲都會需要碰撞檢測來判斷兩物體的碰撞，但這些演算法通常是較為昂貴的操作，如果無法有效率的選擇檢測目標，很可能會大幅降低執行的速度。(像是之前提到的<a class="link" href="https://davidhsu666.com/archives/gamecollisiondetection/"  target="_blank" rel="noopener"
+    >SAT碰撞檢測</a>)</p>
+<p>在之前的”多邊形碰撞檢測”文中，也有提到當檢測物體越來越多時，基本逐一檢測的效率會越來越差，複雜度約為O(n^2)，就算排除重複檢測過的物體，只要是逐一檢測的方法就一定會走訪所有物件。</p>
+<p><figure style="flex-grow: 111; flex-basis: 267px">
+		<a href="/archives/quadtree_in_2d/img/Quad_001.png" data-size="303x272"><img src="/archives/quadtree_in_2d/img/Quad_001.png"
+				
+				width="303"
+				height="272"
+				loading="lazy"
+				>
+		</a>
+		
+	</figure></p>
+<p>從上圖可以得知直接全部檢測的話是4 x 5 = 20，如果扣掉重複，至少是4 + 3 + 2 + 1 = 10，但真正的問題是，<strong>就算1和3距離這麼遠，也照樣會檢查它們</strong>，那有沒有方法能解決這種狀況呢?</p>
+<p>這就是文章的主要內容，<strong>QuadTree</strong>。</p>
+<h2 id="1-什麼是quadtree">1. 什麼是QuadTree?</h2>
+<p>四叉樹(QuadTree)是一種劃分2D區域的樹狀資料結構，類似一般的二元樹，但子節點是4個，而不是2個。</p>
+<p>區域的劃分架構類似這樣 :</p>
+<p><figure style="flex-grow: 105; flex-basis: 254px">
+		<a href="/archives/quadtree_in_2d/img/Quad_002.png" data-size="160x151"><img src="/archives/quadtree_in_2d/img/Quad_002.png"
+				
+				width="160"
+				height="151"
+				loading="lazy"
+				alt="將區域分成四塊">
+		</a>
+		
+		<figcaption>將區域分成四塊</figcaption>
+		
+	</figure>
+<figure style="flex-grow: 115; flex-basis: 276px">
+		<a href="/archives/quadtree_in_2d/img/Quad_011.png" data-size="270x234"><img src="/archives/quadtree_in_2d/img/Quad_011.png"
+				
+				width="270"
+				height="234"
+				loading="lazy"
+				alt="每塊再往下劃分">
+		</a>
+		
+		<figcaption>每塊再往下劃分</figcaption>
+		
+	</figure>
+<figure style="flex-grow: 100; flex-basis: 240px">
+		<a href="/archives/quadtree_in_2d/img/Quad_003.png" data-size="402x402"><img src="/archives/quadtree_in_2d/img/Quad_003.png"
+				
+				width="402"
+				height="402"
+				loading="lazy"
+				alt="加入多個物體後的效果">
+		</a>
+		
+		<figcaption>加入多個物體後的效果</figcaption>
+		
+	</figure>
+<figure style="flex-grow: 100; flex-basis: 240px">
+		<a href="/archives/quadtree_in_2d/img/Quad_010.gif" data-size="600x600"><img src="/archives/quadtree_in_2d/img/Quad_010.gif"
+				
+				width="600"
+				height="600"
+				loading="lazy"
+				alt="運行效果，點圖放大">
+		</a>
+		
+		<figcaption>運行效果，點圖放大</figcaption>
+		
+	</figure></p>
+<p>並限制每個區域能容納的上限，當超過後就將該區域再往下分割4塊，這樣就能夠將每個物體進行區域分類，這樣在檢查的時候就可以鎖定部分區域的物體，從而增加效率。</p>
+<h2 id="2-插入流程">2. 插入流程:</h2>
+<p>假設我先設定每個區域只能容納4個物體，只要超過該容量，就要分割該區域。</p>
+<p>左圖方形區域已經有4個物體，想再加入第5個時，就必須分割成4個子區域，再將第5顆分類到最近的左上角區域中，如右圖:</p>
+<p><figure style="flex-grow: 245; flex-basis: 588px">
+		<a href="/archives/quadtree_in_2d/img/Quad_004.png" data-size="873x356"><img src="/archives/quadtree_in_2d/img/Quad_004.png"
+				
+				width="873"
+				height="356"
+				loading="lazy"
+				alt="超過容量時擴展子樹">
+		</a>
+		
+		<figcaption>超過容量時擴展子樹</figcaption>
+		
+	</figure></p>
+<p>以此類推，當要放入第9顆物體時，發現黑色區域也滿了，所以就再往下分割紅色區域，並放入離該物體最近的右下角區域中，如下圖:</p>
+<p><figure style="flex-grow: 241; flex-basis: 580px">
+		<a href="/archives/quadtree_in_2d/img/Quad_005.png" data-size="856x354"><img src="/archives/quadtree_in_2d/img/Quad_005.png"
+				
+				width="856"
+				height="354"
+				loading="lazy"
+				alt="此區域也超過後，繼續擴展下去">
+		</a>
+		
+		<figcaption>此區域也超過後，繼續擴展下去</figcaption>
+		
+	</figure></p>
+<p>最後，就可以得出這樣的樹狀結構，這就是為什麼會叫做4叉樹的原因，如下圖:</p>
+<p><figure style="flex-grow: 227; flex-basis: 547px">
+		<a href="/archives/quadtree_in_2d/img/Quad_006.png" data-size="807x354"><img src="/archives/quadtree_in_2d/img/Quad_006.png"
+				
+				width="807"
+				height="354"
+				loading="lazy"
+				alt="完整流程">
+		</a>
+		
+		<figcaption>完整流程</figcaption>
+		
+	</figure></p>
+<h2 id="3-搜尋流程">3. 搜尋流程:</h2>
+<p>給定一搜尋範圍，並逐一排除不可能的區域，最後取得搜尋範圍內的物體。</p>
+<p>接續前面插入的狀態，假設我要檢測綠色框框內的物體是否發生碰撞，步驟如下 :</p>
+<ol>
+<li>與藍框區域作碰撞檢測，發現有所交集，檢測藍色區域的物體是否包含在綠框中，發現並沒有。</li>
+<li>與藍框的黑色子區域作檢測，發現只與左上的區域有所交集，所以排除另外三個區域，並發現有2個物體包含在綠框內。</li>
+<li>再往下檢察左上黑框的紅色子區域，並排除左上、左下，發現有3個物體在綠框內，紅框沒有子領域，走訪結束。</li>
+</ol>
+<p>最後回傳搜尋到的5個物體。</p>
+<p><figure style="flex-grow: 142; flex-basis: 341px">
+		<a href="/archives/quadtree_in_2d/img/Quad_008.png" data-size="776x545"><img src="/archives/quadtree_in_2d/img/Quad_008.png"
+				
+				width="776"
+				height="545"
+				loading="lazy"
+				alt="搜尋步驟">
+		</a>
+		
+		<figcaption>搜尋步驟</figcaption>
+		
+	</figure>
+<figure style="flex-grow: 214; flex-basis: 514px">
+		<a href="/archives/quadtree_in_2d/img/Quad_007.png" data-size="759x354"><img src="/archives/quadtree_in_2d/img/Quad_007.png"
+				
+				width="759"
+				height="354"
+				loading="lazy"
+				alt="大致流程">
+		</a>
+		
+		<figcaption>大致流程</figcaption>
+		
+	</figure></p>
+<p>如果是碰撞檢測的應用的話，就是把綠框換成該物體周圍可能發生碰撞的範圍，再來套入搜尋，就能更加簡化碰撞檢測的流程，如下圖 :</p>
+<p><figure style="flex-grow: 105; flex-basis: 253px">
+		<a href="/archives/quadtree_in_2d/img/Quad_009.png" data-size="172x163"><img src="/archives/quadtree_in_2d/img/Quad_009.png"
+				
+				width="172"
+				height="163"
+				loading="lazy"
+				alt="給定搜索形狀">
+		</a>
+		
+		<figcaption>給定搜索形狀</figcaption>
+		
+	</figure></p>
+<p>假設要檢查綠色圈圈與那些物體發生碰撞，透過前述的篩選流程，搜尋到最後，只要針對和綠圈區域相交的3個物體檢測就好，以此達成碰撞效率優化。</p>
+<p>這就是四叉樹的原理，接著進入實作環節吧。</p>
+<h2 id="4-實作quadtree插入">4. 實作QuadTree–插入</h2>
+<p>先整理大致的插入順序:</p>
+<ol>
+<li>如果該點不屬於A區域，直接結束</li>
+<li>如果該點屬於A區域，且A區域容量還夠的時候，將該點加入A區域</li>
+<li>如果A區域容量不夠時，將A區域劃分4個子區域，並將該點加入離它最近的子區域</li>
+</ol>
+<p>建立基本物件 :</p>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="kr">class</span> <span class="nx">Point</span> <span class="p">{</span>
+    <span class="nx">constructor</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">collisionType</span> <span class="o">=</span> <span class="s2">&#34;point&#34;</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">x</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">y</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kr">class</span> <span class="nx">Rect</span> <span class="p">{</span>
+    <span class="nx">constructor</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">w</span><span class="p">,</span> <span class="nx">h</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">collisionType</span> <span class="o">=</span> <span class="s2">&#34;rect&#34;</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">x</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">y</span> <span class="o">=</span> <span class="nx">y</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">w</span> <span class="o">=</span> <span class="nx">w</span><span class="p">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">h</span> <span class="o">=</span> <span class="nx">h</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><p>四個子區域的規劃:</p>
+<p><figure style="flex-grow: 169; flex-basis: 407px">
+		<a href="/archives/quadtree_in_2d/img/Quad_012.png" data-size="1133x667"><img src="/archives/quadtree_in_2d/img/Quad_012.png"
+				
+				width="1133"
+				height="667"
+				loading="lazy"
+				alt="定義每塊區域的範圍">
+		</a>
+		
+		<figcaption>定義每塊區域的範圍</figcaption>
+		
+	</figure></p>
+<p>並依照前述所說的插入順序，來建立QuadTree :</p>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="kr">class</span> <span class="nx">QuadTree</span> <span class="p">{</span>
+    <span class="nx">constructor</span><span class="p">(</span><span class="nx">boundary</span><span class="p">,</span> <span class="nx">level</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">MAX_OBJ</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span><span class="c1">// 該容器最大容量
+</span><span class="c1"></span>        <span class="k">this</span><span class="p">.</span><span class="nx">MAX_LEVEL</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span><span class="c1">// 最大深度
+</span><span class="c1"></span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">objs</span> <span class="o">=</span> <span class="p">[];</span><span class="c1">// 該容器的物體集合
+</span><span class="c1"></span>        <span class="k">this</span><span class="p">.</span><span class="nx">areas</span> <span class="o">=</span> <span class="p">[];</span><span class="c1">// 四塊子區域
+</span><span class="c1"></span>        <span class="k">this</span><span class="p">.</span><span class="nx">level</span> <span class="o">=</span> <span class="nx">level</span> <span class="o">||</span> <span class="mi">1</span><span class="p">;</span><span class="c1">//當前深度
+</span><span class="c1"></span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">boundary</span> <span class="o">=</span> <span class="nx">boundary</span><span class="p">;</span><span class="c1">// 容器範圍(Rect)
+</span><span class="c1"></span>    <span class="p">}</span>
+
+    <span class="cm">/*
+</span><span class="cm">    如果該點在範圍內，且容量也夠的話就新增該點至區域內，或是到達最大深度也直接新增
+</span><span class="cm">    到達容量上限後，就分割出四個子領域，再將物體分類至最靠近的子領域中
+</span><span class="cm">    */</span>
+    <span class="nx">insert</span><span class="p">(</span><span class="nx">object</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 先確認物體是否在邊界內
+</span><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">CheckCollision</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">boundary</span><span class="p">,</span> <span class="nx">object</span><span class="p">))</span> <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+
+        <span class="c1">// 如果當前容量與深度未達上限，就直接新增該物體
+</span><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">objs</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">MAX_OBJ</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">level</span> <span class="o">&gt;=</span> <span class="k">this</span><span class="p">.</span><span class="nx">MAX_LEVEL</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">objs</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">object</span><span class="p">);</span>
+            <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="p">}</span>
+        
+        <span class="c1">// 如果容量達上限，且沒有子領域的話，分割出四個子領域
+</span><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">areas</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">this</span><span class="p">.</span><span class="nx">subdivide</span><span class="p">();</span>
+
+        <span class="c1">// 嘗試給子領域新增該物體
+</span><span class="c1"></span>        <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">area</span> <span class="k">of</span> <span class="k">this</span><span class="p">.</span><span class="nx">areas</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">area</span><span class="p">.</span><span class="nx">insert</span><span class="p">(</span><span class="nx">object</span><span class="p">))</span> <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="nx">subdivide</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">x</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">boundary</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">boundary</span><span class="p">.</span><span class="nx">y</span><span class="p">;</span>
+        <span class="kd">let</span> <span class="nx">w</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">boundary</span><span class="p">.</span><span class="nx">w</span><span class="p">,</span> <span class="nx">h</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">boundary</span><span class="p">.</span><span class="nx">h</span><span class="p">;</span>
+
+        <span class="c1">// 矩形以左上為基準，依照各象限順序建立子領域，並新增到areas中
+</span><span class="c1"></span>        <span class="k">this</span><span class="p">.</span><span class="nx">areas</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="k">new</span> <span class="nx">QuadTree</span><span class="p">(</span><span class="k">new</span> <span class="nx">Rect</span><span class="p">(</span><span class="nx">x</span> <span class="o">+</span> <span class="nx">w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">h</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="k">this</span><span class="p">.</span><span class="nx">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">));</span><span class="c1">// topRight
+</span><span class="c1"></span>        <span class="k">this</span><span class="p">.</span><span class="nx">areas</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="k">new</span> <span class="nx">QuadTree</span><span class="p">(</span><span class="k">new</span> <span class="nx">Rect</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">h</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="k">this</span><span class="p">.</span><span class="nx">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">));</span><span class="c1">// topLeft
+</span><span class="c1"></span>        <span class="k">this</span><span class="p">.</span><span class="nx">areas</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="k">new</span> <span class="nx">QuadTree</span><span class="p">(</span><span class="k">new</span> <span class="nx">Rect</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span> <span class="o">+</span> <span class="nx">h</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">h</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="k">this</span><span class="p">.</span><span class="nx">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">));</span><span class="c1">// bottomLeft
+</span><span class="c1"></span>        <span class="k">this</span><span class="p">.</span><span class="nx">areas</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="k">new</span> <span class="nx">QuadTree</span><span class="p">(</span><span class="k">new</span> <span class="nx">Rect</span><span class="p">(</span><span class="nx">x</span> <span class="o">+</span> <span class="nx">w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">y</span> <span class="o">+</span> <span class="nx">h</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">h</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="k">this</span><span class="p">.</span><span class="nx">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">));</span><span class="c1">// bottomRight
+</span><span class="c1"></span>    <span class="p">}</span>
+
+    <span class="nx">show</span><span class="p">(</span><span class="nx">ctx</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 繪製邊界
+</span><span class="c1"></span>        <span class="nx">ctx</span><span class="p">.</span><span class="nx">strokeStyle</span> <span class="o">=</span> <span class="s2">&#34;#FFF&#34;</span><span class="p">;</span>
+        <span class="nx">ctx</span><span class="p">.</span><span class="nx">strokeRect</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">boundary</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">boundary</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">boundary</span><span class="p">.</span><span class="nx">w</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">boundary</span><span class="p">.</span><span class="nx">h</span><span class="p">);</span>
+
+        <span class="c1">// 顯示物體數/容量數，Debug
+</span><span class="c1"></span>        <span class="nx">drawString</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">objs</span><span class="p">.</span><span class="nx">length</span> <span class="o">+</span> <span class="s2">&#34;\n&#34;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">MAX_OBJ</span><span class="p">,</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">boundary</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">boundary</span><span class="p">.</span><span class="nx">w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">boundary</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">boundary</span><span class="p">.</span><span class="nx">h</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="s2">&#34;rgba(255,255,0,0.5)&#34;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">&#34;consolas&#34;</span><span class="p">,</span>
+            <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+        <span class="c1">// 往下繪製所有子領域區塊
+</span><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">areas</span><span class="p">.</span><span class="nx">length</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">area</span> <span class="k">of</span> <span class="k">this</span><span class="p">.</span><span class="nx">areas</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">area</span><span class="p">.</span><span class="nx">show</span><span class="p">(</span><span class="nx">ctx</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="c1">// 繪製出這塊領域的物體
+</span><span class="c1"></span>        <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">obj</span> <span class="k">of</span> <span class="k">this</span><span class="p">.</span><span class="nx">objs</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">ctx</span><span class="p">.</span><span class="nx">beginPath</span><span class="p">();</span>
+            <span class="nx">ctx</span><span class="p">.</span><span class="nx">arc</span><span class="p">(</span><span class="nx">obj</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">*</span> <span class="mi">2</span><span class="p">);</span>
+            <span class="nx">ctx</span><span class="p">.</span><span class="nx">stroke</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><p>至於程式中CheckCollision(ObjectA, ObjectB)，就是單純的點與矩形的碰撞檢測，請參考結尾附上的Code。</p>
+<p>使用方法 :</p>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="c1">// 建立QuadTree
+</span><span class="c1"></span><span class="kd">var</span> <span class="nx">qt</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">QuadTree</span><span class="p">(</span><span class="k">new</span> <span class="nx">Rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">Width</span><span class="p">,</span> <span class="nx">Height</span><span class="p">));</span>
+
+<span class="c1">// 新增物體
+</span><span class="c1"></span><span class="nx">qt</span><span class="p">.</span><span class="nx">insert</span><span class="p">(</span><span class="k">new</span> <span class="nx">Point</span><span class="p">(</span><span class="nx">X</span><span class="p">,</span> <span class="nx">Y</span><span class="p">));</span>
+
+<span class="c1">// 在Canvas中顯示分割與物體狀況
+</span><span class="c1"></span><span class="nx">qt</span><span class="p">.</span><span class="nx">show</span><span class="p">(</span><span class="nx">Context</span><span class="p">);</span>
+</code></pre></div><p>如此一來就能建立基本可新增物體的QuadTree了。</p>
+<p>基本插入範例，滑鼠點擊即可新增物體。新視窗執行 : <a class="link" href="/downloads/js_QuadTree/article/EP1-Insert&show-noLoop" target="_blank" rel="noopener">Here</a></p>
+<script async src="//jsfiddle.net/davidhsu/mpr70djv/embed/result/dark/"></script>
+<p>然後可以看到，每當一個區域插入4個物體後(MAX_OBJ = 4)，就會將該領域往下分割4個子區域，最多分割5層(MAX_LEVEL = 5)。</p>
+<h2 id="5-實作quadtree搜尋">5. 實作QuadTree–搜尋</h2>
+<p>搜詢的大致順序 :</p>
+<ol>
+<li>如果搜尋範圍跟當前領域相交，檢查該領域有多少物體包含在搜尋範圍中，並增加至陣列中</li>
+<li>當該領域有子區域時，繼續往下檢查有多少物件包含在搜尋範圍內</li>
+<li>直到所有搜尋範圍內的區域都被檢測過，回傳所有在搜尋範圍內的物體</li>
+</ol>
+<p>可以比對一下上面講的搜尋流程，應該會更清楚。</p>
+<p>根據上述步驟，在QuadTree中加入query這個function :</p>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="nx">query</span><span class="p">(</span><span class="nx">range</span><span class="p">,</span> <span class="nx">found</span><span class="p">){</span>
+    <span class="c1">// 如果沒有給定回傳的陣列，就建立一個
+</span><span class="c1"></span>    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">found</span><span class="p">)</span> <span class="nx">found</span> <span class="o">=</span> <span class="p">[];</span>
+
+    <span class="c1">// 判斷搜尋範圍(range)是否與當前領域有相交，沒有就直接跳掉，以節省效率
+</span><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">CheckCollision</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">boundary</span><span class="p">,</span> <span class="nx">range</span><span class="p">))</span> <span class="k">return</span><span class="p">;</span>
+
+    <span class="c1">// 如果搜尋範圍跟當前領域相交，檢查該領域有多少物體包含在搜尋範圍中，並增加至found
+</span><span class="c1"></span>    <span class="k">for</span><span class="p">(</span><span class="kd">let</span> <span class="nx">p</span> <span class="k">of</span> <span class="k">this</span><span class="p">.</span><span class="nx">objs</span><span class="p">){</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">CheckCollision</span><span class="p">(</span><span class="nx">p</span><span class="p">,</span> <span class="nx">range</span><span class="p">)){</span>
+            <span class="nx">found</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">p</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    
+    <span class="c1">// 當該領域有子區域時，繼續往下檢查有多少物件包含在搜尋範圍內
+</span><span class="c1"></span>    <span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">areas</span><span class="p">.</span><span class="nx">length</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">){</span>
+        <span class="k">for</span><span class="p">(</span><span class="kd">let</span> <span class="nx">area</span> <span class="k">of</span> <span class="k">this</span><span class="p">.</span><span class="nx">areas</span><span class="p">){</span>
+            <span class="nx">area</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span><span class="nx">range</span><span class="p">,</span> <span class="nx">found</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 完成搜尋，回傳結果
+</span><span class="c1"></span>    <span class="k">return</span> <span class="nx">found</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><p>而使用方法也非常簡單，給定一個搜尋區域，接著query就會直接撈出所有在搜尋範圍內的物體了 :</p>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="c1">// 假設queryTree已經新增一些物體了
+</span><span class="c1">// 建立一個搜尋範圍
+</span><span class="c1"></span><span class="kd">var</span> <span class="nx">checkRange</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Rect</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">150</span><span class="p">);</span>
+
+<span class="c1">// 套用搜尋範圍至queryTree取得範圍內的物體
+</span><span class="c1"></span><span class="kd">var</span> <span class="nx">objects</span> <span class="o">=</span> <span class="nx">queryTree</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span><span class="nx">checkRange</span><span class="p">);</span>
+</code></pre></div><p>基本搜尋範例，滑鼠點擊新增物體，移動可取得範圍內的物體。新視窗執行 : <a class="link" href="/downloads/js_QuadTree/article/EP2-query" target="_blank" rel="noopener">Here</a></p>
+<script async src="//jsfiddle.net/davidhsu/3rawty40/embed/result/dark/"></script>
+<h2 id="6-實際應用">6. 實際應用</h2>
+<p>我將正常的碰撞檢測與QuadTree檢測放在一起做比較，可以清楚的看到，當物體數量到2000時，No QuadTree的檢測方法已經無法負荷，畫面有明顯卡頓。換成QuadTree檢測後，就只掉一點FPS，透過比對，可以明顯看到效能的提升。</p>
+<p>每當物體碰撞時變成白色，滑鼠點擊新增100個物體，按下按鈕以切換不同檢測模式，觀察效能的差距 :</p>
+<p>在新視窗執行 : <a class="link" href="/downloads/js_QuadTree/article/EP3-ObjectTest" target="_blank" rel="noopener">Here</a></p>
+<script async src="//jsfiddle.net/davidhsu/3hz0jdse/embed/result/dark/"></script>
+<h2 id="7-總結">7. 總結</h2>
+<p>QuadTree或許不是最好的多物體檢測法，但多數狀況下還堪用，至於QuadTree優化的部分，可以參考這篇文章，講得非常清楚。</p>
+<p>這邊預計要再補上QuadTree跟其他檢測法的優缺點，但目前只研究QuadTree，所以無從比較，日後補上。</p>
+<p>文章中所有的Source Code都在Github中 : <a href="https://github.com/md9830415/JS-QuadTree">https://github.com/md9830415/JS-QuadTree</a></p>
+<p>大概就是這樣了，下期再見，掰掰。</p>
+<h2 id="8-參考資源">8. 參考資源</h2>
+<ul>
+<li><a class="link" href="https://www.youtube.com/watch?v=OJxEcs0w_kE"  target="_blank" rel="noopener"
+    >Coding Challenge #98.1: Quadtree – Part 1</a></li>
+<li><a class="link" href="https://gamedevelopment.tutsplus.com/tutorials/quick-tip-use-quadtrees-to-detect-likely-collisions-in-2d-space--gamedev-374"  target="_blank" rel="noopener"
+    >Quick Tip: Use Quadtrees to Detect Likely Collisions in 2D Space</a></li>
+<li><a class="link" href="https://stackoverflow.com/questions/41946007/efficient-and-well-explained-implementation-of-a-quadtree-for-2d-collision-det"  target="_blank" rel="noopener"
+    >Efficient (and well explained) implementation of a Quadtree for 2D collision detection</a></li>
+<li><a class="link" href="http://www.mikechambers.com/blog/2011/03/21/javascript-quadtree-implementation/"  target="_blank" rel="noopener"
+    >JavaScript QuadTree Implementation</a></li>
+</ul>
+
+</section>
+
+    
+    
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/collision/">collision</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3&#43;Aro6EYUG4&#43;cU&#43;KJWu/X"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"integrity="sha384-g7c&#43;Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI&#43;sEnkvrMWph2EDg4"crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC&#43;Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa"crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ]
+        });})
+</script>
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">相關文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="has-image">
+    <a href="/archives/math-for-game-vector-reflection/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/math-for-game-vector-reflection/img/13fig21.b79848615792b34f8c0d1dc38db6ae46_hu9951623b7b3c57f683995ab87fcf3709_19062_250x150_fill_box_smart1.gif" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="math-for-game-vector-reflection" 
+                        data-hash="md5-t5hIYVeSs0&#43;MDR3DjbauRg==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Vector reflection向量鏡射 基本的碰撞反彈回饋</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/archives/win32note01/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/win32note01/img/1602103707812.7553d01bdd8e04ae277fd5a402e941a8_huf41b96d2886df92c7e1e1280e6daa8eb_36021_250x150_fill_q75_box_smart1.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="win32note01" 
+                        data-hash="md5-dVPQG92OBK4nf9WkAulBqA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">[Win32筆記] 建立視窗 #1</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/archives/skills-competition-software/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/skills-competition-software/img/skill_img1.0b9e6b7158ea6a0a2528399ba2303f54_hu19eefd48ce774c36ccb19d58e43766bf_138141_250x150_fill_q75_box_smart1.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="skills-competition-software" 
+                        data-hash="md5-C55rcVjqagolKDmbojA/VA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">工科賽-軟體設計 歷屆試題解答</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/archives/csharp-bfs-solve-8-puzzle/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle07.5f0cbaf1fb16c4a1c365aebf4f493188_hu0b5eea423e222ebc3e48e168702d93a0_282255_250x150_fill_q75_box_smart1.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="csharp-bfs-solve-8-puzzle" 
+                        data-hash="md5-Xwy68fsWxKHDZa6/T0kxiA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">BFS解8-Puzzle問題</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/archives/ieee-754/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/ieee-754/img/ieee754.7a1ce0f2887386a004532f4d5a130922_hubf759c6ef8462aeb875bc4cfa77b9775_40684_250x150_fill_q75_box_smart1.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="ieee-754" 
+                        data-hash="md5-ehzg8ohzhqAEUy9NWhMJIg==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">浮點數誤差IEEE-754</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "beadx6ggwp" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2021 展維隨筆
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.3.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

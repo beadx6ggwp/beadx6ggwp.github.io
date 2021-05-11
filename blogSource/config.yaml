@@ -1,0 +1,137 @@
+# change output dir
+# publishdir: C:\Users\david\Documents\test
+
+baseurl: https://davidhsu666.com/
+languageCode: en-us
+theme: hugo-theme-stack
+paginate: 7
+title: 展維隨筆
+
+# Change it to your Disqus shortname before using
+disqusShortname: beadx6ggwp
+
+# GA Tracking ID
+# googleAnalytics: UA-107363859-1
+googleAnalytics: G-YJXR109WY7
+
+# Theme i18n support
+# Available values: en, fr, id, ja, ko, pt-br, zh-cn, es, de
+DefaultContentLanguage: zh-tw
+
+permalinks:
+    post: /archives/:slug/
+    page: /:slug/
+
+params:
+    mainSections:
+        - post
+    featuredImageField: image
+    rssFullContent: true
+    favicon: resource/favicon-32x32.png
+
+    footer:
+        since: 2020
+        customText: 
+
+    dateFormat:
+        published: Jan 02, 2006
+        lastUpdated: Jan 02, 2006 15:04 MST
+
+    sidebar:
+        emoji: 🤔
+        subtitle: 網頁維修中
+        avatar:
+            local: true
+            src: img/thinking.png
+
+    article:
+        math: true #全區域使用
+        license:
+            enabled: true
+            default: Licensed under CC BY-NC-SA 4.0
+
+    comments:
+        enabled: true
+        provider: disqus
+
+        utterances:
+            repo:
+            issueTerm: pathname
+            label:
+
+        remark42:
+            host:
+            site:
+            locale:
+
+    widgets:
+        enabled:
+            - search
+            - archives
+            - tag-cloud
+
+        archives:
+            limit: 7
+
+        tagCloud:
+            limit: 15
+
+    opengraph:
+        twitter:
+            # Your Twitter username
+            site:
+
+            # Available values: summary, summary_large_image
+            card: summary_large_image
+
+    defaultImage:
+        opengraph:
+            enabled: false
+            local: false
+            src:
+
+    colorScheme:
+        # Display toggle
+        toggle: true
+
+        # Available values: auto, light, dark
+        default: dark
+    # 設置是否處理封面與內文圖片，影響GIF的播放
+    imageProcessing:
+        cover:
+            enabled: false
+        content:
+            enabled: false
+
+### Custom menu
+### See https://docs.stack.jimmycai.com/configuration/custom-menu
+### To remove about, archive and search page menu item, remove `menu` field from their FrontMatter
+menu:
+    main:
+        - identifier: home
+          name: Home
+          url: /
+          weight: -100
+          pre: home
+
+related:
+    includeNewer: true
+    threshold: 60
+    toLower: false
+    indices:
+        - name: tags
+          weight: 100
+
+        - name: categories
+          weight: 200
+
+markup:
+    highlight:
+        noClasses: false
+    goldmark: # 在文章中使用html
+        renderer:
+            unsafe: true
+    tableOfContents:
+        endLevel: 2
+        ordered: false
+        startLevel: 2
