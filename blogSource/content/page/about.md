@@ -13,10 +13,13 @@ menu:
         pre: user
 ---
 
-目前網站掛掉，正在嘗試修復中
+換個新環境，使用HUGO架設靜態網站，重新修復文章中
 
-順便換個新環境，使用HUGO架設靜態網站
+## Blog簡介
+
+正在自學Computer Graphics，在這紀錄一些個人筆記
 
 [GitHub](https://github.com/beadx6ggwp).
 
-![](resource/stackoverflow_meme.JPG)
+<img src="/resource/stackoverflow_meme.JPG" alt="drawing" width="300"/>
+<!-- 使用img tag src時最前面要多加/ -->
