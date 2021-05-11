@@ -20,7 +20,9 @@ echo ${webURL} >> ${githubDir}/${docs}/CNAME
 # 記得要先將remote從https換成ssh
 # git remote set-url origin git@github.com:beadx6ggwp/beadx6ggwp.github.io.git
 
-# cd ${githubDir}
-# git add .
-# git commit -m "upload blog"
-# git push -u origin main
+cd ${githubDir}
+git status
+git add .
+git log
+git commit -m "upload blog"
+git push -u origin main
