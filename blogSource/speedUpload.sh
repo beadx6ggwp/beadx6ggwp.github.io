@@ -6,10 +6,14 @@ githubDir="D:/Github/beadx6ggwp.github.io"
 blogSource="blogSource"
 docs="docs"
 
+cd ${blogDir}
 hugo
+
 #delete old data
-rm -rf ${githubDir}/${blogSource}/*
-rm -rf ${githubDir}/${docs}/*
+rm -rf ${githubDir}/${blogSource}
+rm -rf ${githubDir}/${docs}
+mkdir ${githubDir}/${blogSource}
+mkdir ${githubDir}/${docs}
 
 mv ${blogDir}/public/* ${githubDir}/docs
 cp -rf ${blogDir}/* ${githubDir}/blogSource
