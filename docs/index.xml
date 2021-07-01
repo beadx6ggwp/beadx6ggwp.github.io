@@ -1292,6 +1292,8 @@ $ P= (1-u-v)A + uB + vC $&lt;/p&gt;
 &lt;li&gt;紅色三角形已經過座標變換，掃描線準備上色時會有一個動點P，如何知道三角形中所有P點對應的貼圖顏色?&lt;/li&gt;
 &lt;li&gt;兩片三角形已經大不相同，要如何在不影響圖形比例的情況將其著色?&lt;/li&gt;
 &lt;/ol&gt;
+&lt;p&gt;掃描線的動畫圖解: &lt;a class=&#34;link&#34; href=&#34;https://www.youtube.com/watch?v=t7Ztio8cwqM&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Rasterizer Algorithm Explanation&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;大略步驟:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;透過Barycentric(V1, V3, V4, P)，得到P點在紅色三角形的相對位置(u, v)&lt;/li&gt;

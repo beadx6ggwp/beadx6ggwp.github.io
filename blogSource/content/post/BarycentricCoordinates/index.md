@@ -167,6 +167,9 @@ Vec3f barycentric(Vec2f A, Vec2f B, Vec2f C, Vec2f P) {
 1. 紅色三角形已經過座標變換，掃描線準備上色時會有一個動點P，如何知道三角形中所有P點對應的貼圖顏色?
 2. 兩片三角形已經大不相同，要如何在不影響圖形比例的情況將其著色?
 
+掃描線的動畫圖解: [Rasterizer Algorithm Explanation](https://www.youtube.com/watch?v=t7Ztio8cwqM)
+
+
 大略步驟:
 1. 透過Barycentric(V1, V3, V4, P)，得到P點在紅色三角形的相對位置(u, v)
 2. 帶入貼圖三角形T中 $P'= (1-u-v)T_{1} + u~T_{2} + v~T_{4}$ 取得$P'$點座標，也就能取得貼圖於P(x,y)的顏色
