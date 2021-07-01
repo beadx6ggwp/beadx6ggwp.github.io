@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='透過相對位置u,v，來取得不同三角形中對應的絕對位置P，或是透過絕對位置P來求得相對位置u,v'><title>重心座標 Barycentric Coordinates</title>
+
+<link rel='canonical' href='https://davidhsu666.com/archives/barycentric-coordinates/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='重心座標 Barycentric Coordinates'>
+<meta property='og:description' content='透過相對位置u,v，來取得不同三角形中對應的絕對位置P，或是透過絕對位置P來求得相對位置u,v'>
+<meta property='og:url' content='https://davidhsu666.com/archives/barycentric-coordinates/'>
+<meta property='og:site_name' content='展維隨筆'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ComputerGraphics' /><meta property='article:published_time' content='2021-07-01T21:00:47&#43;08:00'/><meta property='article:modified_time' content='2021-07-01T21:00:47&#43;08:00'/><meta property='og:image' content='https://davidhsu666.com/archives/barycentric-coordinates/img/bary5.png' />
+<meta name="twitter:title" content="重心座標 Barycentric Coordinates">
+<meta name="twitter:description" content="透過相對位置u,v，來取得不同三角形中對應的絕對位置P，或是透過絕對位置P來求得相對位置u,v"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://davidhsu666.com/archives/barycentric-coordinates/img/bary5.png' />
+    <link rel="icon" href="https://davidhsu666.com/resource/favicon-32x32.png">
+
+
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YJXR109WY7"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-YJXR109WY7', { 'anonymize_ip': false });
+}
+</script>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap');
+     
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;800&display=swap');
+    :root {
+        --article-font-family: 'Roboto',"Noto Serif TC", var(--base-font-family);
+    }
+</style>
+        
+    </head>
+    <body class="">
+        
+        <script src="/js/custom.js"></script>
+        <button class="btn" onclick="scrollTop1()" id="goTopBtn" title="Go to top">TOP</button>
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.body.dataset.scheme = 'dark';
+        } else {
+            document.body.dataset.scheme = 'light';
+        }
+    })();
+</script><div class="container main-container flex on-phone--column extended article-page with-toolbar">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切換選單">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/thinking_hu84577f8e2354056019efb2e4fba9d39e_126194_300x0_resize_box_2.png" width="300"
+                            height="292" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🤔</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="https://davidhsu666.com/">展維隨筆</a></h1>
+        <h2 class="site-description">簡易筆記</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='https://github.com/beadx6ggwp'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                
+                <span>Github</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/test/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>test</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>暗色模式</span>
+            </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <div id="article-toolbar">
+        <a href="https://davidhsu666.com/" class="back-home">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+            <span>Back</span>
+        </a>
+    </div>
+
+    <article class="has-image main-article">
+    
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/archives/barycentric-coordinates/">
+                <img src="/archives/barycentric-coordinates/img/bary5.png"
+                        
+                        width="1059" 
+                        height="673" 
+                        loading="lazy"
+                        alt="Featured image of post 重心座標 Barycentric Coordinates" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/codingnote/" style="background-color: #EDFF44; color: #000;">
+                程式筆記
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/archives/barycentric-coordinates/">重心座標 Barycentric Coordinates</a>
+    </h2>
+
+    
+    <h3 class="article-subtitle">
+        透過相對位置u,v，來取得不同三角形中對應的絕對位置P，或是透過絕對位置P來求得相對位置u,v
+    </h3>
+    <footer class="article-time">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <time class="article-time--published">Jul 01, 2021</time>
+    </footer></div>
+</header>
+
+    
+    <section class="article-content">
+    <div>
+    
+    <p>目錄:
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#定義">定義</a></li>
+    <li><a href="#推導方式-1-外積">推導方式 1. 外積</a></li>
+    <li><a href="#推導方式-2-面積比">推導方式 2. 面積比</a></li>
+    <li><a href="#基本使用">基本使用</a></li>
+    <li><a href="#應用方式">應用方式</a></li>
+    <li><a href="#結論">結論</a></li>
+    <li><a href="#reference">Reference</a></li>
+  </ul>
+</nav>
+</div>
+
+<h2 id="定義">定義</h2>
+<p><figure style="flex-grow: 110; flex-basis: 264px">
+		<a href="/archives/barycentric-coordinates/img/bary1_1.png" data-size="312x283"><img src="/archives/barycentric-coordinates/img/bary1_1.png"
+				
+				width="312"
+				height="283"
+				loading="lazy"
+				>
+		</a>
+		
+	</figure></p>
+<p>平面三角形T有A、B、C頂點，而內部的任一點P，都可以透過ABC三點的<strong>線性組合</strong>來表示，所以P點表示法如下:</p>
+<p>$$  \overrightarrow{AP}=u\overrightarrow{AB}+v\overrightarrow{AC} $$</p>
+<p>將它分解整理後:
+$$ P-A=u(B-A)+v(C-A) $$</p>
+<p>最終得到:
+$$ P(x,y) = (1-u-v)A + uB + vC~,~~0\leq u,v\leq 1$$</p>
+<p>如果將A、B、C的三個係數換一下，就變成:</p>
+<p>$$ P(x,y)= \alpha A + \beta B +\gamma C~,~~\alpha+\beta+\gamma=1 $$</p>
+<p>而這就是重心座標的表示法，透過 $[\alpha,\beta,\gamma]$ 這三個介於[0,1]之間的係數，來決定P在三角形內部的<strong>相對位置</strong></p>
+<p>線上操作範例: <a class="link" href="https://www.geogebra.org/m/ZuvmPjmy"  target="_blank" rel="noopener"
+    >Barycentric coordinates of a point</a></p>
+<br>
+<p>首先第一個問題就是，有了三角形ABC與內部的P點，要怎麼求出對應的係數?</p>
+<h2 id="推導方式-1-外積">推導方式 1. 外積</h2>
+<p>將原式改寫，可以把P點看成是起點為A，透過$\overrightarrow{AB},\overrightarrow{AC}$為基底的座標為$(u,v)$:
+$$ P = A + u\overrightarrow{AB}+v\overrightarrow{AC} $$
+找到滿足此條件的$u,v$
+$$ u\overrightarrow{AB}+v\overrightarrow{AC}+\overrightarrow{PA} = 0 $$
+平面三角形的x,y座標拆開成$(x,y)$分量</p>
+<p>$$
+\begin{cases}
+u\overrightarrow{AB}.{x} + v\overrightarrow{AC}.{x} + \overrightarrow{PA}.{x} = 0 \\
+u\overrightarrow{AB}.{y} + v\overrightarrow{AC}.{y} + \overrightarrow{PA}.{y} = 0
+\end{cases}
+$$</p>
+<p>以矩陣表示:
+$$
+\begin{cases} \begin{bmatrix}u &amp; v &amp; 1  \end{bmatrix} \begin{bmatrix} \overrightarrow{AB}.{x} \\ \overrightarrow{AC}.{x} \\ \overrightarrow{PA}.{x} \end{bmatrix}=0 \\ \\ \begin{bmatrix}u &amp; v &amp; 1  \end{bmatrix} \begin{bmatrix} \overrightarrow{AB}.{y} \\ \overrightarrow{AC}.{y} \\ \overrightarrow{PA}.{y} \end{bmatrix}=0 \end{cases}
+$$</p>
+<p>可以發現兩條式子的點積都為0，表示$[u,v,1]$這個向量，同時垂直於$x$分量與$y$分量，這就代表$[u,v,1]$剛剛好就是x分量與y分量的外積(Cross)</p>
+<p>另變數 <code>uv</code> 為$[u,v,c]$ = $(\overrightarrow{AB}.{x} , \overrightarrow{AC}.{x} , \overrightarrow{PA}.{x}) \times (\overrightarrow{AB}.{y} , \overrightarrow{AC}.{y} , \overrightarrow{PA}.{y})$ 的結果</p>
+<p>但這裡要注意的是，<code>uv</code>得到的外積結果，僅僅是方向正確，確實垂直於x與y分量的向量，但大小卻不一定正確，不過<code>uv.z</code>的值已經知道是1了，所以就能知道，uv的正確值要再進行縮放，同除<code>uv.z</code></p>
+<p>將$[u,v,c]$帶回:
+$$ u\overrightarrow{AB}+v\overrightarrow{AC}+c\overrightarrow{PA} = 0 $$</p>
+<p>c的值應該要為1，所以可得到:
+$$ \frac{u}{c}\overrightarrow{AB}+\frac{v}{c}\overrightarrow{AC}+\overrightarrow{PA} = 0 $$
+一樣展開將P拿出來，最終得到完整式子:
+$$ P = (1-\frac{u}{c}-\frac{v}{c})A + \frac{u}{c}B + \frac{v}{c}C~,~~c\neq 0 $$</p>
+<p>也就是:
+$$ P= \alpha A + \beta B +\gamma C~,~~\alpha+\beta+\gamma=1 $$
+其中:
+$$ \begin{cases}  &amp; \alpha=1-\frac{u}{c}-\frac{v}{c} \\   &amp; \beta= \frac{u}{c} \\  &amp; \gamma= \frac{v}{c} \end{cases} $$</p>
+<p>程式碼:</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="c1">// 透過外積法計算向量座標
+</span><span class="c1"></span><span class="n">Vec3f</span> <span class="nf">barycentric</span><span class="p">(</span><span class="n">Vec2f</span> <span class="n">A</span><span class="p">,</span> <span class="n">Vec2f</span> <span class="n">B</span><span class="p">,</span> <span class="n">Vec2f</span> <span class="n">C</span><span class="p">,</span> <span class="n">Vec2f</span> <span class="n">P</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Vec3f</span> <span class="n">vec_x</span><span class="p">(</span><span class="n">B</span><span class="p">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">A</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">C</span><span class="p">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">A</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">P</span><span class="p">.</span><span class="n">x</span><span class="p">);</span> <span class="c1">// vAB.x,vAC.x,vPA.x
+</span><span class="c1"></span>    <span class="n">Vec3f</span> <span class="n">vec_y</span><span class="p">(</span><span class="n">B</span><span class="p">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">A</span><span class="p">.</span><span class="n">y</span><span class="p">,</span> <span class="n">C</span><span class="p">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">A</span><span class="p">.</span><span class="n">y</span><span class="p">,</span> <span class="n">A</span><span class="p">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">P</span><span class="p">.</span><span class="n">y</span><span class="p">);</span> <span class="c1">// vAB.y,vAC.y,vPA.y
+</span><span class="c1"></span>    <span class="n">Vec3f</span> <span class="n">uv</span> <span class="o">=</span> <span class="n">cross</span><span class="p">(</span><span class="n">vec_x</span><span class="p">,</span> <span class="n">vec_y</span><span class="p">);</span>	
+
+    <span class="c1">// 不得除以0，做個檢查，因為浮點數可能會有誤差，所以給定一個範圍
+</span><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">abs</span><span class="p">(</span><span class="n">uv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mf">1e-2</span><span class="p">){</span>
+        <span class="kt">float</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.f</span> <span class="o">-</span> <span class="p">(</span><span class="n">uv</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">uv</span><span class="p">.</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="n">uv</span><span class="p">.</span><span class="n">z</span><span class="p">;</span>
+        <span class="kt">float</span> <span class="n">beta</span> <span class="o">=</span> <span class="n">uv</span><span class="p">.</span><span class="n">y</span> <span class="o">/</span> <span class="n">uv</span><span class="p">.</span><span class="n">z</span><span class="p">;</span>
+        <span class="kt">float</span> <span class="n">gamma</span> <span class="o">=</span> <span class="n">uv</span><span class="p">.</span><span class="n">x</span> <span class="o">/</span> <span class="n">uv</span><span class="p">.</span><span class="n">z</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">Vec3f</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">gamma</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="c1">// uv.z為0的狀況為異常，傳回不符合定義的值，讓rasterizator捨棄這個點
+</span><span class="c1"></span>    <span class="k">return</span> <span class="n">Vec3f</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">//通常不會發生
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></div><h2 id="推導方式-2-面積比">推導方式 2. 面積比</h2>
+<p><figure style="flex-grow: 176; flex-basis: 422px">
+		<a href="/archives/barycentric-coordinates/img/bary4.png" data-size="1051x597"><img src="/archives/barycentric-coordinates/img/bary4.png"
+				
+				width="1051"
+				height="597"
+				loading="lazy"
+				alt="GAMES101_Lecture_09">
+		</a>
+		
+		<figcaption>GAMES101_Lecture_09</figcaption>
+		
+	</figure></p>
+<p>$\alpha, \beta ,\gamma$ 為A,B,C頂點對邊的面積比，詳細證明待補，面積比有兩種大致的推導方法:</p>
+<ol>
+<li>直接行列式求面積去算$\alpha$=Area(BPC)/AREA(ABC) <a class="link" href="https://blog.csdn.net/qq_38065509/article/details/105446756"  target="_blank" rel="noopener"
+    >參考</a></li>
+<li>找出AC邊的法向量N，將AP投影到N上，即可得到AC到P點的高，而底邊就是|AC|，將高乘以底邊就是Area(APC)的面積，剩下就一樣求出面積比</li>
+</ol>
+<p>1.的方法很直觀不用推了，簡單推導2.的方法:
+<figure style="flex-grow: 157; flex-basis: 377px">
+		<a href="/archives/barycentric-coordinates/img/bary5.png" data-size="1059x673"><img src="/archives/barycentric-coordinates/img/bary5.png"
+				
+				width="1059"
+				height="673"
+				loading="lazy"
+				>
+		</a>
+		
+	</figure> <figure style="flex-grow: 114; flex-basis: 275px">
+		<a href="/archives/barycentric-coordinates/img/bary6.png" data-size="788x687"><img src="/archives/barycentric-coordinates/img/bary6.png"
+				
+				width="788"
+				height="687"
+				loading="lazy"
+				alt="AP投影在Nac的高，乘上底邊AC來找出B區的面積">
+		</a>
+		
+		<figcaption>AP投影在Nac的高，乘上底邊AC來找出B區的面積</figcaption>
+		
+	</figure></p>
+<p>而計算完的參數直接就是$[\alpha,\beta,\gamma]$了，不用像外積法要多一步</p>
+<p>$$ P= \alpha A + \beta B +\gamma C~,~~\alpha+\beta+\gamma=1 $$</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="c1">// 透過面積計算重心座標
+</span><span class="c1"></span><span class="n">Vec3f</span> <span class="nf">barycentric</span><span class="p">(</span><span class="n">Vec2f</span> <span class="n">A</span><span class="p">,</span> <span class="n">Vec2f</span> <span class="n">B</span><span class="p">,</span> <span class="n">Vec2f</span> <span class="n">C</span><span class="p">,</span> <span class="n">Vec2f</span> <span class="n">P</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">auto</span> <span class="n">ab</span> <span class="o">=</span> <span class="n">B</span> <span class="o">-</span> <span class="n">A</span><span class="p">;</span>
+    <span class="k">auto</span> <span class="n">ac</span> <span class="o">=</span> <span class="n">C</span> <span class="o">-</span> <span class="n">A</span><span class="p">;</span>
+    <span class="k">auto</span> <span class="n">ap</span> <span class="o">=</span> <span class="n">p</span> <span class="o">-</span> <span class="n">A</span><span class="p">;</span>
+
+    <span class="n">Vec2f</span> <span class="n">nac</span><span class="p">(</span><span class="n">A</span><span class="p">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">C</span><span class="p">.</span><span class="n">y</span><span class="p">,</span> <span class="o">-</span> <span class="n">A</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">C</span><span class="p">.</span><span class="n">x</span><span class="p">);</span>
+    <span class="n">Vec2f</span> <span class="n">nab</span><span class="p">(</span><span class="n">A</span><span class="p">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">B</span><span class="p">.</span><span class="n">y</span><span class="p">,</span> <span class="o">-</span> <span class="n">A</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">B</span><span class="p">.</span><span class="n">x</span><span class="p">);</span>
+
+    <span class="kt">float</span> <span class="n">beta</span> <span class="o">=</span> <span class="p">(</span><span class="n">ap</span> <span class="o">*</span> <span class="n">nac</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">ab</span> <span class="o">*</span> <span class="n">nac</span><span class="p">);</span> <span class="c1">// operator* is dot
+</span><span class="c1"></span>    <span class="kt">float</span> <span class="n">gamma</span> <span class="o">=</span> <span class="p">(</span><span class="n">ap</span> <span class="o">*</span> <span class="n">nab</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">ac</span> <span class="o">*</span> <span class="n">nab</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.f</span> <span class="o">-</span> <span class="n">beta</span> <span class="o">-</span> <span class="n">gamma</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">Vec3f</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">gamma</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div><h2 id="基本使用">基本使用</h2>
+<p>基本轉換:</p>
+<ul>
+<li>
+<p>已知三頂點A,B,C位置與<strong>絕對位置</strong>P點，要如何得出<strong>相對位置</strong>的比例參數 $[\alpha,\beta,\gamma]$ ?<br>
+直接帶入前面完成的bary函式bary(A,B,C,P)，得到計算後傳回的 $[\alpha,\beta,\gamma]$</p>
+</li>
+<li>
+<p>已知A,B,C頂點與<strong>相對位置</strong>參數 $[\alpha,\beta,\gamma]$ 或是 $[u,v]$，如何得到<strong>絕對位置</strong>P點?<br>
+直接將參數與頂點代入定義即可:<br>
+$ P= \alpha A + \beta B +\gamma C $ <br>
+$ P= (1-u-v)A + uB + vC $</p>
+</li>
+</ul>
+<h2 id="應用方式">應用方式</h2>
+<p>紋理貼圖:</p>
+<p><figure style="flex-grow: 110; flex-basis: 265px">
+		<a href="/archives/barycentric-coordinates/img/bary8.png" data-size="801x724"><img src="/archives/barycentric-coordinates/img/bary8.png"
+				
+				width="801"
+				height="724"
+				loading="lazy"
+				>
+		</a>
+		
+	</figure></p>
+<p>如上圖，希望能將左邊藍色的貼圖，映射到右邊的紅色模型上，這過程稱為紋理貼圖或是貼皮，而此時會有幾個問題</p>
+<ol>
+<li>紅色三角形已經過座標變換，掃描線準備上色時會有一個動點P，如何知道三角形中所有P點對應的貼圖顏色?</li>
+<li>兩片三角形已經大不相同，要如何在不影響圖形比例的情況將其著色?</li>
+</ol>
+<p>大略步驟:</p>
+<ol>
+<li>透過Barycentric(V1, V3, V4, P)，得到P點在紅色三角形的相對位置(u, v)</li>
+<li>帶入貼圖三角形T中 $P'= (1-u-v)T_{1} + u~T_{2} + v~T_{4}$ 取得$P'$點座標，也就能取得貼圖於P(x,y)的顏色</li>
+<li>最後就能取得紅色P點對應的貼圖顏色，如此反覆將P隨著掃描線計算，即可取得整片三角形的貼圖對應</li>
+</ol>
+<p>重複此過程渲染兩片三角形後，就能將骰子點數6的這一面印出</p>
+<h2 id="結論">結論</h2>
+<p>暫無，之後再補</p>
+<hr>
+<h2 id="reference">Reference</h2>
+<ul>
+<li>Fundamentals of Computer Graphics 4th</li>
+<li><a class="link" href="https://github.com/ssloy/tinyrenderer/wiki/Lesson-2:-Triangle-rasterization-and-back-face-culling"  target="_blank" rel="noopener"
+    >Tiny Renderer:Triangle rasterization and back face culling</a></li>
+<li><a class="link" href="https://sites.cs.ucsb.edu/~lingqi/teaching/games101.html"  target="_blank" rel="noopener"
+    >GAMES101-现代计算机图形学入门-闫令琪</a></li>
+<li><a class="link" href="https://blog.csdn.net/qq_38065509/article/details/105446756"  target="_blank" rel="noopener"
+    >计算机图形学三(补充)：重心坐标(barycentric coordinates)详解及其作用</a></li>
+<li><a class="link" href="https://observablehq.com/@infowantstobeseen/barycentric-coordinates"  target="_blank" rel="noopener"
+    >Barycentric Coordinates</a></li>
+</ul>
+
+</section>
+
+    
+    
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/computergraphics/">ComputerGraphics</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3&#43;Aro6EYUG4&#43;cU&#43;KJWu/X"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"integrity="sha384-g7c&#43;Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI&#43;sEnkvrMWph2EDg4"crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC&#43;Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa"crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ]
+        });})
+</script>
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">相關文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="has-image">
+    <a href="/archives/win32note01/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/win32note01/img/1602103707812.7553d01bdd8e04ae277fd5a402e941a8_huf41b96d2886df92c7e1e1280e6daa8eb_36021_250x150_fill_q75_box_smart1.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="win32note01" 
+                        data-hash="md5-dVPQG92OBK4nf9WkAulBqA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">[Win32筆記] 建立視窗 #1</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/archives/skills-competition-software/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">工科賽-軟體設計 歷屆試題解答</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/archives/math-for-game-vector-reflection/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/math-for-game-vector-reflection/img/13fig21.b79848615792b34f8c0d1dc38db6ae46_hu9951623b7b3c57f683995ab87fcf3709_19062_250x150_fill_box_smart1.gif" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="math-for-game-vector-reflection" 
+                        data-hash="md5-t5hIYVeSs0&#43;MDR3DjbauRg==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Vector reflection向量鏡射 基本的碰撞反彈回饋</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/archives/quadtree_in_2d/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/quadtree_in_2d/img/Quad_013.a7ee28c0eeb895aba73c942cef9f742e_hu646d8ae9c65ce621115142c45ba5d5ba_35828_250x150_fill_box_smart1_2.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="quadtree_in_2d" 
+                        data-hash="md5-p&#43;4owO64launPJQs7590Lg==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">碰撞檢測的優化-四叉樹(Quadtree)</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/archives/csharp-bfs-solve-8-puzzle/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle07.5f0cbaf1fb16c4a1c365aebf4f493188_hu0b5eea423e222ebc3e48e168702d93a0_282255_250x150_fill_q75_box_smart1.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="csharp-bfs-solve-8-puzzle" 
+                        data-hash="md5-Xwy68fsWxKHDZa6/T0kxiA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">BFS解8-Puzzle問題</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "beadx6ggwp" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2019 - 
+        
+        2021 展維隨筆
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.3.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

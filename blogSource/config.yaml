@@ -30,7 +30,7 @@ params:
     favicon: resource/favicon-32x32.png
 
     footer:
-        since: 2020
+        since: 2019
         customText: 
 
     dateFormat:
@@ -39,7 +39,7 @@ params:
 
     sidebar:
         emoji: 🤔
-        subtitle: 網頁維修中
+        subtitle: 簡易筆記
         avatar:
             local: true
             src: img/thinking.png
@@ -113,6 +113,11 @@ menu:
           url: /
           weight: -100
           pre: home
+        - identifier: github
+          name: Github
+          url: https://github.com/beadx6ggwp
+          weight: -65
+          pre: hash
 
 related:
     includeNewer: true

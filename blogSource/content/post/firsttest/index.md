@@ -4,8 +4,8 @@ description: 副標題測試
 date: 2015-04-19T03:35:50+08:00
 slug: just-test
 image: original.gif
-tags: 
-categories: test
+tags: [test]
+categories: 
 ---
 
 # 這裡是第一篇文章的測試

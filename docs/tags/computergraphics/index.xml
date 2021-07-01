@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ComputerGraphics on 展維隨筆</title>
+    <link>https://davidhsu666.com/tags/computergraphics/</link>
+    <description>Recent content in ComputerGraphics on 展維隨筆</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 01 Jul 2021 21:00:47 +0800</lastBuildDate><atom:link href="https://davidhsu666.com/tags/computergraphics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>重心座標 Barycentric Coordinates</title>
+      <link>https://davidhsu666.com/archives/barycentric-coordinates/</link>
+      <pubDate>Thu, 01 Jul 2021 21:00:47 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/barycentric-coordinates/</guid>
+      <description>目錄: 定義 推導方式 1. 外積 推導方式 2. 面積比 基本使用 應用方式 結論 Reference  定義  
+平面三角形T有A、B、C頂點，而內部的任一點P，都可以透過ABC三點的線性組合來表示，所以P點表示法如下:
+$$ \overrightarrow{AP}=u\overrightarrow{AB}+v\overrightarrow{AC} $$
+將它分解整理後: $$ P-A=u(B-A)+v(C-A) $$
+最終得到: $$ P(x,y) = (1-u-v)A + uB + vC~,~~0\leq u,v\leq 1$$
+如果將A、B、C的三個係數換一下，就變成:
+$$ P(x,y)= \alpha A + \beta B +\gamma C~,~~\alpha+\beta+\gamma=1 $$
+而這就是重心座標的表示法，透過 $[\alpha,\beta,\gamma]$ 這三個介於[0,1]之間的係數，來決定P在三角形內部的相對位置
+線上操作範例: Barycentric coordinates of a point
+首先第一個問題就是，有了三角形ABC與內部的P點，要怎麼求出對應的係數?
+推導方式 1. 外積 將原式改寫，可以把P點看成是起點為A，透過$\overrightarrow{AB},\overrightarrow{AC}$為基底的座標為$(u,v)$: $$ P = A + u\overrightarrow{AB}+v\overrightarrow{AC} $$ 找到滿足此條件的$u,v$ $$ u\overrightarrow{AB}+v\overrightarrow{AC}+\overrightarrow{PA} = 0 $$ 平面三角形的x,y座標拆開成$(x,y)$分量</description>
+    </item>
+    
+  </channel>
+</rss>

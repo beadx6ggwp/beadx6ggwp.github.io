@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>collision on 展維隨筆</title>
+    <title>Collision on 展維隨筆</title>
     <link>https://davidhsu666.com/tags/collision/</link>
-    <description>Recent content in collision on 展維隨筆</description>
+    <description>Recent content in Collision on 展維隨筆</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 26 Apr 2019 03:58:47 +0800</lastBuildDate><atom:link href="https://davidhsu666.com/tags/collision/index.xml" rel="self" type="application/rss+xml" />
@@ -13,7 +13,7 @@
       <pubDate>Wed, 21 Mar 2018 05:52:36 +0800</pubDate>
       
       <guid>https://davidhsu666.com/archives/gamecollisiondetection/</guid>
-      <description>遊戲中的碰撞檢測Collision Detection 目錄 1. 矩形碰撞檢測 2. 什麼是分離軸檢測? 3. 知識補充1–向量 4. 知識補充2–旋轉變換 5. 如何取得分離軸上的投影? 6. 編寫程式碼-投影、旋轉與判斷 7. 如何取得分離軸? 8. 粗糙的矩形檢測 9. 編寫程式碼–多邊形與多邊形 10. 編寫程式碼–多邊形與圓 11. SAT的總結 12. 多物體的碰撞優化 13. 動態物體間的碰撞檢測 14. Source Code 15. 結尾感想 參考資源:  而這篇文有三個主要目的 :
+      <description>遊戲中的碰撞檢測Collision Detection 目錄: 前言 1. 矩形碰撞檢測 2. 什麼是分離軸檢測? 3. 知識補充1–向量 4. 知識補充2–旋轉變換 5. 如何取得分離軸上的投影? 6. 編寫程式碼-投影、旋轉與判斷 7. 如何取得分離軸? 8. 粗糙的矩形檢測 9. 編寫程式碼–多邊形與多邊形 10. 編寫程式碼–多邊形與圓 11. SAT的總結 12. 多物體的碰撞優化 13. 動態物體間的碰撞檢測 14. Source Code 15. 結尾感想 參考資源:  前言 而這篇文有三個主要目的 :
  對遊戲中的碰撞感興趣，卻不會寫程式的人可以了解原理 讓有能力實作的人，可以跟著文章寫出精確的多邊形碰撞檢測 自己的學習筆記  讓我們開始吧。
 這次要來介紹的主題是分離軸碰撞檢測(Separating Axis Theorem, SAT)
 分離軸定理通常用語檢測兩個多邊形或多邊形與圓之間的碰撞，跟所有演算法一樣他具有一定的優勢與缺點。
@@ -50,7 +50,7 @@ AABB碰撞檢測(Axis-aligned Bounding Box): 為了方邊物體之間進行碰�
       <pubDate>Sat, 27 Oct 2018 07:31:13 +0800</pubDate>
       
       <guid>https://davidhsu666.com/archives/quadtree_in_2d/</guid>
-      <description>碰撞檢測的優化-四叉樹(Quadtree) 目錄 1. 什麼是QuadTree? 2. 插入流程: 3. 搜尋流程: 4. 實作QuadTree–插入 5. 實作QuadTree–搜尋 6. 實際應用 7. 總結 8. 參考資源  許多遊戲都會需要碰撞檢測來判斷兩物體的碰撞，但這些演算法通常是較為昂貴的操作，如果無法有效率的選擇檢測目標，很可能會大幅降低執行的速度。(像是之前提到的SAT碰撞檢測)
+      <description>碰撞檢測的優化-四叉樹(Quadtree) 目錄: 1. 什麼是QuadTree? 2. 插入流程: 3. 搜尋流程: 4. 實作QuadTree–插入 5. 實作QuadTree–搜尋 6. 實際應用 7. 總結 8. 參考資源  許多遊戲都會需要碰撞檢測來判斷兩物體的碰撞，但這些演算法通常是較為昂貴的操作，如果無法有效率的選擇檢測目標，很可能會大幅降低執行的速度。(像是之前提到的SAT碰撞檢測)
 在之前的”多邊形碰撞檢測”文中，也有提到當檢測物體越來越多時，基本逐一檢測的效率會越來越差，複雜度約為O(n^2)，就算排除重複檢測過的物體，只要是逐一檢測的方法就一定會走訪所有物件。
  
 從上圖可以得知直接全部檢測的話是4 x 5 = 20，如果扣掉重複，至少是4 + 3 + 2 + 1 = 10，但真正的問題是，就算1和3距離這麼遠，也照樣會檢查它們，那有沒有方法能解決這種狀況呢?

@@ -6,7 +6,7 @@ slug: quadtree_in_2d # web path
 image: img/Quad_013.png
 date: 2018-10-27T07:31:13+08:00
 categories: ["CodingNote"]
-tags: ["collision"]
+tags: ["Collision"]
 
 license:  # CC BY-NC-ND
 hidden: false
