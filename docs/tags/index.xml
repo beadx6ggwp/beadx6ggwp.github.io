@@ -6,7 +6,16 @@
     <description>Recent content in Tags on 展維隨筆</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 11 Dec 2020 05:01:26 +0800</lastBuildDate><atom:link href="https://davidhsu666.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 01 Jul 2021 21:00:47 +0800</lastBuildDate><atom:link href="https://davidhsu666.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ComputerGraphics</title>
+      <link>https://davidhsu666.com/tags/computergraphics/</link>
+      <pubDate>Thu, 01 Jul 2021 21:00:47 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/tags/computergraphics/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>C&#43;&#43;</title>
       <link>https://davidhsu666.com/tags/c&#43;&#43;/</link>
@@ -35,7 +44,7 @@
     </item>
     
     <item>
-      <title>collision</title>
+      <title>Collision</title>
       <link>https://davidhsu666.com/tags/collision/</link>
       <pubDate>Fri, 26 Apr 2019 03:58:47 +0800</pubDate>
       
@@ -58,6 +67,15 @@
       <pubDate>Wed, 21 Mar 2018 10:48:34 +0800</pubDate>
       
       <guid>https://davidhsu666.com/tags/graphics/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>test</title>
+      <link>https://davidhsu666.com/tags/test/</link>
+      <pubDate>Sun, 19 Apr 2015 03:35:50 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/tags/test/</guid>
       <description></description>
     </item>
     

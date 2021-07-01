@@ -1,4 +1,5 @@
 #快速發布資料至github目錄
+#使用方式，準備更新到github時候執行這個腳本
 #run in blog root dir
 webURL="davidhsu666.com"
 blogDir="."

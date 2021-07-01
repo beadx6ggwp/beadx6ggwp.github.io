@@ -6,7 +6,7 @@ slug: math-for-game-vector-reflection # web path
 image: img/13fig21.gif
 date: 2019-04-26T03:58:47+08:00
 categories: [CodingNote]
-tags: [collision]
+tags: [Collision]
 
 license:  # CC BY-NC-ND
 hidden: false

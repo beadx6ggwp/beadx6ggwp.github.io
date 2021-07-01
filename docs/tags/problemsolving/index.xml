@@ -13,7 +13,7 @@
       <pubDate>Fri, 22 Jun 2018 10:04:35 +0800</pubDate>
       
       <guid>https://davidhsu666.com/archives/csharp-bfs-solve-8-puzzle/</guid>
-      <description>目錄  前言 儲存結構和移動判斷 用BFS窮舉狀態 執行結果 參考資源  1. 前言 先來簡單的介紹一下什麼是8-Puzzle。
+      <description>目錄: 1. 前言 2. 儲存結構和移動判斷 3. 用BFS窮舉狀態 4. 執行結果 5. 參考資源  1. 前言 先來簡單的介紹一下什麼是8-Puzzle。
 數字推盤遊戲(n-puzzle)是最早一種的滑塊類遊戲，常見的類型有十五數字推盤遊戲和八數字推盤遊戲等，也有以圖畫代替數字的推盤遊戲。
  Wiki上的8Puzzle 
 如上圖所示，滑塊只能往空位移動。

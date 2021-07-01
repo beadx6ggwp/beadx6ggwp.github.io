@@ -13,19 +13,11 @@ menu:
         pre: user
 ---
 
-*換個新環境，使用HUGO架設靜態網站，重新修復文章中*
-
 ## Blog簡介
 
 正在自學Computer Graphics，在這紀錄一些個人筆記.
 
 [我的GitHub](https://github.com/beadx6ggwp).
-
-## 興趣
-
-- Coding
-- APEX/LOL
-- 動畫/小說/漫畫/遊戲
 
 ---
 

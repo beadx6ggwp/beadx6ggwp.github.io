@@ -13,9 +13,10 @@
       <pubDate>Fri, 11 Dec 2020 05:01:26 +0800</pubDate>
       
       <guid>https://davidhsu666.com/archives/win32note01/</guid>
-      <description>Win32 目錄 1.建立entry point, WinMain() 2. 向系統註冊此視窗程式 WNDCLASS 3. 建立與顯示視窗 CreateWindow 4. 訊息監聽(Event Handler) WinProc 完整範例Code  參考 : MSDN Get Started with Win32 and C++
+      <description>Win32 目錄: 1.建立entry point, WinMain() 2. 向系統註冊此視窗程式 WNDCLASS 3. 建立與顯示視窗 CreateWindow 4. 訊息監聽(Event Handler) WinProc 完整範例Code  參考 : MSDN Get Started with Win32 and C++
 1.建立entry point, WinMain() // int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow) // wWinMain為UniCode模式，WinMain為Ansi模式  int CALLBACK WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow){ // ...  return 0; } #define CALLBACK __stdcall: 簡單來說__stdcall就是專門用來call WinAPI的，詳細還有待研究
-參數:</description>
+參數:
+hInstance : windows為應用程式生成的追蹤資料，h代表handle(處理程序)</description>
     </item>
     
   </channel>
