@@ -23,7 +23,7 @@ $$ P(x,y)= \alpha A + \beta B +\gamma C~,~~\alpha+\beta+\gamma=1 $$
 而這就是重心座標的表示法，透過 $[\alpha,\beta,\gamma]$ 這三個介於[0,1]之間的係數，來決定P在三角形內部的相對位置
 線上操作範例: Barycentric coordinates of a point
 首先第一個問題就是，有了三角形ABC與內部的P點，要怎麼求出對應的係數?
-推導方式 1. 外積 將原式改寫，可以把P點看成是起點為A，透過$\overrightarrow{AB},\overrightarrow{AC}$為基底的座標為$(u,v)$: $$ P = A + u\overrightarrow{AB}+v\overrightarrow{AC} $$ 找到滿足此條件的$u,v$ $$ u\overrightarrow{AB}+v\overrightarrow{AC}+\overrightarrow{PA} = 0 $$ 平面三角形的x,y座標拆開成$(x,y)$分量</description>
+推導方式 1. 外積 將原式改寫，可以把P點看成是起點為A，透過$\overrightarrow{AB},\overrightarrow{AC}$為基底的座標為$(u,v)$: $$ P = A + u\overrightarrow{AB}+v\overrightarrow{AC} $$ 找到滿足此條件的$u,v$ $$ u\overrightarrow{AB}+v\overrightarrow{AC}+\overrightarrow{PA} = 0 $$ 平面三角形的座標拆開成$(x,y)$分量</description>
     </item>
     
   </channel>

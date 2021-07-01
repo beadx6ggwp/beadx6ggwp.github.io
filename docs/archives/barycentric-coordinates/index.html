@@ -346,7 +346,7 @@ $$ P(x,y) = (1-u-v)A + uB + vC~,~~0\leq u,v\leq 1$$</p>
 $$ P = A + u\overrightarrow{AB}+v\overrightarrow{AC} $$
 找到滿足此條件的$u,v$
 $$ u\overrightarrow{AB}+v\overrightarrow{AC}+\overrightarrow{PA} = 0 $$
-平面三角形的x,y座標拆開成$(x,y)$分量</p>
+平面三角形的座標拆開成$(x,y)$分量</p>
 <p>$$
 \begin{cases}
 u\overrightarrow{AB}.{x} + v\overrightarrow{AC}.{x} + \overrightarrow{PA}.{x} = 0 \\
@@ -359,12 +359,12 @@ $$
 $$</p>
 <p>可以發現兩條式子的點積都為0，表示$[u,v,1]$這個向量，同時垂直於$x$分量與$y$分量，這就代表$[u,v,1]$剛剛好就是x分量與y分量的外積(Cross)</p>
 <p>另變數 <code>uv</code> 為$[u,v,c]$ = $(\overrightarrow{AB}.{x} , \overrightarrow{AC}.{x} , \overrightarrow{PA}.{x}) \times (\overrightarrow{AB}.{y} , \overrightarrow{AC}.{y} , \overrightarrow{PA}.{y})$ 的結果</p>
-<p>但這裡要注意的是，<code>uv</code>得到的外積結果，僅僅是方向正確，確實垂直於x與y分量的向量，但大小卻不一定正確，不過<code>uv.z</code>的值已經知道是1了，所以就能知道，uv的正確值要再進行縮放，同除<code>uv.z</code></p>
+<p>但這裡要注意的是，<code>uv</code>得到的外積結果，僅僅是方向正確，確實垂直於x與y分量的向量，但大小卻不一定正確，不過 $c$ 的值已經知道是1了，所以只要讓uv的值要再進行縮放，讓 $c = 1$ 就是正確的 $uv$</p>
 <p>將$[u,v,c]$帶回:
 $$ u\overrightarrow{AB}+v\overrightarrow{AC}+c\overrightarrow{PA} = 0 $$</p>
-<p>c的值應該要為1，所以可得到:
+<p>$c$ 的值應該要為1，同除以 $c$ 得到:
 $$ \frac{u}{c}\overrightarrow{AB}+\frac{v}{c}\overrightarrow{AC}+\overrightarrow{PA} = 0 $$
-一樣展開將P拿出來，最終得到完整式子:
+展開將P拿出來，最終得到完整式子:
 $$ P = (1-\frac{u}{c}-\frac{v}{c})A + \frac{u}{c}B + \frac{v}{c}C~,~~c\neq 0 $$</p>
 <p>也就是:
 $$ P= \alpha A + \beta B +\gamma C~,~~\alpha+\beta+\gamma=1 $$
@@ -373,7 +373,8 @@ $$ \begin{cases}  &amp; \alpha=1-\frac{u}{c}-\frac{v}{c} \\   &amp; \beta= \frac
 <p>程式碼:</p>
 <div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="c1">// 透過外積法計算向量座標
 </span><span class="c1"></span><span class="n">Vec3f</span> <span class="nf">barycentric</span><span class="p">(</span><span class="n">Vec2f</span> <span class="n">A</span><span class="p">,</span> <span class="n">Vec2f</span> <span class="n">B</span><span class="p">,</span> <span class="n">Vec2f</span> <span class="n">C</span><span class="p">,</span> <span class="n">Vec2f</span> <span class="n">P</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">Vec3f</span> <span class="n">vec_x</span><span class="p">(</span><span class="n">B</span><span class="p">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">A</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">C</span><span class="p">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">A</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">P</span><span class="p">.</span><span class="n">x</span><span class="p">);</span> <span class="c1">// vAB.x,vAC.x,vPA.x
+    <span class="c1">// Vec3f [x,y,z] = [u,v,c]
+</span><span class="c1"></span>    <span class="n">Vec3f</span> <span class="n">vec_x</span><span class="p">(</span><span class="n">B</span><span class="p">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">A</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">C</span><span class="p">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">A</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">A</span><span class="p">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">P</span><span class="p">.</span><span class="n">x</span><span class="p">);</span> <span class="c1">// vAB.x,vAC.x,vPA.x
 </span><span class="c1"></span>    <span class="n">Vec3f</span> <span class="n">vec_y</span><span class="p">(</span><span class="n">B</span><span class="p">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">A</span><span class="p">.</span><span class="n">y</span><span class="p">,</span> <span class="n">C</span><span class="p">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">A</span><span class="p">.</span><span class="n">y</span><span class="p">,</span> <span class="n">A</span><span class="p">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">P</span><span class="p">.</span><span class="n">y</span><span class="p">);</span> <span class="c1">// vAB.y,vAC.y,vPA.y
 </span><span class="c1"></span>    <span class="n">Vec3f</span> <span class="n">uv</span> <span class="o">=</span> <span class="n">cross</span><span class="p">(</span><span class="n">vec_x</span><span class="p">,</span> <span class="n">vec_y</span><span class="p">);</span>	
 
@@ -387,7 +388,8 @@ $$ \begin{cases}  &amp; \alpha=1-\frac{u}{c}-\frac{v}{c} \\   &amp; \beta= \frac
     <span class="c1">// uv.z為0的狀況為異常，傳回不符合定義的值，讓rasterizator捨棄這個點
 </span><span class="c1"></span>    <span class="k">return</span> <span class="n">Vec3f</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">//通常不會發生
 </span><span class="c1"></span><span class="p">}</span>
-</code></pre></div><h2 id="推導方式-2-面積比">推導方式 2. 面積比</h2>
+</code></pre></div><br>
+<h2 id="推導方式-2-面積比">推導方式 2. 面積比</h2>
 <p><figure style="flex-grow: 176; flex-basis: 422px">
 		<a href="/archives/barycentric-coordinates/img/bary4.png" data-size="1051x597"><img src="/archives/barycentric-coordinates/img/bary4.png"
 				
@@ -445,7 +447,8 @@ $$ \begin{cases}  &amp; \alpha=1-\frac{u}{c}-\frac{v}{c} \\   &amp; \beta= \frac
 
     <span class="k">return</span> <span class="n">Vec3f</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">gamma</span><span class="p">);</span>
 <span class="p">}</span>
-</code></pre></div><h2 id="基本使用">基本使用</h2>
+</code></pre></div><br>
+<h2 id="基本使用">基本使用</h2>
 <p>基本轉換:</p>
 <ul>
 <li>
@@ -459,6 +462,7 @@ $ P= \alpha A + \beta B +\gamma C $ <br>
 $ P= (1-u-v)A + uB + vC $</p>
 </li>
 </ul>
+<br>
 <h2 id="應用方式">應用方式</h2>
 <p>紋理貼圖:</p>
 <p><figure style="flex-grow: 110; flex-basis: 265px">
@@ -483,6 +487,7 @@ $ P= (1-u-v)A + uB + vC $</p>
 <li>最後就能取得紅色P點對應的貼圖顏色，如此反覆將P隨著掃描線計算，即可取得整片三角形的貼圖對應</li>
 </ol>
 <p>重複此過程渲染兩片三角形後，就能將骰子點數6的這一面印出</p>
+<br>
 <h2 id="結論">結論</h2>
 <p>暫無，之後再補</p>
 <hr>
