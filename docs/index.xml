@@ -1158,7 +1158,7 @@ $$ P(x,y) = (1-u-v)A + uB + vC~,~~0\leq u,v\leq 1$$&lt;/p&gt;
 $$ P = A + u\overrightarrow{AB}+v\overrightarrow{AC} $$
 找到滿足此條件的$u,v$
 $$ u\overrightarrow{AB}+v\overrightarrow{AC}+\overrightarrow{PA} = 0 $$
-平面三角形的x,y座標拆開成$(x,y)$分量&lt;/p&gt;
+平面三角形的座標拆開成$(x,y)$分量&lt;/p&gt;
 &lt;p&gt;$$
 \begin{cases}
 u\overrightarrow{AB}.{x} + v\overrightarrow{AC}.{x} + \overrightarrow{PA}.{x} = 0 \\
@@ -1171,12 +1171,12 @@ $$
 $$&lt;/p&gt;
 &lt;p&gt;可以發現兩條式子的點積都為0，表示$[u,v,1]$這個向量，同時垂直於$x$分量與$y$分量，這就代表$[u,v,1]$剛剛好就是x分量與y分量的外積(Cross)&lt;/p&gt;
 &lt;p&gt;另變數 &lt;code&gt;uv&lt;/code&gt; 為$[u,v,c]$ = $(\overrightarrow{AB}.{x} , \overrightarrow{AC}.{x} , \overrightarrow{PA}.{x}) \times (\overrightarrow{AB}.{y} , \overrightarrow{AC}.{y} , \overrightarrow{PA}.{y})$ 的結果&lt;/p&gt;
-&lt;p&gt;但這裡要注意的是，&lt;code&gt;uv&lt;/code&gt;得到的外積結果，僅僅是方向正確，確實垂直於x與y分量的向量，但大小卻不一定正確，不過&lt;code&gt;uv.z&lt;/code&gt;的值已經知道是1了，所以就能知道，uv的正確值要再進行縮放，同除&lt;code&gt;uv.z&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;但這裡要注意的是，&lt;code&gt;uv&lt;/code&gt;得到的外積結果，僅僅是方向正確，確實垂直於x與y分量的向量，但大小卻不一定正確，不過 $c$ 的值已經知道是1了，所以只要讓uv的值要再進行縮放，讓 $c = 1$ 就是正確的 $uv$&lt;/p&gt;
 &lt;p&gt;將$[u,v,c]$帶回:
 $$ u\overrightarrow{AB}+v\overrightarrow{AC}+c\overrightarrow{PA} = 0 $$&lt;/p&gt;
-&lt;p&gt;c的值應該要為1，所以可得到:
+&lt;p&gt;$c$ 的值應該要為1，同除以 $c$ 得到:
 $$ \frac{u}{c}\overrightarrow{AB}+\frac{v}{c}\overrightarrow{AC}+\overrightarrow{PA} = 0 $$
-一樣展開將P拿出來，最終得到完整式子:
+展開將P拿出來，最終得到完整式子:
 $$ P = (1-\frac{u}{c}-\frac{v}{c})A + \frac{u}{c}B + \frac{v}{c}C~,~~c\neq 0 $$&lt;/p&gt;
 &lt;p&gt;也就是:
 $$ P= \alpha A + \beta B +\gamma C~,~~\alpha+\beta+\gamma=1 $$
@@ -1185,7 +1185,8 @@ $$ \begin{cases}  &amp;amp; \alpha=1-\frac{u}{c}-\frac{v}{c} \\   &amp;amp; \bet
 &lt;p&gt;程式碼:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 透過外積法計算向量座標
 &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Vec3f&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;barycentric&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Vec2f&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;A&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Vec2f&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;B&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Vec2f&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;C&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Vec2f&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
-    &lt;span class=&#34;n&#34;&gt;Vec3f&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;vec_x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;B&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;A&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;C&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;A&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;A&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// vAB.x,vAC.x,vPA.x
+    &lt;span class=&#34;c1&#34;&gt;// Vec3f [x,y,z] = [u,v,c]
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;Vec3f&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;vec_x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;B&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;A&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;C&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;A&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;A&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// vAB.x,vAC.x,vPA.x
 &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;Vec3f&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;vec_y&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;B&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;y&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;A&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;y&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;C&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;y&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;A&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;y&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;A&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;y&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;y&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// vAB.y,vAC.y,vPA.y
 &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;Vec3f&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;uv&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cross&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vec_x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;vec_y&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;	
 
@@ -1199,7 +1200,8 @@ $$ \begin{cases}  &amp;amp; \alpha=1-\frac{u}{c}-\frac{v}{c} \\   &amp;amp; \bet
     &lt;span class=&#34;c1&#34;&gt;// uv.z為0的狀況為異常，傳回不符合定義的值，讓rasterizator捨棄這個點
 &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Vec3f&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//通常不會發生
 &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;推導方式-2-面積比&#34;&gt;推導方式 2. 面積比&lt;/h2&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;br&gt;
+&lt;h2 id=&#34;推導方式-2-面積比&#34;&gt;推導方式 2. 面積比&lt;/h2&gt;
 &lt;p&gt;&lt;figure style=&#34;flex-grow: 176; flex-basis: 422px&#34;&gt;
 		&lt;a href=&#34;https://davidhsu666.com/archives/barycentric-coordinates/img/bary4.png&#34; data-size=&#34;1051x597&#34;&gt;&lt;img src=&#34;https://davidhsu666.com/archives/barycentric-coordinates/img/bary4.png&#34;
 				
@@ -1257,7 +1259,8 @@ $$ \begin{cases}  &amp;amp; \alpha=1-\frac{u}{c}-\frac{v}{c} \\   &amp;amp; \bet
 
     &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Vec3f&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;alpha&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;beta&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;gamma&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
 &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;基本使用&#34;&gt;基本使用&lt;/h2&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;br&gt;
+&lt;h2 id=&#34;基本使用&#34;&gt;基本使用&lt;/h2&gt;
 &lt;p&gt;基本轉換:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
@@ -1271,6 +1274,7 @@ $ P= \alpha A + \beta B +\gamma C $ &lt;br&gt;
 $ P= (1-u-v)A + uB + vC $&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
+&lt;br&gt;
 &lt;h2 id=&#34;應用方式&#34;&gt;應用方式&lt;/h2&gt;
 &lt;p&gt;紋理貼圖:&lt;/p&gt;
 &lt;p&gt;&lt;figure style=&#34;flex-grow: 110; flex-basis: 265px&#34;&gt;
@@ -1295,6 +1299,7 @@ $ P= (1-u-v)A + uB + vC $&lt;/p&gt;
 &lt;li&gt;最後就能取得紅色P點對應的貼圖顏色，如此反覆將P隨著掃描線計算，即可取得整片三角形的貼圖對應&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;重複此過程渲染兩片三角形後，就能將骰子點數6的這一面印出&lt;/p&gt;
+&lt;br&gt;
 &lt;h2 id=&#34;結論&#34;&gt;結論&lt;/h2&gt;
 &lt;p&gt;暫無，之後再補&lt;/p&gt;
 &lt;hr&gt;

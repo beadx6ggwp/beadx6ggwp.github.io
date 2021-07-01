@@ -50,7 +50,7 @@ $$ P(x,y)= \alpha A + \beta B +\gamma C~,~~\alpha+\beta+\gamma=1 $$
 $$ P = A + u\overrightarrow{AB}+v\overrightarrow{AC} $$
 找到滿足此條件的$u,v$
 $$ u\overrightarrow{AB}+v\overrightarrow{AC}+\overrightarrow{PA} = 0 $$
-平面三角形的x,y座標拆開成$(x,y)$分量
+平面三角形的座標拆開成$(x,y)$分量
 
 $$
 \begin{cases} 
@@ -70,14 +70,14 @@ $$
 
 另變數 `uv` 為$[u,v,c]$ = $(\overrightarrow{AB}.{x} , \overrightarrow{AC}.{x} , \overrightarrow{PA}.{x}) \times (\overrightarrow{AB}.{y} , \overrightarrow{AC}.{y} , \overrightarrow{PA}.{y})$ 的結果
 
-但這裡要注意的是，`uv`得到的外積結果，僅僅是方向正確，確實垂直於x與y分量的向量，但大小卻不一定正確，不過`uv.z`的值已經知道是1了，所以就能知道，uv的正確值要再進行縮放，同除`uv.z`
+但這裡要注意的是，`uv`得到的外積結果，僅僅是方向正確，確實垂直於x與y分量的向量，但大小卻不一定正確，不過 $c$ 的值已經知道是1了，所以只要讓uv的值要再進行縮放，讓 $c = 1$ 就是正確的 $uv$
 
 將$[u,v,c]$帶回:
 $$ u\overrightarrow{AB}+v\overrightarrow{AC}+c\overrightarrow{PA} = 0 $$
 
-c的值應該要為1，所以可得到:
+$c$ 的值應該要為1，同除以 $c$ 得到:
 $$ \frac{u}{c}\overrightarrow{AB}+\frac{v}{c}\overrightarrow{AC}+\overrightarrow{PA} = 0 $$
-一樣展開將P拿出來，最終得到完整式子:
+展開將P拿出來，最終得到完整式子:
 $$ P = (1-\frac{u}{c}-\frac{v}{c})A + \frac{u}{c}B + \frac{v}{c}C~,~~c\neq 0 $$
 
 也就是:
@@ -89,6 +89,7 @@ $$ \begin{cases}  & \alpha=1-\frac{u}{c}-\frac{v}{c} \\\\   & \beta= \frac{u}{c}
 ```cpp
 // 透過外積法計算向量座標
 Vec3f barycentric(Vec2f A, Vec2f B, Vec2f C, Vec2f P) {
+    // Vec3f [x,y,z] = [u,v,c]
     Vec3f vec_x(B.x - A.x, C.x - A.x, A.x - P.x); // vAB.x,vAC.x,vPA.x
     Vec3f vec_y(B.y - A.y, C.y - A.y, A.y - P.y); // vAB.y,vAC.y,vPA.y
     Vec3f uv = cross(vec_x, vec_y);	
@@ -105,6 +106,7 @@ Vec3f barycentric(Vec2f A, Vec2f B, Vec2f C, Vec2f P) {
 }
 ```
 
+<br>
 
 ## 推導方式 2. 面積比
 
@@ -139,6 +141,8 @@ Vec3f barycentric(Vec2f A, Vec2f B, Vec2f C, Vec2f P) {
 }
 ```
 
+<br>
+
 ## 基本使用
 
 基本轉換:
@@ -150,6 +154,7 @@ Vec3f barycentric(Vec2f A, Vec2f B, Vec2f C, Vec2f P) {
     $ P= \alpha A + \beta B +\gamma C $ <br>
     $ P= (1-u-v)A + uB + vC $
 
+<br>
 
 ## 應用方式
 
@@ -169,6 +174,7 @@ Vec3f barycentric(Vec2f A, Vec2f B, Vec2f C, Vec2f P) {
 
 重複此過程渲染兩片三角形後，就能將骰子點數6的這一面印出
 
+<br>
 
 ## 結論
 暫無，之後再補
