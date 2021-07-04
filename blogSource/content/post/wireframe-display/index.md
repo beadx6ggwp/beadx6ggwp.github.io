@@ -19,7 +19,7 @@ draft: false
 
 ## 簡介
 
-實作這幾篇文章，並介紹線框繪製的問題點與解決方法:
+使用自製的軟體渲染器來實作這幾篇文章，並介紹線框繪製的問題點與解決方法:
 - [Solid Wireframe, NVIDIA Whitepaper 2007][1]
 - [Single-Pass Wireframe Rendering, Siggraph 2006][3]
 - [Two Methods for Antialiased Wireframe Drawing with Hidden Line Removal, SCCG '08][4]
