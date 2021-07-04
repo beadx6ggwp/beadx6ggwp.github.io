@@ -563,16 +563,17 @@ if (!doNotTrack) {
 </span><span class="c1"></span>        <span class="n">screen_coords</span><span class="p">[</span><span class="n">nthvert</span><span class="p">]</span> <span class="o">=</span> <span class="n">proj</span><span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="p">(</span><span class="n">pos</span> <span class="o">/</span> <span class="n">pos</span><span class="p">[</span><span class="mi">3</span><span class="p">]);</span>
         <span class="k">return</span> <span class="n">pos</span><span class="p">;</span>
     <span class="p">}</span>
-    <span class="c1">// Pixel Shader
+    <span class="c1">// Pixel Shader: 最短邊距法線段繪製
 </span><span class="c1"></span>    <span class="k">virtual</span> <span class="kt">bool</span> <span class="nf">fragment</span><span class="p">(</span><span class="n">Vec3f</span> <span class="n">bar</span><span class="p">,</span> <span class="n">UI32</span><span class="o">&amp;</span> <span class="n">color</span><span class="p">)</span> <span class="p">{</span>
         <span class="kt">float</span> <span class="n">d</span> <span class="o">=</span> <span class="n">getMinDistToEdge</span><span class="p">(</span><span class="n">bar</span><span class="p">);</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="n">d</span> <span class="o">&lt;</span> <span class="n">range</span><span class="p">)</span> <span class="n">c</span> <span class="o">=</span> <span class="n">wire_color</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">d</span> <span class="o">&lt;</span> <span class="n">width</span><span class="p">)</span> <span class="n">c</span> <span class="o">=</span> <span class="n">wire_color</span><span class="p">;</span>
         <span class="k">else</span> <span class="n">c</span> <span class="o">=</span> <span class="n">fill_color</span><span class="p">;</span>
         
         <span class="n">color</span> <span class="o">=</span> <span class="n">rgb2hex</span><span class="p">(</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">255</span><span class="p">,</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">255</span><span class="p">,</span> <span class="n">c</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mi">255</span><span class="p">);</span><span class="c1">// 0~1轉換成0~255
 </span><span class="c1"></span>        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
     <span class="p">}</span>
+    
     <span class="kt">float</span> <span class="nf">getMinDistToEdge</span><span class="p">(</span><span class="n">Vec3f</span> <span class="n">bar</span><span class="p">)</span> <span class="p">{</span>
         <span class="kt">float</span> <span class="n">dist</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
         <span class="k">auto</span> <span class="n">getLength</span> <span class="o">=</span> <span class="p">[</span><span class="o">&amp;</span><span class="p">](</span><span class="n">Vec2f</span><span class="o">&amp;</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span><span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">sqrt</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">v</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">v</span><span class="p">.</span><span class="n">y</span> <span class="o">*</span> <span class="n">v</span><span class="p">.</span><span class="n">y</span><span class="p">);</span> <span class="p">};</span>
@@ -659,7 +660,8 @@ if (!doNotTrack) {
 </span><span class="c1"></span>    <span class="kt">float</span> <span class="n">width</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="c1">// 線框寬度
 </span><span class="c1"></span>    <span class="c1">// Vertex Shader 同上
 </span><span class="c1"></span>    <span class="k">virtual</span> <span class="n">Vec4f</span> <span class="nf">vertex</span><span class="p">(</span><span class="kt">int</span> <span class="n">iface</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nthvert</span><span class="p">)...</span>
-    <span class="c1">// Pixel Shader
+
+    <span class="c1">// Pixel Shader: 反鋸齒的最短邊距法繪製
 </span><span class="c1"></span>    <span class="k">virtual</span> <span class="kt">bool</span> <span class="n">fragment</span><span class="p">(</span><span class="n">Vec3f</span> <span class="n">bar</span><span class="p">,</span> <span class="n">UI32</span><span class="o">&amp;</span> <span class="n">color</span><span class="p">)</span> <span class="p">{</span>
         <span class="kt">float</span> <span class="n">d</span> <span class="o">=</span> <span class="n">getMinDistToEdge</span><span class="p">(</span><span class="n">bar</span><span class="p">);</span>
         <span class="c1">// 對線框寬度的+/-1邊界進行平滑
