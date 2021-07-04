@@ -1428,7 +1428,7 @@ $$&lt;/p&gt;
 		&lt;figcaption&gt;(b) 左:width = 10px, 右:width = 2px&lt;/figcaption&gt;
 		
 	&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;圖(a)這張就是封面圖的(c)部分，稍微換個顏色，可以明顯看到，這樣的線框已經足夠使用了，圖(b)也能任意控制線框寬度與著色樣式)，但是線框看起來還是有一點粗糙，所以接著就是最後一步處理，就是反鋸齒&lt;/p&gt;
+&lt;p&gt;圖(a)這張就是封面圖的(c)部分，稍微換個顏色，可以明顯看到，這樣的線框已經足夠使用了，圖(b)也能任意控制線框寬度與著色樣式)，但是線框看起來還是有一點粗糙，所以接著最後一步處理，反鋸齒&lt;/p&gt;
 &lt;h3 id=&#34;反鋸齒處理antialiased-wireframe-drawing&#34;&gt;反鋸齒處理Antialiased Wireframe Drawing&lt;/h3&gt;
 &lt;p&gt;圖片引用自&lt;a class=&#34;link&#34; href=&#34;https://developer.download.nvidia.com/SDK/10/direct3d/Source/SolidWireframe/Doc/SolidWireframe.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Solid Wireframe, NVIDIA Whitepaper, p10, p11&lt;/a&gt;
