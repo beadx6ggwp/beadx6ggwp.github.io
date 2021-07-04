@@ -239,7 +239,7 @@ struct WireframeShader : public IShader {
         return false;
     }
 	float smoothstep(float edge0, float edge1, float x) {
-        //  // Scale, bias and saturate x to 0..2 range
+        // Scale, bias and saturate x to 0..2 range
 		x = clamp((x - edge0) / (edge1 - edge0), 0.0, 2.0);
 		return  exp2(-2 * x * x);
 	}
