@@ -6,7 +6,38 @@
     <description>Recent content in C&#43;&#43; on 展維隨筆</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 11 Dec 2020 05:01:26 +0800</lastBuildDate><atom:link href="https://davidhsu666.com/tags/c++/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 03 Jul 2021 23:39:36 +0800</lastBuildDate><atom:link href="https://davidhsu666.com/tags/c++/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Shader重心座標的線框繪製</title>
+      <link>https://davidhsu666.com/archives/wireframe-display/</link>
+      <pubDate>Sat, 03 Jul 2021 23:39:36 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/wireframe-display/</guid>
+      <description>目錄: 簡介 介紹 問題 解決方法與原理  單純使用重心座標 const offset 最短邊距法 shortest distance to the edge 反鋸齒處理Antialiased Wireframe Drawing   應用與討論  虛線樣式 外側反鋸齒 優缺點   結語 Reference  簡介 實作這幾篇文章，並介紹線框繪製的問題點與解決方法:
+ Solid Wireframe, NVIDIA Whitepaper 2007 Single-Pass Wireframe Rendering, Siggraph 2006 Two Methods for Antialiased Wireframe Drawing with Hidden Line Removal, SCCG &amp;lsquo;08  這幾篇文章總結的線框渲染方式都非常簡單直觀，就只是在Shader時，找出三角形內的動點P與邊界的最短距離d，當d &amp;lt; LineWidth時就代表P點屬於線框的部分，那就繪製線框的顏色，然後再透過smoothing function給LineWidth這個閥值做平滑，讓線段邊緣的顏色遞減，就這樣
+只是想嘗試完整的敘述一開始研究者所遇到的問題，並循序漸進的解決，到最後得出結論，來想像遇到這問題該怎麼著手
+使用myMiniRender渲染的結果 :  (a)只使用const offset, (b)解決方法single pass method:邊距+平滑函數反鋸齒, (c)使用邊距+const offset,</description>
+    </item>
+    
+    <item>
+      <title>重心座標的推導與使用 Barycentric Coordinates</title>
+      <link>https://davidhsu666.com/archives/barycentric-coordinates/</link>
+      <pubDate>Thu, 01 Jul 2021 21:00:47 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/barycentric-coordinates/</guid>
+      <description>目錄: 定義 推導方式 1. 外積 推導方式 2. 面積比 基本使用 應用方式 結論 Reference  定義  
+平面三角形T有A、B、C頂點，而內部的任一點P，都可以透過$\overrightarrow{AB}$與$\overrightarrow{AC}$的線性組合來表示，所以P點表示法如下:
+$$ \overrightarrow{AP}=u\overrightarrow{AB}+v\overrightarrow{AC} $$
+將它分解整理後: $$ P-A=u(B-A)+v(C-A) $$
+最終得到: $$ P(x,y) = (1-u-v)A + uB + vC~,~~0\leq u,v\leq 1$$
+如果將A、B、C的三個係數換一下，就變成:
+$$ P(x,y)= \alpha A + \beta B +\gamma C~,~~\alpha+\beta+\gamma=1 $$
+而這就是重心座標的表示法，透過 $[\alpha,\beta,\gamma]$ 這三個介於[0,1]之間的係數，來決定P在三角形內部的相對位置
+實際範例: Barycentric coordinates of a point
+首先第一個問題就是，有了三角形ABC與內部的P點，要怎麼求出對應的係數?
+推導方式 1. 外積 將原式改寫，可以把P點看成是起點為A，透過$\overrightarrow{AB},\overrightarrow{AC}$為基底的座標為$(u,v)$: $$ P = A + u\overrightarrow{AB}+v\overrightarrow{AC} $$ 找到滿足此條件的$u,v$ $$ u\overrightarrow{AB}+v\overrightarrow{AC}+\overrightarrow{PA} = 0 $$ 平面三角形的座標拆開成$(x,y)$分量</description>
+    </item>
+    
     <item>
       <title>[Win32筆記] 建立視窗 #1</title>
       <link>https://davidhsu666.com/archives/win32note01/</link>

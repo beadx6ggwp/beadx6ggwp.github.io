@@ -50,7 +50,7 @@ if (!doNotTrack) {
         (function() {
             const colorSchemeKey = 'StackColorScheme';
             if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "dark");
+                localStorage.setItem(colorSchemeKey, "auto");
             }
         })();
     </script><script>
@@ -159,6 +159,24 @@ if (!doNotTrack) {
         
 
         <li >
+            <a href='/tags/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11 3L20 12a1.5 1.5 0 0 1 0 2L14 20a1.5 1.5 0 0 1 -2 0L3 11v-4a4 4 0 0 1 4 -4h4" />
+  <circle cx="9" cy="9" r="2" />
+</svg>
+
+
+
+                
+                <span>Tags</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
             <a href='https://github.com/beadx6ggwp'>
                 
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -179,24 +197,6 @@ if (!doNotTrack) {
         
 
         <li >
-            <a href='/search/'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>Search</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
             <a href='/test/'>
                 
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -209,6 +209,24 @@ if (!doNotTrack) {
 
                 
                 <span>test</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
             </a>
         </li>
         
@@ -328,7 +346,12 @@ if (!doNotTrack) {
     <li><a href="#前言">前言</a></li>
     <li><a href="#1-矩形碰撞檢測">1. 矩形碰撞檢測</a></li>
     <li><a href="#2-什麼是分離軸檢測">2. 什麼是分離軸檢測?</a></li>
-    <li><a href="#3-知識補充1向量">3. 知識補充1–向量</a></li>
+    <li><a href="#3-知識補充1向量">3. 知識補充1–向量</a>
+      <ul>
+        <li><a href="#正射影-">正射影 :</a></li>
+        <li><a href="#法向量-">法向量 :</a></li>
+      </ul>
+    </li>
     <li><a href="#4-知識補充2旋轉變換">4. 知識補充2–旋轉變換</a></li>
     <li><a href="#5-如何取得分離軸上的投影">5. 如何取得分離軸上的投影?</a></li>
     <li><a href="#6-編寫程式碼-投影旋轉與判斷">6. 編寫程式碼-投影、旋轉與判斷</a></li>
@@ -337,7 +360,11 @@ if (!doNotTrack) {
     <li><a href="#9-編寫程式碼多邊形與多邊形">9. 編寫程式碼–多邊形與多邊形</a></li>
     <li><a href="#10-編寫程式碼多邊形與圓">10. 編寫程式碼–多邊形與圓</a></li>
     <li><a href="#11-sat的總結">11. SAT的總結</a></li>
-    <li><a href="#12-多物體的碰撞優化">12. 多物體的碰撞優化</a></li>
+    <li><a href="#12-多物體的碰撞優化">12. 多物體的碰撞優化</a>
+      <ul>
+        <li><a href="#簡單的介紹一個優化方法--aabb-tree-">簡單的介紹一個優化方法 – AABB Tree :</a></li>
+      </ul>
+    </li>
     <li><a href="#13-動態物體間的碰撞檢測">13. 動態物體間的碰撞檢測</a></li>
     <li><a href="#14-source-code">14. Source Code</a></li>
     <li><a href="#15-結尾感想">15. 結尾感想</a></li>
@@ -1501,28 +1528,6 @@ $$</p>
                 
                     
 <article class="has-image">
-    <a href="/archives/barycentric-coordinates/">
-        
-        
-            <div class="article-image">
-                <img src="/archives/barycentric-coordinates/img/bary5.4a03e80a96d0f77266a7a6acc1458aa8_hue81f62b7405bab549196555b4ed33b8e_122589_250x150_fill_box_smart1_2.png" 
-                        width="250" 
-                        height="150" 
-                        loading="lazy" 
-                        data-key="Barycentric-Coordinates" 
-                        data-hash="md5-SgPoCpbQ93Jmp6aswUWKqA==">
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">重心座標 Barycentric Coordinates</h2>
-        </div>
-    </a>
-</article>
-                
-                    
-<article class="has-image">
     <a href="/archives/win32note01/">
         
         
@@ -1544,13 +1549,45 @@ $$</p>
 </article>
                 
                     
-<article class="">
+<article class="has-image">
     <a href="/archives/skills-competition-software/">
         
+        
+            <div class="article-image">
+                <img src="/archives/skills-competition-software/img/skill_img1.0b9e6b7158ea6a0a2528399ba2303f54_hu19eefd48ce774c36ccb19d58e43766bf_138141_250x150_fill_q75_box_smart1.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="skills-competition-software" 
+                        data-hash="md5-C55rcVjqagolKDmbojA/VA==">
+                
+            </div>
         
 
         <div class="article-details">
             <h2 class="article-title">工科賽-軟體設計 歷屆試題解答</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/archives/csharp-bfs-solve-8-puzzle/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle07.5f0cbaf1fb16c4a1c365aebf4f493188_hu0b5eea423e222ebc3e48e168702d93a0_282255_250x150_fill_q75_box_smart1.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="csharp-bfs-solve-8-puzzle" 
+                        data-hash="md5-Xwy68fsWxKHDZa6/T0kxiA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">BFS解8-Puzzle問題</h2>
         </div>
     </a>
 </article>

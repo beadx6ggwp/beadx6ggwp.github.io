@@ -95,7 +95,7 @@ params:
         toggle: true
 
         # Available values: auto, light, dark
-        default: dark
+        default: auto
     # 設置是否處理封面與內文圖片，影響GIF的播放
     imageProcessing:
         cover:
@@ -116,7 +116,7 @@ menu:
         - identifier: github
           name: Github
           url: https://github.com/beadx6ggwp
-          weight: -65
+          weight: -30
           pre: hash
 
 related:
@@ -137,6 +137,6 @@ markup:
         renderer:
             unsafe: true
     tableOfContents:
-        endLevel: 2
+        endLevel: 3
         ordered: false
         startLevel: 2

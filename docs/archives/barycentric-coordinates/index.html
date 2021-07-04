@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en-us">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='透過相對位置u,v，來取得不同三角形中對應的絕對位置P，或是透過絕對位置P來求得相對位置u,v'><title>重心座標 Barycentric Coordinates</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='透過相對位置u,v，來取得不同三角形中對應的絕對位置P，或是透過絕對位置P來求得相對位置u,v'><title>重心座標的推導與使用 Barycentric Coordinates</title>
 
 <link rel='canonical' href='https://davidhsu666.com/archives/barycentric-coordinates/'>
 
-<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='重心座標 Barycentric Coordinates'>
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='重心座標的推導與使用 Barycentric Coordinates'>
 <meta property='og:description' content='透過相對位置u,v，來取得不同三角形中對應的絕對位置P，或是透過絕對位置P來求得相對位置u,v'>
 <meta property='og:url' content='https://davidhsu666.com/archives/barycentric-coordinates/'>
 <meta property='og:site_name' content='展維隨筆'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ComputerGraphics' /><meta property='article:published_time' content='2021-07-01T21:00:47&#43;08:00'/><meta property='article:modified_time' content='2021-07-01T21:00:47&#43;08:00'/><meta property='og:image' content='https://davidhsu666.com/archives/barycentric-coordinates/img/bary5.png' />
-<meta name="twitter:title" content="重心座標 Barycentric Coordinates">
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ComputerGraphics' /><meta property='article:tag' content='C&#43;&#43;' /><meta property='article:published_time' content='2021-07-01T21:00:47&#43;08:00'/><meta property='article:modified_time' content='2021-07-01T21:00:47&#43;08:00'/><meta property='og:image' content='https://davidhsu666.com/archives/barycentric-coordinates/img/bary5.png' />
+<meta name="twitter:title" content="重心座標的推導與使用 Barycentric Coordinates">
 <meta name="twitter:description" content="透過相對位置u,v，來取得不同三角形中對應的絕對位置P，或是透過絕對位置P來求得相對位置u,v"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://davidhsu666.com/archives/barycentric-coordinates/img/bary5.png' />
     <link rel="icon" href="https://davidhsu666.com/resource/favicon-32x32.png">
@@ -50,7 +50,7 @@ if (!doNotTrack) {
         (function() {
             const colorSchemeKey = 'StackColorScheme';
             if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "dark");
+                localStorage.setItem(colorSchemeKey, "auto");
             }
         })();
     </script><script>
@@ -159,6 +159,24 @@ if (!doNotTrack) {
         
 
         <li >
+            <a href='/tags/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11 3L20 12a1.5 1.5 0 0 1 0 2L14 20a1.5 1.5 0 0 1 -2 0L3 11v-4a4 4 0 0 1 4 -4h4" />
+  <circle cx="9" cy="9" r="2" />
+</svg>
+
+
+
+                
+                <span>Tags</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
             <a href='https://github.com/beadx6ggwp'>
                 
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -179,24 +197,6 @@ if (!doNotTrack) {
         
 
         <li >
-            <a href='/search/'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>Search</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
             <a href='/test/'>
                 
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -209,6 +209,24 @@ if (!doNotTrack) {
 
                 
                 <span>test</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
             </a>
         </li>
         
@@ -261,7 +279,7 @@ if (!doNotTrack) {
                         width="1059" 
                         height="673" 
                         loading="lazy"
-                        alt="Featured image of post 重心座標 Barycentric Coordinates" />
+                        alt="Featured image of post 重心座標的推導與使用 Barycentric Coordinates" />
                 
             </a>
         </div>
@@ -271,15 +289,15 @@ if (!doNotTrack) {
     
     <header class="article-category">
         
-            <a href="/categories/codingnote/" style="background-color: #EDFF44; color: #000;">
-                程式筆記
+            <a href="/categories/computergraphics/" style="background-color: #95C6EE; color: #000;">
+                Computer Graphics
             </a>
         
     </header>
     
 
     <h2 class="article-title">
-        <a href="/archives/barycentric-coordinates/">重心座標 Barycentric Coordinates</a>
+        <a href="/archives/barycentric-coordinates/">重心座標的推導與使用 Barycentric Coordinates</a>
     </h2>
 
     
@@ -328,7 +346,7 @@ if (!doNotTrack) {
 		</a>
 		
 	</figure></p>
-<p>平面三角形T有A、B、C頂點，而內部的任一點P，都可以透過ABC三點的<strong>線性組合</strong>來表示，所以P點表示法如下:</p>
+<p>平面三角形T有A、B、C頂點，而內部的任一點P，都可以透過$\overrightarrow{AB}$與$\overrightarrow{AC}$的<strong>線性組合</strong>來表示，所以P點表示法如下:</p>
 <p>$$  \overrightarrow{AP}=u\overrightarrow{AB}+v\overrightarrow{AC} $$</p>
 <p>將它分解整理後:
 $$ P-A=u(B-A)+v(C-A) $$</p>
@@ -337,7 +355,7 @@ $$ P(x,y) = (1-u-v)A + uB + vC~,~~0\leq u,v\leq 1$$</p>
 <p>如果將A、B、C的三個係數換一下，就變成:</p>
 <p>$$ P(x,y)= \alpha A + \beta B +\gamma C~,~~\alpha+\beta+\gamma=1 $$</p>
 <p>而這就是重心座標的表示法，透過 $[\alpha,\beta,\gamma]$ 這三個介於[0,1]之間的係數，來決定P在三角形內部的<strong>相對位置</strong></p>
-<p>線上操作範例: <a class="link" href="https://www.geogebra.org/m/ZuvmPjmy"  target="_blank" rel="noopener"
+<p>實際範例: <a class="link" href="https://www.geogebra.org/m/ZuvmPjmy"  target="_blank" rel="noopener"
     >Barycentric coordinates of a point</a></p>
 <br>
 <p>首先第一個問題就是，有了三角形ABC與內部的P點，要怎麼求出對應的係數?</p>
@@ -429,8 +447,9 @@ $$ \begin{cases}  &amp; \alpha=1-\frac{u}{c}-\frac{v}{c} \\   &amp; \beta= \frac
 		
 		<figcaption>AP投影在Nac的高，乘上底邊AC來找出B區的面積</figcaption>
 		
-	</figure></p>
-<p>而計算完的參數直接就是$[\alpha,\beta,\gamma]$了，不用像外積法要多一步</p>
+	</figure>
+Right Normal的取得<a class="link" href="https://davidhsu666.com/archives/gamecollisiondetection/#%E6%B3%95%E5%90%91%E9%87%8F-"  target="_blank" rel="noopener"
+    >參考#3-知識補充1向量</a>，而計算完的參數直接就是$[\alpha,\beta,\gamma]$了，不用像外積法要多一步</p>
 <p>$$ P= \alpha A + \beta B +\gamma C~,~~\alpha+\beta+\gamma=1 $$</p>
 <div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="c1">// 透過面積計算重心座標
 </span><span class="c1"></span><span class="n">Vec3f</span> <span class="nf">barycentric</span><span class="p">(</span><span class="n">Vec2f</span> <span class="n">A</span><span class="p">,</span> <span class="n">Vec2f</span> <span class="n">B</span><span class="p">,</span> <span class="n">Vec2f</span> <span class="n">C</span><span class="p">,</span> <span class="n">Vec2f</span> <span class="n">P</span><span class="p">)</span> <span class="p">{</span>
@@ -496,14 +515,18 @@ $ P= (1-u-v)A + uB + vC $</p>
 <h2 id="reference">Reference</h2>
 <ul>
 <li>Fundamentals of Computer Graphics 4th</li>
+<li><a class="link" href="https://www.scratchapixel.com/lessons/3d-basic-rendering/rasterization-practical-implementation/rasterization-stage"  target="_blank" rel="noopener"
+    >scratchapixel, Rasterization: a Practical Implementation</a></li>
 <li><a class="link" href="https://github.com/ssloy/tinyrenderer/wiki/Lesson-2:-Triangle-rasterization-and-back-face-culling"  target="_blank" rel="noopener"
     >Tiny Renderer:Triangle rasterization and back face culling</a></li>
+<li><a class="link" href="https://observablehq.com/@infowantstobeseen/barycentric-coordinates"  target="_blank" rel="noopener"
+    >Barycentric Coordinates</a></li>
 <li><a class="link" href="https://sites.cs.ucsb.edu/~lingqi/teaching/games101.html"  target="_blank" rel="noopener"
     >GAMES101-现代计算机图形学入门-闫令琪</a></li>
 <li><a class="link" href="https://blog.csdn.net/qq_38065509/article/details/105446756"  target="_blank" rel="noopener"
     >计算机图形学三(补充)：重心坐标(barycentric coordinates)详解及其作用</a></li>
-<li><a class="link" href="https://observablehq.com/@infowantstobeseen/barycentric-coordinates"  target="_blank" rel="noopener"
-    >Barycentric Coordinates</a></li>
+<li><a class="link" href="https://zhuanlan.zhihu.com/p/65495373"  target="_blank" rel="noopener"
+    >二圈妹:三角形重心坐标</a></li>
 </ul>
 
 </section>
@@ -515,6 +538,8 @@ $ P= (1-u-v)A + uB + vC $</p>
     <section class="article-tags">
         
             <a href="/tags/computergraphics/">ComputerGraphics</a>
+        
+            <a href="/tags/c&#43;&#43;/">C&#43;&#43;</a>
         
     </section>
 
@@ -568,100 +593,22 @@ $ P= (1-u-v)A + uB + vC $</p>
                 
                     
 <article class="has-image">
-    <a href="/archives/win32note01/">
+    <a href="/archives/wireframe-display/">
         
         
             <div class="article-image">
-                <img src="/archives/win32note01/img/1602103707812.7553d01bdd8e04ae277fd5a402e941a8_huf41b96d2886df92c7e1e1280e6daa8eb_36021_250x150_fill_q75_box_smart1.jpg" 
+                <img src="/archives/wireframe-display/img/ps/teapot_5.1.2dee5b84212e253ef876e1d95adc707c_hu20421198acf28d6e0ed46afbf62eddc2_184246_250x150_fill_box_smart1_2.png" 
                         width="250" 
                         height="150" 
                         loading="lazy" 
-                        data-key="win32note01" 
-                        data-hash="md5-dVPQG92OBK4nf9WkAulBqA==">
+                        data-key="Wireframe-display" 
+                        data-hash="md5-Le5bhCEuJT74duHZWtxwfA==">
                 
             </div>
         
 
         <div class="article-details">
-            <h2 class="article-title">[Win32筆記] 建立視窗 #1</h2>
-        </div>
-    </a>
-</article>
-                
-                    
-<article class="">
-    <a href="/archives/skills-competition-software/">
-        
-        
-
-        <div class="article-details">
-            <h2 class="article-title">工科賽-軟體設計 歷屆試題解答</h2>
-        </div>
-    </a>
-</article>
-                
-                    
-<article class="has-image">
-    <a href="/archives/math-for-game-vector-reflection/">
-        
-        
-            <div class="article-image">
-                <img src="/archives/math-for-game-vector-reflection/img/13fig21.b79848615792b34f8c0d1dc38db6ae46_hu9951623b7b3c57f683995ab87fcf3709_19062_250x150_fill_box_smart1.gif" 
-                        width="250" 
-                        height="150" 
-                        loading="lazy" 
-                        data-key="math-for-game-vector-reflection" 
-                        data-hash="md5-t5hIYVeSs0&#43;MDR3DjbauRg==">
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">Vector reflection向量鏡射 基本的碰撞反彈回饋</h2>
-        </div>
-    </a>
-</article>
-                
-                    
-<article class="has-image">
-    <a href="/archives/quadtree_in_2d/">
-        
-        
-            <div class="article-image">
-                <img src="/archives/quadtree_in_2d/img/Quad_013.a7ee28c0eeb895aba73c942cef9f742e_hu646d8ae9c65ce621115142c45ba5d5ba_35828_250x150_fill_box_smart1_2.png" 
-                        width="250" 
-                        height="150" 
-                        loading="lazy" 
-                        data-key="quadtree_in_2d" 
-                        data-hash="md5-p&#43;4owO64launPJQs7590Lg==">
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">碰撞檢測的優化-四叉樹(Quadtree)</h2>
-        </div>
-    </a>
-</article>
-                
-                    
-<article class="has-image">
-    <a href="/archives/csharp-bfs-solve-8-puzzle/">
-        
-        
-            <div class="article-image">
-                <img src="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle07.5f0cbaf1fb16c4a1c365aebf4f493188_hu0b5eea423e222ebc3e48e168702d93a0_282255_250x150_fill_q75_box_smart1.jpg" 
-                        width="250" 
-                        height="150" 
-                        loading="lazy" 
-                        data-key="csharp-bfs-solve-8-puzzle" 
-                        data-hash="md5-Xwy68fsWxKHDZa6/T0kxiA==">
-                
-            </div>
-        
-
-        <div class="article-details">
-            <h2 class="article-title">BFS解8-Puzzle問題</h2>
+            <h2 class="article-title">Shader重心座標的線框繪製</h2>
         </div>
     </a>
 </article>

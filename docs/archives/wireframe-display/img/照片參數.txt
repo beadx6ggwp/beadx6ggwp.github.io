@@ -1,0 +1,12 @@
+Vec3f 	light_dir(1, 1, 1);
+Vec3f      	 eye(0, 0, 0);//1, 1, 3
+Vec3f    	center(-1, 0, 0);
+Vec3f        	up(0, 1, 0);
+
+Vec3f	 vCamera(0.2, 0.6, 0.8);
+Vec3f  	 vLookDir(0, 0, 1);
+float 	fYaw = 0;
+
+
+ModelTrans_ = RotationByAxis(0, 0, 1, 0.1);
+ModelTrans_ = RotationByAxis(1, 0, 0, 0.5) * ModelTrans_;

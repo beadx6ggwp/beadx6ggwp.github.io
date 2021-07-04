@@ -6,7 +6,7 @@
         <description>Recent content on 展維隨筆</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Thu, 01 Jul 2021 21:00:47 +0800</lastBuildDate><atom:link href="https://davidhsu666.com/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 03 Jul 2021 23:39:36 +0800</lastBuildDate><atom:link href="https://davidhsu666.com/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>遊戲中的碰撞檢測Collision Detection</title>
         <link>https://davidhsu666.com/archives/gamecollisiondetection/</link>
         <pubDate>Wed, 21 Mar 2018 05:52:36 +0800</pubDate>
@@ -39,7 +39,12 @@
     &lt;li&gt;&lt;a href=&#34;#前言&#34;&gt;前言&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#1-矩形碰撞檢測&#34;&gt;1. 矩形碰撞檢測&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#2-什麼是分離軸檢測&#34;&gt;2. 什麼是分離軸檢測?&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#3-知識補充1向量&#34;&gt;3. 知識補充1–向量&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#3-知識補充1向量&#34;&gt;3. 知識補充1–向量&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#正射影-&#34;&gt;正射影 :&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#法向量-&#34;&gt;法向量 :&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#4-知識補充2旋轉變換&#34;&gt;4. 知識補充2–旋轉變換&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#5-如何取得分離軸上的投影&#34;&gt;5. 如何取得分離軸上的投影?&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#6-編寫程式碼-投影旋轉與判斷&#34;&gt;6. 編寫程式碼-投影、旋轉與判斷&lt;/a&gt;&lt;/li&gt;
@@ -48,7 +53,11 @@
     &lt;li&gt;&lt;a href=&#34;#9-編寫程式碼多邊形與多邊形&#34;&gt;9. 編寫程式碼–多邊形與多邊形&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#10-編寫程式碼多邊形與圓&#34;&gt;10. 編寫程式碼–多邊形與圓&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#11-sat的總結&#34;&gt;11. SAT的總結&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#12-多物體的碰撞優化&#34;&gt;12. 多物體的碰撞優化&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#12-多物體的碰撞優化&#34;&gt;12. 多物體的碰撞優化&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#簡單的介紹一個優化方法--aabb-tree-&#34;&gt;簡單的介紹一個優化方法 – AABB Tree :&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#13-動態物體間的碰撞檢測&#34;&gt;13. 動態物體間的碰撞檢測&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#14-source-code&#34;&gt;14. Source Code&lt;/a&gt;&lt;/li&gt;
     &lt;li&gt;&lt;a href=&#34;#15-結尾感想&#34;&gt;15. 結尾感想&lt;/a&gt;&lt;/li&gt;
@@ -1108,12 +1117,526 @@ $$&lt;/p&gt;
 </description>
         </item>
         <item>
-        <title>重心座標 Barycentric Coordinates</title>
+        <title>Shader重心座標的線框繪製</title>
+        <link>https://davidhsu666.com/archives/wireframe-display/</link>
+        <pubDate>Sat, 03 Jul 2021 23:39:36 +0800</pubDate>
+        
+        <guid>https://davidhsu666.com/archives/wireframe-display/</guid>
+        <description>&lt;img src="https://davidhsu666.com/archives/wireframe-display/img/ps/teapot_5.1.png" alt="Featured image of post Shader重心座標的線框繪製" /&gt;&lt;div&gt;
+    
+    &lt;p&gt;目錄:
+    &lt;nav id=&#34;TableOfContents&#34;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;a href=&#34;#簡介&#34;&gt;簡介&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#介紹&#34;&gt;介紹&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#問題&#34;&gt;問題&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#解決方法與原理&#34;&gt;解決方法與原理&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#單純使用重心座標-const-offset&#34;&gt;單純使用重心座標 const offset&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#最短邊距法-shortest-distance-to-the-edge&#34;&gt;最短邊距法 shortest distance to the edge&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#反鋸齒處理antialiased-wireframe-drawing&#34;&gt;反鋸齒處理Antialiased Wireframe Drawing&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#應用與討論&#34;&gt;應用與討論&lt;/a&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href=&#34;#虛線樣式&#34;&gt;虛線樣式&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#外側反鋸齒&#34;&gt;外側反鋸齒&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&#34;#優缺點&#34;&gt;優缺點&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#結語&#34;&gt;結語&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a href=&#34;#reference&#34;&gt;Reference&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/nav&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&#34;簡介&#34;&gt;簡介&lt;/h2&gt;
+&lt;p&gt;實作這幾篇文章，並介紹線框繪製的問題點與解決方法:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://developer.download.nvidia.com/SDK/10/direct3d/Source/SolidWireframe/Doc/SolidWireframe.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Solid Wireframe, NVIDIA Whitepaper 2007&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;http://www2.imm.dtu.dk/pubdb/edoc/imm4884.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Single-Pass Wireframe Rendering, Siggraph 2006&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://backend.orbit.dtu.dk/ws/portalfiles/portal/3735323/wire-sccg.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Two Methods for Antialiased Wireframe Drawing with Hidden Line Removal, SCCG &amp;lsquo;08&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;這幾篇文章總結的線框渲染方式都非常簡單直觀，就只是在Shader時，找出三角形內的動點P與邊界的最短距離d，當d &amp;lt; LineWidth時就代表P點屬於線框的部分，那就繪製線框的顏色，然後再透過smoothing function給LineWidth這個閥值做平滑，讓線段邊緣的顏色遞減，就這樣&lt;/p&gt;
+&lt;p&gt;只是想嘗試完整的敘述一開始研究者所遇到的問題，並循序漸進的解決，到最後得出結論，來想像遇到這問題該怎麼著手&lt;/p&gt;
+&lt;p&gt;使用&lt;a class=&#34;link&#34; href=&#34;https://github.com/beadx6ggwp/RenderLearningPlan&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;myMiniRender&lt;/a&gt;渲染的結果 :
+&lt;figure style=&#34;flex-grow: 152; flex-basis: 365px&#34;&gt;
+		&lt;a href=&#34;https://davidhsu666.com/archives/wireframe-display/img/ps/teapot_5.1.png&#34; data-size=&#34;919x604&#34;&gt;&lt;img src=&#34;https://davidhsu666.com/archives/wireframe-display/img/ps/teapot_5.1.png&#34;
+				
+				width=&#34;919&#34;
+				height=&#34;604&#34;
+				loading=&#34;lazy&#34;
+				alt=&#34;(a)只使用const offset, (b)解決方法single pass method:邊距&amp;#43;平滑函數反鋸齒, (c)使用邊距&amp;#43;const offset, &#34;&gt;
+		&lt;/a&gt;
+		
+		&lt;figcaption&gt;(a)只使用const offset, (b)解決方法single pass method:邊距+平滑函數反鋸齒, (c)使用邊距+const offset,&lt;/figcaption&gt;
+		
+	&lt;/figure&gt;&lt;/p&gt;
+&lt;br&gt;
+&lt;h2 id=&#34;介紹&#34;&gt;介紹&lt;/h2&gt;
+&lt;p&gt;在建立了基本渲染流水線後，原本想要方便Debug，所以在流水線外，將投影後的頂點座標連成線段三角形，來畫出基本線框方便觀察，而這大致就是gl.LINES的方式&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-C++&#34; data-lang=&#34;C++&#34;&gt;&lt;span class=&#34;n&#34;&gt;TextureShader&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;shader&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;model&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;model_head&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;model&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;nfaces&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;();&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;++&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;Vec4f&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;screen_coords&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// 投影轉換後的座標
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;j&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;j&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;j&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;++&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;screen_coords&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;j&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;shader&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vertex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;j&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;// 先忽略PixelShader，現在要的是線框，不是像素著色
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;// triangle(screen_coords, shader, device); 
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;drawTriangleLine&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;screen_coords&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;black&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// 開啟gl.LINE
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;figure style=&#34;flex-grow: 106; flex-basis: 256px&#34;&gt;
+		&lt;a href=&#34;https://davidhsu666.com/archives/wireframe-display/img/line-rect.png&#34; data-size=&#34;208x195&#34;&gt;&lt;img src=&#34;https://davidhsu666.com/archives/wireframe-display/img/line-rect.png&#34;
+				
+				width=&#34;208&#34;
+				height=&#34;195&#34;
+				loading=&#34;lazy&#34;
+				alt=&#34;上面那段code所繪製的線框圖&#34;&gt;
+		&lt;/a&gt;
+		
+		&lt;figcaption&gt;上面那段code所繪製的線框圖&lt;/figcaption&gt;
+		
+	&lt;/figure&gt;&lt;figure style=&#34;flex-grow: 254; flex-basis: 610px&#34;&gt;
+		&lt;a href=&#34;https://davidhsu666.com/archives/wireframe-display/img/line-ship.png&#34; data-size=&#34;715x281&#34;&gt;&lt;img src=&#34;https://davidhsu666.com/archives/wireframe-display/img/line-ship.png&#34;
+				
+				width=&#34;715&#34;
+				height=&#34;281&#34;
+				loading=&#34;lazy&#34;
+				alt=&#34;myMiniRender線段繪製方形與模型線框&#34;&gt;
+		&lt;/a&gt;
+		
+		&lt;figcaption&gt;myMiniRender線段繪製方形與模型線框&lt;/figcaption&gt;
+		
+	&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;效果如上面兩張圖，但背面的線條會導致畫面很雜亂，為了&lt;strong&gt;正確顯示背部消除與物體遮擋&lt;/strong&gt;，所以需要特別處理&lt;/p&gt;
+&lt;p&gt;背部消除的線條，以往是分成兩次繪製(Two-pass)的方式，指同個畫面總共經過了兩次pipeline處理，讓物體與線框獨立繪製，並產生兩個深度緩衝(Z-buffer)，1.是繪製物體時的Zo(object)，2.是繪製線框時的Zw(wireframe)，通常繪製的順序是先繪製物體表面，然後在繪製線框時，將Zo與Zw比較深度，判斷線框跟物體的前後與遮擋&lt;/p&gt;
+&lt;br&gt;
+&lt;h2 id=&#34;問題&#34;&gt;問題&lt;/h2&gt;
+&lt;p&gt;使用Two-pass這種方法繪製背部消除的線段時，會有幾個限制:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;無法&lt;strong&gt;更改線條寬度&lt;/strong&gt;、&lt;strong&gt;插值線段顏色&lt;/strong&gt;等樣式處理&lt;/li&gt;
+&lt;li&gt;無法進行反鋸齒的處理，因為反鋸齒會需要透過流水線處理Blending等操作&lt;/li&gt;
+&lt;li&gt;物體與線段會使用一樣的頂點，也就代表共用一樣的深度，導致線框深度跟物體深度Z-buffer判斷遮擋的時候，深度一樣，不知道是物體在前，還是線段在前，導致Z-fighting&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;細節補充 :&lt;br&gt;第一個pass渲染物體並產生Zo，而第二個pass詳細步驟是: 1.將線段頂點處理投影變換(MVP)後得到線段頂點的z-buffer, Zw，2.在光柵化線段像素P時，將P點的線段Zw與物體Zo的深度進行比較，&lt;code&gt;if(Zw(P) &amp;lt;Zo(P)) draw(P);&lt;/code&gt;，以此來繪製正確的遮擋線段。&lt;br&gt;
+但這時物體與線段的pass都用一樣的頂點，可能會導致Z-fighting(深度z值一樣不曉得誰前誰後)或不正確的遮擋，所以需要透過深度偏移(depth bias offset)，將物體的深度放在模型後面一點的位置，才能正確讓線框繪製在物體前面。&lt;br&gt;&lt;br&gt;
+雖然&lt;strong&gt;繪製出的效果不錯&lt;/strong&gt;，不過z-buffer的值是透過Perspective的非線性轉換得來，還有精度問題，所以在某些地方可能因為這一點點的前後差距導致一些本該被遮擋的區域未被遮擋，所以嚴格來說這種繪製方法是不正確的&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;如圖(a)中的紅色的線段能正確被遮擋，且因為有深度偏移，讓線段頂點在物體的前面，所以第一次pass繪製物體產生Zo後，第二次pass在繪製線段時，只要比較線段中P點深度有沒有比Zo更近即可判斷是否繪製，以此達到線段遮擋與背部消除的效果，圖(b)引用&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1810.01175&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Line Drawings from 3D Models, p18&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure style=&#34;flex-grow: 226; flex-basis: 544px&#34;&gt;
+		&lt;a href=&#34;https://davidhsu666.com/archives/wireframe-display/img/z-buffer2.png&#34; data-size=&#34;1086x479&#34;&gt;&lt;img src=&#34;https://davidhsu666.com/archives/wireframe-display/img/z-buffer2.png&#34;
+				
+				width=&#34;1086&#34;
+				height=&#34;479&#34;
+				loading=&#34;lazy&#34;
+				alt=&#34;(a)物體的Z-buffer, Zo,與線段遮擋示意圖&#34;&gt;
+		&lt;/a&gt;
+		
+		&lt;figcaption&gt;(a)物體的Z-buffer, Zo,與線段遮擋示意圖&lt;/figcaption&gt;
+		
+	&lt;/figure&gt;&lt;figure style=&#34;flex-grow: 88; flex-basis: 212px&#34;&gt;
+		&lt;a href=&#34;https://davidhsu666.com/archives/wireframe-display/img/multi-pass-rendering.png&#34; data-size=&#34;707x799&#34;&gt;&lt;img src=&#34;https://davidhsu666.com/archives/wireframe-display/img/multi-pass-rendering.png&#34;
+				
+				width=&#34;707&#34;
+				height=&#34;799&#34;
+				loading=&#34;lazy&#34;
+				alt=&#34;(b)使用Laplacian of Gaussian filter在two-pass時處理物體輪廓&#34;&gt;
+		&lt;/a&gt;
+		
+		&lt;figcaption&gt;(b)使用Laplacian of Gaussian filter在two-pass時處理物體輪廓&lt;/figcaption&gt;
+		
+	&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;而這篇文章，希望透過循序漸進的方式，介紹可以在一個pass內繪製物體與線框的方法，僅透過Shader繪製時傳入的重心座標與頂點，即可在三角形邊緣繪製不同的圖案，而且因為是single-pass，相對來說效能更好，使用上也簡單好用&lt;/p&gt;
+&lt;p&gt;這方法的缺點大概就是框線繪製在三角形內部，所以會使物體輪廓看起來更薄一些，也因為只在內部繪製，所以只有內側有反鋸齒效果&lt;/p&gt;
+&lt;br&gt;
+&lt;h2 id=&#34;解決方法與原理&#34;&gt;解決方法與原理&lt;/h2&gt;
+&lt;p&gt;必要知識 : &lt;a class=&#34;link&#34; href=&#34;https://davidhsu666.com/archives/barycentric-coordinates/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;重心座標的推導與使用 Barycentric Coordinates&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://www.youtube.com/watch?v=t7Ztio8cwqM&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;動畫圖解 Rasterizer Algorithm Explanation&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;如果要在single-pass下完成的話，勢必要在「Shader繪製物體的時候&lt;strong&gt;一起畫出線段&lt;/strong&gt;」，而在光柵化三角形(Rasterization)的時候，會有一個動點P去走訪三角形的所有&lt;strong&gt;像素區域&lt;/strong&gt;，並給Shader傳入P點的重心座標&lt;/p&gt;
+&lt;h3 id=&#34;單純使用重心座標-const-offset&#34;&gt;單純使用重心座標 const offset&lt;/h3&gt;
+&lt;p&gt;前面提到過，重心座標(bar)alpha、beta、gamma就是頂點A,B,C對面那塊區域的面積比，也就是說「&lt;strong&gt;當某一塊面積為0時，就代表P點在三角形的邊上&lt;/strong&gt;」&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.geogebra.org/m/ZuvmPjmy&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;線上操作範例&lt;/a&gt; : 可拖動重心座標在三角形的邊界上移動，去觀察重心座標的值&lt;/p&gt;
+&lt;p&gt;&lt;figure style=&#34;flex-grow: 127; flex-basis: 306px&#34;&gt;
+		&lt;a href=&#34;https://davidhsu666.com/archives/wireframe-display/img/p%E5%9C%A8%E4%B8%89%E8%A7%92%E5%BD%A2%E9%82%8A%E4%B8%8A%E7%9A%84%E6%83%85%E6%B3%812.png&#34; data-size=&#34;523x409&#34;&gt;&lt;img src=&#34;https://davidhsu666.com/archives/wireframe-display/img/p%E5%9C%A8%E4%B8%89%E8%A7%92%E5%BD%A2%E9%82%8A%E4%B8%8A%E7%9A%84%E6%83%85%E6%B3%812.png&#34;
+				
+				width=&#34;523&#34;
+				height=&#34;409&#34;
+				loading=&#34;lazy&#34;
+				&gt;
+		&lt;/a&gt;
+		
+	&lt;/figure&gt;
+&lt;figure style=&#34;flex-grow: 139; flex-basis: 333px&#34;&gt;
+		&lt;a href=&#34;https://davidhsu666.com/archives/wireframe-display/img/p%E5%9C%A8%E4%B8%89%E8%A7%92%E5%BD%A2%E9%82%8A%E4%B8%8A%E7%9A%84%E6%83%85%E6%B3%813.png&#34; data-size=&#34;670x482&#34;&gt;&lt;img src=&#34;https://davidhsu666.com/archives/wireframe-display/img/p%E5%9C%A8%E4%B8%89%E8%A7%92%E5%BD%A2%E9%82%8A%E4%B8%8A%E7%9A%84%E6%83%85%E6%B3%813.png&#34;
+				
+				width=&#34;670&#34;
+				height=&#34;482&#34;
+				loading=&#34;lazy&#34;
+				&gt;
+		&lt;/a&gt;
+		
+	&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;如左圖，當重心座標在藍色線上時，beta的面積為0，代表這個點在邊上，但光柵化時的像素渲染是一格一格的，很多時候P根本不可能剛好在邊界上&lt;/p&gt;
+&lt;p&gt;如右圖，尤其是遠處的小片三角形，所佔有的像素區域非常少，整面三角形符合offset範圍的P點只有五個，那就會導致遠處物體看起來只剩下幾個點而已&lt;/p&gt;
+&lt;p&gt;如圖中的綠點，要是只在邊上才繪製的話，線會斷斷續續的，而const offset這個方法，就是透過offset來修正這段誤差，只要任一個重心座標(面積比)&lt;code&gt;alpha, beta, gamma &amp;lt;= offset&lt;/code&gt;，就認定這個P點在三角形的邊界上，繪製線段顏色，&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-C++&#34; data-lang=&#34;C++&#34;&gt;&lt;span class=&#34;k&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;LineShader&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;IShader&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;// Vertex Shader: 處理座標投影轉換
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;virtual&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Vec4f&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;vertex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;iface&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;nthvert&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;...&lt;/span&gt;
+
+    &lt;span class=&#34;c1&#34;&gt;// Pixel Shader: 處理P點的像素顏色, Vec3f bar為重心座標alpha, beta, gamma
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;virtual&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;bool&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;fragment&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Vec3f&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;bar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;UI32&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;color&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;kt&#34;&gt;float&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;offset&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;0.01&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//容許的誤差範圍
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;bar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;offset&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;||&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;bar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;offset&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;||&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;bar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;offset&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; 
+            &lt;span class=&#34;n&#34;&gt;color&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mh&#34;&gt;0x000000&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 黑色線框
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;k&#34;&gt;else&lt;/span&gt; 
+            &lt;span class=&#34;n&#34;&gt;color&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mh&#34;&gt;0xFFFFFF&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 物體原本的顏色,這裡用白色代替
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;false&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;上面這段Shader code會執行出這個結果:
+&lt;figure style=&#34;flex-grow: 203; flex-basis: 488px&#34;&gt;
+		&lt;a href=&#34;https://davidhsu666.com/archives/wireframe-display/img/ps/%E7%9B%B4%E6%8E%A5%E9%87%8D%E5%BF%83%E5%BA%A7%E6%A8%99%E5%88%A4%E6%96%B7_range%E5%B0%8F%E6%96%BC0.02%E8%88%870%E6%AF%94%E8%BC%83.png&#34; data-size=&#34;1244x611&#34;&gt;&lt;img src=&#34;https://davidhsu666.com/archives/wireframe-display/img/ps/%E7%9B%B4%E6%8E%A5%E9%87%8D%E5%BF%83%E5%BA%A7%E6%A8%99%E5%88%A4%E6%96%B7_range%E5%B0%8F%E6%96%BC0.02%E8%88%870%E6%AF%94%E8%BC%83.png&#34;
+				
+				width=&#34;1244&#34;
+				height=&#34;611&#34;
+				loading=&#34;lazy&#34;
+				alt=&#34;(a): offset為0, 只有alpha,beta,gamma任一個為0時繪製, 很多線段根本沒辦法顯示, (b) offset為0.01, (c): offset為0.02&#34;&gt;
+		&lt;/a&gt;
+		
+		&lt;figcaption&gt;(a): offset為0, 只有alpha,beta,gamma任一個為0時繪製, 很多線段根本沒辦法顯示, (b) offset為0.01, (c): offset為0.02&lt;/figcaption&gt;
+		
+	&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;可以看到確實有線框了，但有些區域透過offset還是無法修正這些誤差，所以就會導致邊框不連續，而這繪製方法就是封面圖的(a)&lt;/p&gt;
+&lt;p&gt;而且這種繪製法有個很明顯的缺點，就是線段寬度不一致，透過面積比來判斷是否在邊上，很容易被邊長的比例所影響，導致時粗時細(b)&lt;/p&gt;
+&lt;h3 id=&#34;最短邊距法-shortest-distance-to-the-edge&#34;&gt;最短邊距法 shortest distance to the edge&lt;/h3&gt;
+&lt;p&gt;這稱呼只是單純直翻，這還只是一個小撇步，應該沒有特定的名字&lt;/p&gt;
+&lt;p&gt;&lt;figure style=&#34;flex-grow: 134; flex-basis: 322px&#34;&gt;
+		&lt;a href=&#34;https://davidhsu666.com/archives/wireframe-display/img/%E4%BD%BF%E7%94%A8%E6%9C%80%E7%9F%AD%E9%82%8A%E8%B7%9D1-1.png&#34; data-size=&#34;496x369&#34;&gt;&lt;img src=&#34;https://davidhsu666.com/archives/wireframe-display/img/%E4%BD%BF%E7%94%A8%E6%9C%80%E7%9F%AD%E9%82%8A%E8%B7%9D1-1.png&#34;
+				
+				width=&#34;496&#34;
+				height=&#34;369&#34;
+				loading=&#34;lazy&#34;
+				alt=&#34;(a)&#34;&gt;
+		&lt;/a&gt;
+		
+		&lt;figcaption&gt;(a)&lt;/figcaption&gt;
+		
+	&lt;/figure&gt;
+&lt;figure style=&#34;flex-grow: 277; flex-basis: 666px&#34;&gt;
+		&lt;a href=&#34;https://davidhsu666.com/archives/wireframe-display/img/%E4%BD%BF%E7%94%A8%E6%9C%80%E7%9F%AD%E9%82%8A%E8%B7%9D2.png&#34; data-size=&#34;644x232&#34;&gt;&lt;img src=&#34;https://davidhsu666.com/archives/wireframe-display/img/%E4%BD%BF%E7%94%A8%E6%9C%80%E7%9F%AD%E9%82%8A%E8%B7%9D2.png&#34;
+				
+				width=&#34;644&#34;
+				height=&#34;232&#34;
+				loading=&#34;lazy&#34;
+				alt=&#34;(b)&#34;&gt;
+		&lt;/a&gt;
+		
+		&lt;figcaption&gt;(b)&lt;/figcaption&gt;
+		
+	&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;為解決剛剛const offset厚度不一致的問題，衍伸的想法就是先找出P點離邊界最近的「像素距離d」是多少(表示作用的區域是Screen Space)，再透過一個width當作閥值，當&lt;code&gt;d &amp;lt; width&lt;/code&gt;的時候才繪製線條，這樣就可以確保邊界繪製的寬度為width&lt;/p&gt;
+&lt;p&gt;而找出d1, d2, d3的方法也很容易，步驟是:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;邊向量外積得到三角形面積，$Area = \bigtriangleup ABC = \frac{1}{2}(\overrightarrow{AB} \times \overrightarrow{AC})$&lt;/li&gt;
+&lt;li&gt;重心座標就是面積比，得出$\bigtriangleup A = Area \times \alpha,~~ \bigtriangleup B = Area \times \beta ,~~ \bigtriangleup C = Area \times \gamma $&lt;/li&gt;
+&lt;li&gt;有了三塊區域的面積後就能直接根據面積公式$h= 2(\frac{Area}{L}) $, 得出d1, d2, d3&lt;/li&gt;
+&lt;li&gt;再取最小值即可得到&lt;code&gt;d = min[d1, d2, d3]&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;有了d之後就能對這個最短距離進行判斷，如果小於寬度就繪製線段顏色，如圖(b)&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-C++&#34; data-lang=&#34;C++&#34;&gt;&lt;span class=&#34;k&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;WireframeShader&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;IShader&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;Vec2f&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;screen_coords&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;Vec3f&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;wire_color&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Vec3f&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 黑色線框
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;Vec3f&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;fill_color&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Vec3f&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 物體顏色, 這裡先用白色代替 
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;kt&#34;&gt;float&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;width&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;0.5&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 線框寬度
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;// Vertex Shader
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;virtual&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Vec4f&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;vertex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;iface&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;nthvert&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;c1&#34;&gt;// ...處理座標轉換省略
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;c1&#34;&gt;// 紀錄這片三角形投影後的三個頂點,
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;c1&#34;&gt;// 作用的地方是光柵時的螢幕座標系, Clip Space /w-&amp;gt;NDC-&amp;gt;Screen Space
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;screen_coords&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;nthvert&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;proj&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;pos&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;/&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pos&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]);&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;pos&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;// Pixel Shader
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;virtual&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;bool&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;fragment&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Vec3f&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;bar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;UI32&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;color&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;kt&#34;&gt;float&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;d&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;getMinDistToEdge&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;bar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+
+        &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;d&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;range&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;c&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;wire_color&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;else&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;c&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;fill_color&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+        
+        &lt;span class=&#34;n&#34;&gt;color&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;rgb2hex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;255&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;255&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;255&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// 0~1轉換成0~255
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;false&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+    &lt;span class=&#34;kt&#34;&gt;float&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;getMinDistToEdge&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Vec3f&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;bar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;kt&#34;&gt;float&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dist&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;auto&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;getLength&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;](&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Vec2f&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;v&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;std&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;::&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sqrt&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;v&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;v&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;v&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;y&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;v&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;y&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
+        &lt;span class=&#34;c1&#34;&gt;// 透過三個頂點與重心座標回推掃描線p點，proj&amp;lt;2&amp;gt;:將Vec3捨棄z值轉換為Vec2
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;c1&#34;&gt;// P = A*alpha + B*beta + C*gamma
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;Vec2f&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;p&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;proj&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;
+            &lt;span class=&#34;n&#34;&gt;screen_coords&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;bar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; 
+            &lt;span class=&#34;n&#34;&gt;screen_coords&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;bar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; 
+            &lt;span class=&#34;n&#34;&gt;screen_coords&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;bar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]);&lt;/span&gt;
+
+        &lt;span class=&#34;n&#34;&gt;Vec2f&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;v0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;screen_coords&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;screen_coords&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;Vec2f&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;v1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;screen_coords&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;screen_coords&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;Vec2f&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;v2&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;screen_coords&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;screen_coords&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;
+        &lt;span class=&#34;c1&#34;&gt;// v1,v2外積取得三角形面積，原本要在乘上的1/2，不過後續的運算會消掉
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;kt&#34;&gt;float&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;area&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;abs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;v1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;v2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;y&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;v1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;y&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;v2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+
+        &lt;span class=&#34;c1&#34;&gt;// area*alpha:因為重心座標即為為a,b,c三區域佔總體的面積比值
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;c1&#34;&gt;// 可以直接將整體面積(Area)乘上a,b,c重心座標來取得各塊區域面積
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;c1&#34;&gt;// 再透與三塊面積取高，得出p點與各邊界的距離d為
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;dist&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;area&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;bar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;/&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;getLength&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;v0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;dist&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;area&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;bar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;/&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;getLength&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;v1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;dist&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;area&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;bar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;/&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;getLength&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;v2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+
+        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;min&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dist&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;min&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dist&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dist&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]));&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;這段Shader code會執行出這樣的結果:
+&lt;figure style=&#34;flex-grow: 156; flex-basis: 376px&#34;&gt;
+		&lt;a href=&#34;https://davidhsu666.com/archives/wireframe-display/img/ps/teapot_%E9%82%8A%E6%9C%80%E7%9F%AD_%E7%84%A1%E5%8F%8D%E9%8B%B8%E9%BD%92_d%E5%B0%8F%E6%96%BC0.5_v3.png&#34; data-size=&#34;1011x645&#34;&gt;&lt;img src=&#34;https://davidhsu666.com/archives/wireframe-display/img/ps/teapot_%E9%82%8A%E6%9C%80%E7%9F%AD_%E7%84%A1%E5%8F%8D%E9%8B%B8%E9%BD%92_d%E5%B0%8F%E6%96%BC0.5_v3.png&#34;
+				
+				width=&#34;1011&#34;
+				height=&#34;645&#34;
+				loading=&#34;lazy&#34;
+				alt=&#34;(a) 最短邊距法, width=0.5&#34;&gt;
+		&lt;/a&gt;
+		
+		&lt;figcaption&gt;(a) 最短邊距法, width=0.5&lt;/figcaption&gt;
+		
+	&lt;/figure&gt;
+&lt;figure style=&#34;flex-grow: 259; flex-basis: 623px&#34;&gt;
+		&lt;a href=&#34;https://davidhsu666.com/archives/wireframe-display/img/%E4%BD%BF%E7%94%A8%E6%9C%80%E7%9F%AD%E9%82%8A%E8%B7%9D3.png&#34; data-size=&#34;720x277&#34;&gt;&lt;img src=&#34;https://davidhsu666.com/archives/wireframe-display/img/%E4%BD%BF%E7%94%A8%E6%9C%80%E7%9F%AD%E9%82%8A%E8%B7%9D3.png&#34;
+				
+				width=&#34;720&#34;
+				height=&#34;277&#34;
+				loading=&#34;lazy&#34;
+				alt=&#34;(b) 左:width = 10px, 右:width = 2px&#34;&gt;
+		&lt;/a&gt;
+		
+		&lt;figcaption&gt;(b) 左:width = 10px, 右:width = 2px&lt;/figcaption&gt;
+		
+	&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;圖(a)這張就是封面圖的(c)部分，稍微換個顏色，可以明顯看到，這樣的線框已經足夠使用了，圖(b)也能任意控制線框寬度與著色樣式)，但是線框看起來還是有一點粗糙，所以接著就是最後一步處理，就是反鋸齒&lt;/p&gt;
+&lt;h3 id=&#34;反鋸齒處理antialiased-wireframe-drawing&#34;&gt;反鋸齒處理Antialiased Wireframe Drawing&lt;/h3&gt;
+&lt;p&gt;圖片引用自&lt;a class=&#34;link&#34; href=&#34;https://developer.download.nvidia.com/SDK/10/direct3d/Source/SolidWireframe/Doc/SolidWireframe.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Solid Wireframe, NVIDIA Whitepaper, p10, p11&lt;/a&gt;
+&lt;figure style=&#34;flex-grow: 164; flex-basis: 394px&#34;&gt;
+		&lt;a href=&#34;https://davidhsu666.com/archives/wireframe-display/img/%E6%9C%80%E7%9F%AD%E9%82%8A%E8%B7%9D%E6%B3%95%E7%9A%84%E5%8F%8D%E9%8B%B8%E9%BD%921.png&#34; data-size=&#34;536x326&#34;&gt;&lt;img src=&#34;https://davidhsu666.com/archives/wireframe-display/img/%E6%9C%80%E7%9F%AD%E9%82%8A%E8%B7%9D%E6%B3%95%E7%9A%84%E5%8F%8D%E9%8B%B8%E9%BD%921.png&#34;
+				
+				width=&#34;536&#34;
+				height=&#34;326&#34;
+				loading=&#34;lazy&#34;
+				alt=&#34;(a) smoothing function&#34;&gt;
+		&lt;/a&gt;
+		
+		&lt;figcaption&gt;(a) smoothing function&lt;/figcaption&gt;
+		
+	&lt;/figure&gt;&lt;figure style=&#34;flex-grow: 306; flex-basis: 736px&#34;&gt;
+		&lt;a href=&#34;https://davidhsu666.com/archives/wireframe-display/img/%E6%9C%80%E7%9F%AD%E9%82%8A%E8%B7%9D%E6%B3%95%E7%9A%84%E5%8F%8D%E9%8B%B8%E9%BD%922.png&#34; data-size=&#34;801x261&#34;&gt;&lt;img src=&#34;https://davidhsu666.com/archives/wireframe-display/img/%E6%9C%80%E7%9F%AD%E9%82%8A%E8%B7%9D%E6%B3%95%E7%9A%84%E5%8F%8D%E9%8B%B8%E9%BD%922.png&#34;
+				
+				width=&#34;801&#34;
+				height=&#34;261&#34;
+				loading=&#34;lazy&#34;
+				alt=&#34;(b) 作用原理的示意圖&#34;&gt;
+		&lt;/a&gt;
+		
+		&lt;figcaption&gt;(b) 作用原理的示意圖&lt;/figcaption&gt;
+		
+	&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;接續剛剛的最短邊距法，可透過圖(a)的這個平滑函數，套用在邊界處，讓邊界外的顏色遞減，並進行Alpha blending將線框與物體按照衰減度混色，即可得到反鋸齒的效果&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-C++&#34; data-lang=&#34;C++&#34;&gt;&lt;span class=&#34;k&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;WireframeShader&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;IShader&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;Vec2f&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;screen_coords&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;3&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;Vec3f&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;wire_color&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Vec3f&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 黑色線框
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;Vec3f&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;fill_color&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Vec3f&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 物體顏色, 這裡先用白色代替 
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;kt&#34;&gt;float&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;width&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// 線框寬度
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;c1&#34;&gt;// Vertex Shader 同上
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;virtual&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Vec4f&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;vertex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;iface&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;nthvert&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)...&lt;/span&gt;
+    &lt;span class=&#34;c1&#34;&gt;// Pixel Shader
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;virtual&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;bool&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;fragment&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Vec3f&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;bar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;UI32&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;color&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;kt&#34;&gt;float&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;d&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;getMinDistToEdge&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;bar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+        &lt;span class=&#34;c1&#34;&gt;// 對線框寬度的+/-1邊界進行平滑
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;c1&#34;&gt;// 帶入最短距離d得出width邊界所對應的線框顏色的強度 I
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;c1&#34;&gt;// 如果d&amp;lt;=width-1，那I就一定是1
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;kt&#34;&gt;float&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;I&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;smoothstep&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;width&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;width&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;d&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+        &lt;span class=&#34;c1&#34;&gt;// 進行Alpha blending，將線框與物體顏色照比例混合
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;        &lt;span class=&#34;n&#34;&gt;Vec3f&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;c&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;wire_color&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;I&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;fill_color&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mf&#34;&gt;1.0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;I&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+        &lt;span class=&#34;n&#34;&gt;color&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;rgb2hex&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;255&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;255&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;c&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;255&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;false&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+	&lt;span class=&#34;kt&#34;&gt;float&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;smoothstep&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;float&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;edge0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;float&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;edge1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;float&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+        &lt;span class=&#34;c1&#34;&gt;//  // Scale, bias and saturate x to 0..2 range
+&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;		&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;clamp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;edge0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;/&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;edge1&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;edge0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;),&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;0.0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;2.0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+		&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt;  &lt;span class=&#34;n&#34;&gt;exp2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
+	&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+	&lt;span class=&#34;kt&#34;&gt;float&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;clamp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;double&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;d&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;double&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;min&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;double&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;max&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+		&lt;span class=&#34;k&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;double&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;t&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;d&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;min&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;?&lt;/span&gt; &lt;span class=&#34;nl&#34;&gt;min&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;d&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+		&lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;t&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;max&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;?&lt;/span&gt; &lt;span class=&#34;nl&#34;&gt;max&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;t&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+	&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+    &lt;span class=&#34;kt&#34;&gt;float&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;getMinDistToEdge&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Vec3f&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;bar&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)...&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;執行這段Shader code後，最終得到封面圖中間(b)的漂亮線框
+&lt;figure style=&#34;flex-grow: 163; flex-basis: 392px&#34;&gt;
+		&lt;a href=&#34;https://davidhsu666.com/archives/wireframe-display/img/ps/teapot_%E9%82%8A%E6%9C%80%E7%9F%AD_%E5%8F%8D%E9%8B%B8%E9%BD%92%E9%BB%91_v2.png&#34; data-size=&#34;983x601&#34;&gt;&lt;img src=&#34;https://davidhsu666.com/archives/wireframe-display/img/ps/teapot_%E9%82%8A%E6%9C%80%E7%9F%AD_%E5%8F%8D%E9%8B%B8%E9%BD%92%E9%BB%91_v2.png&#34;
+				
+				width=&#34;983&#34;
+				height=&#34;601&#34;
+				loading=&#34;lazy&#34;
+				alt=&#34;(a) width = 2, 繪製的反鋸齒線框&#34;&gt;
+		&lt;/a&gt;
+		
+		&lt;figcaption&gt;(a) width = 2, 繪製的反鋸齒線框&lt;/figcaption&gt;
+		
+	&lt;/figure&gt;&lt;/p&gt;
+&lt;br&gt;
+&lt;h2 id=&#34;應用與討論&#34;&gt;應用與討論&lt;/h2&gt;
+&lt;p&gt;前面講完原理後，簡單的介紹一些衍伸用法&lt;/p&gt;
+&lt;h3 id=&#34;虛線樣式&#34;&gt;虛線樣式&lt;/h3&gt;
+&lt;p&gt;因為能求出在最短邊距，那麼就可以對物體邊界位置動態給定閥值，搭配其他搭配其他函數做出類似虛線、圖案，或透過Z值來繪製背面透明等線框效果&lt;/p&gt;
+&lt;p&gt;完整虛線樣式的效果可以參考這個&lt;a class=&#34;link&#34; href=&#34;https://mattdesl.github.io/webgl-wireframes/app/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;漂亮的線上範例&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure style=&#34;flex-grow: 212; flex-basis: 509px&#34;&gt;
+		&lt;a href=&#34;https://davidhsu666.com/archives/wireframe-display/img/%E8%99%9B%E7%B7%9A%E5%87%BD%E6%95%B8.png&#34; data-size=&#34;974x459&#34;&gt;&lt;img src=&#34;https://davidhsu666.com/archives/wireframe-display/img/%E8%99%9B%E7%B7%9A%E5%87%BD%E6%95%B8.png&#34;
+				
+				width=&#34;974&#34;
+				height=&#34;459&#34;
+				loading=&#34;lazy&#34;
+				alt=&#34;函數閥值圖, 參考\[4\]. &#34;&gt;
+		&lt;/a&gt;
+		
+		&lt;figcaption&gt;函數閥值圖, 參考[4].&lt;/figcaption&gt;
+		
+	&lt;/figure&gt;&lt;figure style=&#34;flex-grow: 241; flex-basis: 580px&#34;&gt;
+		&lt;a href=&#34;https://davidhsu666.com/archives/wireframe-display/img/dash%E7%B7%9A%E6%A1%86%E7%B9%AA%E8%A3%BD.gif&#34; data-size=&#34;600x248&#34;&gt;&lt;img src=&#34;https://davidhsu666.com/archives/wireframe-display/img/dash%E7%B7%9A%E6%A1%86%E7%B9%AA%E8%A3%BD.gif&#34;
+				
+				width=&#34;600&#34;
+				height=&#34;248&#34;
+				loading=&#34;lazy&#34;
+				alt=&#34;繪製效果&#34;&gt;
+		&lt;/a&gt;
+		
+		&lt;figcaption&gt;繪製效果&lt;/figcaption&gt;
+		
+	&lt;/figure&gt;&lt;/p&gt;
+&lt;h3 id=&#34;外側反鋸齒&#34;&gt;外側反鋸齒&lt;/h3&gt;
+&lt;p&gt;而文章一開始的問題章節有提到過，這種方法繪製的反鋸齒只有內側，如圖(a)&lt;/p&gt;
+&lt;p&gt;&lt;figure style=&#34;flex-grow: 123; flex-basis: 296px&#34;&gt;
+		&lt;a href=&#34;https://davidhsu666.com/archives/wireframe-display/img/ps/%E5%A4%96%E5%81%B4%E6%B2%92%E6%9C%89%E5%8F%8D%E9%8B%B8%E9%BD%922.png&#34; data-size=&#34;611x494&#34;&gt;&lt;img src=&#34;https://davidhsu666.com/archives/wireframe-display/img/ps/%E5%A4%96%E5%81%B4%E6%B2%92%E6%9C%89%E5%8F%8D%E9%8B%B8%E9%BD%922.png&#34;
+				
+				width=&#34;611&#34;
+				height=&#34;494&#34;
+				loading=&#34;lazy&#34;
+				alt=&#34;(a) 放大線框可以看到，只有內側有反鋸齒的效果&#34;&gt;
+		&lt;/a&gt;
+		
+		&lt;figcaption&gt;(a) 放大線框可以看到，只有內側有反鋸齒的效果&lt;/figcaption&gt;
+		
+	&lt;/figure&gt;
+&lt;figure style=&#34;flex-grow: 162; flex-basis: 391px&#34;&gt;
+		&lt;a href=&#34;https://davidhsu666.com/archives/wireframe-display/img/%E5%A4%96%E9%83%A8%E5%8F%8D%E9%8B%B8%E9%BD%92%E7%9A%84%E8%A7%A3%E6%B3%95.png&#34; data-size=&#34;603x370&#34;&gt;&lt;img src=&#34;https://davidhsu666.com/archives/wireframe-display/img/%E5%A4%96%E9%83%A8%E5%8F%8D%E9%8B%B8%E9%BD%92%E7%9A%84%E8%A7%A3%E6%B3%95.png&#34;
+				
+				width=&#34;603&#34;
+				height=&#34;370&#34;
+				loading=&#34;lazy&#34;
+				alt=&#34;(b) 將線段向內偏移，騰出外側反鋸齒的空間&#34;&gt;
+		&lt;/a&gt;
+		
+		&lt;figcaption&gt;(b) 將線段向內偏移，騰出外側反鋸齒的空間&lt;/figcaption&gt;
+		
+	&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;有一種解決方法，就是讓線框往三角形內部偏移一點，這樣雖然會犧牲一點物體的輪廓大小，但應該是簡單有效的處理方式，只不過也不是正確的方式，因為不是跟背景色做Alpha blending&lt;/p&gt;
+&lt;p&gt;而&lt;a class=&#34;link&#34; href=&#34;https://backend.orbit.dtu.dk/ws/portalfiles/portal/3735323/wire-sccg.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Two Methods for Antialiased Wireframe Drawing with Hidden Line Removal&lt;/a&gt;的作者，有提出一種方法叫做ID Buffer，雖然會犧牲一點效能，但能有效的解決外側反鋸齒的問題，有興趣可以看看&lt;/p&gt;
+&lt;h3 id=&#34;優缺點&#34;&gt;優缺點&lt;/h3&gt;
+&lt;p&gt;這個Single pass render方法，有幾個優缺點&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;能背部消除，且繪製的深度準確&lt;/li&gt;
+&lt;li&gt;可透過插值、函數等方式更改線段樣式，如彩色、虛線等&lt;/li&gt;
+&lt;li&gt;只需要一次pass，速度較快&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;缺點目前覺得就是只有內側能反鋸齒，在渲染大片三角形的模型中會有比較大的影響&lt;/p&gt;
+&lt;br&gt;
+&lt;h2 id=&#34;結語&#34;&gt;結語&lt;/h2&gt;
+&lt;p&gt;線框繪製也廣泛的應用在特殊風格渲染，如卡通著色、繪本風格等等的，這類著色風格被稱為Non-photorealistic Rendering&lt;/p&gt;
+&lt;p&gt;&lt;figure style=&#34;flex-grow: 245; flex-basis: 590px&#34;&gt;
+		&lt;a href=&#34;https://davidhsu666.com/archives/wireframe-display/img/PlanarMap.png&#34; data-size=&#34;740x301&#34;&gt;&lt;img src=&#34;https://davidhsu666.com/archives/wireframe-display/img/PlanarMap.png&#34;
+				
+				width=&#34;740&#34;
+				height=&#34;301&#34;
+				loading=&#34;lazy&#34;
+				alt=&#34;引用,Line Drawings from 3D Models&#34;&gt;
+		&lt;/a&gt;
+		
+		&lt;figcaption&gt;引用,Line Drawings from 3D Models&lt;/figcaption&gt;
+		
+	&lt;/figure&gt;
+&lt;figure style=&#34;flex-grow: 225; flex-basis: 542px&#34;&gt;
+		&lt;a href=&#34;https://davidhsu666.com/archives/wireframe-display/img/%E5%8D%A1%E9%80%9A%E5%A4%96%E6%A1%86%E8%91%97%E8%89%B2.png&#34; data-size=&#34;1744x772&#34;&gt;&lt;img src=&#34;https://davidhsu666.com/archives/wireframe-display/img/%E5%8D%A1%E9%80%9A%E5%A4%96%E6%A1%86%E8%91%97%E8%89%B2.png&#34;
+				
+				width=&#34;1744&#34;
+				height=&#34;772&#34;
+				loading=&#34;lazy&#34;
+				alt=&#34;引用,卡通外描邊深入研究與Unity新管線功能使用分享&#34;&gt;
+		&lt;/a&gt;
+		
+		&lt;figcaption&gt;引用,卡通外描邊深入研究與Unity新管線功能使用分享&lt;/figcaption&gt;
+		
+	&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;衍伸閱讀，參考資料中的這篇&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1810.01175&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Line Drawings from 3D Models&lt;/a&gt;，裡面提供了非常多種線框繪製的方法，原本繪製線框只是為了Debug，但查了很多資料後才發現，線框的繪製也是一門學問&lt;/p&gt;
+&lt;br&gt;
+&lt;p&gt;大致就是這樣，嘗試敘述並解決一個問題的文章，希望有解釋的淺顯易懂&lt;/p&gt;
+&lt;p&gt;Github專案: &lt;a class=&#34;link&#34; href=&#34;https://github.com/beadx6ggwp/RenderLearningPlan&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/beadx6ggwp/RenderLearningPlan&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;文章中渲染結果都使用這個版本繪製: &lt;a class=&#34;link&#34; href=&#34;https://github.com/beadx6ggwp/RenderLearningPlan/tree/main/code/12.2%20Lesson%206%20Shaders%28wireframe%20render%20%26%20vertax-obj%29&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;12.2 Lesson 6 Shaders(wireframe render &amp;amp; vertax-obj)&lt;/a&gt;&lt;/p&gt;
+&lt;br&gt;
+&lt;h2 id=&#34;reference&#34;&gt;Reference&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://developer.download.nvidia.com/SDK/10/direct3d/Source/SolidWireframe/Doc/SolidWireframe.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Solid Wireframe, NVIDIA Whitepaper 2007&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://arxiv.org/abs/1810.01175&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Line Drawings from 3D Models, Foundations and Trends in Computer Graphics and Vision 2019&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;http://www2.imm.dtu.dk/pubdb/edoc/imm4884.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Single-Pass Wireframe Rendering, Siggraph 2006&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://backend.orbit.dtu.dk/ws/portalfiles/portal/3735323/wire-sccg.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Two Methods for Antialiased Wireframe Drawing with Hidden Line Removal, SCCG &amp;lsquo;08&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://mattdesl.github.io/webgl-wireframes/app/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;webgl-wireframes, github&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/rreusser/glsl-solid-wireframe&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;glsl-solid-wireframe, github&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://zhuanlan.zhihu.com/p/43139658&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;WebGL 单通道wireframe渲染, 知乎&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://xiaoiver.github.io/coding/2018/10/22/Wireframe-%E7%9A%84%E5%AE%9E%E7%8E%B0.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Wireframe-的实现, 知乎&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://tchayen.github.io/posts/wireframes-with-barycentric-coordinates&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Wireframes with barycentric coordinates, blog&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://catlikecoding.com/unity/tutorials/advanced-rendering/flat-and-wireframe-shading/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Flat and Wireframe Shading, blog&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://web.archive.org/web/20150906185520/https://forum.libcinder.org/topic/wireframe-shader-implementation&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Wireframe shader implementation, Cinder Forums&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;[Real-Time Rendering.3rd, Book]&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://forum.gamer.com.tw/C.php?bsn=60602&amp;amp;snA=2983&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;卡通外描邊深入研究與Unity新管線功能使用分享&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        </item>
+        <item>
+        <title>重心座標的推導與使用 Barycentric Coordinates</title>
         <link>https://davidhsu666.com/archives/barycentric-coordinates/</link>
         <pubDate>Thu, 01 Jul 2021 21:00:47 +0800</pubDate>
         
         <guid>https://davidhsu666.com/archives/barycentric-coordinates/</guid>
-        <description>&lt;img src="https://davidhsu666.com/archives/barycentric-coordinates/img/bary5.png" alt="Featured image of post 重心座標 Barycentric Coordinates" /&gt;&lt;div&gt;
+        <description>&lt;img src="https://davidhsu666.com/archives/barycentric-coordinates/img/bary5.png" alt="Featured image of post 重心座標的推導與使用 Barycentric Coordinates" /&gt;&lt;div&gt;
     
     &lt;p&gt;目錄:
     &lt;nav id=&#34;TableOfContents&#34;&gt;
@@ -1140,7 +1663,7 @@ $$&lt;/p&gt;
 		&lt;/a&gt;
 		
 	&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;平面三角形T有A、B、C頂點，而內部的任一點P，都可以透過ABC三點的&lt;strong&gt;線性組合&lt;/strong&gt;來表示，所以P點表示法如下:&lt;/p&gt;
+&lt;p&gt;平面三角形T有A、B、C頂點，而內部的任一點P，都可以透過$\overrightarrow{AB}$與$\overrightarrow{AC}$的&lt;strong&gt;線性組合&lt;/strong&gt;來表示，所以P點表示法如下:&lt;/p&gt;
 &lt;p&gt;$$  \overrightarrow{AP}=u\overrightarrow{AB}+v\overrightarrow{AC} $$&lt;/p&gt;
 &lt;p&gt;將它分解整理後:
 $$ P-A=u(B-A)+v(C-A) $$&lt;/p&gt;
@@ -1149,7 +1672,7 @@ $$ P(x,y) = (1-u-v)A + uB + vC~,~~0\leq u,v\leq 1$$&lt;/p&gt;
 &lt;p&gt;如果將A、B、C的三個係數換一下，就變成:&lt;/p&gt;
 &lt;p&gt;$$ P(x,y)= \alpha A + \beta B +\gamma C~,~~\alpha+\beta+\gamma=1 $$&lt;/p&gt;
 &lt;p&gt;而這就是重心座標的表示法，透過 $[\alpha,\beta,\gamma]$ 這三個介於[0,1]之間的係數，來決定P在三角形內部的&lt;strong&gt;相對位置&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;線上操作範例: &lt;a class=&#34;link&#34; href=&#34;https://www.geogebra.org/m/ZuvmPjmy&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+&lt;p&gt;實際範例: &lt;a class=&#34;link&#34; href=&#34;https://www.geogebra.org/m/ZuvmPjmy&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Barycentric coordinates of a point&lt;/a&gt;&lt;/p&gt;
 &lt;br&gt;
 &lt;p&gt;首先第一個問題就是，有了三角形ABC與內部的P點，要怎麼求出對應的係數?&lt;/p&gt;
@@ -1241,8 +1764,9 @@ $$ \begin{cases}  &amp;amp; \alpha=1-\frac{u}{c}-\frac{v}{c} \\   &amp;amp; \bet
 		
 		&lt;figcaption&gt;AP投影在Nac的高，乘上底邊AC來找出B區的面積&lt;/figcaption&gt;
 		
-	&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;而計算完的參數直接就是$[\alpha,\beta,\gamma]$了，不用像外積法要多一步&lt;/p&gt;
+	&lt;/figure&gt;
+Right Normal的取得&lt;a class=&#34;link&#34; href=&#34;https://davidhsu666.com/archives/gamecollisiondetection/#%E6%B3%95%E5%90%91%E9%87%8F-&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;參考#3-知識補充1向量&lt;/a&gt;，而計算完的參數直接就是$[\alpha,\beta,\gamma]$了，不用像外積法要多一步&lt;/p&gt;
 &lt;p&gt;$$ P= \alpha A + \beta B +\gamma C~,~~\alpha+\beta+\gamma=1 $$&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// 透過面積計算重心座標
 &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Vec3f&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;barycentric&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Vec2f&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;A&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Vec2f&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;B&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Vec2f&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;C&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Vec2f&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;P&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
@@ -1308,14 +1832,18 @@ $ P= (1-u-v)A + uB + vC $&lt;/p&gt;
 &lt;h2 id=&#34;reference&#34;&gt;Reference&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;Fundamentals of Computer Graphics 4th&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.scratchapixel.com/lessons/3d-basic-rendering/rasterization-practical-implementation/rasterization-stage&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;scratchapixel, Rasterization: a Practical Implementation&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/ssloy/tinyrenderer/wiki/Lesson-2:-Triangle-rasterization-and-back-face-culling&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Tiny Renderer:Triangle rasterization and back face culling&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://observablehq.com/@infowantstobeseen/barycentric-coordinates&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Barycentric Coordinates&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://sites.cs.ucsb.edu/~lingqi/teaching/games101.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;GAMES101-现代计算机图形学入门-闫令琪&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/qq_38065509/article/details/105446756&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;计算机图形学三(补充)：重心坐标(barycentric coordinates)详解及其作用&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://observablehq.com/@infowantstobeseen/barycentric-coordinates&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Barycentric Coordinates&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://zhuanlan.zhihu.com/p/65495373&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;二圈妹:三角形重心坐标&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
         </item>
@@ -1898,17 +2426,8 @@ e.g. SW_MAXIMIZE (3)、SW_MINIMIZE (6)、SW_SHOWMINNOACTIVE (7 啟動時最小�
         <pubDate>Wed, 06 Nov 2019 09:38:44 +0800</pubDate>
         
         <guid>https://davidhsu666.com/archives/skills-competition-software/</guid>
-        <description>&lt;h1 id=&#34;工科賽-軟體設計-歷屆試題解答&#34;&gt;工科賽-軟體設計 歷屆試題解答&lt;/h1&gt;
-&lt;p&gt;&lt;figure style=&#34;flex-grow: 124; flex-basis: 297px&#34;&gt;
-		&lt;a href=&#34;https://davidhsu666.com/archives/skills-competition-software/img/skill_img1.jpg&#34; data-size=&#34;1320x1064&#34;&gt;&lt;img src=&#34;https://davidhsu666.com/archives/skills-competition-software/img/skill_img1.jpg&#34;
-				
-				width=&#34;1320&#34;
-				height=&#34;1064&#34;
-				loading=&#34;lazy&#34;
-				&gt;
-		&lt;/a&gt;
-		
-	&lt;/figure&gt;&lt;/p&gt;
+        <description>&lt;img src="https://davidhsu666.com/archives/skills-competition-software/img/skill_img1.jpg" alt="Featured image of post 工科賽-軟體設計 歷屆試題解答" /&gt;&lt;h1 id=&#34;工科賽-軟體設計-歷屆試題解答&#34;&gt;工科賽-軟體設計 歷屆試題解答&lt;/h1&gt;
+&lt;!-- ![](img/skill_img1.jpg) --&gt;
 &lt;h2 id=&#34;前言&#34;&gt;前言:&lt;/h2&gt;
 &lt;p&gt;名次不高，這篇文只是單純分享，想看高手的心得，直接Google “ACM ICPC 心得”&lt;/p&gt;
 &lt;p&gt;我是106屆工科軟體競賽選手，覺得高職選手的資源不是很多，如果沒有老師、學長指導、沒有解答、也沒有累積相關知識技術的底，想拿前段名次會辛苦很多。&lt;/p&gt;
