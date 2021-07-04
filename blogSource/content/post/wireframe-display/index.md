@@ -140,8 +140,8 @@ struct LineShader : public IShader {
 
 這稱呼只是單純直翻，這還只是一個小撇步，應該沒有特定的名字
 
-![(a)](img/使用最短邊距1-1.png)
-![(b)](img/使用最短邊距2.png)
+![(a)面積區域](img/使用最短邊距1-1.png)
+![(b)Solid Wireframe, NVIDIA Whitepaper, p10](img/使用最短邊距2.png)
 
 為解決剛剛const offset厚度不一致的問題，衍伸的想法就是先找出P點離邊界最近的「像素距離d」是多少(表示作用的區域是Screen Space)，再透過一個width當作閥值，當`d < width`的時候才繪製線條，這樣就可以確保邊界繪製的寬度為width
 
