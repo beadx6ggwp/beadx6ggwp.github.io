@@ -167,16 +167,17 @@ struct WireframeShader : public IShader {
         screen_coords[nthvert] = proj<2>(pos / pos[3]);
         return pos;
     }
-    // Pixel Shader
+    // Pixel Shader: 最短邊距法線段繪製
     virtual bool fragment(Vec3f bar, UI32& color) {
         float d = getMinDistToEdge(bar);
 
-        if (d < range) c = wire_color;
+        if (d < width) c = wire_color;
         else c = fill_color;
         
         color = rgb2hex(c[0] * 255, c[1] * 255, c[2] * 255);// 0~1轉換成0~255
         return false;
     }
+    
     float getMinDistToEdge(Vec3f bar) {
         float dist[3];
         auto getLength = [&](Vec2f& v) {return std::sqrt(v.x * v.x + v.y * v.y); };
@@ -226,7 +227,8 @@ struct WireframeShader : public IShader {
     float width = 2; // 線框寬度
     // Vertex Shader 同上
     virtual Vec4f vertex(int iface, int nthvert)...
-    // Pixel Shader
+
+    // Pixel Shader: 反鋸齒的最短邊距法繪製
     virtual bool fragment(Vec3f bar, UI32& color) {
         float d = getMinDistToEdge(bar);
         // 對線框寬度的+/-1邊界進行平滑
