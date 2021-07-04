@@ -1326,10 +1326,10 @@ $$&lt;/p&gt;
 				width=&#34;496&#34;
 				height=&#34;369&#34;
 				loading=&#34;lazy&#34;
-				alt=&#34;(a)&#34;&gt;
+				alt=&#34;(a)面積區域&#34;&gt;
 		&lt;/a&gt;
 		
-		&lt;figcaption&gt;(a)&lt;/figcaption&gt;
+		&lt;figcaption&gt;(a)面積區域&lt;/figcaption&gt;
 		
 	&lt;/figure&gt;
 &lt;figure style=&#34;flex-grow: 277; flex-basis: 666px&#34;&gt;
@@ -1338,10 +1338,10 @@ $$&lt;/p&gt;
 				width=&#34;644&#34;
 				height=&#34;232&#34;
 				loading=&#34;lazy&#34;
-				alt=&#34;(b)&#34;&gt;
+				alt=&#34;(b)Solid Wireframe, NVIDIA Whitepaper, p10&#34;&gt;
 		&lt;/a&gt;
 		
-		&lt;figcaption&gt;(b)&lt;/figcaption&gt;
+		&lt;figcaption&gt;(b)Solid Wireframe, NVIDIA Whitepaper, p10&lt;/figcaption&gt;
 		
 	&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;為解決剛剛const offset厚度不一致的問題，衍伸的想法就是先找出P點離邊界最近的「像素距離d」是多少(表示作用的區域是Screen Space)，再透過一個width當作閥值，當&lt;code&gt;d &amp;lt; width&lt;/code&gt;的時候才繪製線條，這樣就可以確保邊界繪製的寬度為width&lt;/p&gt;
