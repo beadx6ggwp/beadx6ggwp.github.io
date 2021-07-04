@@ -1,6 +1,6 @@
 ---
 title: "Shader重心座標的線框繪製"
-description: wireframe display with barycentric coordinates
+description: Single-Pass Wireframe Rendering
 
 slug: Wireframe-display # web path
 image: img/ps/teapot_5.1.png
