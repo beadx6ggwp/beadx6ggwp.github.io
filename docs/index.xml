@@ -1263,7 +1263,7 @@ $$&lt;/p&gt;
     &gt;動畫圖解 Rasterizer Algorithm Explanation&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;如果要在single-pass下完成的話，勢必要在「Shader繪製物體的時候&lt;strong&gt;一起畫出線段&lt;/strong&gt;」，而在光柵化三角形(Rasterization)的時候，會有一個動點P去走訪三角形的所有&lt;strong&gt;像素區域&lt;/strong&gt;，並給Shader傳入P點的重心座標&lt;/p&gt;
 &lt;h3 id=&#34;單純使用重心座標-const-offset&#34;&gt;單純使用重心座標 const offset&lt;/h3&gt;
-&lt;p&gt;前面提到過，重心座標(bar)alpha、beta、gamma就是頂點A,B,C對面那塊區域的面積比，也就是說「&lt;strong&gt;當某一塊面積為0時，就代表P點在三角形的邊上&lt;/strong&gt;」&lt;/p&gt;
+&lt;p&gt;前面提到過，重心座標(bar)alpha、beta、gamma就是頂點A,B,C對面那塊區域的面積比，也就是說「&lt;strong&gt;當某一塊面積比為0時，就代表P點在三角形的邊上&lt;/strong&gt;」&lt;/p&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.geogebra.org/m/ZuvmPjmy&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;線上操作範例&lt;/a&gt; : 可拖動重心座標在三角形的邊界上移動，去觀察重心座標的值&lt;/p&gt;
 &lt;p&gt;&lt;figure style=&#34;flex-grow: 127; flex-basis: 306px&#34;&gt;
@@ -1286,7 +1286,7 @@ $$&lt;/p&gt;
 		&lt;/a&gt;
 		
 	&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;如左圖，當重心座標在藍色線上時，beta的面積為0，代表這個點在邊上，但光柵化時的像素渲染是一格一格的，很多時候P根本不可能剛好在邊界上&lt;/p&gt;
+&lt;p&gt;如左圖，當重心座標在藍色線上時，beta比的面積為0，代表這個點在邊上，但光柵化時的像素渲染是一格一格的，很多時候P根本不可能剛好在邊界上&lt;/p&gt;
 &lt;p&gt;如右圖，尤其是遠處的小片三角形，所佔有的像素區域非常少，整面三角形符合offset範圍的P點只有五個，那就會導致遠處物體看起來只剩下幾個點而已&lt;/p&gt;
 &lt;p&gt;如圖中的綠點，要是只在邊上才繪製的話，線會斷斷續續的，而const offset這個方法，就是透過offset來修正這段誤差，只要任一個重心座標(面積比)&lt;code&gt;alpha, beta, gamma &amp;lt;= offset&lt;/code&gt;，就認定這個P點在三角形的邊界上，繪製線段顏色，&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-C++&#34; data-lang=&#34;C++&#34;&gt;&lt;span class=&#34;k&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;LineShader&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;public&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;IShader&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
@@ -1317,7 +1317,7 @@ $$&lt;/p&gt;
 		
 	&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;可以看到確實有線框了，但有些區域透過offset還是無法修正這些誤差，所以就會導致邊框不連續，而這繪製方法就是封面圖的(a)&lt;/p&gt;
-&lt;p&gt;而且這種繪製法有個很明顯的缺點，就是線段寬度不一致，透過面積比來判斷是否在邊上，很容易被邊長的比例所影響，導致時粗時細(b)&lt;/p&gt;
+&lt;p&gt;而且這種繪製法有個很明顯的缺點，就是線段寬度不一致，透過面積比來判斷是否在邊上，很容易被邊長的比例所影響，導致時粗時細(b)，有些線段甚至沒有繪製&lt;/p&gt;
 &lt;h3 id=&#34;最短邊距法-shortest-distance-to-the-edge&#34;&gt;最短邊距法 shortest distance to the edge&lt;/h3&gt;
 &lt;p&gt;這稱呼只是單純直翻，這還只是一個小撇步，應該沒有特定的名字&lt;/p&gt;
 &lt;p&gt;&lt;figure style=&#34;flex-grow: 134; flex-basis: 322px&#34;&gt;
@@ -1513,10 +1513,10 @@ $$&lt;/p&gt;
 				width=&#34;974&#34;
 				height=&#34;459&#34;
 				loading=&#34;lazy&#34;
-				alt=&#34;函數閥值圖, 參考\[4\]. &#34;&gt;
+				alt=&#34;閥值函數圖, 參考\[4\]. &#34;&gt;
 		&lt;/a&gt;
 		
-		&lt;figcaption&gt;函數閥值圖, 參考[4].&lt;/figcaption&gt;
+		&lt;figcaption&gt;閥值函數圖, 參考[4].&lt;/figcaption&gt;
 		
 	&lt;/figure&gt;&lt;figure style=&#34;flex-grow: 241; flex-basis: 580px&#34;&gt;
 		&lt;a href=&#34;https://davidhsu666.com/archives/wireframe-display/img/dash%E7%B7%9A%E6%A1%86%E7%B9%AA%E8%A3%BD.gif&#34; data-size=&#34;600x248&#34;&gt;&lt;img src=&#34;https://davidhsu666.com/archives/wireframe-display/img/dash%E7%B7%9A%E6%A1%86%E7%B9%AA%E8%A3%BD.gif&#34;
