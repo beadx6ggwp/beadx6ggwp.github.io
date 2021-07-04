@@ -1151,7 +1151,7 @@ $$&lt;/p&gt;
 &lt;/div&gt;
 
 &lt;h2 id=&#34;簡介&#34;&gt;簡介&lt;/h2&gt;
-&lt;p&gt;實作這幾篇文章，並介紹線框繪製的問題點與解決方法:&lt;/p&gt;
+&lt;p&gt;使用自製的軟體渲染器來實作這幾篇文章，並介紹線框繪製的問題點與解決方法:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://developer.download.nvidia.com/SDK/10/direct3d/Source/SolidWireframe/Doc/SolidWireframe.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Solid Wireframe, NVIDIA Whitepaper 2007&lt;/a&gt;&lt;/li&gt;
