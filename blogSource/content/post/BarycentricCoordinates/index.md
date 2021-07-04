@@ -1,12 +1,12 @@
 ---
-title: "重心座標 Barycentric Coordinates"
+title: "重心座標的推導與使用 Barycentric Coordinates"
 description: 透過相對位置u,v，來取得不同三角形中對應的絕對位置P，或是透過絕對位置P來求得相對位置u,v
 
 slug: Barycentric-Coordinates # web path
 image: img/bary5.png
 date: 2021-07-01T21:00:47+08:00
-categories: [CodingNote]
-tags: [ComputerGraphics]
+categories: [ComputerGraphics]
+tags: [ComputerGraphics,C++]
 
 license:  # CC BY-NC-ND
 hidden: false
@@ -21,7 +21,7 @@ draft: false
 
 ![](img/bary1_1.png)
 
-平面三角形T有A、B、C頂點，而內部的任一點P，都可以透過ABC三點的**線性組合**來表示，所以P點表示法如下:
+平面三角形T有A、B、C頂點，而內部的任一點P，都可以透過$\overrightarrow{AB}$與$\overrightarrow{AC}$的**線性組合**來表示，所以P點表示法如下:
 
 $$  \overrightarrow{AP}=u\overrightarrow{AB}+v\overrightarrow{AC} $$
 
@@ -37,7 +37,7 @@ $$ P(x,y)= \alpha A + \beta B +\gamma C~,~~\alpha+\beta+\gamma=1 $$
 
 而這就是重心座標的表示法，透過 $[\alpha,\beta,\gamma]$ 這三個介於[0,1]之間的係數，來決定P在三角形內部的**相對位置**
 
-線上操作範例: [Barycentric coordinates of a point](https://www.geogebra.org/m/ZuvmPjmy)
+實際範例: [Barycentric coordinates of a point](https://www.geogebra.org/m/ZuvmPjmy)
 
 <br>
 
@@ -118,8 +118,7 @@ $\alpha, \beta ,\gamma$ 為A,B,C頂點對邊的面積比，詳細證明待補，
 
 1.的方法很直觀不用推了，簡單推導2.的方法:
 ![](img/bary5.png) ![AP投影在Nac的高，乘上底邊AC來找出B區的面積](img/bary6.png)
-
-而計算完的參數直接就是$[\alpha,\beta,\gamma]$了，不用像外積法要多一步
+Right Normal的取得[參考#3-知識補充1向量](https://davidhsu666.com/archives/gamecollisiondetection/#%E6%B3%95%E5%90%91%E9%87%8F-)，而計算完的參數直接就是$[\alpha,\beta,\gamma]$了，不用像外積法要多一步
 
 $$ P= \alpha A + \beta B +\gamma C~,~~\alpha+\beta+\gamma=1 $$
 
@@ -186,7 +185,9 @@ Vec3f barycentric(Vec2f A, Vec2f B, Vec2f C, Vec2f P) {
 
 ## Reference
 - Fundamentals of Computer Graphics 4th
+- [scratchapixel, Rasterization: a Practical Implementation](https://www.scratchapixel.com/lessons/3d-basic-rendering/rasterization-practical-implementation/rasterization-stage)
 - [Tiny Renderer:Triangle rasterization and back face culling](https://github.com/ssloy/tinyrenderer/wiki/Lesson-2:-Triangle-rasterization-and-back-face-culling)
+- [Barycentric Coordinates](https://observablehq.com/@infowantstobeseen/barycentric-coordinates)
 - [GAMES101-现代计算机图形学入门-闫令琪](https://sites.cs.ucsb.edu/~lingqi/teaching/games101.html)
 - [计算机图形学三(补充)：重心坐标(barycentric coordinates)详解及其作用](https://blog.csdn.net/qq_38065509/article/details/105446756)
-- [Barycentric Coordinates](https://observablehq.com/@infowantstobeseen/barycentric-coordinates)
+- [二圈妹:三角形重心坐标](https://zhuanlan.zhihu.com/p/65495373)

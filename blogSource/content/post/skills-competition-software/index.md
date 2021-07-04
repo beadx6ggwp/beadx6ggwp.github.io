@@ -3,7 +3,7 @@ title: "工科賽-軟體設計 歷屆試題解答"
 description: 工科賽解答
 
 slug: skills-competition-software # web path
-image: #img/skill_img1.jpg
+image: img/skill_img1.jpg
 date: 2019-11-06T09:38:44+08:00
 categories: [CodingNote]
 tags: []
@@ -17,7 +17,7 @@ draft: false
 
 # 工科賽-軟體設計 歷屆試題解答
 
-![](img/skill_img1.jpg)
+<!-- ![](img/skill_img1.jpg) -->
 
 ## 前言:
 
