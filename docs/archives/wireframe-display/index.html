@@ -460,7 +460,7 @@ if (!doNotTrack) {
     >動畫圖解 Rasterizer Algorithm Explanation</a></p>
 <p>如果要在single-pass下完成的話，勢必要在「Shader繪製物體的時候<strong>一起畫出線段</strong>」，而在光柵化三角形(Rasterization)的時候，會有一個動點P去走訪三角形的所有<strong>像素區域</strong>，並給Shader傳入P點的重心座標</p>
 <h3 id="單純使用重心座標-const-offset">單純使用重心座標 const offset</h3>
-<p>前面提到過，重心座標(bar)alpha、beta、gamma就是頂點A,B,C對面那塊區域的面積比，也就是說「<strong>當某一塊面積為0時，就代表P點在三角形的邊上</strong>」</p>
+<p>前面提到過，重心座標(bar)alpha、beta、gamma就是頂點A,B,C對面那塊區域的面積比，也就是說「<strong>當某一塊面積比為0時，就代表P點在三角形的邊上</strong>」</p>
 <p><a class="link" href="https://www.geogebra.org/m/ZuvmPjmy"  target="_blank" rel="noopener"
     >線上操作範例</a> : 可拖動重心座標在三角形的邊界上移動，去觀察重心座標的值</p>
 <p><figure style="flex-grow: 127; flex-basis: 306px">
@@ -483,7 +483,7 @@ if (!doNotTrack) {
 		</a>
 		
 	</figure></p>
-<p>如左圖，當重心座標在藍色線上時，beta的面積為0，代表這個點在邊上，但光柵化時的像素渲染是一格一格的，很多時候P根本不可能剛好在邊界上</p>
+<p>如左圖，當重心座標在藍色線上時，beta比的面積為0，代表這個點在邊上，但光柵化時的像素渲染是一格一格的，很多時候P根本不可能剛好在邊界上</p>
 <p>如右圖，尤其是遠處的小片三角形，所佔有的像素區域非常少，整面三角形符合offset範圍的P點只有五個，那就會導致遠處物體看起來只剩下幾個點而已</p>
 <p>如圖中的綠點，要是只在邊上才繪製的話，線會斷斷續續的，而const offset這個方法，就是透過offset來修正這段誤差，只要任一個重心座標(面積比)<code>alpha, beta, gamma &lt;= offset</code>，就認定這個P點在三角形的邊界上，繪製線段顏色，</p>
 <div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="k">struct</span> <span class="nc">LineShader</span> <span class="o">:</span> <span class="k">public</span> <span class="n">IShader</span> <span class="p">{</span>
@@ -514,7 +514,7 @@ if (!doNotTrack) {
 		
 	</figure></p>
 <p>可以看到確實有線框了，但有些區域透過offset還是無法修正這些誤差，所以就會導致邊框不連續，而這繪製方法就是封面圖的(a)</p>
-<p>而且這種繪製法有個很明顯的缺點，就是線段寬度不一致，透過面積比來判斷是否在邊上，很容易被邊長的比例所影響，導致時粗時細(b)</p>
+<p>而且這種繪製法有個很明顯的缺點，就是線段寬度不一致，透過面積比來判斷是否在邊上，很容易被邊長的比例所影響，導致時粗時細(b)，有些線段甚至沒有繪製</p>
 <h3 id="最短邊距法-shortest-distance-to-the-edge">最短邊距法 shortest distance to the edge</h3>
 <p>這稱呼只是單純直翻，這還只是一個小撇步，應該沒有特定的名字</p>
 <p><figure style="flex-grow: 134; flex-basis: 322px">
@@ -710,10 +710,10 @@ if (!doNotTrack) {
 				width="974"
 				height="459"
 				loading="lazy"
-				alt="函數閥值圖, 參考\[4\]. ">
+				alt="閥值函數圖, 參考\[4\]. ">
 		</a>
 		
-		<figcaption>函數閥值圖, 參考[4].</figcaption>
+		<figcaption>閥值函數圖, 參考[4].</figcaption>
 		
 	</figure><figure style="flex-grow: 241; flex-basis: 580px">
 		<a href="/archives/wireframe-display/img/dash%E7%B7%9A%E6%A1%86%E7%B9%AA%E8%A3%BD.gif" data-size="600x248"><img src="/archives/wireframe-display/img/dash%E7%B7%9A%E6%A1%86%E7%B9%AA%E8%A3%BD.gif"
