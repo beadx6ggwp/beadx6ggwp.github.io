@@ -412,7 +412,7 @@ if (!doNotTrack) {
 		
 	</figure></p>
 <p>效果如上面兩張圖，但背面的線條會導致畫面很雜亂，為了<strong>正確顯示背部消除與物體遮擋</strong>，所以需要特別處理</p>
-<p>背部消除的線條，以往是分成兩次繪製(Two-pass)的方式，指同個畫面總共經過了兩次pipeline處理，讓物體與線框獨立繪製，並產生兩個深度緩衝(Z-buffer)，1.是繪製物體時的Zo(object)，2.是繪製線框時的Zw(wireframe)，通常繪製的順序是先繪製物體表面，然後在繪製線框時，將Zo與Zw比較深度，判斷線框跟物體的前後與遮擋</p>
+<p>背部消除的線條，以往是分成兩次繪製(Two-pass)的方式，指同個畫面總共經過了兩次pipeline處理，讓物體與線框獨立繪製，並產生兩個深度緩衝(Z-buffer)，1.是繪製物體時的Zo(object)，2.是繪製線框時的Zw(wireframe)，通常繪製的順序是先繪製物體表面，然後在繪製線框時，比較Zw與Zo的深度，來判斷線框跟物體之間的前後遮擋</p>
 <br>
 <h2 id="問題">問題</h2>
 <p>使用Two-pass這種方法繪製背部消除的線段時，會有幾個限制:</p>
@@ -424,7 +424,7 @@ if (!doNotTrack) {
 <blockquote>
 <p>細節補充 :<br>第一個pass渲染物體並產生Zo，而第二個pass詳細步驟是: 1.將線段頂點處理投影變換(MVP)後得到線段頂點的z-buffer, Zw，2.在光柵化線段像素P時，將P點的線段Zw與物體Zo的深度進行比較，<code>if(Zw(P) &lt;Zo(P)) draw(P);</code>，以此來繪製正確的遮擋線段。<br>
 但這時物體與線段的pass都用一樣的頂點，可能會導致Z-fighting(深度z值一樣不曉得誰前誰後)或不正確的遮擋，所以需要透過深度偏移(depth bias offset)，將物體的深度放在模型後面一點的位置，才能正確讓線框繪製在物體前面。<br><br>
-雖然<strong>繪製出的效果不錯</strong>，不過z-buffer的值是透過Perspective的非線性轉換得來，還有精度問題，所以在某些地方可能因為這一點點的前後差距導致一些本該被遮擋的區域未被遮擋，所以嚴格來說這種繪製方法是不正確的</p>
+雖然<strong>繪製出的效果不錯</strong>，不過z-buffer的值是透過Perspective的非線性轉換得來，還有精度問題，所以在某些地方可能因為這一點點的前後差距導致一些本該被遮擋的區域未被遮擋，所以在某些時候會有問題</p>
 </blockquote>
 <p>如圖(a)中的紅色的線段能正確被遮擋，且因為有深度偏移，讓線段頂點在物體的前面，所以第一次pass繪製物體產生Zo後，第二次pass在繪製線段時，只要比較線段中P點深度有沒有比Zo更近即可判斷是否繪製，以此達到線段遮擋與背部消除的效果，圖(b)引用<a class="link" href="https://arxiv.org/abs/1810.01175"  target="_blank" rel="noopener"
     >Line Drawings from 3D Models, p18</a></p>
@@ -764,6 +764,8 @@ if (!doNotTrack) {
 <li>只需要一次pass，速度較快</li>
 </ol>
 <p>缺點目前覺得就是只有內側能反鋸齒，在渲染大片三角形的模型中會有比較大的影響</p>
+<p>而<a class="link" href="https://developer.download.nvidia.com/SDK/10/direct3d/Source/SolidWireframe/Doc/SolidWireframe.pdf"  target="_blank" rel="noopener"
+    >Solid Wireframe, NVIDIA Whitepaper</a>中有提到說在頂點與觀察點非常接近，或是裁切處理的情況，會有一些問題，需要做特別的處理</p>
 <br>
 <h2 id="結語">結語</h2>
 <p>線框繪製也廣泛的應用在特殊風格渲染，如卡通著色、繪本風格等等的，這類著色風格被稱為Non-photorealistic Rendering</p>
