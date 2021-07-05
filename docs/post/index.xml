@@ -25,8 +25,8 @@
       <pubDate>Sat, 03 Jul 2021 23:39:36 +0800</pubDate>
       
       <guid>https://davidhsu666.com/archives/wireframe-display/</guid>
-      <description>目錄: 簡介 介紹 問題 解決方法與原理  單純使用重心座標 const offset 最短邊距法 shortest distance to the edge 反鋸齒處理Antialiased Wireframe Drawing   應用與討論  虛線樣式 外側反鋸齒 優缺點   結語 Reference  簡介 使用自製的軟體渲染器來實作這幾篇文章，並介紹線框繪製的問題點與解決方法:
- Single-Pass Wireframe Rendering, Siggraph 2006 Solid Wireframe, NVIDIA Whitepaper 2007 Two Methods for Antialiased Wireframe Drawing with Hidden Line Removal, SCCG &amp;lsquo;08  這幾篇文章總結的線框渲染方式都非常簡單直觀，就是在Shader時，找出三角形內的動點P與邊界的最短距離d，當d &amp;lt; LineWidth時就代表P點屬於線框的部分，那就繪製線框的顏色，然後再透過smoothing function給LineWidth這個閥值做平滑，讓線段邊緣的顏色遞減，就這樣
+      <description>目錄: 簡介 介紹 問題 解決方法與原理  單純使用重心座標 const offset 最短邊距法 shortest distance to the edge 反鋸齒處理Antialiased Wireframe Drawing   應用與討論  虛線樣式 外側反鋸齒 優缺點   結語 Reference  簡介 參考這幾篇文章，並介紹線框繪製的問題點與解決方法:
+ Single-Pass Wireframe Rendering, Siggraph 2006 Solid Wireframe, NVIDIA Whitepaper 2007 Two Methods for Antialiased Wireframe Drawing with Hidden Line Removal, SCCG &amp;lsquo;08  文章總結的線框渲染方式都非常簡單直觀，就是在Shader時，找出三角形內的動點P與邊界的最短距離d，當d &amp;lt; LineWidth時就代表P點屬於線框的部分，那就繪製線框的顏色，然後再透過smoothing function給LineWidth這個閥值做平滑，讓線段邊緣的顏色遞減，就這樣
 只是想嘗試敘述研究者一開始所遇到的問題，並循序漸進的解決，到最後得出結論，來設想遇到問題該怎麼著手解決
 使用myMiniRender渲染的結果 :  (a)只使用const offset, (b)解決方法single pass method:邊距+平滑函數反鋸齒, (c)使用邊距+const offset,</description>
     </item>

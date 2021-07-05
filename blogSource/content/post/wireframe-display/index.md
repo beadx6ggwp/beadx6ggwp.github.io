@@ -21,12 +21,12 @@ draft: false
 
 ## 簡介
 
-使用自製的軟體渲染器來實作這幾篇文章，並介紹線框繪製的問題點與解決方法:
+參考這幾篇文章，並介紹線框繪製的問題點與解決方法:
 - [Single-Pass Wireframe Rendering, Siggraph 2006][3]
 - [Solid Wireframe, NVIDIA Whitepaper 2007][1]
 - [Two Methods for Antialiased Wireframe Drawing with Hidden Line Removal, SCCG '08][4]
 
-這幾篇文章總結的線框渲染方式都非常簡單直觀，就是在Shader時，找出三角形內的動點P與邊界的最短距離d，當`d < LineWidth`時就代表P點屬於線框的部分，那就繪製線框的顏色，然後再透過smoothing function給LineWidth這個閥值做平滑，讓線段邊緣的顏色遞減，就這樣
+文章總結的線框渲染方式都非常簡單直觀，就是在Shader時，找出三角形內的動點P與邊界的最短距離d，當`d < LineWidth`時就代表P點屬於線框的部分，那就繪製線框的顏色，然後再透過smoothing function給LineWidth這個閥值做平滑，讓線段邊緣的顏色遞減，就這樣
 
 只是想嘗試敘述研究者一開始所遇到的問題，並循序漸進的解決，到最後得出結論，來設想遇到問題該怎麼著手解決
 
