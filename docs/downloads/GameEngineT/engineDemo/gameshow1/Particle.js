@@ -46,3 +46,18 @@ function createParticles(world, x, y, num) {
         world.addGameObj(p);
     }
 }
+function createParticles2(world, x, y, num) {
+    for (let i = 0; i < num; i++) {
+        let config = {
+            pos: { x: x, y: y },
+            zindex: 60
+        }
+        let p = new Particle(config);
+        p.vel.setLength(random(50, 150));
+        p.vel.setAngleDeg(random(-65, -115));
+        p.timeMax = 2;
+        p.survivalTime = random(0, p.timeMax);
+
+        world.addGameObj(p);
+    }
+}

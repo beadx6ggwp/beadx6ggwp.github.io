@@ -130,7 +130,7 @@ class Entity {
             if (!this.checkInView(world.camera)) return
         }
         ctx.save();
-        ctx.translate(Math.round(this.pos.x), Math.round(this.pos.y));// Math.floor()
+        ctx.translate(Math.floor(this.pos.x), Math.floor(this.pos.y));
         ctx.rotate(this.rotate * Math.PI / 180);
         ctx.scale(this.scaleX, this.scaleY);
 
