@@ -273,7 +273,7 @@
         }, 
         {
          "firstgid":1441,
-         "source":"tilecolor.json"
+         "source":"tilecolor.tsx"
         }],
  "tilewidth":32,
  "type":"map",

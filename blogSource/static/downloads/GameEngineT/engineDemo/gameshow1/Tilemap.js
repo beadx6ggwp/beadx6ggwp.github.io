@@ -316,7 +316,7 @@ function createMapObjectConfig(object) {
         collisionToMap: false,
         hitActionData: {
             parent: this,
-            target: ['player','enemy1'],
+            target: ['player'],
             action: function (ent1, ent2) {
                 // debugger
                 let collider1 = ent1.getCollisionBox();
@@ -327,7 +327,7 @@ function createMapObjectConfig(object) {
                 if (mtv.axis) {
                     let v = separate(collider1, collider2, mtv)
                     ent2.pos.add(v);
-                    mtvBounce(ent2, mtv)
+                    // mtvBounce(ent2, mtv)
                 }
             }
         },

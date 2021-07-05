@@ -35,7 +35,7 @@ function init() {
         render: draw
     }, gameConfig);
 
-    mapp = new TileMap2(world, asset.jsons['map2'])
+    mapp = new TileMap2(world, asset.jsons.map2)
 
     // map = new TileMap(world, Tilemap_Data[nowMap]);
     // map.addToRenderList(entities);
@@ -48,7 +48,6 @@ function init() {
             vel: { x: randomInt(-100, 100), y: randomInt(-100, 100) },
             collider: {
                 polygon: [{ x: -11, y: -10 }, { x: 11, y: -10 }, { x: 11, y: 10 }, { x: -11, y: 10 }]
-                // radius: 10
             },
             bounceToMap: true,
             animation: robinAnimation
@@ -58,7 +57,7 @@ function init() {
 
     player = new Player({
         name: 'player',
-        pos: { x: 250, y: 400 },
+        pos: { x: randomInt(200, 400), y: randomInt(200, 400) },
         vel: { x: 0, y: 0 },
         acc: { x: 0, y: 0 },
         moveSpeed: 200,
@@ -102,8 +101,8 @@ function init() {
     let actionBox1 = {
         name: 'actionBox',
         pos: {
-            x: 780,
-            y: 430
+            x: 460,
+            y: 250
         },
         collider: {
             radius: 25
@@ -112,7 +111,7 @@ function init() {
         bounceWithMap: false,
         hitActionData: {
             parent: null,
-            target: ['player', 'enemy1'],
+            target: ['player'],
             action: function (ent1, ent2) {
                 let collider1 = ent1.getCollisionBox();
                 let collider2 = ent2.getCollisionBox();
@@ -120,16 +119,6 @@ function init() {
                 if (!box2box(collider1.getBoundingBox(), collider2.getBoundingBox())) return;
                 let mtv = collider1.collideWith(collider2);
                 if (mtv.axis) {
-                    if (ent2.name == 'enemy1' && !ent2.isSlow) {
-                        ent2.vel.x *= 0.2;
-                        ent2.vel.y *= 0.2;
-                        ent2.isSlow = true;
-                    } else {
-                        ent2.zindex = 15;
-                        ent2.moveSpeed = 500;
-                    }
-
-                    // ent2.zindex = 35;
                     ent2.moveSpeed = 200;
                 }
             }
@@ -141,8 +130,8 @@ function init() {
     let actionBox2 = {
         name: 'actionBox',
         pos: {
-            x: 780,
-            y: 530
+            x: 560,
+            y: 250
         },
         collider: {
             radius: 25
@@ -151,23 +140,15 @@ function init() {
         bounceWithMap: false,
         hitActionData: {
             parent: null,
-            target: ['player', 'enemy1'],
+            target: ['player'],
             action: function (ent1, ent2) {
                 let collider1 = ent1.getCollisionBox();
                 let collider2 = ent2.getCollisionBox();
                 // debugger
                 if (!box2box(collider1.getBoundingBox(), collider2.getBoundingBox())) return;
-
                 let mtv = collider1.collideWith(collider2);
                 if (mtv.axis) {
-                    if (ent2.name == 'enemy1' && !ent2.isFast) {
-                        ent2.vel.x *= 3;
-                        ent2.vel.y *= 3;
-                        ent2.isFast = true;
-                    } else {
-                        ent2.zindex = 15;
-                        ent2.moveSpeed = 500;
-                    }
+                    ent2.moveSpeed = 500;
                 }
             }
         },
@@ -193,6 +174,7 @@ function main() {
 function update(dt, tickcount) {
 
     // console.log(dt);
+    createParticles2(world, 40, 530, 2);
     let entities = world.gameObjs;
     for (const entity of entities) {
         entity.update(dt);
@@ -204,7 +186,7 @@ function update(dt, tickcount) {
         if (!had) continue;
         for (let j = entities.length - 1; j >= 0; j--) {
             let entity2 = entities[j];
-            if (had.target.indexOf('ALL') != -1 || had.target.indexOf(entity2.name) != -1) {
+            if (had.target.indexOf(entity2.name) != -1) {
                 had.action(entity, entity2);
             }
         }
@@ -415,31 +397,8 @@ window.addEventListener("keydown", (e) => {
 window.addEventListener("keyup", (e) => {
 }, false);
 window.addEventListener("mousedown", (e) => {
-
 }, false);
 window.addEventListener("mouseup", (e) => {
-    let camera = world.camera;
-
-    let downPos = camera.screenToWorld(world.mouse.downPos);
-    let upPos = camera.screenToWorld(world.mouse.upPos);
-    let v = new Vector(upPos.x - downPos.x, upPos.y - downPos.y);
-
-    let test = {
-        name: 'enemy1',
-        hp: 2,
-        pos: { x: downPos.x, y: downPos.y },
-        vel: { x: v.x, y: v.y },
-        collider: {
-            // polygon: [{ x: -11, y: -10 }, { x: 11, y: -10 }, { x: 11, y: 10 }, { x: -11, y: 10 }]
-            radius: 10
-        },
-        bounceToMap: true,
-        // animation: robinAnimation,
-        survivalMode: true,
-        survivalTime: 5,
-        drawBase: true
-    };
-    world.addGameObj(new Entity(test));
 }, false);
 window.addEventListener("mousemove", (e) => {
 }, false);

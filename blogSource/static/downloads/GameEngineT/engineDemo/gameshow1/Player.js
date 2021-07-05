@@ -157,7 +157,7 @@ class Player extends Entity {
             collisionToMap: false,
             bounceWithMap: false,
             animation: swordAnimation,
-            zindex: this.zindex,
+            zindex: this.zindex * 3,
             hitActionData: {
                 parent: this,
                 target: ['enemy1'],
