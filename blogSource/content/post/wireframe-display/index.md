@@ -280,7 +280,7 @@ struct WireframeShader : public IShader {
 
 有一種解決方法，就是讓線框往三角形內部偏移一點，這樣雖然會犧牲一點物體的輪廓大小，但應該是簡單有效的處理方式，只不過也不是正確的方式，因為不是跟背景色做Alpha blending
 
-而[Two Methods for Antialiased Wireframe Drawing with Hidden Line Removal][4]的作者，有提出一種方法叫做ID Buffer，雖然會犧牲一點效能，但能有效的解決外側反鋸齒的問題，有興趣可以看看
+而[Two Methods for Antialiased Wireframe Drawing with Hidden Line Removal][4]的文章中，有提出一種方法叫做ID Buffer，雖然會犧牲一點效能，但能有效的解決外側反鋸齒的問題，有興趣可以看看
 
 ### 優缺點
 
