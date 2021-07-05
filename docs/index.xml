@@ -1161,7 +1161,7 @@ $$&lt;/p&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://backend.orbit.dtu.dk/ws/portalfiles/portal/3735323/wire-sccg.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Two Methods for Antialiased Wireframe Drawing with Hidden Line Removal, SCCG &amp;lsquo;08&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;這幾篇文章總結的線框渲染方式都非常簡單直觀，就是在Shader時，找出三角形內的動點P與邊界的最短距離d，當d &amp;lt; LineWidth時就代表P點屬於線框的部分，那就繪製線框的顏色，然後再透過smoothing function給LineWidth這個閥值做平滑，讓線段邊緣的顏色遞減，就這樣&lt;/p&gt;
+&lt;p&gt;這幾篇文章總結的線框渲染方式都非常簡單直觀，就是在Shader時，找出三角形內的動點P與邊界的最短距離d，當&lt;code&gt;d &amp;lt; LineWidth&lt;/code&gt;時就代表P點屬於線框的部分，那就繪製線框的顏色，然後再透過smoothing function給LineWidth這個閥值做平滑，讓線段邊緣的顏色遞減，就這樣&lt;/p&gt;
 &lt;p&gt;只是想嘗試敘述研究者一開始所遇到的問題，並循序漸進的解決，到最後得出結論，來設想遇到問題該怎麼著手解決&lt;/p&gt;
 &lt;p&gt;使用&lt;a class=&#34;link&#34; href=&#34;https://github.com/beadx6ggwp/RenderLearningPlan&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;myMiniRender&lt;/a&gt;渲染的結果 :
