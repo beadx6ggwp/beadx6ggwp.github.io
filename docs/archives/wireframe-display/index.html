@@ -376,7 +376,7 @@ if (!doNotTrack) {
 	</figure></p>
 <br>
 <h2 id="介紹">介紹</h2>
-<p>在建立了基本渲染流水線後，原本想要方便Debug，所以在流水線外，將投影後的頂點座標連成線段三角形，來畫出基本線框方便觀察，而這大致就是gl.LINES的方式</p>
+<p>在建立了基本渲染流水線後，原本想要方便Debug，所以在pipeline外，將投影後的頂點座標連成線段三角形，來畫出基本線框方便觀察，而這大致就是gl.LINES的方式</p>
 <div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="n">TextureShader</span> <span class="n">shader</span><span class="p">;</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">model_head</span><span class="p">;</span>
 <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">model</span><span class="o">-&gt;</span><span class="n">nfaces</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
@@ -386,7 +386,7 @@ if (!doNotTrack) {
     <span class="p">}</span>
     <span class="c1">// 先忽略PixelShader，現在要的是線框，不是像素著色
 </span><span class="c1"></span>    <span class="c1">// triangle(screen_coords, shader, device); 
-</span><span class="c1"></span>    <span class="n">drawTriangleLine</span><span class="p">(</span><span class="n">screen_coords</span><span class="p">,</span> <span class="n">black</span><span class="p">);</span><span class="c1">// 開啟gl.LINE
+</span><span class="c1"></span>    <span class="n">drawTriangleLine</span><span class="p">(</span><span class="n">screen_coords</span><span class="p">,</span> <span class="n">black</span><span class="p">);</span><span class="c1">// 類似gl.LINE的線段繪製
 </span><span class="c1"></span><span class="p">}</span>
 </code></pre></div><p><figure style="flex-grow: 106; flex-basis: 256px">
 		<a href="/archives/wireframe-display/img/line-rect.png" data-size="208x195"><img src="/archives/wireframe-display/img/line-rect.png"

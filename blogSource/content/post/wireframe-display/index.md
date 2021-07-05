@@ -38,7 +38,7 @@ draft: false
 
 ## 介紹
 
-在建立了基本渲染流水線後，原本想要方便Debug，所以在流水線外，將投影後的頂點座標連成線段三角形，來畫出基本線框方便觀察，而這大致就是gl.LINES的方式
+在建立了基本渲染流水線後，原本想要方便Debug，所以在pipeline外，將投影後的頂點座標連成線段三角形，來畫出基本線框方便觀察，而這大致就是gl.LINES的方式
 
 ```C++
 TextureShader shader;
@@ -50,7 +50,7 @@ for (int i = 0; i < model->nfaces(); i++) {
     }
     // 先忽略PixelShader，現在要的是線框，不是像素著色
     // triangle(screen_coords, shader, device); 
-    drawTriangleLine(screen_coords, black);// 開啟gl.LINE
+    drawTriangleLine(screen_coords, black);// 類似gl.LINE的線段繪製
 }
 ```
 
