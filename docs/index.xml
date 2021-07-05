@@ -1558,7 +1558,7 @@ $$&lt;/p&gt;
 	&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;有一種解決方法，就是讓線框往三角形內部偏移一點，這樣雖然會犧牲一點物體的輪廓大小，但應該是簡單有效的處理方式，只不過也不是正確的方式，因為不是跟背景色做Alpha blending&lt;/p&gt;
 &lt;p&gt;而&lt;a class=&#34;link&#34; href=&#34;https://backend.orbit.dtu.dk/ws/portalfiles/portal/3735323/wire-sccg.pdf&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Two Methods for Antialiased Wireframe Drawing with Hidden Line Removal&lt;/a&gt;的作者，有提出一種方法叫做ID Buffer，雖然會犧牲一點效能，但能有效的解決外側反鋸齒的問題，有興趣可以看看&lt;/p&gt;
+    &gt;Two Methods for Antialiased Wireframe Drawing with Hidden Line Removal&lt;/a&gt;的文章中，有提出一種方法叫做ID Buffer，雖然會犧牲一點效能，但能有效的解決外側反鋸齒的問題，有興趣可以看看&lt;/p&gt;
 &lt;h3 id=&#34;優缺點&#34;&gt;優缺點&lt;/h3&gt;
 &lt;p&gt;這個Single pass render方法，有幾個優缺點&lt;/p&gt;
 &lt;ol&gt;
