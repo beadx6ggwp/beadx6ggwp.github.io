@@ -240,15 +240,15 @@ struct WireframeShader : public IShader {
         color = rgb2hex(c[0] * 255, c[1] * 255, c[2] * 255);
         return false;
     }
-	float smoothstep(float edge0, float edge1, float x) {
+    float smoothstep(float edge0, float edge1, float x) {
         // Scale, bias and saturate x to 0..2 range
         x = clamp((x - edge0) / (edge1 - edge0), 0.0, 2.0);
         return  exp2(-2 * x * x);
-	}
-	float clamp(double d, double min, double max) {
-		const double t = d < min ? min : d;
-		return t > max ? max : t;
-	}
+    }
+    float clamp(double d, double min, double max) {
+        const double t = d < min ? min : d;
+        return t > max ? max : t;
+    }
     float getMinDistToEdge(Vec3f bar)...
 };
 ```
