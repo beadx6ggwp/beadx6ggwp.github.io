@@ -17,7 +17,7 @@ draft: false
 
 # Win32
 
-{{< toc >}}
+ 
 
 參考 : [MSDN Get Started with Win32 and C++](https://docs.microsoft.com/en-us/windows/win32/learnwin32/learn-to-program-for-windows)
 

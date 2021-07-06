@@ -5,7 +5,7 @@ title: "作品"
 description: "一些小玩具"
 # 此分類的網址
 slug: "project"
-image: resource/categories/project.png
+image: project.png
 style:
     background: "#FF8C42"
     color: "#000"

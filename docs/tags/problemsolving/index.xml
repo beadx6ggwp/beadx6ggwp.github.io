@@ -13,7 +13,7 @@
       <pubDate>Fri, 22 Jun 2018 10:04:35 +0800</pubDate>
       
       <guid>https://davidhsu666.com/archives/csharp-bfs-solve-8-puzzle/</guid>
-      <description>目錄: 1. 前言 2. 儲存結構和移動判斷 3. 用BFS窮舉狀態 4. 執行結果 5. 參考資源  1. 前言 先來簡單的介紹一下什麼是8-Puzzle。
+      <description>1. 前言 先來簡單的介紹一下什麼是8-Puzzle。
 數字推盤遊戲(n-puzzle)是最早一種的滑塊類遊戲，常見的類型有十五數字推盤遊戲和八數字推盤遊戲等，也有以圖畫代替數字的推盤遊戲。
  Wiki上的8Puzzle 
 如上圖所示，滑塊只能往空位移動。
@@ -23,7 +23,7 @@
  資料結構 
 像是上面的這個狀態這樣，將0表示為空格，可以儲存成 { 8, 6, 4, 0, 7, 2, 5, 1, 3}。
 因為要透過BFS搜尋來取得路徑，所以需要建立一個節點的結構，這樣才能儲存當前狀態，並紀錄上個狀態 :
-public class Node { public byte[] status; // 當前狀態  public Node father; // 紀錄上個狀態，如果father = null 該點為根節點  public Node(byte[] status, Node father) { this.</description>
+public class Node { public byte[] status; // 當前狀態  public Node father; // 紀錄上個狀態，如果father = null 該點為根節點  public Node(byte[] status, Node father) { this.status = status; this.father = father; } // 把陣列轉換成數字序列，比對時就不用兩將陣列元素一一檢查了  // 像是 stauts = {8, 6, 4, 0, 7, 2, 5, 1, 3}，轉後後即可得到864072513  public int ToToSequence() { int result = 0; for (int i = 0; i &amp;lt; status.</description>
     </item>
     
     <item>

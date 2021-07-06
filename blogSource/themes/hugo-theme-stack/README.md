@@ -11,7 +11,7 @@
 
 ## Documentation & more information
 
-[Documentation](https://docs.stack.jimmycai.com/) | [中文文档](https://docs.stack.jimmycai.com/v/zh-cn/)
+[Documentation](https://docs.stack.jimmycai.com/) | [中文文档](https://docs.stack.jimmycai.com/zh/)
 
 ## Introduction
 
@@ -27,6 +27,7 @@ Stack is a simple card-style Hugo theme designed for bloggers, some of its featu
 - No CSS framework, keep it simple and minimal
 - Properly cropped thumbnails
 - Subsection support
+- Table of contents
 
 ## Requirements
 

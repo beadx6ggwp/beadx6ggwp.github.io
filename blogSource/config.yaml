@@ -1,6 +1,3 @@
-# change output dir
-# publishdir: C:\Users\david\Documents\test
-
 baseurl: https://davidhsu666.com/
 languageCode: en-us
 theme: hugo-theme-stack
@@ -11,11 +8,10 @@ title: 展維隨筆
 disqusShortname: beadx6ggwp
 
 # GA Tracking ID
-# googleAnalytics: UA-107363859-1
 googleAnalytics: G-YJXR109WY7
 
 # Theme i18n support
-# Available values: en, fr, id, ja, ko, pt-br, zh-cn, es, de
+# Available values: en, fr, id, ja, ko, pt-br, zh-cn, es, de, nl
 DefaultContentLanguage: zh-tw
 
 permalinks:
@@ -27,11 +23,11 @@ params:
         - post
     featuredImageField: image
     rssFullContent: true
-    favicon: resource/favicon-32x32.png
+    favicon: /resource/favicon-32x32.png
 
     footer:
         since: 2019
-        customText: 
+        customText:
 
     dateFormat:
         published: Jan 02, 2006
@@ -46,6 +42,7 @@ params:
 
     article:
         math: true #全區域使用
+        toc: true
         license:
             enabled: true
             default: Licensed under CC BY-NC-SA 4.0
@@ -63,6 +60,29 @@ params:
             host:
             site:
             locale:
+
+        vssue:
+            platform:
+            owner:
+            repo:
+            clientId:
+            clientSecret:
+
+        # Waline client configuration see: https://waline.js.org/en/reference/client.html
+        waline:
+            serverURL:
+            lang:
+            visitor:
+            avatar:
+            emoji:
+                - https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo
+            requiredMeta:
+                - name
+                - email
+                - url
+            placeholder:
+            locale:
+                admin: Admin
 
     widgets:
         enabled:
@@ -96,7 +116,7 @@ params:
 
         # Available values: auto, light, dark
         default: auto
-    # 設置是否處理封面與內文圖片，影響GIF的播放
+
     imageProcessing:
         cover:
             enabled: false
@@ -131,12 +151,12 @@ related:
           weight: 200
 
 markup:
-    highlight:
-        noClasses: false
     goldmark: # 在文章中使用html
         renderer:
             unsafe: true
     tableOfContents:
         endLevel: 3
-        ordered: false
+        ordered: true
         startLevel: 2
+    highlight:
+        noClasses: false

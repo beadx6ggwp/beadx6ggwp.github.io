@@ -3,16 +3,13 @@
     <head>
         {{- partial "head/head.html" . -}}
         {{- block "head" . -}}{{ end }}
-        
     </head>
     <body class="{{ block `body-class` . }}{{ end }}">
-        <!-- GOTOP -->
-        <script src="/js/custom.js"></script>
-        <button class="btn" onclick="scrollTop1()" id="goTopBtn" title="Go to top">TOP</button>
-
         {{- partial "head/colorScheme" . -}}
-        <div class="container main-container flex on-phone--column {{ if .Site.Params.widgets.enabled }}extended{{ else }}compact{{ end }} {{ block `container-class` . }}{{end}}">
-            {{ partial "sidebar/left.html" . }}
+        <div class="container main-container flex {{ block `container-class` . }}on-phone--column {{ if .Site.Params.widgets.enabled }}extended{{ else }}compact{{ end }}{{ end }}">
+            {{- block "left-sidebar" . -}}
+                {{ partial "sidebar/left.html" . }}
+            {{- end -}}
             <main class="main full-width">
                 {{- block "main" . }}{{- end }}
             </main>

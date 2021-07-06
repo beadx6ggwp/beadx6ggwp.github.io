@@ -57,17 +57,14 @@
         padding-bottom: 15px;
 
         article {
-            width: 200px; //Archives card
+            width: 200px;
             height: 150px;
             margin-right: 20px;
             flex-shrink: 0;
 
-            // 分類標題大小
             .article-title {
                 margin: 0;
-                // font-size: 1.8rem;
-                font-size: 3.0rem;
-                text-shadow: 0px 0px 6px rgba(0,0,0,0.7);
+                font-size: 2.8rem;
             }
 
             .article-details {
