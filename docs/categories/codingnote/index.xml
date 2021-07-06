@@ -19,7 +19,7 @@
 分離軸定理通常用語檢測兩個多邊形或多邊形與圓之間的碰撞，跟所有演算法一樣他具有一定的優勢與缺點。
 我會慢慢講解背後的原理，並使用程式碼做簡易的範例。
 範例所使用的語言為Java Script，加上自製的向量函式庫，但我想觀念懂了應該不會有太大問題。
-1. 矩形碰撞檢測 我想先從最簡單的碰撞檢測開始講，這樣比較好讓各位了解為什麼需要分離軸檢測，所以先從一般的矩形碰撞開始。
+矩形碰撞檢測 我想先從最簡單的碰撞檢測開始講，這樣比較好讓各位了解為什麼需要分離軸檢測，所以先從一般的矩形碰撞開始。
 AABB碰撞檢測(Axis-aligned Bounding Box): 為了方邊物體之間進行碰撞檢測運算，通常會對物體創建一個長方形將其包圍，AABB包圍盒也被稱為軸對齊包圍盒。
 一般二維的AABB包圍盒具備兩項特點:
  以矩形包圍物體 矩形的每條邊，皆與坐標系的軸垂直  簡單來說就是用矩形把物體包起來，檢查矩形之間是否發生碰撞
@@ -34,7 +34,7 @@ AABB碰撞檢測(Axis-aligned Bounding Box): 為了方邊物體之間進行碰�
  B.max &amp;gt; A.min 
 但前面只討論B在A右側，當B在A的左側時，條件就要稍微改一下，當B在A的左側時，B.max &amp;gt; A.min時發生碰撞。
 將兩張圖的結果合在一起，整理成code:
-if (A.max &amp;gt; B.min &amp;amp;&amp;amp; B.</description>
+if (A.max &amp;gt; B.min &amp;amp;&amp;amp; B.max &amp;gt; A.</description>
     </item>
     
     <item>
@@ -44,7 +44,7 @@ if (A.max &amp;gt; B.min &amp;amp;&amp;amp; B.</description>
       
       <guid>https://davidhsu666.com/archives/win32note01/</guid>
       <description>Win32 參考 : MSDN Get Started with Win32 and C++
-1.建立entry point, WinMain() // int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow) // wWinMain為UniCode模式，WinMain為Ansi模式  int CALLBACK WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow){ // ...  return 0; } #define CALLBACK __stdcall: 簡單來說__stdcall就是專門用來call WinAPI的，詳細還有待研究
+建立entry point, WinMain() // int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow) // wWinMain為UniCode模式，WinMain為Ansi模式  int CALLBACK WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow){ // ...  return 0; } #define CALLBACK __stdcall: 簡單來說__stdcall就是專門用來call WinAPI的，詳細還有待研究
 參數:
 hInstance : windows為應用程式生成的追蹤資料，h代表handle(處理程序)
 hPrevInstance : 追蹤建立此視窗的前一個程式，但現在基本無用

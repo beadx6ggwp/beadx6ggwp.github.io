@@ -43,7 +43,7 @@
 分離軸定理通常用語檢測兩個多邊形或多邊形與圓之間的碰撞，跟所有演算法一樣他具有一定的優勢與缺點。&lt;br&gt;
 我會慢慢講解背後的原理，並使用程式碼做簡易的範例。&lt;/p&gt;
 &lt;p&gt;範例所使用的語言為Java Script，加上自製的向量函式庫，但我想觀念懂了應該不會有太大問題。&lt;/p&gt;
-&lt;h2 id=&#34;1-矩形碰撞檢測&#34;&gt;1. 矩形碰撞檢測&lt;/h2&gt;
+&lt;h2 id=&#34;矩形碰撞檢測&#34;&gt;矩形碰撞檢測&lt;/h2&gt;
 &lt;p&gt;我想先從最簡單的碰撞檢測開始講，這樣比較好讓各位了解為什麼需要分離軸檢測，所以先從一般的矩形碰撞開始。&lt;/p&gt;
 &lt;p&gt;AABB碰撞檢測(Axis-aligned Bounding Box):
 為了方邊物體之間進行碰撞檢測運算，通常會對物體創建一個長方形將其包圍，AABB包圍盒也被稱為軸對齊包圍盒。&lt;/p&gt;
@@ -183,7 +183,7 @@
 &lt;p&gt;那麼要如何解決這兩個問題呢?&lt;br&gt;
 就是本文的主題「SAT碰撞檢測」，這個方法可以完美的解決這兩個問題。&lt;/p&gt;
 &lt;p&gt;讓我們進入下一階段。&lt;/p&gt;
-&lt;h2 id=&#34;2-什麼是分離軸檢測&#34;&gt;2. 什麼是分離軸檢測?&lt;/h2&gt;
+&lt;h2 id=&#34;什麼是分離軸檢測&#34;&gt;什麼是分離軸檢測?&lt;/h2&gt;
 &lt;p&gt;如果有兩個凸多邊形，在任意角度下的投影皆有重疊，代表物體發生碰撞，否則只要有縫隙，就代表沒有碰撞。&lt;/p&gt;
 &lt;p&gt;&lt;figure style=&#34;flex-grow: 327; flex-basis: 786px&#34;&gt;
 		&lt;a href=&#34;https://davidhsu666.com/archives/gamecollisiondetection/img/SAT35.jpg&#34; data-size=&#34;1324x404&#34;&gt;&lt;img src=&#34;https://davidhsu666.com/archives/gamecollisiondetection/img/SAT35.jpg&#34;
@@ -263,7 +263,7 @@
 &lt;li&gt;要如何計算其中一個角落在P向量上的投影?&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;所以在前往下一個階段之前，要先補充一些數學的知識。&lt;/p&gt;
-&lt;h2 id=&#34;3-知識補充1向量&#34;&gt;3. 知識補充1–向量&lt;/h2&gt;
+&lt;h2 id=&#34;知識補充1向量&#34;&gt;知識補充1–向量&lt;/h2&gt;
 &lt;p&gt;知識補充1與2這兩段，可以先跳過，不影響閱讀，等到有看不懂的地方再回來看也行。&lt;br&gt;
 為了解釋如何取得投影與分離軸，所以需要先補充向量的知識。&lt;/p&gt;
 &lt;p&gt;數學向量忘記的話，這裡推薦幾部教學影片:&lt;/p&gt;
@@ -386,7 +386,7 @@ $$&lt;/p&gt;
 &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;vec1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;projectLengthOnto&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;vec2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// =&amp;gt;3
 &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;vec1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;normalL&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// = (-4, 3)
 &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;vec1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;normalR&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// = (4, -3)
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;4-知識補充2旋轉變換&#34;&gt;4. 知識補充2–旋轉變換&lt;/h2&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;知識補充2旋轉變換&#34;&gt;知識補充2–旋轉變換&lt;/h2&gt;
 &lt;p&gt;為了解釋如何取得物體旋轉後的角落，所以需要先補充旋轉變換的知識。&lt;/p&gt;
 &lt;p&gt;其作用為以原點為中心旋轉θ角:
 &lt;figure style=&#34;flex-grow: 100; flex-basis: 240px&#34;&gt;
@@ -457,7 +457,7 @@ $$&lt;/p&gt;
     &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;x&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;new_x&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
     &lt;span class=&#34;k&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;y&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;new_y&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;5-如何取得分離軸上的投影&#34;&gt;5. 如何取得分離軸上的投影?&lt;/h2&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;如何取得分離軸上的投影&#34;&gt;如何取得分離軸上的投影?&lt;/h2&gt;
 &lt;p&gt;有了投影公式後，接下來只要把A、B的四個角投影在P向量上就能知道min、max了。&lt;/p&gt;
 &lt;p&gt;&lt;figure style=&#34;flex-grow: 160; flex-basis: 384px&#34;&gt;
 		&lt;a href=&#34;https://davidhsu666.com/archives/gamecollisiondetection/img/SAT09.jpg&#34; data-size=&#34;400x250&#34;&gt;&lt;img src=&#34;https://davidhsu666.com/archives/gamecollisiondetection/img/SAT09.jpg&#34;
@@ -501,7 +501,7 @@ $$&lt;/p&gt;
     &lt;span class=&#34;nx&#34;&gt;Console&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;log&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s2&#34;&gt;&amp;#34;碰撞&amp;#34;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// isCollided
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;這邊選擇True為分離是因為這是分離軸檢測，我認為這樣比較符合。&lt;/p&gt;
 &lt;p&gt;了解如何取得min、max，並如何判斷後，就可以進入下個階段了。&lt;/p&gt;
-&lt;h2 id=&#34;6-編寫程式碼-投影旋轉與判斷&#34;&gt;6. 編寫程式碼-投影、旋轉與判斷&lt;/h2&gt;
+&lt;h2 id=&#34;編寫程式碼-投影旋轉與判斷&#34;&gt;編寫程式碼-投影、旋轉與判斷&lt;/h2&gt;
 &lt;p&gt;第一步，我們需要取得矩形上的四個角，這時就需要前面的「知識補充2-旋轉變換」&lt;/p&gt;
 &lt;p&gt;&lt;figure style=&#34;flex-grow: 200; flex-basis: 480px&#34;&gt;
 		&lt;a href=&#34;https://davidhsu666.com/archives/gamecollisiondetection/img/SAT37.jpg&#34; data-size=&#34;800x400&#34;&gt;&lt;img src=&#34;https://davidhsu666.com/archives/gamecollisiondetection/img/SAT37.jpg&#34;
@@ -663,7 +663,7 @@ $$&lt;/p&gt;
     &lt;span class=&#34;c1&#34;&gt;// 最後傳回一個物件包含min、max屬性
 &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;result&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;7-如何取得分離軸&#34;&gt;7. 如何取得分離軸?&lt;/h2&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;如何取得分離軸&#34;&gt;如何取得分離軸?&lt;/h2&gt;
 &lt;p&gt;在SAT介紹的時候也提到，兩物體間有無限多條分離軸，難不成要真的從0度~360度的分離軸全部投影一變嗎?&lt;/p&gt;
 &lt;p&gt;其實不需要，我們只需要沿著物體所有邊上的&lt;strong&gt;法向量當作分離軸&lt;/strong&gt;作檢查，即可判斷。&lt;/p&gt;
 &lt;p&gt;&lt;figure style=&#34;flex-grow: 150; flex-basis: 360px&#34;&gt;
@@ -736,7 +736,7 @@ $$&lt;/p&gt;
     &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;有了頂點取得的方式、投影大小的判斷加上邊上法向量的取得，我相信你已經有足夠的知識來完成SAT碰撞檢測了。&lt;/p&gt;
-&lt;h2 id=&#34;8-粗糙的矩形檢測&#34;&gt;8. 粗糙的矩形檢測&lt;/h2&gt;
+&lt;h2 id=&#34;粗糙的矩形檢測&#34;&gt;粗糙的矩形檢測&lt;/h2&gt;
 &lt;p&gt;讓我們來看看針對矩形的程式碼，這段程式碼單純是了解檢查過程，如果你對判斷的方法不是很清楚的話希望你花一些時間看一下，後面會在寫出一個整理過的寫法。&lt;/p&gt;
 &lt;p&gt;&lt;figure style=&#34;flex-grow: 112; flex-basis: 271px&#34;&gt;
 		&lt;a href=&#34;https://davidhsu666.com/archives/gamecollisiondetection/img/SAT24.jpg&#34; data-size=&#34;400x354&#34;&gt;&lt;img src=&#34;https://davidhsu666.com/archives/gamecollisiondetection/img/SAT24.jpg&#34;
@@ -800,7 +800,7 @@ $$&lt;/p&gt;
 		
 	&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;但上面那個只適用在矩形上，而且Code又醜又長，所以把它整理一下。&lt;/p&gt;
-&lt;h2 id=&#34;9-編寫程式碼多邊形與多邊形&#34;&gt;9. 編寫程式碼–多邊形與多邊形&lt;/h2&gt;
+&lt;h2 id=&#34;編寫程式碼多邊形與多邊形&#34;&gt;編寫程式碼–多邊形與多邊形&lt;/h2&gt;
 &lt;p&gt;雖然這裡的寫法也還是沒有完全優化，其實你可以將normal_polygonA、B合併後在一起走訪，但我想範例這樣比較容易了解。&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// true:兩物體分離, false:兩物體碰撞
 &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;kd&#34;&gt;function&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;SAT_Collision&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;nx&#34;&gt;polygonA&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;polygonB&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
@@ -868,10 +868,10 @@ $$&lt;/p&gt;
 		
 	&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;原始碼在最後。&lt;/p&gt;
-&lt;h2 id=&#34;10-編寫程式碼多邊形與圓&#34;&gt;10. 編寫程式碼–多邊形與圓&lt;/h2&gt;
+&lt;h2 id=&#34;編寫程式碼多邊形與圓&#34;&gt;編寫程式碼–多邊形與圓&lt;/h2&gt;
 &lt;p&gt;已經完成範例，但還沒編寫文章&lt;/p&gt;
 &lt;p&gt;假設今天是N多邊形與圓形，大致的做法就是，一樣取得多邊形的法向量做分離軸檢測，然後最後再多補上一條分離軸，為圓心到多邊形最近的頂點，這樣就能正確的判斷圓形。&lt;/p&gt;
-&lt;h2 id=&#34;11-sat的總結&#34;&gt;11. SAT的總結&lt;/h2&gt;
+&lt;h2 id=&#34;sat的總結&#34;&gt;SAT的總結&lt;/h2&gt;
 &lt;p&gt;關於SAT的優缺點:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;SAT的方法是些假設兩物體是分離的，並在檢查中只要成功找到正確的分離軸，就直接跳出，所以當物體都是分離狀態時，SAT的效率是非常高的。&lt;/li&gt;
@@ -920,7 +920,7 @@ $$&lt;/p&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://web.archive.org/web/20210120035950/https://www.toptal.com/game/video-game-physics-part-ii-collision-detection-for-solid-objects&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;Video Game Physics Tutorial&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;12-多物體的碰撞優化&#34;&gt;12. 多物體的碰撞優化&lt;/h2&gt;
+&lt;h2 id=&#34;多物體的碰撞優化&#34;&gt;多物體的碰撞優化&lt;/h2&gt;
 &lt;p&gt;當我們要檢查多個物體碰撞時，通常會直接對所有物體互相進行判斷，就像下面這段Code:&lt;/p&gt;
 &lt;p&gt;基本枚舉法的Code:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// shapes是指所有的物體陣列
@@ -963,7 +963,7 @@ $$&lt;/p&gt;
 &lt;p&gt;AABB Tree在建立時，就先把有機會碰撞的放在同一區，有了這樣的結構後，要判斷碰撞的效率就提高了，因為只需判斷與該物體同區域的物體即可，並不需要全部檢查，使得時間複雜度縮減到O(log n)。&lt;/p&gt;
 &lt;p&gt;而其他多物體碰撞的演算法還有:&lt;br&gt;
 四叉樹(Quad Trees)、八叉樹(octree)、二元分割樹(BSP tree)、kd樹、球體樹(sphere tree)、R樹(R tree)、碰撞投影、光線投影等等…，有興趣的可以在自己研究。&lt;/p&gt;
-&lt;h2 id=&#34;13-動態物體間的碰撞檢測&#34;&gt;13. 動態物體間的碰撞檢測&lt;/h2&gt;
+&lt;h2 id=&#34;動態物體間的碰撞檢測&#34;&gt;動態物體間的碰撞檢測&lt;/h2&gt;
 &lt;p&gt;這裡為大家提供一些解決的方向，我目前知道有這種解決方法，但礙於能力不足，只研究到觀念部分。&lt;/p&gt;
 &lt;p&gt;在我們前面講的碰撞檢測方法都只適用在靜態，什麼意思呢?&lt;/p&gt;
 &lt;p&gt;在遊戲中做的碰撞檢測其實是以離散時間來模擬，因此在每個瞬間，物體的位置和方向是靜止的，就像快照一樣，若物體的移動速度與其相對尺寸來說不是太快的話，這種方法是可行的，事實上在許多物理引擎中，都是使用這種方法。&lt;/p&gt;
@@ -1010,7 +1010,7 @@ $$&lt;/p&gt;
 &lt;p&gt;形狀掃描對動態物體來說，是一個有效的檢測技術，能保證不錯過快照之間的碰撞。&lt;/p&gt;
 &lt;p&gt;缺點是，若物體的行進路線為曲線甚至旋轉，僅透過線性穿插計算，其結果是不準確的，所以要再根據狀況使用更精準的技術。&lt;/p&gt;
 &lt;p&gt;其實還有很多更好的解決方案，有興趣的可以在自己研究。&lt;/p&gt;
-&lt;h2 id=&#34;14-source-code&#34;&gt;14. Source Code&lt;/h2&gt;
+&lt;h2 id=&#34;source-code&#34;&gt;Source Code&lt;/h2&gt;
 &lt;p&gt;執行範例:&lt;/p&gt;
 &lt;p&gt;我的SAT碰撞執行範例 : &lt;a class=&#34;link&#34; href=&#34;https://davidhsu666.com/downloads/Collision-SAT/ver0.2.1-polygon-merge/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;ver0.2.1-polygon-merge&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Source Code:&lt;/p&gt;
@@ -1028,7 +1028,7 @@ $$&lt;/p&gt;
     &gt;https://github.com/beadx6ggwp/Collision-MTV&lt;/a&gt;
 &lt;img src=&#34;https://davidhsu666.com/&#34; alt=&#34;&#34;  /&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&#34;15-結尾感想&#34;&gt;15. 結尾感想&lt;/h2&gt;
+&lt;h2 id=&#34;結尾感想&#34;&gt;結尾感想&lt;/h2&gt;
 &lt;p&gt;那麼為什麼要對碰撞這麼刁鑽，就是為了能模擬物理效果，當碰撞的處理達到一定的程度後，就可以邁向下一個階段「剛體動力學」與「物理模擬」，讓電腦中的物體越來越接近現實，有趣吧。&lt;/p&gt;
 &lt;p&gt;光是碰撞的處理就有這麼多複雜的技術問題，就可以了解高階遊戲開發工程師是多麼厲害的一群人了。&lt;/p&gt;
 &lt;p&gt;為了做出更好的遊戲，還要很多東西要學，為了能有效的使用電腦資源，要學會作業系統架構、演算法、資料結構並精通程式語言，要能在螢幕中顯示各種效果、視角操控，還要學習電腦圖學、線性代數，為了處理物理模擬，還要學習古典物理、高等微積分，而這些東西到了三維空間後，又更加複雜，還有專案管理等等附加技能，加上遊戲工程師們也不斷的在進化，搞不好一輩子都學不完呢。&lt;/p&gt;
@@ -1782,7 +1782,7 @@ $ P= (1-u-v)A + uB + vC $&lt;/p&gt;
         <description>&lt;img src="https://davidhsu666.com/archives/win32note01/img/1602103707812.jpg" alt="Featured image of post [Win32筆記] 建立視窗 #1" /&gt;&lt;h1 id=&#34;win32&#34;&gt;Win32&lt;/h1&gt;
 &lt;p&gt;參考 : &lt;a class=&#34;link&#34; href=&#34;https://docs.microsoft.com/en-us/windows/win32/learnwin32/learn-to-program-for-windows&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;MSDN Get Started with Win32 and C++&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;1建立entry-point-winmain&#34;&gt;1.建立entry point, WinMain()&lt;/h2&gt;
+&lt;h2 id=&#34;建立entry-point-winmain&#34;&gt;建立entry point, WinMain()&lt;/h2&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-C++&#34; data-lang=&#34;C++&#34;&gt;&lt;span class=&#34;c1&#34;&gt;// int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow)
 &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;// wWinMain為UniCode模式，WinMain為Ansi模式
 &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;
@@ -1804,7 +1804,7 @@ e.g. main.exe -t -d&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;nCmdShow&lt;/code&gt; : 為一整數，在執行時傳入來控制視窗的樣式&lt;/br&gt;
 e.g. SW_MAXIMIZE (3)、SW_MINIMIZE (6)、SW_SHOWMINNOACTIVE (7 啟動時最小化) 等等&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;2-向系統註冊此視窗程式-wndclass&#34;&gt;2. 向系統註冊此視窗程式 WNDCLASS&lt;/h2&gt;
+&lt;h2 id=&#34;向系統註冊此視窗程式-wndclass&#34;&gt;向系統註冊此視窗程式 WNDCLASS&lt;/h2&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-wndclassa&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;WNDCLASSA structure (winuser.h)&lt;/a&gt;、
 &lt;a class=&#34;link&#34; href=&#34;https://docs.microsoft.com/en-us/windows/win32/winmsg/window-class-styles&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -1836,7 +1836,7 @@ e.g. SW_MAXIMIZE (3)、SW_MINIMIZE (6)、SW_SHOWMINNOACTIVE (7 啟動時最小�
 &lt;span class=&#34;n&#34;&gt;wc&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;hInstance&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;hInstance&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 &lt;span class=&#34;c1&#34;&gt;// 並在最後向上層系統註冊此視窗類別，為什麼要註冊還有待研究
 &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;RegisterClass&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;wc&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;3-建立與顯示視窗-createwindow&#34;&gt;3. 建立與顯示視窗 CreateWindow&lt;/h2&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;建立與顯示視窗-createwindow&#34;&gt;建立與顯示視窗 CreateWindow&lt;/h2&gt;
 &lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-createwindowexa&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;MSDN CreateWindowExA function&lt;/a&gt;、
 &lt;a class=&#34;link&#34; href=&#34;https://docs.microsoft.com/en-us/windows/win32/winmsg/window-styles&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
@@ -1872,7 +1872,7 @@ e.g. SW_MAXIMIZE (3)、SW_MINIMIZE (6)、SW_SHOWMINNOACTIVE (7 啟動時最小�
 &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;
 &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;hwnd&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;NULL&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//判斷是否成功Create
 &lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;&lt;/span&gt;    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;4-訊息監聽event-handler-winproc&#34;&gt;4. 訊息監聽(Event Handler) WinProc&lt;/h2&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;訊息監聽event-handler-winproc&#34;&gt;訊息監聽(Event Handler) WinProc&lt;/h2&gt;
 &lt;p&gt;&lt;figure style=&#34;flex-grow: 177; flex-basis: 426px&#34;&gt;
 		&lt;a href=&#34;https://davidhsu666.com/archives/win32note01/img/1602103707812.jpg&#34; data-size=&#34;432x243&#34;&gt;&lt;img src=&#34;https://davidhsu666.com/archives/win32note01/img/1602103707812.jpg&#34;
 				

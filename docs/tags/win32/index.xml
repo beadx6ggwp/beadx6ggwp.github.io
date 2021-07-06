@@ -14,7 +14,7 @@
       
       <guid>https://davidhsu666.com/archives/win32note01/</guid>
       <description>Win32 參考 : MSDN Get Started with Win32 and C++
-1.建立entry point, WinMain() // int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow) // wWinMain為UniCode模式，WinMain為Ansi模式  int CALLBACK WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow){ // ...  return 0; } #define CALLBACK __stdcall: 簡單來說__stdcall就是專門用來call WinAPI的，詳細還有待研究
+建立entry point, WinMain() // int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow) // wWinMain為UniCode模式，WinMain為Ansi模式  int CALLBACK WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow){ // ...  return 0; } #define CALLBACK __stdcall: 簡單來說__stdcall就是專門用來call WinAPI的，詳細還有待研究
 參數:
 hInstance : windows為應用程式生成的追蹤資料，h代表handle(處理程序)
 hPrevInstance : 追蹤建立此視窗的前一個程式，但現在基本無用
