@@ -15,11 +15,10 @@ menu:
 
 ## Blog簡介
 
-正在自學Computer Graphics，在這紀錄一些個人筆記.
+正在學習Computer Graphics，在這紀錄一些個人筆記.
 
 [我的GitHub](https://github.com/beadx6ggwp).
 
----
 
 <img src="/resource/stackoverflow_meme.JPG" alt="drawing" width="300"/>
 <!-- 使用img tag src時最前面要多加/ -->
