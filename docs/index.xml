@@ -31,41 +31,6 @@
 14. [Source Code](#14-source-code)
 15. [結尾感想](#15-結尾感想)
 16. [參考資源](#參考資源) --&gt;
-&lt;div&gt;
-    
-    &lt;p&gt;目錄:
-    &lt;nav id=&#34;TableOfContents&#34;&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&#34;#前言&#34;&gt;前言&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#1-矩形碰撞檢測&#34;&gt;1. 矩形碰撞檢測&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#2-什麼是分離軸檢測&#34;&gt;2. 什麼是分離軸檢測?&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#3-知識補充1向量&#34;&gt;3. 知識補充1–向量&lt;/a&gt;
-      &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#正射影-&#34;&gt;正射影 :&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#法向量-&#34;&gt;法向量 :&lt;/a&gt;&lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#4-知識補充2旋轉變換&#34;&gt;4. 知識補充2–旋轉變換&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#5-如何取得分離軸上的投影&#34;&gt;5. 如何取得分離軸上的投影?&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#6-編寫程式碼-投影旋轉與判斷&#34;&gt;6. 編寫程式碼-投影、旋轉與判斷&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#7-如何取得分離軸&#34;&gt;7. 如何取得分離軸?&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#8-粗糙的矩形檢測&#34;&gt;8. 粗糙的矩形檢測&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#9-編寫程式碼多邊形與多邊形&#34;&gt;9. 編寫程式碼–多邊形與多邊形&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#10-編寫程式碼多邊形與圓&#34;&gt;10. 編寫程式碼–多邊形與圓&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#11-sat的總結&#34;&gt;11. SAT的總結&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#12-多物體的碰撞優化&#34;&gt;12. 多物體的碰撞優化&lt;/a&gt;
-      &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#簡單的介紹一個優化方法--aabb-tree-&#34;&gt;簡單的介紹一個優化方法 – AABB Tree :&lt;/a&gt;&lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#13-動態物體間的碰撞檢測&#34;&gt;13. 動態物體間的碰撞檢測&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#14-source-code&#34;&gt;14. Source Code&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#15-結尾感想&#34;&gt;15. 結尾感想&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#參考資源&#34;&gt;參考資源:&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/nav&gt;
-&lt;/div&gt;
-
 &lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
 &lt;p&gt;而這篇文有三個主要目的 :&lt;/p&gt;
 &lt;ol&gt;
@@ -1122,35 +1087,7 @@ $$&lt;/p&gt;
         <pubDate>Sat, 03 Jul 2021 23:39:36 +0800</pubDate>
         
         <guid>https://davidhsu666.com/archives/wireframe-display/</guid>
-        <description>&lt;img src="https://davidhsu666.com/archives/wireframe-display/img/ps/teapot_5.1.png" alt="Featured image of post Shader重心座標的線框繪製" /&gt;&lt;div&gt;
-    
-    &lt;p&gt;目錄:
-    &lt;nav id=&#34;TableOfContents&#34;&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&#34;#簡介&#34;&gt;簡介&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#介紹&#34;&gt;介紹&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#問題&#34;&gt;問題&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#解決方法與原理&#34;&gt;解決方法與原理&lt;/a&gt;
-      &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#單純使用重心座標-const-offset&#34;&gt;單純使用重心座標 const offset&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#最短邊距法-shortest-distance-to-the-edge&#34;&gt;最短邊距法 shortest distance to the edge&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#反鋸齒處理antialiased-wireframe-drawing&#34;&gt;反鋸齒處理Antialiased Wireframe Drawing&lt;/a&gt;&lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#應用與討論&#34;&gt;應用與討論&lt;/a&gt;
-      &lt;ul&gt;
-        &lt;li&gt;&lt;a href=&#34;#虛線樣式&#34;&gt;虛線樣式&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#外側反鋸齒&#34;&gt;外側反鋸齒&lt;/a&gt;&lt;/li&gt;
-        &lt;li&gt;&lt;a href=&#34;#優缺點&#34;&gt;優缺點&lt;/a&gt;&lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#結語&#34;&gt;結語&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#reference&#34;&gt;Reference&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/nav&gt;
-&lt;/div&gt;
-
-&lt;br&gt;
+        <description>&lt;img src="https://davidhsu666.com/archives/wireframe-display/img/ps/teapot_5.1.png" alt="Featured image of post Shader重心座標的線框繪製" /&gt;&lt;br&gt;
 &lt;h2 id=&#34;簡介&#34;&gt;簡介&lt;/h2&gt;
 &lt;p&gt;參考這幾篇文章，並介紹線框繪製的問題點與解決方法:&lt;/p&gt;
 &lt;ul&gt;
@@ -1641,23 +1578,7 @@ $$&lt;/p&gt;
         <pubDate>Thu, 01 Jul 2021 21:00:47 +0800</pubDate>
         
         <guid>https://davidhsu666.com/archives/barycentric-coordinates/</guid>
-        <description>&lt;img src="https://davidhsu666.com/archives/barycentric-coordinates/img/bary5.png" alt="Featured image of post 重心座標的推導與使用 Barycentric Coordinates" /&gt;&lt;div&gt;
-    
-    &lt;p&gt;目錄:
-    &lt;nav id=&#34;TableOfContents&#34;&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&#34;#定義&#34;&gt;定義&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#推導方式-1-外積&#34;&gt;推導方式 1. 外積&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#推導方式-2-面積比&#34;&gt;推導方式 2. 面積比&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#基本使用&#34;&gt;基本使用&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#應用方式&#34;&gt;應用方式&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#結論&#34;&gt;結論&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#reference&#34;&gt;Reference&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/nav&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&#34;定義&#34;&gt;定義&lt;/h2&gt;
+        <description>&lt;img src="https://davidhsu666.com/archives/barycentric-coordinates/img/bary5.png" alt="Featured image of post 重心座標的推導與使用 Barycentric Coordinates" /&gt;&lt;h2 id=&#34;定義&#34;&gt;定義&lt;/h2&gt;
 &lt;p&gt;&lt;figure style=&#34;flex-grow: 110; flex-basis: 264px&#34;&gt;
 		&lt;a href=&#34;https://davidhsu666.com/archives/barycentric-coordinates/img/bary1_1.png&#34; data-size=&#34;312x283&#34;&gt;&lt;img src=&#34;https://davidhsu666.com/archives/barycentric-coordinates/img/bary1_1.png&#34;
 				
@@ -1859,20 +1780,6 @@ $ P= (1-u-v)A + uB + vC $&lt;/p&gt;
         
         <guid>https://davidhsu666.com/archives/win32note01/</guid>
         <description>&lt;img src="https://davidhsu666.com/archives/win32note01/img/1602103707812.jpg" alt="Featured image of post [Win32筆記] 建立視窗 #1" /&gt;&lt;h1 id=&#34;win32&#34;&gt;Win32&lt;/h1&gt;
-&lt;div&gt;
-    
-    &lt;p&gt;目錄:
-    &lt;nav id=&#34;TableOfContents&#34;&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&#34;#1建立entry-point-winmain&#34;&gt;1.建立entry point, WinMain()&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#2-向系統註冊此視窗程式-wndclass&#34;&gt;2. 向系統註冊此視窗程式 WNDCLASS&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#3-建立與顯示視窗-createwindow&#34;&gt;3. 建立與顯示視窗 CreateWindow&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#4-訊息監聽event-handler-winproc&#34;&gt;4. 訊息監聽(Event Handler) WinProc&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#完整範例code&#34;&gt;完整範例Code&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/nav&gt;
-&lt;/div&gt;
-
 &lt;p&gt;參考 : &lt;a class=&#34;link&#34; href=&#34;https://docs.microsoft.com/en-us/windows/win32/learnwin32/learn-to-program-for-windows&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;MSDN Get Started with Win32 and C++&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&#34;1建立entry-point-winmain&#34;&gt;1.建立entry point, WinMain()&lt;/h2&gt;
@@ -2598,23 +2505,6 @@ $$proj_{\hat n}V_{1}=(V_{1} \cdot \hat{n})\hat{n}$$&lt;/p&gt;
 6. [實際應用](#6-實際應用)
 7. [總結](#7-總結)
 8. [參考資源](#8-參考資源) --&gt;
-&lt;div&gt;
-    
-    &lt;p&gt;目錄:
-    &lt;nav id=&#34;TableOfContents&#34;&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&#34;#1-什麼是quadtree&#34;&gt;1. 什麼是QuadTree?&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#2-插入流程&#34;&gt;2. 插入流程:&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#3-搜尋流程&#34;&gt;3. 搜尋流程:&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#4-實作quadtree插入&#34;&gt;4. 實作QuadTree–插入&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#5-實作quadtree搜尋&#34;&gt;5. 實作QuadTree–搜尋&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#6-實際應用&#34;&gt;6. 實際應用&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#7-總結&#34;&gt;7. 總結&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#8-參考資源&#34;&gt;8. 參考資源&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/nav&gt;
-&lt;/div&gt;
-
 &lt;p&gt;許多遊戲都會需要碰撞檢測來判斷兩物體的碰撞，但這些演算法通常是較為昂貴的操作，如果無法有效率的選擇檢測目標，很可能會大幅降低執行的速度。(像是之前提到的&lt;a class=&#34;link&#34; href=&#34;https://davidhsu666.com/archives/gamecollisiondetection/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;SAT碰撞檢測&lt;/a&gt;)&lt;/p&gt;
 &lt;p&gt;在之前的”多邊形碰撞檢測”文中，也有提到當檢測物體越來越多時，基本逐一檢測的效率會越來越差，複雜度約為O(n^2)，就算排除重複檢測過的物體，只要是逐一檢測的方法就一定會走訪所有物件。&lt;/p&gt;
@@ -2993,21 +2883,7 @@ $$proj_{\hat n}V_{1}=(V_{1} \cdot \hat{n})\hat{n}$$&lt;/p&gt;
         <pubDate>Fri, 22 Jun 2018 10:04:35 +0800</pubDate>
         
         <guid>https://davidhsu666.com/archives/csharp-bfs-solve-8-puzzle/</guid>
-        <description>&lt;img src="https://davidhsu666.com/archives/csharp-bfs-solve-8-puzzle/img/8puzzle07.jpg" alt="Featured image of post BFS解8-Puzzle問題" /&gt;&lt;div&gt;
-    
-    &lt;p&gt;目錄:
-    &lt;nav id=&#34;TableOfContents&#34;&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;a href=&#34;#1-前言&#34;&gt;1. 前言&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#2-儲存結構和移動判斷&#34;&gt;2. 儲存結構和移動判斷&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#3-用bfs窮舉狀態&#34;&gt;3. 用BFS窮舉狀態&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#4-執行結果&#34;&gt;4. 執行結果&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&#34;#5-參考資源&#34;&gt;5. 參考資源&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/nav&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&#34;1-前言&#34;&gt;1. 前言&lt;/h2&gt;
+        <description>&lt;img src="https://davidhsu666.com/archives/csharp-bfs-solve-8-puzzle/img/8puzzle07.jpg" alt="Featured image of post BFS解8-Puzzle問題" /&gt;&lt;h2 id=&#34;1-前言&#34;&gt;1. 前言&lt;/h2&gt;
 &lt;p&gt;先來簡單的介紹一下什麼是8-Puzzle。&lt;/p&gt;
 &lt;p&gt;數字推盤遊戲(n-puzzle)是最早一種的滑塊類遊戲，常見的類型有十五數字推盤遊戲和八數字推盤遊戲等，也有以圖畫代替數字的推盤遊戲。&lt;/p&gt;
 &lt;p&gt;&lt;figure style=&#34;flex-grow: 100; flex-basis: 240px&#34;&gt;

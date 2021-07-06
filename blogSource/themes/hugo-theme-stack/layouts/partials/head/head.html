@@ -18,11 +18,8 @@
 {{- end -}}
 
 {{ with .Site.Params.favicon }}
-    <link rel="icon" href="{{ . | absURL }}">
+    <link rel="shortcut icon" href="{{ . }}" />
 {{ end }}
 
-<!-- UA -->
-<!-- {{- template "_internal/google_analytics_async.html" . -}} -->
-<!-- G- -->
-{{ template "_internal/google_analytics.html" . }}
+{{- template "_internal/google_analytics.html" . -}}
 {{- partial "head/custom.html" . -}}

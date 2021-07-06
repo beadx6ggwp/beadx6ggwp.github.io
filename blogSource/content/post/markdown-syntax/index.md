@@ -3,7 +3,12 @@ author = "Hugo Authors"
 title = "Markdown Syntax Guide"
 date = "2015-03-11"
 description = "Sample article showcasing basic Markdown syntax and formatting for HTML elements."
-tags = []
+tags = [
+    "markdown",
+    "css",
+    "html",
+    "themes",
+]
 categories = []
 series = ["Themes Guide"]
 aliases = ["migrate-from-jekyl"]
