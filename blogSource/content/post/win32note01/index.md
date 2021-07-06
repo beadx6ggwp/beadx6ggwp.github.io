@@ -21,7 +21,7 @@ draft: false
 
 參考 : [MSDN Get Started with Win32 and C++](https://docs.microsoft.com/en-us/windows/win32/learnwin32/learn-to-program-for-windows)
 
-## 1.建立entry point, WinMain()
+## 建立entry point, WinMain()
 
 ```C++
 // int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow)
@@ -54,7 +54,7 @@ e.g. SW_MAXIMIZE (3)、SW_MINIMIZE (6)、SW_SHOWMINNOACTIVE (7 啟動時最小�
 
 ---
 
-## 2. 向系統註冊此視窗程式 WNDCLASS
+## 向系統註冊此視窗程式 WNDCLASS
 
 [WNDCLASSA structure (winuser.h)](https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-wndclassa)、
 [Window Class Styles](https://docs.microsoft.com/en-us/windows/win32/winmsg/window-class-styles)、
@@ -95,7 +95,7 @@ wc.hInstance = hInstance;
 RegisterClass(&wc);
 ```
 
-## 3. 建立與顯示視窗 CreateWindow
+## 建立與顯示視窗 CreateWindow
 
 [MSDN CreateWindowExA function](https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-createwindowexa)、
 [window style values](https://docs.microsoft.com/en-us/windows/win32/winmsg/window-styles)
@@ -138,7 +138,7 @@ if (hwnd == NULL) //判斷是否成功Create
     return 0;
 ```
 
-## 4. 訊息監聽(Event Handler) WinProc
+## 訊息監聽(Event Handler) WinProc
 
 ![訊息流程](img/1602103707812.jpg)
 

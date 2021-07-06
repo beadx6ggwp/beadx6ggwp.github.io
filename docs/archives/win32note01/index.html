@@ -132,7 +132,7 @@ if (!doNotTrack) {
     <h1 id="win32">Win32</h1>
 <p>參考 : <a class="link" href="https://docs.microsoft.com/en-us/windows/win32/learnwin32/learn-to-program-for-windows"  target="_blank" rel="noopener"
     >MSDN Get Started with Win32 and C++</a></p>
-<h2 id="1建立entry-point-winmain">1.建立entry point, WinMain()</h2>
+<h2 id="建立entry-point-winmain">建立entry point, WinMain()</h2>
 <div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="c1">// int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow)
 </span><span class="c1">// wWinMain為UniCode模式，WinMain為Ansi模式
 </span><span class="c1"></span>
@@ -154,7 +154,7 @@ e.g. main.exe -t -d</p>
 <p><code>nCmdShow</code> : 為一整數，在執行時傳入來控制視窗的樣式</br>
 e.g. SW_MAXIMIZE (3)、SW_MINIMIZE (6)、SW_SHOWMINNOACTIVE (7 啟動時最小化) 等等</p>
 <hr>
-<h2 id="2-向系統註冊此視窗程式-wndclass">2. 向系統註冊此視窗程式 WNDCLASS</h2>
+<h2 id="向系統註冊此視窗程式-wndclass">向系統註冊此視窗程式 WNDCLASS</h2>
 <p><a class="link" href="https://docs.microsoft.com/en-us/windows/win32/api/winuser/ns-winuser-wndclassa"  target="_blank" rel="noopener"
     >WNDCLASSA structure (winuser.h)</a>、
 <a class="link" href="https://docs.microsoft.com/en-us/windows/win32/winmsg/window-class-styles"  target="_blank" rel="noopener"
@@ -186,7 +186,7 @@ e.g. SW_MAXIMIZE (3)、SW_MINIMIZE (6)、SW_SHOWMINNOACTIVE (7 啟動時最小�
 <span class="n">wc</span><span class="p">.</span><span class="n">hInstance</span> <span class="o">=</span> <span class="n">hInstance</span><span class="p">;</span>
 <span class="c1">// 並在最後向上層系統註冊此視窗類別，為什麼要註冊還有待研究
 </span><span class="c1"></span><span class="n">RegisterClass</span><span class="p">(</span><span class="o">&amp;</span><span class="n">wc</span><span class="p">);</span>
-</code></pre></div><h2 id="3-建立與顯示視窗-createwindow">3. 建立與顯示視窗 CreateWindow</h2>
+</code></pre></div><h2 id="建立與顯示視窗-createwindow">建立與顯示視窗 CreateWindow</h2>
 <p><a class="link" href="https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-createwindowexa"  target="_blank" rel="noopener"
     >MSDN CreateWindowExA function</a>、
 <a class="link" href="https://docs.microsoft.com/en-us/windows/win32/winmsg/window-styles"  target="_blank" rel="noopener"
@@ -222,7 +222,7 @@ e.g. SW_MAXIMIZE (3)、SW_MINIMIZE (6)、SW_SHOWMINNOACTIVE (7 啟動時最小�
 </span><span class="c1"></span>
 <span class="k">if</span> <span class="p">(</span><span class="n">hwnd</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="c1">//判斷是否成功Create
 </span><span class="c1"></span>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</code></pre></div><h2 id="4-訊息監聽event-handler-winproc">4. 訊息監聽(Event Handler) WinProc</h2>
+</code></pre></div><h2 id="訊息監聽event-handler-winproc">訊息監聽(Event Handler) WinProc</h2>
 <p><figure style="flex-grow: 177; flex-basis: 426px">
 		<a href="/archives/win32note01/img/1602103707812.jpg" data-size="432x243"><img src="/archives/win32note01/img/1602103707812.jpg"
 				
@@ -676,10 +676,10 @@ e.g. SW_MAXIMIZE (3)、SW_MINIMIZE (6)、SW_SHOWMINNOACTIVE (7 啟動時最小�
                 <div class="widget--toc">
                     <nav id="TableOfContents">
   <ol>
-    <li><a href="#1建立entry-point-winmain">1.建立entry point, WinMain()</a></li>
-    <li><a href="#2-向系統註冊此視窗程式-wndclass">2. 向系統註冊此視窗程式 WNDCLASS</a></li>
-    <li><a href="#3-建立與顯示視窗-createwindow">3. 建立與顯示視窗 CreateWindow</a></li>
-    <li><a href="#4-訊息監聽event-handler-winproc">4. 訊息監聽(Event Handler) WinProc</a></li>
+    <li><a href="#建立entry-point-winmain">建立entry point, WinMain()</a></li>
+    <li><a href="#向系統註冊此視窗程式-wndclass">向系統註冊此視窗程式 WNDCLASS</a></li>
+    <li><a href="#建立與顯示視窗-createwindow">建立與顯示視窗 CreateWindow</a></li>
+    <li><a href="#訊息監聽event-handler-winproc">訊息監聽(Event Handler) WinProc</a></li>
     <li><a href="#完整範例code">完整範例Code</a></li>
   </ol>
 </nav>
