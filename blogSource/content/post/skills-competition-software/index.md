@@ -72,9 +72,9 @@ draft: false
 這邊放北軟的歷屆，主要是我覺得北軟的題型跟工科賽幾乎一樣，而且出題老師也跟工科賽有重疊，因為這幾年都有類似的題目出現，加上北軟在工科賽之前比，非常值得做參考。
 
 <mark>工科賽軟體設計</mark>:
-<br>歷屆題目 : [Here](https://drive.google.com/drive/folders/0B7jQGIvVP5gtWEVuVUtxb2tUR3M)
+<br>歷屆題目 : [Here](https://drive.google.com/drive/folders/0B7jQGIvVP5gtWEVuVUtxb2tUR3M?resourcekey=0-8f2GK6Z7p9p9IdImq2LWEA&usp=sharing)
 <br>96~106屆參考解答 : [Here](https://github.com/md9830415/Skills-Competition-Software)
 
 <mark>北市軟體設計競賽(高工)</mark>:
-<br>歷屆題目 : [Here](https://drive.google.com/drive/folders/0B7jQGIvVP5gtbXdwZUNoVHRJTjQ)
+<br>歷屆題目 : [Here](https://drive.google.com/drive/folders/0B7jQGIvVP5gtbXdwZUNoVHRJTjQ?resourcekey=0-yDDqg2fr2LHoryIPj-mGzQ&usp=sharing)
 <br>99~106屆參考解答 : [Here](https://github.com/md9830415/Taipei-Software-Competition)
