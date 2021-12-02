@@ -38,7 +38,7 @@ params:
         subtitle: 簡易筆記
         avatar:
             local: true
-            src: img/thinking.png
+            src: img/snowman.jpg
 
     article:
         math: true #全區域使用
