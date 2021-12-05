@@ -13,7 +13,7 @@
 <meta name="twitter:title" content="Shader重心座標的線框繪製">
 <meta name="twitter:description" content="Single-Pass Wireframe Rendering"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://davidhsu666.com/archives/wireframe-display/img/ps/teapot_5.1.png' />
-    <link rel="shortcut icon" href="/resource/favicon-32x32.png" />
+    <link rel="shortcut icon" href="/blog_resource/favicon-32x32.png" />
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJXR109WY7"></script>
 <script>
@@ -26,15 +26,6 @@ if (!doNotTrack) {
 }
 </script>
 
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap');
-     
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;800&display=swap');
-    :root {
-        --article-font-family: 'Roboto',"Noto Serif TC", var(--base-font-family);
-    }
-</style>
     </head>
     <body class="
     article-page has-toc
@@ -43,7 +34,7 @@ if (!doNotTrack) {
         (function() {
             const colorSchemeKey = 'StackColorScheme';
             if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
+                localStorage.setItem(colorSchemeKey, "dark");
             }
         })();
     </script><script>
@@ -68,7 +59,7 @@ if (!doNotTrack) {
 ">
     
         <div id="article-toolbar">
-            <a href="https://davidhsu666.com/" class="back-home">
+            <a href="/" class="back-home">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <polyline points="15 6 9 12 15 18" />
@@ -76,7 +67,7 @@ if (!doNotTrack) {
 
 
 
-                <span></span>
+                <span>返回</span>
             </a>
         </div>
     
@@ -115,8 +106,28 @@ if (!doNotTrack) {
     <h3 class="article-subtitle">
         Single-Pass Wireframe Rendering
     </h3>
+    
+
+    
     <footer class="article-time">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jul 03, 2021</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <circle cx="12" cy="12" r="9" />
   <polyline points="12 7 12 12 15 15" />
@@ -124,8 +135,14 @@ if (!doNotTrack) {
 
 
 
-        <time class="article-time--published">Jul 03, 2021</time>
-    </footer></div>
+                <time class="article-time--reading">
+                    閱讀時間: 4 分鐘
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
 </header>
 
     <section class="article-content">
@@ -144,22 +161,29 @@ if (!doNotTrack) {
 <p>只是想嘗試敘述研究者一開始所遇到的問題，並循序漸進的解決，到最後得出結論，來設想遇到問題該怎麼著手解決</p>
 <p>使用<a class="link" href="https://github.com/beadx6ggwp/RenderLearningPlan"  target="_blank" rel="noopener"
     >myMiniRender</a>渲染的結果 :
-<figure style="flex-grow: 152; flex-basis: 365px">
-		<a href="/archives/wireframe-display/img/ps/teapot_5.1.png" data-size="919x604"><img src="/archives/wireframe-display/img/ps/teapot_5.1.png"
-				
-				width="919"
-				height="604"
-				loading="lazy"
-				alt="(a)只使用const offset, (b)解決方法single pass method:邊距&#43;平滑函數反鋸齒, (c)使用邊距&#43;const offset, ">
-		</a>
-		
-		<figcaption>(a)只使用const offset, (b)解決方法single pass method:邊距+平滑函數反鋸齒, (c)使用邊距+const offset,</figcaption>
-		
-	</figure></p>
+<figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 152; 
+			flex-basis: 365px"
+	>
+	<a href="/archives/wireframe-display/img/ps/teapot_5.1.png" data-size="919x604">
+		<img src="/archives/wireframe-display/img/ps/teapot_5.1.png"
+			width="919"
+			height="604"
+			
+			loading="lazy"
+			alt="(a)只使用const offset, (b)解決方法single pass method:邊距&#43;平滑函數反鋸齒, (c)使用邊距&#43;const offset, ">
+	</a>
+	
+	<figcaption>(a)只使用const offset, (b)解決方法single pass method:邊距+平滑函數反鋸齒, (c)使用邊距+const offset,</figcaption>
+	
+</figure></p>
 <br>
 <h2 id="介紹">介紹</h2>
 <p>在建立了基本渲染流水線後，原本想要方便Debug，所以在pipeline外，將投影後的頂點座標連成線段三角形，來畫出基本線框方便觀察，而這大致就是gl.LINES的方式</p>
-<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="n">TextureShader</span> <span class="n">shader</span><span class="p">;</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="n">TextureShader</span> <span class="n">shader</span><span class="p">;</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">model_head</span><span class="p">;</span>
 <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">model</span><span class="o">-&gt;</span><span class="n">nfaces</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">Vec4f</span> <span class="n">screen_coords</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span><span class="c1">// 投影轉換後的座標
@@ -170,29 +194,43 @@ if (!doNotTrack) {
 </span><span class="c1"></span>    <span class="c1">// triangle(screen_coords, shader, device); 
 </span><span class="c1"></span>    <span class="n">drawTriangleLine</span><span class="p">(</span><span class="n">screen_coords</span><span class="p">,</span> <span class="n">black</span><span class="p">);</span><span class="c1">// 類似gl.LINE的線段繪製
 </span><span class="c1"></span><span class="p">}</span>
-</code></pre></div><p><figure style="flex-grow: 106; flex-basis: 256px">
-		<a href="/archives/wireframe-display/img/line-rect.png" data-size="208x195"><img src="/archives/wireframe-display/img/line-rect.png"
-				
-				width="208"
-				height="195"
-				loading="lazy"
-				alt="上面那段code所繪製的線框圖">
-		</a>
-		
-		<figcaption>上面那段code所繪製的線框圖</figcaption>
-		
-	</figure><figure style="flex-grow: 254; flex-basis: 610px">
-		<a href="/archives/wireframe-display/img/line-ship.png" data-size="715x281"><img src="/archives/wireframe-display/img/line-ship.png"
-				
-				width="715"
-				height="281"
-				loading="lazy"
-				alt="myMiniRender線段繪製方形與模型線框">
-		</a>
-		
-		<figcaption>myMiniRender線段繪製方形與模型線框</figcaption>
-		
-	</figure></p>
+</code></pre></div><p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 106; 
+			flex-basis: 256px"
+	>
+	<a href="/archives/wireframe-display/img/line-rect.png" data-size="208x195">
+		<img src="/archives/wireframe-display/img/line-rect.png"
+			width="208"
+			height="195"
+			
+			loading="lazy"
+			alt="上面那段code所繪製的線框圖">
+	</a>
+	
+	<figcaption>上面那段code所繪製的線框圖</figcaption>
+	
+</figure><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 254; 
+			flex-basis: 610px"
+	>
+	<a href="/archives/wireframe-display/img/line-ship.png" data-size="715x281">
+		<img src="/archives/wireframe-display/img/line-ship.png"
+			width="715"
+			height="281"
+			
+			loading="lazy"
+			alt="myMiniRender線段繪製方形與模型線框">
+	</a>
+	
+	<figcaption>myMiniRender線段繪製方形與模型線框</figcaption>
+	
+</figure></p>
 <p>效果如上面兩張圖，但背面的線條會導致畫面很雜亂，為了<strong>正確顯示背部消除與物體遮擋</strong>，所以需要特別處理</p>
 <p>背部消除的線條，以往是分成兩次繪製(Two-pass)的方式，指同個畫面總共經過了兩次pipeline處理，讓物體與線框獨立繪製，並產生兩個深度緩衝(Z-buffer)，1.是繪製物體時的Zo(object)，2.是繪製線框時的Zw(wireframe)，通常繪製的順序是先繪製物體表面，然後在繪製線框時，比較Zw與Zo的深度，來判斷線框跟物體之間的前後遮擋</p>
 <br>
@@ -210,29 +248,43 @@ if (!doNotTrack) {
 </blockquote>
 <p>如圖(a)中的紅色的線段能正確被遮擋，且因為有深度偏移，讓線段頂點在物體的前面，所以第一次pass繪製物體產生Zo後，第二次pass在繪製線段時，只要比較線段中P點深度有沒有比Zo更近即可判斷是否繪製，以此達到線段遮擋與背部消除的效果，圖(b)引用<a class="link" href="https://arxiv.org/abs/1810.01175"  target="_blank" rel="noopener"
     >Line Drawings from 3D Models, p18</a></p>
-<p><figure style="flex-grow: 226; flex-basis: 544px">
-		<a href="/archives/wireframe-display/img/z-buffer2.png" data-size="1086x479"><img src="/archives/wireframe-display/img/z-buffer2.png"
-				
-				width="1086"
-				height="479"
-				loading="lazy"
-				alt="(a)物體的Z-buffer, Zo,與線段遮擋示意圖">
-		</a>
-		
-		<figcaption>(a)物體的Z-buffer, Zo,與線段遮擋示意圖</figcaption>
-		
-	</figure><figure style="flex-grow: 88; flex-basis: 212px">
-		<a href="/archives/wireframe-display/img/multi-pass-rendering.png" data-size="707x799"><img src="/archives/wireframe-display/img/multi-pass-rendering.png"
-				
-				width="707"
-				height="799"
-				loading="lazy"
-				alt="(b)使用Laplacian of Gaussian filter在two-pass時處理物體輪廓">
-		</a>
-		
-		<figcaption>(b)使用Laplacian of Gaussian filter在two-pass時處理物體輪廓</figcaption>
-		
-	</figure></p>
+<p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 226; 
+			flex-basis: 544px"
+	>
+	<a href="/archives/wireframe-display/img/z-buffer2.png" data-size="1086x479">
+		<img src="/archives/wireframe-display/img/z-buffer2.png"
+			width="1086"
+			height="479"
+			
+			loading="lazy"
+			alt="(a)物體的Z-buffer, Zo,與線段遮擋示意圖">
+	</a>
+	
+	<figcaption>(a)物體的Z-buffer, Zo,與線段遮擋示意圖</figcaption>
+	
+</figure><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 88; 
+			flex-basis: 212px"
+	>
+	<a href="/archives/wireframe-display/img/multi-pass-rendering.png" data-size="707x799">
+		<img src="/archives/wireframe-display/img/multi-pass-rendering.png"
+			width="707"
+			height="799"
+			
+			loading="lazy"
+			alt="(b)使用Laplacian of Gaussian filter在two-pass時處理物體輪廓">
+	</a>
+	
+	<figcaption>(b)使用Laplacian of Gaussian filter在two-pass時處理物體輪廓</figcaption>
+	
+</figure></p>
 <p>而這篇文章，希望透過循序漸進的方式，介紹可以在一個pass內繪製物體與線框的方法，僅透過Shader繪製時傳入的重心座標與頂點，即可在三角形邊緣繪製不同的圖案，而且因為是single-pass，相對來說效能更好，使用上也簡單好用</p>
 <p>這方法的缺點大概就是框線繪製在三角形內部，所以會使物體輪廓看起來更薄一些，也因為只在內部繪製，所以只有內側有反鋸齒效果</p>
 <br>
@@ -245,30 +297,44 @@ if (!doNotTrack) {
 <p>前面提到過，重心座標(bar)alpha、beta、gamma就是頂點A,B,C對面那塊區域的面積比，也就是說「<strong>當某一塊面積比為0時，就代表P點在三角形的邊上</strong>」</p>
 <p><a class="link" href="https://www.geogebra.org/m/ZuvmPjmy"  target="_blank" rel="noopener"
     >線上操作範例</a> : 可拖動重心座標在三角形的邊界上移動，去觀察重心座標的值</p>
-<p><figure style="flex-grow: 127; flex-basis: 306px">
-		<a href="/archives/wireframe-display/img/p%E5%9C%A8%E4%B8%89%E8%A7%92%E5%BD%A2%E9%82%8A%E4%B8%8A%E7%9A%84%E6%83%85%E6%B3%812.png" data-size="523x409"><img src="/archives/wireframe-display/img/p%E5%9C%A8%E4%B8%89%E8%A7%92%E5%BD%A2%E9%82%8A%E4%B8%8A%E7%9A%84%E6%83%85%E6%B3%812.png"
-				
-				width="523"
-				height="409"
-				loading="lazy"
-				>
-		</a>
-		
-	</figure>
-<figure style="flex-grow: 139; flex-basis: 333px">
-		<a href="/archives/wireframe-display/img/p%E5%9C%A8%E4%B8%89%E8%A7%92%E5%BD%A2%E9%82%8A%E4%B8%8A%E7%9A%84%E6%83%85%E6%B3%813.png" data-size="670x482"><img src="/archives/wireframe-display/img/p%E5%9C%A8%E4%B8%89%E8%A7%92%E5%BD%A2%E9%82%8A%E4%B8%8A%E7%9A%84%E6%83%85%E6%B3%813.png"
-				
-				width="670"
-				height="482"
-				loading="lazy"
-				>
-		</a>
-		
-	</figure></p>
+<p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 127; 
+			flex-basis: 306px"
+	>
+	<a href="/archives/wireframe-display/img/p%E5%9C%A8%E4%B8%89%E8%A7%92%E5%BD%A2%E9%82%8A%E4%B8%8A%E7%9A%84%E6%83%85%E6%B3%812.png" data-size="523x409">
+		<img src="/archives/wireframe-display/img/p%E5%9C%A8%E4%B8%89%E8%A7%92%E5%BD%A2%E9%82%8A%E4%B8%8A%E7%9A%84%E6%83%85%E6%B3%812.png"
+			width="523"
+			height="409"
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure>
+<figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 139; 
+			flex-basis: 333px"
+	>
+	<a href="/archives/wireframe-display/img/p%E5%9C%A8%E4%B8%89%E8%A7%92%E5%BD%A2%E9%82%8A%E4%B8%8A%E7%9A%84%E6%83%85%E6%B3%813.png" data-size="670x482">
+		<img src="/archives/wireframe-display/img/p%E5%9C%A8%E4%B8%89%E8%A7%92%E5%BD%A2%E9%82%8A%E4%B8%8A%E7%9A%84%E6%83%85%E6%B3%813.png"
+			width="670"
+			height="482"
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
 <p>如左圖，當重心座標在藍色線上時，beta比的面積為0，代表這個點在邊上，但光柵化時的像素渲染是一格一格的，很多時候P根本不可能剛好在邊界上</p>
 <p>如右圖，尤其是遠處的小片三角形，所佔有的像素區域非常少，整面三角形符合offset範圍的P點只有五個，那就會導致遠處物體看起來只剩下幾個點而已</p>
 <p>如圖中的綠點，要是只在邊上才繪製的話，線會斷斷續續的，而const offset這個方法，就是透過offset來修正這段誤差，只要任一個重心座標(面積比)<code>alpha, beta, gamma &lt;= offset</code>，就認定這個P點在三角形的邊界上，繪製線段顏色，</p>
-<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="k">struct</span> <span class="nc">LineShader</span> <span class="o">:</span> <span class="k">public</span> <span class="n">IShader</span> <span class="p">{</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="k">struct</span> <span class="nc">LineShader</span> <span class="o">:</span> <span class="k">public</span> <span class="n">IShader</span> <span class="p">{</span>
     <span class="c1">// Vertex Shader: 處理座標投影轉換
 </span><span class="c1"></span>    <span class="k">virtual</span> <span class="n">Vec4f</span> <span class="nf">vertex</span><span class="p">(</span><span class="kt">int</span> <span class="n">iface</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nthvert</span><span class="p">)</span> <span class="p">...</span>
 
@@ -283,46 +349,67 @@ if (!doNotTrack) {
     <span class="p">}</span>
 <span class="p">};</span>
 </code></pre></div><p>上面這段Shader code會執行出這個結果:
-<figure style="flex-grow: 203; flex-basis: 488px">
-		<a href="/archives/wireframe-display/img/ps/%E7%9B%B4%E6%8E%A5%E9%87%8D%E5%BF%83%E5%BA%A7%E6%A8%99%E5%88%A4%E6%96%B7_range%E5%B0%8F%E6%96%BC0.02%E8%88%870%E6%AF%94%E8%BC%83.png" data-size="1244x611"><img src="/archives/wireframe-display/img/ps/%E7%9B%B4%E6%8E%A5%E9%87%8D%E5%BF%83%E5%BA%A7%E6%A8%99%E5%88%A4%E6%96%B7_range%E5%B0%8F%E6%96%BC0.02%E8%88%870%E6%AF%94%E8%BC%83.png"
-				
-				width="1244"
-				height="611"
-				loading="lazy"
-				alt="(a): offset為0, 只有alpha,beta,gamma任一個為0時繪製, 很多線段根本沒辦法顯示, (b) offset為0.01, (c): offset為0.02">
-		</a>
-		
-		<figcaption>(a): offset為0, 只有alpha,beta,gamma任一個為0時繪製, 很多線段根本沒辦法顯示, (b) offset為0.01, (c): offset為0.02</figcaption>
-		
-	</figure></p>
+<figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 203; 
+			flex-basis: 488px"
+	>
+	<a href="/archives/wireframe-display/img/ps/%E7%9B%B4%E6%8E%A5%E9%87%8D%E5%BF%83%E5%BA%A7%E6%A8%99%E5%88%A4%E6%96%B7_range%E5%B0%8F%E6%96%BC0.02%E8%88%870%E6%AF%94%E8%BC%83.png" data-size="1244x611">
+		<img src="/archives/wireframe-display/img/ps/%E7%9B%B4%E6%8E%A5%E9%87%8D%E5%BF%83%E5%BA%A7%E6%A8%99%E5%88%A4%E6%96%B7_range%E5%B0%8F%E6%96%BC0.02%E8%88%870%E6%AF%94%E8%BC%83.png"
+			width="1244"
+			height="611"
+			
+			loading="lazy"
+			alt="(a): offset為0, 只有alpha,beta,gamma任一個為0時繪製, 很多線段根本沒辦法顯示, (b) offset為0.01, (c): offset為0.02">
+	</a>
+	
+	<figcaption>(a): offset為0, 只有alpha,beta,gamma任一個為0時繪製, 很多線段根本沒辦法顯示, (b) offset為0.01, (c): offset為0.02</figcaption>
+	
+</figure></p>
 <p>可以看到確實有線框了，但有些區域透過offset還是無法修正這些誤差，所以就會導致邊框不連續，而這繪製方法就是封面圖的(a)</p>
 <p>而且這種繪製法有個很明顯的缺點，就是線段寬度不一致，透過面積比來判斷是否在邊上，很容易被邊長的比例所影響，導致時粗時細(b)，有些線段甚至沒有繪製</p>
 <h3 id="最短邊距法-shortest-distance-to-the-edge">最短邊距法 shortest distance to the edge</h3>
 <p>這稱呼只是單純直翻，這還只是一個小撇步，應該沒有特定的名字</p>
-<p><figure style="flex-grow: 134; flex-basis: 322px">
-		<a href="/archives/wireframe-display/img/%E4%BD%BF%E7%94%A8%E6%9C%80%E7%9F%AD%E9%82%8A%E8%B7%9D1-1.png" data-size="496x369"><img src="/archives/wireframe-display/img/%E4%BD%BF%E7%94%A8%E6%9C%80%E7%9F%AD%E9%82%8A%E8%B7%9D1-1.png"
-				
-				width="496"
-				height="369"
-				loading="lazy"
-				alt="(a)面積區域">
-		</a>
-		
-		<figcaption>(a)面積區域</figcaption>
-		
-	</figure>
-<figure style="flex-grow: 277; flex-basis: 666px">
-		<a href="/archives/wireframe-display/img/%E4%BD%BF%E7%94%A8%E6%9C%80%E7%9F%AD%E9%82%8A%E8%B7%9D2.png" data-size="644x232"><img src="/archives/wireframe-display/img/%E4%BD%BF%E7%94%A8%E6%9C%80%E7%9F%AD%E9%82%8A%E8%B7%9D2.png"
-				
-				width="644"
-				height="232"
-				loading="lazy"
-				alt="(b)Solid Wireframe, NVIDIA Whitepaper, p10">
-		</a>
-		
-		<figcaption>(b)Solid Wireframe, NVIDIA Whitepaper, p10</figcaption>
-		
-	</figure></p>
+<p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 134; 
+			flex-basis: 322px"
+	>
+	<a href="/archives/wireframe-display/img/%E4%BD%BF%E7%94%A8%E6%9C%80%E7%9F%AD%E9%82%8A%E8%B7%9D1-1.png" data-size="496x369">
+		<img src="/archives/wireframe-display/img/%E4%BD%BF%E7%94%A8%E6%9C%80%E7%9F%AD%E9%82%8A%E8%B7%9D1-1.png"
+			width="496"
+			height="369"
+			
+			loading="lazy"
+			alt="(a)面積區域">
+	</a>
+	
+	<figcaption>(a)面積區域</figcaption>
+	
+</figure>
+<figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 277; 
+			flex-basis: 666px"
+	>
+	<a href="/archives/wireframe-display/img/%E4%BD%BF%E7%94%A8%E6%9C%80%E7%9F%AD%E9%82%8A%E8%B7%9D2.png" data-size="644x232">
+		<img src="/archives/wireframe-display/img/%E4%BD%BF%E7%94%A8%E6%9C%80%E7%9F%AD%E9%82%8A%E8%B7%9D2.png"
+			width="644"
+			height="232"
+			
+			loading="lazy"
+			alt="(b)Solid Wireframe, NVIDIA Whitepaper, p10">
+	</a>
+	
+	<figcaption>(b)Solid Wireframe, NVIDIA Whitepaper, p10</figcaption>
+	
+</figure></p>
 <p>為解決剛剛const offset厚度不一致的問題，衍伸的想法就是先找出P點離邊界最近的「像素距離d」是多少(表示作用的區域是Screen Space)，再透過一個width當作閥值，當<code>d &lt; width</code>的時候才繪製線條，這樣就可以確保邊界繪製的寬度為width</p>
 <p>而找出d1, d2, d3的方法也很容易，步驟是:</p>
 <ol>
@@ -332,7 +419,7 @@ if (!doNotTrack) {
 <li>再取最小值即可得到<code>d = min[d1, d2, d3]</code></li>
 </ol>
 <p>有了d之後就能對這個最短距離進行判斷，如果小於寬度就繪製線段顏色，如圖(b)</p>
-<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="k">struct</span> <span class="nc">WireframeShader</span> <span class="o">:</span> <span class="k">public</span> <span class="n">IShader</span> <span class="p">{</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="k">struct</span> <span class="nc">WireframeShader</span> <span class="o">:</span> <span class="k">public</span> <span class="n">IShader</span> <span class="p">{</span>
     <span class="n">Vec2f</span> <span class="n">screen_coords</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
     <span class="n">Vec3f</span> <span class="n">wire_color</span> <span class="o">=</span> <span class="n">Vec3f</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span> <span class="c1">// 黑色線框
 </span><span class="c1"></span>    <span class="n">Vec3f</span> <span class="n">fill_color</span> <span class="o">=</span> <span class="n">Vec3f</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">// 物體顏色, 這裡先用白色代替 
@@ -383,59 +470,87 @@ if (!doNotTrack) {
     <span class="p">}</span>
 <span class="p">};</span>
 </code></pre></div><p>這段Shader code會執行出這樣的結果:
-<figure style="flex-grow: 156; flex-basis: 376px">
-		<a href="/archives/wireframe-display/img/ps/teapot_%E9%82%8A%E6%9C%80%E7%9F%AD_%E7%84%A1%E5%8F%8D%E9%8B%B8%E9%BD%92_d%E5%B0%8F%E6%96%BC0.5_v3.png" data-size="1011x645"><img src="/archives/wireframe-display/img/ps/teapot_%E9%82%8A%E6%9C%80%E7%9F%AD_%E7%84%A1%E5%8F%8D%E9%8B%B8%E9%BD%92_d%E5%B0%8F%E6%96%BC0.5_v3.png"
-				
-				width="1011"
-				height="645"
-				loading="lazy"
-				alt="(a) 最短邊距法, width=0.5">
-		</a>
-		
-		<figcaption>(a) 最短邊距法, width=0.5</figcaption>
-		
-	</figure>
-<figure style="flex-grow: 259; flex-basis: 623px">
-		<a href="/archives/wireframe-display/img/%E4%BD%BF%E7%94%A8%E6%9C%80%E7%9F%AD%E9%82%8A%E8%B7%9D3.png" data-size="720x277"><img src="/archives/wireframe-display/img/%E4%BD%BF%E7%94%A8%E6%9C%80%E7%9F%AD%E9%82%8A%E8%B7%9D3.png"
-				
-				width="720"
-				height="277"
-				loading="lazy"
-				alt="(b) 左:width = 10px, 右:width = 2px">
-		</a>
-		
-		<figcaption>(b) 左:width = 10px, 右:width = 2px</figcaption>
-		
-	</figure></p>
+<figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 156; 
+			flex-basis: 376px"
+	>
+	<a href="/archives/wireframe-display/img/ps/teapot_%E9%82%8A%E6%9C%80%E7%9F%AD_%E7%84%A1%E5%8F%8D%E9%8B%B8%E9%BD%92_d%E5%B0%8F%E6%96%BC0.5_v3.png" data-size="1011x645">
+		<img src="/archives/wireframe-display/img/ps/teapot_%E9%82%8A%E6%9C%80%E7%9F%AD_%E7%84%A1%E5%8F%8D%E9%8B%B8%E9%BD%92_d%E5%B0%8F%E6%96%BC0.5_v3.png"
+			width="1011"
+			height="645"
+			
+			loading="lazy"
+			alt="(a) 最短邊距法, width=0.5">
+	</a>
+	
+	<figcaption>(a) 最短邊距法, width=0.5</figcaption>
+	
+</figure>
+<figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 259; 
+			flex-basis: 623px"
+	>
+	<a href="/archives/wireframe-display/img/%E4%BD%BF%E7%94%A8%E6%9C%80%E7%9F%AD%E9%82%8A%E8%B7%9D3.png" data-size="720x277">
+		<img src="/archives/wireframe-display/img/%E4%BD%BF%E7%94%A8%E6%9C%80%E7%9F%AD%E9%82%8A%E8%B7%9D3.png"
+			width="720"
+			height="277"
+			
+			loading="lazy"
+			alt="(b) 左:width = 10px, 右:width = 2px">
+	</a>
+	
+	<figcaption>(b) 左:width = 10px, 右:width = 2px</figcaption>
+	
+</figure></p>
 <p>圖(a)這張就是封面圖的(c)部分，稍微換個顏色，可以明顯看到，這樣的線框已經足夠使用了，圖(b)也能任意控制線框寬度與著色樣式)，但是線框看起來還是有一點粗糙，所以接著最後一步處理，反鋸齒</p>
 <h3 id="反鋸齒處理antialiased-wireframe-drawing">反鋸齒處理Antialiased Wireframe Drawing</h3>
 <p>圖片引用自<a class="link" href="https://developer.download.nvidia.com/SDK/10/direct3d/Source/SolidWireframe/Doc/SolidWireframe.pdf"  target="_blank" rel="noopener"
     >Solid Wireframe, NVIDIA Whitepaper, p10, p11</a>
-<figure style="flex-grow: 164; flex-basis: 394px">
-		<a href="/archives/wireframe-display/img/%E6%9C%80%E7%9F%AD%E9%82%8A%E8%B7%9D%E6%B3%95%E7%9A%84%E5%8F%8D%E9%8B%B8%E9%BD%921.png" data-size="536x326"><img src="/archives/wireframe-display/img/%E6%9C%80%E7%9F%AD%E9%82%8A%E8%B7%9D%E6%B3%95%E7%9A%84%E5%8F%8D%E9%8B%B8%E9%BD%921.png"
-				
-				width="536"
-				height="326"
-				loading="lazy"
-				alt="(a) smoothing function">
-		</a>
-		
-		<figcaption>(a) smoothing function</figcaption>
-		
-	</figure><figure style="flex-grow: 306; flex-basis: 736px">
-		<a href="/archives/wireframe-display/img/%E6%9C%80%E7%9F%AD%E9%82%8A%E8%B7%9D%E6%B3%95%E7%9A%84%E5%8F%8D%E9%8B%B8%E9%BD%922.png" data-size="801x261"><img src="/archives/wireframe-display/img/%E6%9C%80%E7%9F%AD%E9%82%8A%E8%B7%9D%E6%B3%95%E7%9A%84%E5%8F%8D%E9%8B%B8%E9%BD%922.png"
-				
-				width="801"
-				height="261"
-				loading="lazy"
-				alt="(b) 作用原理的示意圖">
-		</a>
-		
-		<figcaption>(b) 作用原理的示意圖</figcaption>
-		
-	</figure></p>
+<figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 164; 
+			flex-basis: 394px"
+	>
+	<a href="/archives/wireframe-display/img/%E6%9C%80%E7%9F%AD%E9%82%8A%E8%B7%9D%E6%B3%95%E7%9A%84%E5%8F%8D%E9%8B%B8%E9%BD%921.png" data-size="536x326">
+		<img src="/archives/wireframe-display/img/%E6%9C%80%E7%9F%AD%E9%82%8A%E8%B7%9D%E6%B3%95%E7%9A%84%E5%8F%8D%E9%8B%B8%E9%BD%921.png"
+			width="536"
+			height="326"
+			
+			loading="lazy"
+			alt="(a) smoothing function">
+	</a>
+	
+	<figcaption>(a) smoothing function</figcaption>
+	
+</figure><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 306; 
+			flex-basis: 736px"
+	>
+	<a href="/archives/wireframe-display/img/%E6%9C%80%E7%9F%AD%E9%82%8A%E8%B7%9D%E6%B3%95%E7%9A%84%E5%8F%8D%E9%8B%B8%E9%BD%922.png" data-size="801x261">
+		<img src="/archives/wireframe-display/img/%E6%9C%80%E7%9F%AD%E9%82%8A%E8%B7%9D%E6%B3%95%E7%9A%84%E5%8F%8D%E9%8B%B8%E9%BD%922.png"
+			width="801"
+			height="261"
+			
+			loading="lazy"
+			alt="(b) 作用原理的示意圖">
+	</a>
+	
+	<figcaption>(b) 作用原理的示意圖</figcaption>
+	
+</figure></p>
 <p>接續剛剛的最短邊距法，可透過圖(a)的這個平滑函數，套用在邊界處，讓邊界外的顏色遞減，並進行Alpha blending將線框與物體按照衰減度混色，即可得到反鋸齒的效果</p>
-<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="k">struct</span> <span class="nc">WireframeShader</span> <span class="o">:</span> <span class="k">public</span> <span class="n">IShader</span> <span class="p">{</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="k">struct</span> <span class="nc">WireframeShader</span> <span class="o">:</span> <span class="k">public</span> <span class="n">IShader</span> <span class="p">{</span>
     <span class="n">Vec2f</span> <span class="n">screen_coords</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
     <span class="n">Vec3f</span> <span class="n">wire_color</span> <span class="o">=</span> <span class="n">Vec3f</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span> <span class="c1">// 黑色線框
 </span><span class="c1"></span>    <span class="n">Vec3f</span> <span class="n">fill_color</span> <span class="o">=</span> <span class="n">Vec3f</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="c1">// 物體顏色, 這裡先用白色代替 
@@ -467,18 +582,25 @@ if (!doNotTrack) {
     <span class="kt">float</span> <span class="nf">getMinDistToEdge</span><span class="p">(</span><span class="n">Vec3f</span> <span class="n">bar</span><span class="p">)...</span>
 <span class="p">};</span>
 </code></pre></div><p>執行這段Shader code後，最終得到封面圖中間(b)的漂亮線框
-<figure style="flex-grow: 163; flex-basis: 392px">
-		<a href="/archives/wireframe-display/img/ps/teapot_%E9%82%8A%E6%9C%80%E7%9F%AD_%E5%8F%8D%E9%8B%B8%E9%BD%92%E9%BB%91_v2.png" data-size="983x601"><img src="/archives/wireframe-display/img/ps/teapot_%E9%82%8A%E6%9C%80%E7%9F%AD_%E5%8F%8D%E9%8B%B8%E9%BD%92%E9%BB%91_v2.png"
-				
-				width="983"
-				height="601"
-				loading="lazy"
-				alt="(a) width = 2, 繪製的反鋸齒線框">
-		</a>
-		
-		<figcaption>(a) width = 2, 繪製的反鋸齒線框</figcaption>
-		
-	</figure></p>
+<figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 163; 
+			flex-basis: 392px"
+	>
+	<a href="/archives/wireframe-display/img/ps/teapot_%E9%82%8A%E6%9C%80%E7%9F%AD_%E5%8F%8D%E9%8B%B8%E9%BD%92%E9%BB%91_v2.png" data-size="983x601">
+		<img src="/archives/wireframe-display/img/ps/teapot_%E9%82%8A%E6%9C%80%E7%9F%AD_%E5%8F%8D%E9%8B%B8%E9%BD%92%E9%BB%91_v2.png"
+			width="983"
+			height="601"
+			
+			loading="lazy"
+			alt="(a) width = 2, 繪製的反鋸齒線框">
+	</a>
+	
+	<figcaption>(a) width = 2, 繪製的反鋸齒線框</figcaption>
+	
+</figure></p>
 <br>
 <h2 id="應用與討論">應用與討論</h2>
 <p>前面講完原理後，簡單的介紹一些衍伸用法</p>
@@ -486,55 +608,83 @@ if (!doNotTrack) {
 <p>因為能求出在最短邊距，那麼就可以對物體邊界位置動態給定閥值，搭配其他搭配其他函數做出類似虛線、圖案，或透過Z值來繪製背面透明等線框效果</p>
 <p>完整虛線樣式的效果可以參考這個<a class="link" href="https://mattdesl.github.io/webgl-wireframes/app/"  target="_blank" rel="noopener"
     >漂亮的線上範例</a></p>
-<p><figure style="flex-grow: 212; flex-basis: 509px">
-		<a href="/archives/wireframe-display/img/%E8%99%9B%E7%B7%9A%E5%87%BD%E6%95%B8.png" data-size="974x459"><img src="/archives/wireframe-display/img/%E8%99%9B%E7%B7%9A%E5%87%BD%E6%95%B8.png"
-				
-				width="974"
-				height="459"
-				loading="lazy"
-				alt="閥值函數圖, 參考\[4\]. ">
-		</a>
-		
-		<figcaption>閥值函數圖, 參考[4].</figcaption>
-		
-	</figure><figure style="flex-grow: 241; flex-basis: 580px">
-		<a href="/archives/wireframe-display/img/dash%E7%B7%9A%E6%A1%86%E7%B9%AA%E8%A3%BD.gif" data-size="600x248"><img src="/archives/wireframe-display/img/dash%E7%B7%9A%E6%A1%86%E7%B9%AA%E8%A3%BD.gif"
-				
-				width="600"
-				height="248"
-				loading="lazy"
-				alt="繪製效果">
-		</a>
-		
-		<figcaption>繪製效果</figcaption>
-		
-	</figure></p>
+<p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 212; 
+			flex-basis: 509px"
+	>
+	<a href="/archives/wireframe-display/img/%E8%99%9B%E7%B7%9A%E5%87%BD%E6%95%B8.png" data-size="974x459">
+		<img src="/archives/wireframe-display/img/%E8%99%9B%E7%B7%9A%E5%87%BD%E6%95%B8.png"
+			width="974"
+			height="459"
+			
+			loading="lazy"
+			alt="閥值函數圖, 參考\[4\]. ">
+	</a>
+	
+	<figcaption>閥值函數圖, 參考[4].</figcaption>
+	
+</figure><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 241; 
+			flex-basis: 580px"
+	>
+	<a href="/archives/wireframe-display/img/dash%E7%B7%9A%E6%A1%86%E7%B9%AA%E8%A3%BD.gif" data-size="600x248">
+		<img src="/archives/wireframe-display/img/dash%E7%B7%9A%E6%A1%86%E7%B9%AA%E8%A3%BD.gif"
+			width="600"
+			height="248"
+			
+			loading="lazy"
+			alt="繪製效果">
+	</a>
+	
+	<figcaption>繪製效果</figcaption>
+	
+</figure></p>
 <h3 id="外側反鋸齒">外側反鋸齒</h3>
 <p>而文章一開始的問題章節有提到過，這種方法繪製的反鋸齒只有內側，如圖(a)</p>
-<p><figure style="flex-grow: 123; flex-basis: 296px">
-		<a href="/archives/wireframe-display/img/ps/%E5%A4%96%E5%81%B4%E6%B2%92%E6%9C%89%E5%8F%8D%E9%8B%B8%E9%BD%922.png" data-size="611x494"><img src="/archives/wireframe-display/img/ps/%E5%A4%96%E5%81%B4%E6%B2%92%E6%9C%89%E5%8F%8D%E9%8B%B8%E9%BD%922.png"
-				
-				width="611"
-				height="494"
-				loading="lazy"
-				alt="(a) 放大線框可以看到，只有內側有反鋸齒的效果">
-		</a>
-		
-		<figcaption>(a) 放大線框可以看到，只有內側有反鋸齒的效果</figcaption>
-		
-	</figure>
-<figure style="flex-grow: 162; flex-basis: 391px">
-		<a href="/archives/wireframe-display/img/%E5%A4%96%E9%83%A8%E5%8F%8D%E9%8B%B8%E9%BD%92%E7%9A%84%E8%A7%A3%E6%B3%95.png" data-size="603x370"><img src="/archives/wireframe-display/img/%E5%A4%96%E9%83%A8%E5%8F%8D%E9%8B%B8%E9%BD%92%E7%9A%84%E8%A7%A3%E6%B3%95.png"
-				
-				width="603"
-				height="370"
-				loading="lazy"
-				alt="(b) 將線段向內偏移，騰出外側反鋸齒的空間">
-		</a>
-		
-		<figcaption>(b) 將線段向內偏移，騰出外側反鋸齒的空間</figcaption>
-		
-	</figure></p>
+<p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 123; 
+			flex-basis: 296px"
+	>
+	<a href="/archives/wireframe-display/img/ps/%E5%A4%96%E5%81%B4%E6%B2%92%E6%9C%89%E5%8F%8D%E9%8B%B8%E9%BD%922.png" data-size="611x494">
+		<img src="/archives/wireframe-display/img/ps/%E5%A4%96%E5%81%B4%E6%B2%92%E6%9C%89%E5%8F%8D%E9%8B%B8%E9%BD%922.png"
+			width="611"
+			height="494"
+			
+			loading="lazy"
+			alt="(a) 放大線框可以看到，只有內側有反鋸齒的效果">
+	</a>
+	
+	<figcaption>(a) 放大線框可以看到，只有內側有反鋸齒的效果</figcaption>
+	
+</figure>
+<figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 162; 
+			flex-basis: 391px"
+	>
+	<a href="/archives/wireframe-display/img/%E5%A4%96%E9%83%A8%E5%8F%8D%E9%8B%B8%E9%BD%92%E7%9A%84%E8%A7%A3%E6%B3%95.png" data-size="603x370">
+		<img src="/archives/wireframe-display/img/%E5%A4%96%E9%83%A8%E5%8F%8D%E9%8B%B8%E9%BD%92%E7%9A%84%E8%A7%A3%E6%B3%95.png"
+			width="603"
+			height="370"
+			
+			loading="lazy"
+			alt="(b) 將線段向內偏移，騰出外側反鋸齒的空間">
+	</a>
+	
+	<figcaption>(b) 將線段向內偏移，騰出外側反鋸齒的空間</figcaption>
+	
+</figure></p>
 <p>有一種解決方法，就是讓線框往三角形內部偏移一點，這樣雖然會犧牲一點物體的輪廓大小，但應該是簡單有效的處理方式，只不過也不是正確的方式，因為不是跟背景色做Alpha blending</p>
 <p>而<a class="link" href="https://backend.orbit.dtu.dk/ws/portalfiles/portal/3735323/wire-sccg.pdf"  target="_blank" rel="noopener"
     >Two Methods for Antialiased Wireframe Drawing with Hidden Line Removal</a>的文章中，有提出一種方法叫做ID Buffer，雖然會犧牲一點效能，但能有效的解決外側反鋸齒的問題，有興趣可以看看</p>
@@ -551,30 +701,44 @@ if (!doNotTrack) {
 <br>
 <h2 id="結語">結語</h2>
 <p>線框繪製也廣泛的應用在特殊風格渲染，如卡通著色、繪本風格等等的，這類著色風格被稱為Non-photorealistic Rendering</p>
-<p><figure style="flex-grow: 245; flex-basis: 590px">
-		<a href="/archives/wireframe-display/img/PlanarMap.png" data-size="740x301"><img src="/archives/wireframe-display/img/PlanarMap.png"
-				
-				width="740"
-				height="301"
-				loading="lazy"
-				alt="引用,Line Drawings from 3D Models">
-		</a>
-		
-		<figcaption>引用,Line Drawings from 3D Models</figcaption>
-		
-	</figure>
-<figure style="flex-grow: 225; flex-basis: 542px">
-		<a href="/archives/wireframe-display/img/%E5%8D%A1%E9%80%9A%E5%A4%96%E6%A1%86%E8%91%97%E8%89%B2.png" data-size="1744x772"><img src="/archives/wireframe-display/img/%E5%8D%A1%E9%80%9A%E5%A4%96%E6%A1%86%E8%91%97%E8%89%B2.png"
-				
-				width="1744"
-				height="772"
-				loading="lazy"
-				alt="引用,卡通外描邊深入研究與Unity新管線功能使用分享">
-		</a>
-		
-		<figcaption>引用,卡通外描邊深入研究與Unity新管線功能使用分享</figcaption>
-		
-	</figure></p>
+<p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 245; 
+			flex-basis: 590px"
+	>
+	<a href="/archives/wireframe-display/img/PlanarMap.png" data-size="740x301">
+		<img src="/archives/wireframe-display/img/PlanarMap.png"
+			width="740"
+			height="301"
+			
+			loading="lazy"
+			alt="引用,Line Drawings from 3D Models">
+	</a>
+	
+	<figcaption>引用,Line Drawings from 3D Models</figcaption>
+	
+</figure>
+<figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 225; 
+			flex-basis: 542px"
+	>
+	<a href="/archives/wireframe-display/img/%E5%8D%A1%E9%80%9A%E5%A4%96%E6%A1%86%E8%91%97%E8%89%B2.png" data-size="1744x772">
+		<img src="/archives/wireframe-display/img/%E5%8D%A1%E9%80%9A%E5%A4%96%E6%A1%86%E8%91%97%E8%89%B2.png"
+			width="1744"
+			height="772"
+			
+			loading="lazy"
+			alt="引用,卡通外描邊深入研究與Unity新管線功能使用分享">
+	</a>
+	
+	<figcaption>引用,卡通外描邊深入研究與Unity新管線功能使用分享</figcaption>
+	
+</figure></p>
 <p>衍伸閱讀，參考資料中的這篇<a class="link" href="https://arxiv.org/abs/1810.01175"  target="_blank" rel="noopener"
     >Line Drawings from 3D Models</a>，裡面提供了非常多種線框繪製的方法，原本繪製線框只是為了Debug，但查了很多資料後才發現，線框的繪製也是一門學問</p>
 <br>
@@ -643,16 +807,17 @@ if (!doNotTrack) {
     </section>
     </footer>
 
+
     
         <link 
                 rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3&#43;Aro6EYUG4&#43;cU&#43;KJWu/X"crossorigin="anonymous"
+                href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css"integrity="sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn"crossorigin="anonymous"
             ><script 
-                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"integrity="sha384-g7c&#43;Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI&#43;sEnkvrMWph2EDg4"crossorigin="anonymous"
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.js"integrity="sha384-pK1WpvzWVBQiP0/GjnvRxV4mOb0oxFuyRxJlk6vVw146n3egcN5C925NCP7a7BY8"crossorigin="anonymous"
                 defer="true"
                 >
             </script><script 
-                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC&#43;Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa"crossorigin="anonymous"
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/contrib/auto-render.min.js"integrity="sha384-vZTG03m&#43;2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl"crossorigin="anonymous"
                 defer="true"
                 >
             </script><script>
@@ -672,7 +837,7 @@ if (!doNotTrack) {
     <aside class="related-contents--wrapper">
     
     
-        <h2 class="section-title"></h2>
+        <h2 class="section-title">相關文章</h2>
         <div class="related-contents">
             <div class="flex article-list--tile">
                 
@@ -682,7 +847,7 @@ if (!doNotTrack) {
         
         
             <div class="article-image">
-                <img src="/archives/barycentric-coordinates/img/bary5.4a03e80a96d0f77266a7a6acc1458aa8_hue81f62b7405bab549196555b4ed33b8e_122589_250x150_fill_box_smart1_2.png" 
+                <img src="/archives/barycentric-coordinates/img/bary5.4a03e80a96d0f77266a7a6acc1458aa8_hue81f62b7405bab549196555b4ed33b8e_122589_250x150_fill_box_smart1_3.png" 
                         width="250" 
                         height="150" 
                         loading="lazy" 
@@ -704,7 +869,7 @@ if (!doNotTrack) {
 </aside>
 
      
-     
+    
         
     <div class="disqus-container">
     <div id="disqus_thread"></div>
@@ -760,10 +925,11 @@ if (!doNotTrack) {
     </section>
     
     <section class="powerby">
-         <br />
-        
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
     </section>
 </footer>
+
 
     
 <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
@@ -859,7 +1025,7 @@ if (!doNotTrack) {
 
 
                 </div>
-                <h2 class="widget-title section-title"></h2>
+                <h2 class="widget-title section-title">目錄</h2>
                 
                 <div class="widget--toc">
                     <nav id="TableOfContents">

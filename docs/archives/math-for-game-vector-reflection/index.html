@@ -13,7 +13,7 @@
 <meta name="twitter:title" content="Vector reflection向量鏡射 基本的碰撞反彈回饋">
 <meta name="twitter:description" content="透過圖文快速推導Vector reflection"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://davidhsu666.com/archives/math-for-game-vector-reflection/img/13fig21.gif' />
-    <link rel="shortcut icon" href="/resource/favicon-32x32.png" />
+    <link rel="shortcut icon" href="/blog_resource/favicon-32x32.png" />
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJXR109WY7"></script>
 <script>
@@ -26,15 +26,6 @@ if (!doNotTrack) {
 }
 </script>
 
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap');
-     
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;800&display=swap');
-    :root {
-        --article-font-family: 'Roboto',"Noto Serif TC", var(--base-font-family);
-    }
-</style>
     </head>
     <body class="
     article-page has-toc
@@ -43,7 +34,7 @@ if (!doNotTrack) {
         (function() {
             const colorSchemeKey = 'StackColorScheme';
             if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
+                localStorage.setItem(colorSchemeKey, "dark");
             }
         })();
     </script><script>
@@ -68,7 +59,7 @@ if (!doNotTrack) {
 ">
     
         <div id="article-toolbar">
-            <a href="https://davidhsu666.com/" class="back-home">
+            <a href="/" class="back-home">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <polyline points="15 6 9 12 15 18" />
@@ -76,7 +67,7 @@ if (!doNotTrack) {
 
 
 
-                <span></span>
+                <span>返回</span>
             </a>
         </div>
     
@@ -115,8 +106,28 @@ if (!doNotTrack) {
     <h3 class="article-subtitle">
         透過圖文快速推導Vector reflection
     </h3>
+    
+
+    
     <footer class="article-time">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Apr 26, 2019</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <circle cx="12" cy="12" r="9" />
   <polyline points="12 7 12 12 15 15" />
@@ -124,8 +135,14 @@ if (!doNotTrack) {
 
 
 
-        <time class="article-time--published">Apr 26, 2019</time>
-    </footer></div>
+                <time class="article-time--reading">
+                    閱讀時間: 1 分鐘
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
 </header>
 
     <section class="article-content">
@@ -135,18 +152,25 @@ if (!doNotTrack) {
 <p>一個簡單的例子，當乒乓球擊中球拍時，要如何取得反彈後的向量，而光影模擬時也會需要取得光線反射的向量，這時向量反射就非常重要了。</p>
 <p>因為這篇內容比較基礎，所以一些基本部份就省略了</p>
 <h2 id="如何取得vector-reflection">如何取得Vector reflection</h2>
-<p><figure style="flex-grow: 92; flex-basis: 222px">
-		<a href="/archives/math-for-game-vector-reflection/img/vectorReflection1.png" data-size="507x547"><img src="/archives/math-for-game-vector-reflection/img/vectorReflection1.png"
-				
-				width="507"
-				height="547"
-				loading="lazy"
-				alt="V1打到Axis上，並反彈至V2">
-		</a>
-		
-		<figcaption>V1打到Axis上，並反彈至V2</figcaption>
-		
-	</figure></p>
+<p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 92; 
+			flex-basis: 222px"
+	>
+	<a href="/archives/math-for-game-vector-reflection/img/vectorReflection1.png" data-size="507x547">
+		<img src="/archives/math-for-game-vector-reflection/img/vectorReflection1.png"
+			width="507"
+			height="547"
+			
+			loading="lazy"
+			alt="V1打到Axis上，並反彈至V2">
+	</a>
+	
+	<figcaption>V1打到Axis上，並反彈至V2</figcaption>
+	
+</figure></p>
 <p>先定義一些資訊:</p>
 <ul>
 <li>V1 = 物體的速度</li>
@@ -155,46 +179,67 @@ if (!doNotTrack) {
 </ul>
 <p>如何取得擊中平面的法向量 N 呢?</p>
 <p>很簡單，透過兩垂直向量點積為0的特性就可以得到，假設Axis是(3, 4)的向量，那平面法向量就會是(-y, x) = (-4, 3) 或是 (y, -x) = (4, -3)
-<figure style="flex-grow: 137; flex-basis: 329px">
-		<a href="/archives/math-for-game-vector-reflection/img/SAT15.jpg" data-size="487x355"><img src="/archives/math-for-game-vector-reflection/img/SAT15.jpg"
-				
-				width="487"
-				height="355"
-				loading="lazy"
-				alt="左/右法向量">
-		</a>
-		
-		<figcaption>左/右法向量</figcaption>
-		
-	</figure></p>
+<figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 137; 
+			flex-basis: 329px"
+	>
+	<a href="/archives/math-for-game-vector-reflection/img/SAT15.jpg" data-size="487x355">
+		<img src="/archives/math-for-game-vector-reflection/img/SAT15.jpg"
+			width="487"
+			height="355"
+			
+			loading="lazy"
+			alt="左/右法向量">
+	</a>
+	
+	<figcaption>左/右法向量</figcaption>
+	
+</figure></p>
 <p>再來看如何取得 V2</p>
 <p>將V1與V2之間畫一條線，並組合成一個平行四邊形，這樣就很明顯得到 V2 = 2N' + V1，那麼接下來的問題就會是如何取得N'。
-<figure style="flex-grow: 167; flex-basis: 400px">
-		<a href="/archives/math-for-game-vector-reflection/img/vectorReflection3.png" data-size="922x552"><img src="/archives/math-for-game-vector-reflection/img/vectorReflection3.png"
-				
-				width="922"
-				height="552"
-				loading="lazy"
-				alt="img">
-		</a>
-		
-		<figcaption>img</figcaption>
-		
-	</figure></p>
+<figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 167; 
+			flex-basis: 400px"
+	>
+	<a href="/archives/math-for-game-vector-reflection/img/vectorReflection3.png" data-size="922x552">
+		<img src="/archives/math-for-game-vector-reflection/img/vectorReflection3.png"
+			width="922"
+			height="552"
+			
+			loading="lazy"
+			alt="img">
+	</a>
+	
+	<figcaption>img</figcaption>
+	
+</figure></p>
 <p>先只單看V1跟法向量N，可以發現N' 其實就是V1在法向量N上面的投影$proj_{\hat n}V_{1}$，所以可以透過基本三角函數來取得</p>
 <p>但$\cos \theta$需要另外計算夾角，所以有個更好的方法來代替，在點積公式中，使其中一個向量為單位向量，因為長度為1可直接省略，所以$\left |V_{1}  \right | \cos \theta = V_{1} \cdot \hat{n}$，要加負號是因為$V1$與$\hat{n}$為反方向，$\left |V_{1}  \right | \cos \theta$會是帶負號的純量，但我們需要的$\hat{n}$是與$V_{1}$反向的，所以加上負號:</p>
-<p><figure style="flex-grow: 137; flex-basis: 328px">
-		<a href="/archives/math-for-game-vector-reflection/img/vectorReflection4.png" data-size="1147x837"><img src="/archives/math-for-game-vector-reflection/img/vectorReflection4.png"
-				
-				width="1147"
-				height="837"
-				loading="lazy"
-				alt="法向量n可透過正規話取得">
-		</a>
-		
-		<figcaption>法向量n可透過正規話取得</figcaption>
-		
-	</figure></p>
+<p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 137; 
+			flex-basis: 328px"
+	>
+	<a href="/archives/math-for-game-vector-reflection/img/vectorReflection4.png" data-size="1147x837">
+		<img src="/archives/math-for-game-vector-reflection/img/vectorReflection4.png"
+			width="1147"
+			height="837"
+			
+			loading="lazy"
+			alt="法向量n可透過正規話取得">
+	</a>
+	
+	<figcaption>法向量n可透過正規話取得</figcaption>
+	
+</figure></p>
 <p>而$(V_{1} \cdot \hat{n})\hat{n}$就是快速求得$V_{1}$在法向量$\hat{n}$投影的方式:
 $$proj_{\hat n}V_{1}=(V_{1} \cdot \hat{n})\hat{n}$$</p>
 <p>再來回到$V_{2} = 2N' + V_{1}$</p>
@@ -244,16 +289,17 @@ $$proj_{\hat n}V_{1}=(V_{1} \cdot \hat{n})\hat{n}$$</p>
     </section>
     </footer>
 
+
     
         <link 
                 rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3&#43;Aro6EYUG4&#43;cU&#43;KJWu/X"crossorigin="anonymous"
+                href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css"integrity="sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn"crossorigin="anonymous"
             ><script 
-                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"integrity="sha384-g7c&#43;Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI&#43;sEnkvrMWph2EDg4"crossorigin="anonymous"
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.js"integrity="sha384-pK1WpvzWVBQiP0/GjnvRxV4mOb0oxFuyRxJlk6vVw146n3egcN5C925NCP7a7BY8"crossorigin="anonymous"
                 defer="true"
                 >
             </script><script 
-                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC&#43;Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa"crossorigin="anonymous"
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/contrib/auto-render.min.js"integrity="sha384-vZTG03m&#43;2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl"crossorigin="anonymous"
                 defer="true"
                 >
             </script><script>
@@ -273,7 +319,7 @@ $$proj_{\hat n}V_{1}=(V_{1} \cdot \hat{n})\hat{n}$$</p>
     <aside class="related-contents--wrapper">
     
     
-        <h2 class="section-title"></h2>
+        <h2 class="section-title">相關文章</h2>
         <div class="related-contents">
             <div class="flex article-list--tile">
                 
@@ -283,7 +329,7 @@ $$proj_{\hat n}V_{1}=(V_{1} \cdot \hat{n})\hat{n}$$</p>
         
         
             <div class="article-image">
-                <img src="/archives/quadtree_in_2d/img/Quad_013.a7ee28c0eeb895aba73c942cef9f742e_hu646d8ae9c65ce621115142c45ba5d5ba_35828_250x150_fill_box_smart1_2.png" 
+                <img src="/archives/quadtree_in_2d/img/Quad_013.a7ee28c0eeb895aba73c942cef9f742e_hu646d8ae9c65ce621115142c45ba5d5ba_35828_250x150_fill_box_smart1_3.png" 
                         width="250" 
                         height="150" 
                         loading="lazy" 
@@ -393,7 +439,7 @@ $$proj_{\hat n}V_{1}=(V_{1} \cdot \hat{n})\hat{n}$$</p>
 </aside>
 
      
-     
+    
         
     <div class="disqus-container">
     <div id="disqus_thread"></div>
@@ -449,10 +495,11 @@ $$proj_{\hat n}V_{1}=(V_{1} \cdot \hat{n})\hat{n}$$</p>
     </section>
     
     <section class="powerby">
-         <br />
-        
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
     </section>
 </footer>
+
 
     
 <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
@@ -548,7 +595,7 @@ $$proj_{\hat n}V_{1}=(V_{1} \cdot \hat{n})\hat{n}$$</p>
 
 
                 </div>
-                <h2 class="widget-title section-title"></h2>
+                <h2 class="widget-title section-title">目錄</h2>
                 
                 <div class="widget--toc">
                     <nav id="TableOfContents">

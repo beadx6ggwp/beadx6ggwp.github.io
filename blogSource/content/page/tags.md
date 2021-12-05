@@ -6,5 +6,6 @@ slug: "tags"
 menu:
     main:
         weight: -70
-        pre: tag
+        params:
+            icon: tag
 ---
