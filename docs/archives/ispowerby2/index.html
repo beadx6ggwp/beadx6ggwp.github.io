@@ -24,7 +24,7 @@ bool isPowerBy2_(int n) { for (int i = 1; i &amp;lt;= n; i *= 2) if (i == n) ret
 bool isPowerBy2_(int n) { for (int i = 1; i &amp;lt;= n; i *= 2) if (i == n) return true; return false; } // output: // isPowerBy2(1) =&amp;gt; true // isPowerBy2(2) =&amp;gt; true // isPowerBy2(4) =&amp;gt; true // isPowerBy2(-1) =&amp;gt; false // isPowerBy2(0) =&amp;gt; false // isPowerBy2(3) =&amp;gt; false 雖然這樣就解決了，但我一直在想是否有效率更高的方法。
 我們先來觀察2的次方數轉成2進制的樣子 :
 1 =&amp;gt; 0000 0001 , 1 – 1 =&amp;gt; 0000 0000 2 =&amp;gt; 0000 0010 , 2 – 1 =&amp;gt; 0000 0001 4 =&amp;gt; 0000 0100 , 4 – 1 =&amp;gt; 0000 0011 8 =&amp;gt; 0000 1000 , 8 – 1 =&amp;gt; 0000 0111 16 =&amp;gt; 0001 0000 , 16 – 1 =&amp;gt; 0000 1111 32 =&amp;gt; 0010 0000 , 32 – 1 =&amp;gt; 0001 1111 可以發現，只要該數是2的次方時，除了MSB(最高位元)是 1 其餘都是0，">
-    <link rel="shortcut icon" href="/resource/favicon-32x32.png" />
+    <link rel="shortcut icon" href="/blog_resource/favicon-32x32.png" />
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJXR109WY7"></script>
 <script>
@@ -37,15 +37,6 @@ if (!doNotTrack) {
 }
 </script>
 
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap');
-     
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;800&display=swap');
-    :root {
-        --article-font-family: 'Roboto',"Noto Serif TC", var(--base-font-family);
-    }
-</style>
     </head>
     <body class="
     article-page 
@@ -54,7 +45,7 @@ if (!doNotTrack) {
         (function() {
             const colorSchemeKey = 'StackColorScheme';
             if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
+                localStorage.setItem(colorSchemeKey, "dark");
             }
         })();
     </script><script>
@@ -79,7 +70,7 @@ if (!doNotTrack) {
 ">
     
         <aside class="sidebar left-sidebar sticky">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切換選單">
         <span class="hamburger-box">
             <span class="hamburger-inner"></span>
         </span>
@@ -87,25 +78,59 @@ if (!doNotTrack) {
 
     <header class="site-info">
         
+            
             <figure class="site-avatar">
                 
-                    
-                    
-                    
-                        
-                        <img src="/img/snowman_hu853f05002f8a8d6598c7d5b216c667b8_45488_300x0_resize_q75_box.jpg" width="300"
-                            height="309" class="site-logo" loading="lazy" alt="Avatar">
-                    
+                    <img src="/blog_resource/snowman.jpg" width="300" height="300" class="site-logo" loading="lazy" alt="Avatar">
                 
 
                 
-                    <span class="emoji">🤔</span>
-                
             </figure>
+            
         
-        <h1 class="site-name"><a href="https://davidhsu666.com/">展維隨筆</a></h1>
-        <h2 class="site-description">簡易筆記</h2>
-    </header>
+        
+        <h1 class="site-name"><a href="/">展維隨筆</a></h1>
+        <h2 class="site-description">簡易筆記</h2><ol class="social-menu">
+                
+                    <li>
+                        <a 
+                            href='https://github.com/beadx6ggwp'
+                            target="_blank"
+                            title="GitHub"
+                        >
+                            
+                            
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a 
+                            href='https://twitter.com/beadx6ggwp'
+                            target="_blank"
+                            title="Twitter"
+                        >
+                            
+                            
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                            
+                        </a>
+                    </li>
+                
+            </ol></header>
 
     <ol class="menu" id="main-menu">
         
@@ -113,7 +138,9 @@ if (!doNotTrack) {
         
 
         <li >
-            <a href='/'>
+            <a href='/' target="_blank">
+                
+                
                 
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -132,7 +159,9 @@ if (!doNotTrack) {
         
 
         <li >
-            <a href='/about/'>
+            <a href='/about/' >
+                
+                
                 
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -150,7 +179,9 @@ if (!doNotTrack) {
         
 
         <li >
-            <a href='/archives/'>
+            <a href='/archives/' >
+                
+                
                 
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -169,7 +200,9 @@ if (!doNotTrack) {
         
 
         <li >
-            <a href='/tags/'>
+            <a href='/tags/' >
+                
+                
                 
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -187,45 +220,9 @@ if (!doNotTrack) {
         
 
         <li >
-            <a href='https://github.com/beadx6ggwp'>
+            <a href='/search/' >
                 
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <line x1="5" y1="9" x2="19" y2="9" />
-  <line x1="5" y1="15" x2="19" y2="15" />
-  <line x1="11" y1="4" x2="7" y2="20" />
-  <line x1="17" y1="4" x2="13" y2="20" />
-</svg>
-
-
-
                 
-                <span>Github</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/test/'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="7" r="4" />
-  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-</svg>
-
-
-
-                
-                <span>test</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/search/'>
                 
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
@@ -259,7 +256,7 @@ if (!doNotTrack) {
 
 
 
-                <span></span>
+                <span>夜晚模式</span>
             </li>
         
     </ol>
@@ -285,8 +282,28 @@ if (!doNotTrack) {
         <a href="/archives/ispowerby2/">快速判斷N是否為2的次方數</a>
     </h2>
 
+    
+
+    
     <footer class="article-time">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Mar 21, 2018</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <circle cx="12" cy="12" r="9" />
   <polyline points="12 7 12 12 15 15" />
@@ -294,15 +311,21 @@ if (!doNotTrack) {
 
 
 
-        <time class="article-time--published">Mar 21, 2018</time>
-    </footer></div>
+                <time class="article-time--reading">
+                    閱讀時間: 2 分鐘
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
 </header>
 
     <section class="article-content">
     <h1 id="快速判斷n是否為2的次方數">快速判斷N是否為2的次方數</h1>
 <p>前陣子遇到一個題目 : 請你判斷一個正整數N是否為2的次方。</p>
 <p>我遇到這題目時，直覺想到的就是，透過迴圈從1開始檢查所有2的次方數，像這樣 :</p>
-<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="kt">bool</span> <span class="nf">isPowerBy2_</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="kt">bool</span> <span class="nf">isPowerBy2_</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span> <span class="o">*=</span> <span class="mi">2</span><span class="p">)</span>            
         <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="n">n</span><span class="p">)</span> <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
@@ -318,7 +341,7 @@ if (!doNotTrack) {
 </span><span class="c1">// isPowerBy2(3)   =&gt; false
 </span></code></pre></div><p>雖然這樣就解決了，但我一直在想是否有效率更高的方法。</p>
 <p>我們先來觀察2的次方數轉成2進制的樣子 :</p>
-<pre><code>1 =&gt; 0000 0001 ,    1 – 1 =&gt; 0000 0000
+<pre tabindex="0"><code>1 =&gt; 0000 0001 ,    1 – 1 =&gt; 0000 0000
 
 2 =&gt; 0000 0010 ,    2 – 1 =&gt; 0000 0001
 
@@ -335,7 +358,7 @@ if (!doNotTrack) {
 <p><code>N &amp; (N-1) == 0</code></p>
 <p>在數學中0不是任何人的次方，但這裡會有個小問題，當我們把0帶入後照樣會得到true，因為0不管和誰做AND都是0，所以要再加上一個 n &gt; 0來塞選。</p>
 <p>最後我們得到</p>
-<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="kt">bool</span> <span class="nf">isPowerBy2</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="kt">bool</span> <span class="nf">isPowerBy2</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">return</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">n</span> <span class="o">&amp;</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
@@ -377,16 +400,17 @@ if (!doNotTrack) {
     </section>
     </footer>
 
+
     
         <link 
                 rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3&#43;Aro6EYUG4&#43;cU&#43;KJWu/X"crossorigin="anonymous"
+                href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css"integrity="sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn"crossorigin="anonymous"
             ><script 
-                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"integrity="sha384-g7c&#43;Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI&#43;sEnkvrMWph2EDg4"crossorigin="anonymous"
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.js"integrity="sha384-pK1WpvzWVBQiP0/GjnvRxV4mOb0oxFuyRxJlk6vVw146n3egcN5C925NCP7a7BY8"crossorigin="anonymous"
                 defer="true"
                 >
             </script><script 
-                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC&#43;Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa"crossorigin="anonymous"
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/contrib/auto-render.min.js"integrity="sha384-vZTG03m&#43;2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl"crossorigin="anonymous"
                 defer="true"
                 >
             </script><script>
@@ -406,7 +430,7 @@ if (!doNotTrack) {
     <aside class="related-contents--wrapper">
     
     
-        <h2 class="section-title"></h2>
+        <h2 class="section-title">相關文章</h2>
         <div class="related-contents">
             <div class="flex article-list--tile">
                 
@@ -504,7 +528,7 @@ if (!doNotTrack) {
         
         
             <div class="article-image">
-                <img src="/archives/quadtree_in_2d/img/Quad_013.a7ee28c0eeb895aba73c942cef9f742e_hu646d8ae9c65ce621115142c45ba5d5ba_35828_250x150_fill_box_smart1_2.png" 
+                <img src="/archives/quadtree_in_2d/img/Quad_013.a7ee28c0eeb895aba73c942cef9f742e_hu646d8ae9c65ce621115142c45ba5d5ba_35828_250x150_fill_box_smart1_3.png" 
                         width="250" 
                         height="150" 
                         loading="lazy" 
@@ -526,7 +550,7 @@ if (!doNotTrack) {
 </aside>
 
      
-     
+    
         
     <div class="disqus-container">
     <div id="disqus_thread"></div>
@@ -582,10 +606,11 @@ if (!doNotTrack) {
     </section>
     
     <section class="powerby">
-         <br />
-        
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
     </section>
 </footer>
+
 
     
 <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">

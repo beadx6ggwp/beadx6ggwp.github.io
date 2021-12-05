@@ -13,7 +13,7 @@
 <meta name="twitter:title" content="從零開始的基礎RPG框架">
 <meta name="twitter:description" content="使用JS撰寫的可編輯框架"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://davidhsu666.com/archives/2dgame-nonename/img/123213487.png' />
-    <link rel="shortcut icon" href="/resource/favicon-32x32.png" />
+    <link rel="shortcut icon" href="/blog_resource/favicon-32x32.png" />
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJXR109WY7"></script>
 <script>
@@ -26,15 +26,6 @@ if (!doNotTrack) {
 }
 </script>
 
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap');
-     
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;800&display=swap');
-    :root {
-        --article-font-family: 'Roboto',"Noto Serif TC", var(--base-font-family);
-    }
-</style>
     </head>
     <body class="
     article-page has-toc
@@ -43,7 +34,7 @@ if (!doNotTrack) {
         (function() {
             const colorSchemeKey = 'StackColorScheme';
             if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
+                localStorage.setItem(colorSchemeKey, "dark");
             }
         })();
     </script><script>
@@ -68,7 +59,7 @@ if (!doNotTrack) {
 ">
     
         <div id="article-toolbar">
-            <a href="https://davidhsu666.com/" class="back-home">
+            <a href="/" class="back-home">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <polyline points="15 6 9 12 15 18" />
@@ -76,7 +67,7 @@ if (!doNotTrack) {
 
 
 
-                <span></span>
+                <span>返回</span>
             </a>
         </div>
     
@@ -115,8 +106,28 @@ if (!doNotTrack) {
     <h3 class="article-subtitle">
         使用JS撰寫的可編輯框架
     </h3>
+    
+
+    
     <footer class="article-time">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Dec 04, 2020</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <circle cx="12" cy="12" r="9" />
   <polyline points="12 7 12 12 15 15" />
@@ -124,8 +135,14 @@ if (!doNotTrack) {
 
 
 
-        <time class="article-time--published">Dec 04, 2020</time>
-    </footer></div>
+                <time class="article-time--reading">
+                    閱讀時間: 2 分鐘
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
 </header>
 
     <section class="article-content">
@@ -140,44 +157,65 @@ if (!doNotTrack) {
 <li><a class="link" href="/downloads/GameEngineT/engineDemo/game0" target="_blank" rel="noopener">基礎展示(game0)</a> :
 用簡易的基礎地圖展示所有功能</li>
 <li><a class="link" href="/downloads/GameEngineT/engineDemo/game2" target="_blank" rel="noopener">上下坡事件觸發器(game2)</a> :
-<figure style="flex-grow: 134; flex-basis: 321px">
-		<a href="/archives/2dgame-nonename/img/ezgif-2-31a7bcbaa844.gif" data-size="480x358"><img src="/archives/2dgame-nonename/img/ezgif-2-31a7bcbaa844.gif"
-				
-				width="480"
-				height="358"
-				loading="lazy"
-				alt="透過觸發器更改人物所在圖層，正確判斷上下坡的碰撞">
-		</a>
-		
-		<figcaption>透過觸發器更改人物所在圖層，正確判斷上下坡的碰撞</figcaption>
-		
-	</figure></li>
+<figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 134; 
+			flex-basis: 321px"
+	>
+	<a href="/archives/2dgame-nonename/img/ezgif-2-31a7bcbaa844.gif" data-size="480x358">
+		<img src="/archives/2dgame-nonename/img/ezgif-2-31a7bcbaa844.gif"
+			width="480"
+			height="358"
+			
+			loading="lazy"
+			alt="透過觸發器更改人物所在圖層，正確判斷上下坡的碰撞">
+	</a>
+	
+	<figcaption>透過觸發器更改人物所在圖層，正確判斷上下坡的碰撞</figcaption>
+	
+</figure></li>
 <li><a class="link" href="/downloads/GameEngineT/engineDemo/gameshow1" target="_blank" rel="noopener">完整的場景(gameshow1)</a> :
-<figure style="flex-grow: 133; flex-basis: 320px">
-		<a href="/archives/2dgame-nonename/img/ezgif-3-bce1577204ed.gif" data-size="600x450"><img src="/archives/2dgame-nonename/img/ezgif-3-bce1577204ed.gif"
-				
-				width="600"
-				height="450"
-				loading="lazy"
-				alt="右邊兩個圓形為加速事件觸發器，碰到即可變更速度">
-		</a>
-		
-		<figcaption>右邊兩個圓形為加速事件觸發器，碰到即可變更速度</figcaption>
-		
-	</figure></li>
+<figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 133; 
+			flex-basis: 320px"
+	>
+	<a href="/archives/2dgame-nonename/img/ezgif-3-bce1577204ed.gif" data-size="600x450">
+		<img src="/archives/2dgame-nonename/img/ezgif-3-bce1577204ed.gif"
+			width="600"
+			height="450"
+			
+			loading="lazy"
+			alt="右邊兩個圓形為加速事件觸發器，碰到即可變更速度">
+	</a>
+	
+	<figcaption>右邊兩個圓形為加速事件觸發器，碰到即可變更速度</figcaption>
+	
+</figure></li>
 <li><a class="link" href="/downloads/GameEngineT/engineDemo/gameshow2" target="_blank" rel="noopener">多邊形碰撞場景(gameshow2)</a> :
-<figure style="flex-grow: 131; flex-basis: 315px">
-		<a href="/archives/2dgame-nonename/img/ezgif-6-c053731f03d2.gif" data-size="480x365"><img src="/archives/2dgame-nonename/img/ezgif-6-c053731f03d2.gif"
-				
-				width="480"
-				height="365"
-				loading="lazy"
-				alt="滑鼠拖曳後按左鍵發射小球，來觀看多邊形碰撞回饋">
-		</a>
-		
-		<figcaption>滑鼠拖曳後按左鍵發射小球，來觀看多邊形碰撞回饋</figcaption>
-		
-	</figure></li>
+<figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 131; 
+			flex-basis: 315px"
+	>
+	<a href="/archives/2dgame-nonename/img/ezgif-6-c053731f03d2.gif" data-size="480x365">
+		<img src="/archives/2dgame-nonename/img/ezgif-6-c053731f03d2.gif"
+			width="480"
+			height="365"
+			
+			loading="lazy"
+			alt="滑鼠拖曳後按左鍵發射小球，來觀看多邊形碰撞回饋">
+	</a>
+	
+	<figcaption>滑鼠拖曳後按左鍵發射小球，來觀看多邊形碰撞回饋</figcaption>
+	
+</figure></li>
 </ul>
 <h2 id="目前進度">目前進度</h2>
 <ul>
@@ -194,55 +232,83 @@ if (!doNotTrack) {
 <li>渲染物件的動態圖層顯示</li>
 <li>可隨意設定攝影機的追蹤範圍與目標，例如視角綁定在小鳥身上</li>
 </ul>
-<p><figure style="flex-grow: 133; flex-basis: 320px">
-		<a href="/archives/2dgame-nonename/img/ezgif-3-cd4aa3844865.gif" data-size="600x450"><img src="/archives/2dgame-nonename/img/ezgif-3-cd4aa3844865.gif"
-				
-				width="600"
-				height="450"
-				loading="lazy"
-				alt="WASD控制攝影機">
-		</a>
-		
-		<figcaption>WASD控制攝影機</figcaption>
-		
-	</figure>
-<figure style="flex-grow: 127; flex-basis: 306px">
-		<a href="/archives/2dgame-nonename/img/ezgif-3-221c8ab63b6e.gif" data-size="480x376"><img src="/archives/2dgame-nonename/img/ezgif-3-221c8ab63b6e.gif"
-				
-				width="480"
-				height="376"
-				loading="lazy"
-				alt="透過Z-index畫家排序來處理多圖層">
-		</a>
-		
-		<figcaption>透過Z-index畫家排序來處理多圖層</figcaption>
-		
-	</figure></p>
+<p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 133; 
+			flex-basis: 320px"
+	>
+	<a href="/archives/2dgame-nonename/img/ezgif-3-cd4aa3844865.gif" data-size="600x450">
+		<img src="/archives/2dgame-nonename/img/ezgif-3-cd4aa3844865.gif"
+			width="600"
+			height="450"
+			
+			loading="lazy"
+			alt="WASD控制攝影機">
+	</a>
+	
+	<figcaption>WASD控制攝影機</figcaption>
+	
+</figure>
+<figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 127; 
+			flex-basis: 306px"
+	>
+	<a href="/archives/2dgame-nonename/img/ezgif-3-221c8ab63b6e.gif" data-size="480x376">
+		<img src="/archives/2dgame-nonename/img/ezgif-3-221c8ab63b6e.gif"
+			width="480"
+			height="376"
+			
+			loading="lazy"
+			alt="透過Z-index畫家排序來處理多圖層">
+	</a>
+	
+	<figcaption>透過Z-index畫家排序來處理多圖層</figcaption>
+	
+</figure></p>
 <h2 id="碰撞盒多邊形碰撞與回饋">碰撞盒:多邊形碰撞與回饋</h2>
 <p><a class="link" href="http://davidhsu666.com/archives/gamecollisiondetection/"  target="_blank" rel="noopener"
     >http://davidhsu666.com/archives/gamecollisiondetection/</a></p>
 <p>透過分離軸定理，解決普通AABB碰撞檢測無法處裡的多邊形與圓形</p>
 <p>建立自製碰撞函示庫，並透過最小穿透量來處理物體間的分離，將碰撞盒整合至物體中並加以應用</p>
-<p><figure style="flex-grow: 136; flex-basis: 327px">
-		<a href="/archives/2dgame-nonename/img/SATgif04.gif.gif" data-size="480x352"><img src="/archives/2dgame-nonename/img/SATgif04.gif.gif"
-				
-				width="480"
-				height="352"
-				loading="lazy"
-				>
-		</a>
-		
-	</figure>
-<figure style="flex-grow: 167; flex-basis: 402px">
-		<a href="/archives/2dgame-nonename/img/xojIN67.gif" data-size="480x286"><img src="/archives/2dgame-nonename/img/xojIN67.gif"
-				
-				width="480"
-				height="286"
-				loading="lazy"
-				>
-		</a>
-		
-	</figure></p>
+<p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 136; 
+			flex-basis: 327px"
+	>
+	<a href="/archives/2dgame-nonename/img/SATgif04.gif.gif" data-size="480x352">
+		<img src="/archives/2dgame-nonename/img/SATgif04.gif.gif"
+			width="480"
+			height="352"
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure>
+<figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 167; 
+			flex-basis: 402px"
+	>
+	<a href="/archives/2dgame-nonename/img/xojIN67.gif" data-size="480x286">
+		<img src="/archives/2dgame-nonename/img/xojIN67.gif"
+			width="480"
+			height="286"
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
 <h2 id="動態碰撞盒敵人移動事件觸發器">動態碰撞盒、敵人移動、事件觸發器</h2>
 <p>-透過動態碰撞盒處理揮砍的動作</p>
 <p>-加入狀態切換管理，攻擊開始-&gt;攻擊中-&gt;攻擊結束</p>
@@ -250,50 +316,71 @@ if (!doNotTrack) {
 <li>透過事件觸發器處理各式地圖事件</li>
 <li>像是地圖上下坡，需要切換碰撞層，與NPC對話區域的觸發器，或是走斜坡時會被減速等等</li>
 </ul>
-<p><figure style="flex-grow: 140; flex-basis: 336px">
-		<a href="/archives/2dgame-nonename/img/ezgif-3-c1626b3a5c0e.gif" data-size="504x360"><img src="/archives/2dgame-nonename/img/ezgif-3-c1626b3a5c0e.gif"
-				
-				width="504"
-				height="360"
-				loading="lazy"
-				alt="發射劍氣">
-		</a>
-		
-		<figcaption>發射劍氣</figcaption>
-		
-	</figure>
-<figure style="flex-grow: 124; flex-basis: 299px">
-		<a href="/archives/2dgame-nonename/img/ezgif-3-3d08f2873a8f.gif" data-size="600x481"><img src="/archives/2dgame-nonename/img/ezgif-3-3d08f2873a8f.gif"
-				
-				width="600"
-				height="481"
-				loading="lazy"
-				alt="事件觸發器-加速">
-		</a>
-		
-		<figcaption>事件觸發器-加速</figcaption>
-		
-	</figure></p>
+<p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 140; 
+			flex-basis: 336px"
+	>
+	<a href="/archives/2dgame-nonename/img/ezgif-3-c1626b3a5c0e.gif" data-size="504x360">
+		<img src="/archives/2dgame-nonename/img/ezgif-3-c1626b3a5c0e.gif"
+			width="504"
+			height="360"
+			
+			loading="lazy"
+			alt="發射劍氣">
+	</a>
+	
+	<figcaption>發射劍氣</figcaption>
+	
+</figure>
+<figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 124; 
+			flex-basis: 299px"
+	>
+	<a href="/archives/2dgame-nonename/img/ezgif-3-3d08f2873a8f.gif" data-size="600x481">
+		<img src="/archives/2dgame-nonename/img/ezgif-3-3d08f2873a8f.gif"
+			width="600"
+			height="481"
+			
+			loading="lazy"
+			alt="事件觸發器-加速">
+	</a>
+	
+	<figcaption>事件觸發器-加速</figcaption>
+	
+</figure></p>
 <h2 id="地圖編輯與讀取">地圖編輯與讀取</h2>
 <p>透過json檔案生成對應的地圖物件，如動畫、碰撞、物件等</p>
 <p>依照編輯時的圖層，建立對應的顯示順序</p>
 <p>而每個Group相隔10的Z-index，圖中Group2、Group4分別有橋下與橋上的碰撞層，所以只要更改人物的Z-index即可實現上下區域的碰撞切換</p>
 <p>並支援自訂多邊形，圖中左下角的噴水池為自訂多邊形所包成的碰撞體，基礎展示(game0)中的石頭也是</p>
-<p><figure style="flex-grow: 77; flex-basis: 185px">
-		<a href="/archives/2dgame-nonename/img/1232.jpg" data-size="795x1029"><img src="/archives/2dgame-nonename/img/1232.jpg"
-				
-				width="795"
-				height="1029"
-				loading="lazy"
-				alt="地圖的編輯">
-		</a>
-		
-		<figcaption>地圖的編輯</figcaption>
-		
-	</figure></p>
+<p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 77; 
+			flex-basis: 185px"
+	>
+	<a href="/archives/2dgame-nonename/img/1232.jpg" data-size="795x1029">
+		<img src="/archives/2dgame-nonename/img/1232.jpg"
+			width="795"
+			height="1029"
+			
+			loading="lazy"
+			alt="地圖的編輯">
+	</a>
+	
+	<figcaption>地圖的編輯</figcaption>
+	
+</figure></p>
 <h2 id="大致運行方式">大致運行方式</h2>
 <p>所有物體皆繼承自Entity :</p>
-<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="nx">Entity</span><span class="o">:</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="nx">Entity</span><span class="o">:</span>
 <span class="p">{</span>
     <span class="nx">name</span><span class="o">:</span> <span class="s2">&#34;monster&#34;</span>                            <span class="c1">// 此Entity的名稱或類別
 </span><span class="c1"></span>    <span class="nx">pos</span><span class="o">:</span> <span class="p">{</span> <span class="nx">x</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">y</span><span class="o">:</span> <span class="mi">0</span> <span class="p">},</span>
@@ -330,7 +417,7 @@ if (!doNotTrack) {
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div><p>事件觸發器的使用，以地圖中的Tile與玩家/怪物的碰撞為例:</p>
-<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="nx">TileEntity</span> <span class="o">=</span> <span class="p">{</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="nx">TileEntity</span> <span class="o">=</span> <span class="p">{</span>
         <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;layerObj&#39;</span><span class="p">,</span>
         <span class="nx">pos</span><span class="o">:</span> <span class="p">{</span> <span class="nx">x</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">y</span><span class="o">:</span> <span class="mi">0</span> <span class="p">},</span>    <span class="c1">// 設定為每塊Tile所在的位置
 </span><span class="c1"></span>        <span class="nx">collisionToMap</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
@@ -356,7 +443,7 @@ if (!doNotTrack) {
         <span class="nx">drawBase</span><span class="o">:</span> <span class="kc">true</span>
     <span class="p">}</span>
 </code></pre></div><p>當所有物體，不管是玩家、敵人、地圖Tile等，有了這個萬用的Entity後，即可透過簡單的方式更新各自Entity的循環</p>
-<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="c1">// 程式中的主循環
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="c1">// 程式中的主循環
 </span><span class="c1"></span><span class="kd">function</span> <span class="nx">update</span><span class="p">(</span><span class="nx">dt</span><span class="p">,</span> <span class="nx">tickcount</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">let</span> <span class="nx">entities</span> <span class="o">=</span> <span class="nx">world</span><span class="p">.</span><span class="nx">gameObjs</span><span class="p">;</span>
     <span class="c1">// 更新所有物體
@@ -393,26 +480,40 @@ if (!doNotTrack) {
 <p>例如: 兩物體在地圖的對角線，根本不會碰撞，但還是執行檢測</p>
 <p>透過四叉樹(Quad Tree)來進行空間上的劃分</p>
 <p>將複雜度降低至O(N log(N))</p>
-<p><figure style="flex-grow: 214; flex-basis: 514px">
-		<a href="/archives/2dgame-nonename/img/Quad_007.png" data-size="759x354"><img src="/archives/2dgame-nonename/img/Quad_007.png"
-				
-				width="759"
-				height="354"
-				loading="lazy"
-				>
-		</a>
-		
-	</figure>
-<figure style="flex-grow: 101; flex-basis: 243px">
-		<a href="/archives/2dgame-nonename/img/Ih4eMyv.gif" data-size="480x474"><img src="/archives/2dgame-nonename/img/Ih4eMyv.gif"
-				
-				width="480"
-				height="474"
-				loading="lazy"
-				>
-		</a>
-		
-	</figure></p>
+<p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 214; 
+			flex-basis: 514px"
+	>
+	<a href="/archives/2dgame-nonename/img/Quad_007.png" data-size="759x354">
+		<img src="/archives/2dgame-nonename/img/Quad_007.png"
+			width="759"
+			height="354"
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure>
+<figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 101; 
+			flex-basis: 243px"
+	>
+	<a href="/archives/2dgame-nonename/img/Ih4eMyv.gif" data-size="480x474">
+		<img src="/archives/2dgame-nonename/img/Ih4eMyv.gif"
+			width="480"
+			height="474"
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
 <h2 id="架構與後續規劃">架構與後續規劃</h2>
 <ul>
 <li>UI選單、Menu、功能列操作</li>
@@ -420,20 +521,27 @@ if (!doNotTrack) {
 <li>腳本編輯與腳本觸發器，如RPG遊戲中的串場事件</li>
 <li>優化物件架構，方便修改</li>
 </ul>
-<p><figure style="flex-grow: 125; flex-basis: 300px">
-		<a href="/archives/2dgame-nonename/img/img1.jpg" data-size="803x641"><img src="/archives/2dgame-nonename/img/img1.jpg"
-				
-				width="803"
-				height="641"
-				loading="lazy"
-				alt="簡易架構圖">
-		</a>
-		
-		<figcaption>簡易架構圖</figcaption>
-		
-	</figure></p>
+<p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 125; 
+			flex-basis: 300px"
+	>
+	<a href="/archives/2dgame-nonename/img/img1.jpg" data-size="803x641">
+		<img src="/archives/2dgame-nonename/img/img1.jpg"
+			width="803"
+			height="641"
+			
+			loading="lazy"
+			alt="簡易架構圖">
+	</a>
+	
+	<figcaption>簡易架構圖</figcaption>
+	
+</figure></p>
 <h2 id="檔案架構">檔案架構</h2>
-<pre><code>├─asset
+<pre tabindex="0"><code>├─asset
 │  ├─data
 │  ├─img
 │  ├─sound
@@ -461,8 +569,10 @@ if (!doNotTrack) {
         utils.js
         vec.js
 </code></pre><h2 id="參考資料">參考資料</h2>
-<p><a href="https://gablaxian.com/articles/creating-a-game-with-javascript/introduction">https://gablaxian.com/articles/creating-a-game-with-javascript/introduction</a>
-<a href="http://isaacsukin.com/news/2015/01/detailed-explanation-javascript-game-loops-and-timing">http://isaacsukin.com/news/2015/01/detailed-explanation-javascript-game-loops-and-timing</a></p>
+<p><a class="link" href="https://gablaxian.com/articles/creating-a-game-with-javascript/introduction"  target="_blank" rel="noopener"
+    >https://gablaxian.com/articles/creating-a-game-with-javascript/introduction</a>
+<a class="link" href="http://isaacsukin.com/news/2015/01/detailed-explanation-javascript-game-loops-and-timing"  target="_blank" rel="noopener"
+    >http://isaacsukin.com/news/2015/01/detailed-explanation-javascript-game-loops-and-timing</a></p>
 
 </section>
 
@@ -490,16 +600,17 @@ if (!doNotTrack) {
     </section>
     </footer>
 
+
     
         <link 
                 rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3&#43;Aro6EYUG4&#43;cU&#43;KJWu/X"crossorigin="anonymous"
+                href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css"integrity="sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn"crossorigin="anonymous"
             ><script 
-                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"integrity="sha384-g7c&#43;Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI&#43;sEnkvrMWph2EDg4"crossorigin="anonymous"
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.js"integrity="sha384-pK1WpvzWVBQiP0/GjnvRxV4mOb0oxFuyRxJlk6vVw146n3egcN5C925NCP7a7BY8"crossorigin="anonymous"
                 defer="true"
                 >
             </script><script 
-                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC&#43;Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa"crossorigin="anonymous"
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/contrib/auto-render.min.js"integrity="sha384-vZTG03m&#43;2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl"crossorigin="anonymous"
                 defer="true"
                 >
             </script><script>
@@ -519,7 +630,7 @@ if (!doNotTrack) {
     <aside class="related-contents--wrapper">
     
     
-        <h2 class="section-title"></h2>
+        <h2 class="section-title">相關文章</h2>
         <div class="related-contents">
             <div class="flex article-list--tile">
                 
@@ -551,7 +662,7 @@ if (!doNotTrack) {
         
         
             <div class="article-image">
-                <img src="/archives/js-superball/img/smallballgame1.a8ac98a69312552d90d31a4f8c13f0e3_hu809fcfe459e19c68a439ae2b91a42e42_35450_250x150_fill_box_smart1_2.png" 
+                <img src="/archives/js-superball/img/smallballgame1.a8ac98a69312552d90d31a4f8c13f0e3_hu809fcfe459e19c68a439ae2b91a42e42_35450_250x150_fill_box_smart1_3.png" 
                         width="250" 
                         height="150" 
                         loading="lazy" 
@@ -573,7 +684,7 @@ if (!doNotTrack) {
 </aside>
 
      
-     
+    
         
     <div class="disqus-container">
     <div id="disqus_thread"></div>
@@ -629,10 +740,11 @@ if (!doNotTrack) {
     </section>
     
     <section class="powerby">
-         <br />
-        
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
     </section>
 </footer>
+
 
     
 <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
@@ -728,7 +840,7 @@ if (!doNotTrack) {
 
 
                 </div>
-                <h2 class="widget-title section-title"></h2>
+                <h2 class="widget-title section-title">目錄</h2>
                 
                 <div class="widget--toc">
                     <nav id="TableOfContents">

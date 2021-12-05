@@ -13,7 +13,7 @@
 <meta name="twitter:title" content="工科賽-軟體設計 歷屆試題解答">
 <meta name="twitter:description" content="工科賽解答"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://davidhsu666.com/archives/skills-competition-software/img/skill_img1.jpg' />
-    <link rel="shortcut icon" href="/resource/favicon-32x32.png" />
+    <link rel="shortcut icon" href="/blog_resource/favicon-32x32.png" />
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJXR109WY7"></script>
 <script>
@@ -26,15 +26,6 @@ if (!doNotTrack) {
 }
 </script>
 
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap');
-     
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;800&display=swap');
-    :root {
-        --article-font-family: 'Roboto',"Noto Serif TC", var(--base-font-family);
-    }
-</style>
     </head>
     <body class="
     article-page has-toc
@@ -43,7 +34,7 @@ if (!doNotTrack) {
         (function() {
             const colorSchemeKey = 'StackColorScheme';
             if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
+                localStorage.setItem(colorSchemeKey, "dark");
             }
         })();
     </script><script>
@@ -68,7 +59,7 @@ if (!doNotTrack) {
 ">
     
         <div id="article-toolbar">
-            <a href="https://davidhsu666.com/" class="back-home">
+            <a href="/" class="back-home">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <polyline points="15 6 9 12 15 18" />
@@ -76,7 +67,7 @@ if (!doNotTrack) {
 
 
 
-                <span></span>
+                <span>返回</span>
             </a>
         </div>
     
@@ -115,8 +106,28 @@ if (!doNotTrack) {
     <h3 class="article-subtitle">
         工科賽解答
     </h3>
+    
+
+    
     <footer class="article-time">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Nov 06, 2019</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <circle cx="12" cy="12" r="9" />
   <polyline points="12 7 12 12 15 15" />
@@ -124,8 +135,14 @@ if (!doNotTrack) {
 
 
 
-        <time class="article-time--published">Nov 06, 2019</time>
-    </footer></div>
+                <time class="article-time--reading">
+                    閱讀時間: 1 分鐘
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
 </header>
 
     <section class="article-content">
@@ -138,18 +155,25 @@ if (!doNotTrack) {
 <p>高職的比賽，沒興趣不太建議靠比賽升學，做選手學東西就行，因為沒有很好的名次加上備審，不好上前段國立，所有國立科大資工開放的總名額大概只有30個左右，採計的比賽也不只工科賽，所以就算前15名也不見得能上國立。</p>
 <h2 id="全國工科技藝競賽-軟體設計在比什麼">全國工科技藝競賽 軟體設計在比什麼:</h2>
 <p>簡單來講就是用程式邏輯來解各種應用問題，但比UVA、IOI簡單，比較偏向應用一些吧，可以翻下面的題庫來看看在比什麼。 像是8-Puzzl轉盤，要在解題的時候去思考，如何讓電腦找到最少步數，相比傳統解題競賽，較著重在功能呈現上。</p>
-<p><figure style="flex-grow: 148; flex-basis: 355px">
-		<a href="/archives/skills-competition-software/img/8-Puzzle-BFS.gif" data-size="344x232"><img src="/archives/skills-competition-software/img/8-Puzzle-BFS.gif"
-				
-				width="344"
-				height="232"
-				loading="lazy"
-				alt="BFS解8-Puzzle">
-		</a>
-		
-		<figcaption>BFS解8-Puzzle</figcaption>
-		
-	</figure></p>
+<p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 148; 
+			flex-basis: 355px"
+	>
+	<a href="/archives/skills-competition-software/img/8-Puzzle-BFS.gif" data-size="344x232">
+		<img src="/archives/skills-competition-software/img/8-Puzzle-BFS.gif"
+			width="344"
+			height="232"
+			
+			loading="lazy"
+			alt="BFS解8-Puzzle">
+	</a>
+	
+	<figcaption>BFS解8-Puzzle</figcaption>
+	
+</figure></p>
 <p>相關文章: <a class="link" href="http://davidhsu666.com/archives/csharp-bfs-solve-8-puzzle/"  target="_blank" rel="noopener"
     >用BFS解8-Puzzle問題</a></p>
 <h2 id="準備方式">準備方式:</h2>
@@ -203,16 +227,17 @@ if (!doNotTrack) {
     </section>
     </footer>
 
+
     
         <link 
                 rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3&#43;Aro6EYUG4&#43;cU&#43;KJWu/X"crossorigin="anonymous"
+                href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css"integrity="sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn"crossorigin="anonymous"
             ><script 
-                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"integrity="sha384-g7c&#43;Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI&#43;sEnkvrMWph2EDg4"crossorigin="anonymous"
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.js"integrity="sha384-pK1WpvzWVBQiP0/GjnvRxV4mOb0oxFuyRxJlk6vVw146n3egcN5C925NCP7a7BY8"crossorigin="anonymous"
                 defer="true"
                 >
             </script><script 
-                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC&#43;Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa"crossorigin="anonymous"
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/contrib/auto-render.min.js"integrity="sha384-vZTG03m&#43;2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl"crossorigin="anonymous"
                 defer="true"
                 >
             </script><script>
@@ -232,7 +257,7 @@ if (!doNotTrack) {
     <aside class="related-contents--wrapper">
     
     
-        <h2 class="section-title"></h2>
+        <h2 class="section-title">相關文章</h2>
         <div class="related-contents">
             <div class="flex article-list--tile">
                 
@@ -286,7 +311,7 @@ if (!doNotTrack) {
         
         
             <div class="article-image">
-                <img src="/archives/quadtree_in_2d/img/Quad_013.a7ee28c0eeb895aba73c942cef9f742e_hu646d8ae9c65ce621115142c45ba5d5ba_35828_250x150_fill_box_smart1_2.png" 
+                <img src="/archives/quadtree_in_2d/img/Quad_013.a7ee28c0eeb895aba73c942cef9f742e_hu646d8ae9c65ce621115142c45ba5d5ba_35828_250x150_fill_box_smart1_3.png" 
                         width="250" 
                         height="150" 
                         loading="lazy" 
@@ -352,7 +377,7 @@ if (!doNotTrack) {
 </aside>
 
      
-     
+    
         
     <div class="disqus-container">
     <div id="disqus_thread"></div>
@@ -408,10 +433,11 @@ if (!doNotTrack) {
     </section>
     
     <section class="powerby">
-         <br />
-        
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
     </section>
 </footer>
+
 
     
 <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
@@ -507,7 +533,7 @@ if (!doNotTrack) {
 
 
                 </div>
-                <h2 class="widget-title section-title"></h2>
+                <h2 class="widget-title section-title">目錄</h2>
                 
                 <div class="widget--toc">
                     <nav id="TableOfContents">

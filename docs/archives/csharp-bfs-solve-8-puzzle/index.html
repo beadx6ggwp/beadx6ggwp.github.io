@@ -13,7 +13,7 @@
 <meta name="twitter:title" content="BFS解8-Puzzle問題">
 <meta name="twitter:description" content="之前因為8-Puzzle問題卡了一段時間，之後才了解其實用BFS解的話，難度就降到跟解迷宮差不多了"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://davidhsu666.com/archives/csharp-bfs-solve-8-puzzle/img/8puzzle07.jpg' />
-    <link rel="shortcut icon" href="/resource/favicon-32x32.png" />
+    <link rel="shortcut icon" href="/blog_resource/favicon-32x32.png" />
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJXR109WY7"></script>
 <script>
@@ -26,15 +26,6 @@ if (!doNotTrack) {
 }
 </script>
 
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap');
-     
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;800&display=swap');
-    :root {
-        --article-font-family: 'Roboto',"Noto Serif TC", var(--base-font-family);
-    }
-</style>
     </head>
     <body class="
     article-page has-toc
@@ -43,7 +34,7 @@ if (!doNotTrack) {
         (function() {
             const colorSchemeKey = 'StackColorScheme';
             if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
+                localStorage.setItem(colorSchemeKey, "dark");
             }
         })();
     </script><script>
@@ -68,7 +59,7 @@ if (!doNotTrack) {
 ">
     
         <div id="article-toolbar">
-            <a href="https://davidhsu666.com/" class="back-home">
+            <a href="/" class="back-home">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <polyline points="15 6 9 12 15 18" />
@@ -76,7 +67,7 @@ if (!doNotTrack) {
 
 
 
-                <span></span>
+                <span>返回</span>
             </a>
         </div>
     
@@ -115,8 +106,28 @@ if (!doNotTrack) {
     <h3 class="article-subtitle">
         之前因為8-Puzzle問題卡了一段時間，之後才了解其實用BFS解的話，難度就降到跟解迷宮差不多了
     </h3>
+    
+
+    
     <footer class="article-time">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jun 22, 2018</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <circle cx="12" cy="12" r="9" />
   <polyline points="12 7 12 12 15 15" />
@@ -124,26 +135,39 @@ if (!doNotTrack) {
 
 
 
-        <time class="article-time--published">Jun 22, 2018</time>
-    </footer></div>
+                <time class="article-time--reading">
+                    閱讀時間: 3 分鐘
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
 </header>
 
     <section class="article-content">
     <h2 id="1-前言">1. 前言</h2>
 <p>先來簡單的介紹一下什麼是8-Puzzle。</p>
 <p>數字推盤遊戲(n-puzzle)是最早一種的滑塊類遊戲，常見的類型有十五數字推盤遊戲和八數字推盤遊戲等，也有以圖畫代替數字的推盤遊戲。</p>
-<p><figure style="flex-grow: 100; flex-basis: 240px">
-		<a href="/archives/csharp-bfs-solve-8-puzzle/img/Batgirl.gif" data-size="220x220"><img src="/archives/csharp-bfs-solve-8-puzzle/img/Batgirl.gif"
-				
-				width="220"
-				height="220"
-				loading="lazy"
-				alt="Wiki上的8Puzzle">
-		</a>
-		
-		<figcaption>Wiki上的8Puzzle</figcaption>
-		
-	</figure></p>
+<p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 100; 
+			flex-basis: 240px"
+	>
+	<a href="/archives/csharp-bfs-solve-8-puzzle/img/Batgirl.gif" data-size="220x220">
+		<img src="/archives/csharp-bfs-solve-8-puzzle/img/Batgirl.gif"
+			width="220"
+			height="220"
+			
+			loading="lazy"
+			alt="Wiki上的8Puzzle">
+	</a>
+	
+	<figcaption>Wiki上的8Puzzle</figcaption>
+	
+</figure></p>
 <p>如上圖所示，滑塊只能往空位移動。</p>
 <p>大概了解遊玩方法後，就來試著解決8-Puzzle問題吧!</p>
 <p>解法的步驟大概是這樣 :</p>
@@ -156,21 +180,28 @@ if (!doNotTrack) {
 </ol>
 <h2 id="2-儲存結構和移動判斷">2. 儲存結構和移動判斷</h2>
 <p>首先是儲存狀態，用二維陣列來儲存比較直觀，但是用一維陣列來儲存的話，我覺得在一些處理上比較方便，所以我採用一維陣列。</p>
-<p><figure style="flex-grow: 105; flex-basis: 254px">
-		<a href="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle02-1.jpg" data-size="359x339"><img src="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle02-1.jpg"
-				
-				width="359"
-				height="339"
-				loading="lazy"
-				alt="資料結構">
-		</a>
-		
-		<figcaption>資料結構</figcaption>
-		
-	</figure></p>
+<p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 105; 
+			flex-basis: 254px"
+	>
+	<a href="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle02-1.jpg" data-size="359x339">
+		<img src="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle02-1.jpg"
+			width="359"
+			height="339"
+			
+			loading="lazy"
+			alt="資料結構">
+	</a>
+	
+	<figcaption>資料結構</figcaption>
+	
+</figure></p>
 <p>像是上面的這個狀態這樣，將0表示為空格，可以儲存成 { 8, 6, 4, 0, 7, 2, 5, 1, 3}。</p>
 <p>因為要透過BFS搜尋來取得路徑，所以需要建立一個節點的結構，這樣才能儲存當前狀態，並紀錄上個狀態 :</p>
-<div class="highlight"><pre class="chroma"><code class="language-C#" data-lang="C#"><span class="k">public</span> <span class="k">class</span> <span class="nc">Node</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C#" data-lang="C#"><span class="k">public</span> <span class="k">class</span> <span class="nc">Node</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="kt">byte</span><span class="p">[]</span> <span class="n">status</span><span class="p">;</span> <span class="c1">// 當前狀態
 </span><span class="c1"></span>    <span class="k">public</span> <span class="n">Node</span> <span class="n">father</span><span class="p">;</span> <span class="c1">// 紀錄上個狀態，如果father = null 該點為根節點
@@ -191,27 +222,41 @@ if (!doNotTrack) {
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div><p>再來是移動判斷，滑塊在移動時，可以看成是空白方塊在移動。</p>
-<p><figure style="flex-grow: 99; flex-basis: 239px">
-		<a href="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle04.jpg" data-size="295x296"><img src="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle04.jpg"
-				
-				width="295"
-				height="296"
-				loading="lazy"
-				>
-		</a>
-		
-	</figure></p>
+<p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 99; 
+			flex-basis: 239px"
+	>
+	<a href="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle04.jpg" data-size="295x296">
+		<img src="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle04.jpg"
+			width="295"
+			height="296"
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
 <p>如上圖，0 可以往上、右、下移動，但是不能往左，那麼要如何判斷0能往哪個方向走呢?</p>
-<p><figure style="flex-grow: 157; flex-basis: 379px">
-		<a href="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle05-2.jpg" data-size="597x378"><img src="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle05-2.jpg"
-				
-				width="597"
-				height="378"
-				loading="lazy"
-				>
-		</a>
-		
-	</figure></p>
+<p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 157; 
+			flex-basis: 379px"
+	>
+	<a href="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle05-2.jpg" data-size="597x378">
+		<img src="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle05-2.jpg"
+			width="597"
+			height="378"
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
 <p>如上圖，當 index = 3 時，可以得知在二維時座標是 (0, 1)。</p>
 <p>能取得對應位置後，就能夠寫出移動判斷，像是當空位在最左邊時Col = 0，那麼就不能往左走，因為在最左邊了，在最下面時Row = 2，不能往下走，因為已經到底了。</p>
 <p>所以可以得出:</p>
@@ -222,7 +267,7 @@ if (!doNotTrack) {
 <li>Row != 2，可以往下走</li>
 </ul>
 <p>但是只有判斷能不能走還不夠，因為當空格移動時，必須跟那個位置的數字交換，並記錄下原本的狀態 :</p>
-<div class="highlight"><pre class="chroma"><code class="language-C#" data-lang="C#"><span class="n">List</span><span class="p">&lt;</span><span class="n">Node</span><span class="p">&gt;</span> <span class="n">GetNext</span><span class="p">(</span><span class="n">Node</span> <span class="n">now</span><span class="p">)</span><span class="c1">// 傳入當前版面，回傳0所有移動後的狀態
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C#" data-lang="C#"><span class="n">List</span><span class="p">&lt;</span><span class="n">Node</span><span class="p">&gt;</span> <span class="n">GetNext</span><span class="p">(</span><span class="n">Node</span> <span class="n">now</span><span class="p">)</span><span class="c1">// 傳入當前版面，回傳0所有移動後的狀態
 </span><span class="c1"></span><span class="p">{</span>
     <span class="kt">int</span> <span class="n">index</span> <span class="p">=</span> <span class="n">Array</span><span class="p">.</span><span class="n">IndexOf</span><span class="p">&lt;</span><span class="kt">byte</span><span class="p">&gt;(</span><span class="n">now</span><span class="p">.</span><span class="n">status</span><span class="p">,</span> <span class="m">0</span><span class="p">);</span>
     <span class="kt">int</span> <span class="n">col</span> <span class="p">=</span> <span class="n">index</span> <span class="p">%</span> <span class="m">3</span><span class="p">;</span>
@@ -262,20 +307,27 @@ if (!doNotTrack) {
 <span class="p">}</span>
 </code></pre></div><p>在交換前要先複製一份，因為陣列參數是傳參考，直接交換會修改到原本的狀態，所以要先Clone後再傳給新狀態做交換。</p>
 <p>而上面程式碼中 new Node(next, now)，意思是建立一個新節點next，而他的前一個狀態是剛剛傳進來的now。</p>
-<p><figure style="flex-grow: 191; flex-basis: 460px">
-		<a href="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle06.jpg" data-size="903x471"><img src="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle06.jpg"
-				
-				width="903"
-				height="471"
-				loading="lazy"
-				>
-		</a>
-		
-	</figure></p>
+<p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 191; 
+			flex-basis: 460px"
+	>
+	<a href="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle06.jpg" data-size="903x471">
+		<img src="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle06.jpg"
+			width="903"
+			height="471"
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
 <p>如上圖，假設now是根結點，而next是下個節點，那麼new Node(next, now)後就會像這樣。</p>
 <h2 id="3-用bfs窮舉狀態">3. 用BFS窮舉狀態</h2>
 <p>有了移動判段後，接下來的解法就跟用BFS解迷宮差不多了 :</p>
-<div class="highlight"><pre class="chroma"><code class="language-C#" data-lang="C#"><span class="c1">// 傳入原本的版面和目標版面，回傳最短路徑
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C#" data-lang="C#"><span class="c1">// 傳入原本的版面和目標版面，回傳最短路徑
 </span><span class="c1"></span><span class="n">List</span><span class="p">&lt;</span><span class="n">Node</span><span class="p">&gt;</span> <span class="n">Solve</span><span class="p">(</span><span class="kt">byte</span><span class="p">[]</span> <span class="n">source</span><span class="p">,</span> <span class="kt">byte</span><span class="p">[]</span> <span class="n">goal</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="n">Queue</span><span class="p">&lt;</span><span class="n">Node</span><span class="p">&gt;</span> <span class="n">queue</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Queue</span><span class="p">&lt;</span><span class="n">Node</span><span class="p">&gt;();</span>
@@ -334,7 +386,7 @@ if (!doNotTrack) {
 </code></pre></div><p>路徑的儲存使用SortedList而不是正常的List，因為List在加入物件時並不會特別處理，所以在搜尋時就只能慢慢比較，而 SortedList的結構類似二元搜尋樹，在新增資料時就會依照設定的Key值做排序後再插入，所以在搜尋時的複雜度就能夠降到O(log2 n)，想了解更多的話請看最後的參考資源。</p>
 <p>到這邊大概就能了解為什麼要用ToSequence()來儲存路徑了，因為資料不會重複，所以搭配SortedList就比List快的多。</p>
 <p>使用方法:</p>
-<div class="highlight"><pre class="chroma"><code class="language-C#" data-lang="C#"><span class="kt">byte</span><span class="p">[]</span> <span class="n">source</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="p">[]</span> <span class="p">{</span> <span class="m">8</span><span class="p">,</span> <span class="m">6</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">7</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">3</span> <span class="p">};</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C#" data-lang="C#"><span class="kt">byte</span><span class="p">[]</span> <span class="n">source</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="p">[]</span> <span class="p">{</span> <span class="m">8</span><span class="p">,</span> <span class="m">6</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">7</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">3</span> <span class="p">};</span>
 <span class="kt">byte</span><span class="p">[]</span> <span class="n">goal</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="p">[]</span> <span class="p">{</span> <span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">6</span><span class="p">,</span> <span class="m">7</span><span class="p">,</span> <span class="m">8</span><span class="p">,</span> <span class="m">0</span> <span class="p">};</span>
 
 <span class="n">List</span><span class="p">&lt;</span><span class="n">Node</span><span class="p">&gt;</span> <span class="n">path</span> <span class="p">=</span> <span class="n">Solve</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">goal</span><span class="p">);</span>
@@ -342,27 +394,41 @@ if (!doNotTrack) {
 <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="s">$&#34;最少步驟為:{path.Count}&#34;</span><span class="p">);</span>
 </code></pre></div><p>給定原本面狀態跟輸出狀態，即可得到最短路徑的List，而輸出路徑只要走訪一遍Path即可得到。</p>
 <p>其實執行的原理很簡單，就是一直窮舉所有狀態，直到符合結果為止</p>
-<p><figure style="flex-grow: 137; flex-basis: 329px">
-		<a href="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle07.jpg" data-size="1046x763"><img src="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle07.jpg"
-				
-				width="1046"
-				height="763"
-				loading="lazy"
-				>
-		</a>
-		
-	</figure></p>
+<p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 137; 
+			flex-basis: 329px"
+	>
+	<a href="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle07.jpg" data-size="1046x763">
+		<img src="/archives/csharp-bfs-solve-8-puzzle/img/8puzzle07.jpg"
+			width="1046"
+			height="763"
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
 <h2 id="4-執行結果">4. 執行結果</h2>
-<p><figure style="flex-grow: 148; flex-basis: 355px">
-		<a href="/archives/csharp-bfs-solve-8-puzzle/img/8-Puzzle-BFS.gif" data-size="344x232"><img src="/archives/csharp-bfs-solve-8-puzzle/img/8-Puzzle-BFS.gif"
-				
-				width="344"
-				height="232"
-				loading="lazy"
-				>
-		</a>
-		
-	</figure></p>
+<p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 148; 
+			flex-basis: 355px"
+	>
+	<a href="/archives/csharp-bfs-solve-8-puzzle/img/8-Puzzle-BFS.gif" data-size="344x232">
+		<img src="/archives/csharp-bfs-solve-8-puzzle/img/8-Puzzle-BFS.gif"
+			width="344"
+			height="232"
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
 <p>Source Code : <a class="link" href="https://github.com/beadx6ggwp/Skills-Competition-Software/tree/master/101/101-5-OK"  target="_blank" rel="noopener"
     >Here</a></p>
 <p>雖然用BFS就能解了，但效率很差，之後會再研究看看A*演算法。</p>
@@ -406,16 +472,17 @@ if (!doNotTrack) {
     </section>
     </footer>
 
+
     
         <link 
                 rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3&#43;Aro6EYUG4&#43;cU&#43;KJWu/X"crossorigin="anonymous"
+                href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css"integrity="sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn"crossorigin="anonymous"
             ><script 
-                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"integrity="sha384-g7c&#43;Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI&#43;sEnkvrMWph2EDg4"crossorigin="anonymous"
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.js"integrity="sha384-pK1WpvzWVBQiP0/GjnvRxV4mOb0oxFuyRxJlk6vVw146n3egcN5C925NCP7a7BY8"crossorigin="anonymous"
                 defer="true"
                 >
             </script><script 
-                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC&#43;Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa"crossorigin="anonymous"
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/contrib/auto-render.min.js"integrity="sha384-vZTG03m&#43;2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl"crossorigin="anonymous"
                 defer="true"
                 >
             </script><script>
@@ -435,7 +502,7 @@ if (!doNotTrack) {
     <aside class="related-contents--wrapper">
     
     
-        <h2 class="section-title"></h2>
+        <h2 class="section-title">相關文章</h2>
         <div class="related-contents">
             <div class="flex article-list--tile">
                 
@@ -523,7 +590,7 @@ if (!doNotTrack) {
         
         
             <div class="article-image">
-                <img src="/archives/quadtree_in_2d/img/Quad_013.a7ee28c0eeb895aba73c942cef9f742e_hu646d8ae9c65ce621115142c45ba5d5ba_35828_250x150_fill_box_smart1_2.png" 
+                <img src="/archives/quadtree_in_2d/img/Quad_013.a7ee28c0eeb895aba73c942cef9f742e_hu646d8ae9c65ce621115142c45ba5d5ba_35828_250x150_fill_box_smart1_3.png" 
                         width="250" 
                         height="150" 
                         loading="lazy" 
@@ -545,7 +612,7 @@ if (!doNotTrack) {
 </aside>
 
      
-     
+    
         
     <div class="disqus-container">
     <div id="disqus_thread"></div>
@@ -601,10 +668,11 @@ if (!doNotTrack) {
     </section>
     
     <section class="powerby">
-         <br />
-        
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
     </section>
 </footer>
+
 
     
 <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
@@ -700,7 +768,7 @@ if (!doNotTrack) {
 
 
                 </div>
-                <h2 class="widget-title section-title"></h2>
+                <h2 class="widget-title section-title">目錄</h2>
                 
                 <div class="widget--toc">
                     <nav id="TableOfContents">

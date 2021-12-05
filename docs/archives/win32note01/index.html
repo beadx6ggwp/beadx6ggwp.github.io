@@ -13,7 +13,7 @@
 <meta name="twitter:title" content="[Win32筆記] 建立視窗 #1">
 <meta name="twitter:description" content="Win32基礎視窗建立"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://davidhsu666.com/archives/win32note01/img/1602103707812.jpg' />
-    <link rel="shortcut icon" href="/resource/favicon-32x32.png" />
+    <link rel="shortcut icon" href="/blog_resource/favicon-32x32.png" />
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJXR109WY7"></script>
 <script>
@@ -26,15 +26,6 @@ if (!doNotTrack) {
 }
 </script>
 
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap');
-     
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;800&display=swap');
-    :root {
-        --article-font-family: 'Roboto',"Noto Serif TC", var(--base-font-family);
-    }
-</style>
     </head>
     <body class="
     article-page has-toc
@@ -43,7 +34,7 @@ if (!doNotTrack) {
         (function() {
             const colorSchemeKey = 'StackColorScheme';
             if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
+                localStorage.setItem(colorSchemeKey, "dark");
             }
         })();
     </script><script>
@@ -68,7 +59,7 @@ if (!doNotTrack) {
 ">
     
         <div id="article-toolbar">
-            <a href="https://davidhsu666.com/" class="back-home">
+            <a href="/" class="back-home">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <polyline points="15 6 9 12 15 18" />
@@ -76,7 +67,7 @@ if (!doNotTrack) {
 
 
 
-                <span></span>
+                <span>返回</span>
             </a>
         </div>
     
@@ -115,8 +106,28 @@ if (!doNotTrack) {
     <h3 class="article-subtitle">
         Win32基礎視窗建立
     </h3>
+    
+
+    
     <footer class="article-time">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Dec 11, 2020</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <circle cx="12" cy="12" r="9" />
   <polyline points="12 7 12 12 15 15" />
@@ -124,8 +135,14 @@ if (!doNotTrack) {
 
 
 
-        <time class="article-time--published">Dec 11, 2020</time>
-    </footer></div>
+                <time class="article-time--reading">
+                    閱讀時間: 3 分鐘
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
 </header>
 
     <section class="article-content">
@@ -133,7 +150,7 @@ if (!doNotTrack) {
 <p>參考 : <a class="link" href="https://docs.microsoft.com/en-us/windows/win32/learnwin32/learn-to-program-for-windows"  target="_blank" rel="noopener"
     >MSDN Get Started with Win32 and C++</a></p>
 <h2 id="建立entry-point-winmain">建立entry point, WinMain()</h2>
-<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="c1">// int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow)
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="c1">// int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow)
 </span><span class="c1">// wWinMain為UniCode模式，WinMain為Ansi模式
 </span><span class="c1"></span>
 <span class="kt">int</span> <span class="n">CALLBACK</span> <span class="nf">WinMain</span><span class="p">(</span>
@@ -161,7 +178,7 @@ e.g. SW_MAXIMIZE (3)、SW_MINIMIZE (6)、SW_SHOWMINNOACTIVE (7 啟動時最小�
     >Window Class Styles</a>、
 <a class="link" href="https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-registerclassa"  target="_blank" rel="noopener"
     >RegisterClass</a></p>
-<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="k">typedef</span> <span class="k">struct</span> <span class="nc">tagWNDCLASSW</span> <span class="p">{</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="k">typedef</span> <span class="k">struct</span> <span class="nc">tagWNDCLASSW</span> <span class="p">{</span>
     <span class="n">UINT</span>        <span class="n">style</span><span class="p">;</span>
     <span class="n">WNDPROC</span>     <span class="n">lpfnWndProc</span><span class="p">;</span>
     <span class="kt">int</span>         <span class="n">cbClsExtra</span><span class="p">;</span>
@@ -179,7 +196,7 @@ e.g. SW_MAXIMIZE (3)、SW_MINIMIZE (6)、SW_SHOWMINNOACTIVE (7 啟動時最小�
 <p><code>hInstance</code> : 通常直接將WinMain的hinst傳過來即可，因為同一個視窗程式</p>
 <p><code>lpszMenuName</code> : Menu ID，不需要的話NULL即可</p>
 <p>所以基本上只需要幾個關鍵參數:</p>
-<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="n">WCHAR</span> <span class="n">cls_Name</span><span class="p">[]</span> <span class="o">=</span> <span class="sa">L</span><span class="s">&#34;Win32 Class&#34;</span><span class="p">;</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="n">WCHAR</span> <span class="n">cls_Name</span><span class="p">[]</span> <span class="o">=</span> <span class="sa">L</span><span class="s">&#34;Win32 Class&#34;</span><span class="p">;</span>
 <span class="n">WNDCLASS</span> <span class="n">wc</span> <span class="o">=</span> <span class="p">{</span> <span class="p">};</span>
 <span class="n">wc</span><span class="p">.</span><span class="n">lpfnWndProc</span> <span class="o">=</span> <span class="n">WindowProc</span><span class="p">;</span>
 <span class="n">wc</span><span class="p">.</span><span class="n">lpszClassName</span> <span class="o">=</span> <span class="n">cls_Name</span><span class="p">;</span>
@@ -191,7 +208,7 @@ e.g. SW_MAXIMIZE (3)、SW_MINIMIZE (6)、SW_SHOWMINNOACTIVE (7 啟動時最小�
     >MSDN CreateWindowExA function</a>、
 <a class="link" href="https://docs.microsoft.com/en-us/windows/win32/winmsg/window-styles"  target="_blank" rel="noopener"
     >window style values</a></p>
-<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="kt">void</span> <span class="nf">CreateWindowA</span><span class="p">(</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="kt">void</span> <span class="nf">CreateWindowA</span><span class="p">(</span>
    <span class="n">lpClassName</span><span class="p">,</span>     <span class="c1">//類別名稱，要和剛剛一致
 </span><span class="c1"></span>   <span class="n">lpWindowName</span><span class="p">,</span>    <span class="c1">//標題文字
 </span><span class="c1"></span>   <span class="n">dwStyle</span><span class="p">,</span>         <span class="c1">//視窗外觀樣式 window style values
@@ -207,7 +224,7 @@ e.g. SW_MAXIMIZE (3)、SW_MINIMIZE (6)、SW_SHOWMINNOACTIVE (7 啟動時最小�
 <span class="n">returnType</span> <span class="n">HWND</span>
 </code></pre></div><p>使用方式:
 基本上照著參數給予資料，就會執行建立視窗這個動作，並返回HWND(此視窗的handle)</p>
-<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="n">HWND</span> <span class="n">hwnd</span> <span class="o">=</span> <span class="n">CreateWindow</span><span class="p">(</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="n">HWND</span> <span class="n">hwnd</span> <span class="o">=</span> <span class="n">CreateWindow</span><span class="p">(</span>
         <span class="n">cls_Name</span><span class="p">,</span>               <span class="c1">//類別名稱，註冊與建立要是同個視窗類別
 </span><span class="c1"></span>        <span class="sa">L</span><span class="s">&#34;Win32 test&#34;</span><span class="p">,</span>          <span class="c1">//標題文字
 </span><span class="c1"></span>        <span class="n">WS_OVERLAPPEDWINDOW</span><span class="p">,</span>    <span class="c1">//視窗外觀樣式
@@ -223,23 +240,30 @@ e.g. SW_MAXIMIZE (3)、SW_MINIMIZE (6)、SW_SHOWMINNOACTIVE (7 啟動時最小�
 <span class="k">if</span> <span class="p">(</span><span class="n">hwnd</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span> <span class="c1">//判斷是否成功Create
 </span><span class="c1"></span>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 </code></pre></div><h2 id="訊息監聽event-handler-winproc">訊息監聽(Event Handler) WinProc</h2>
-<p><figure style="flex-grow: 177; flex-basis: 426px">
-		<a href="/archives/win32note01/img/1602103707812.jpg" data-size="432x243"><img src="/archives/win32note01/img/1602103707812.jpg"
-				
-				width="432"
-				height="243"
-				loading="lazy"
-				alt="訊息流程">
-		</a>
-		
-		<figcaption>訊息流程</figcaption>
-		
-	</figure></p>
+<p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 177; 
+			flex-basis: 426px"
+	>
+	<a href="/archives/win32note01/img/1602103707812.jpg" data-size="432x243">
+		<img src="/archives/win32note01/img/1602103707812.jpg"
+			width="432"
+			height="243"
+			
+			loading="lazy"
+			alt="訊息流程">
+	</a>
+	
+	<figcaption>訊息流程</figcaption>
+	
+</figure></p>
 <p>整個視窗程式不是單純建立而已，Windows背後會處裡很多事情，像是基本滑鼠鍵盤的IO、WM_CREATE建立時發起的事件、WM_DESTROY(在關閉視窗後釋放資源)、WM_Paint視窗繪製事件等等，所以需要透過監聽的方式持續檢查收到甚麼消息</p>
 <p>如果只有前面那幾段，程式會是開起來後馬上關掉，其實不是執行失敗，而是執行後馬上就結束了，像是Console中可以透過system(&ldquo;pause&rdquo;)或是getchar()來卡著程式直到使用者輸入，但視窗程式用戶除了鍵盤以外還有滑鼠等各種操作，如移動視窗、縮放視窗、縮小視窗等等，用getchar()會導致程式卡在這裡無法進行其他操作</p>
 <p>所以windows視窗程式透過無限迴圈讓程式一直不結束，只是這樣一樣甚麼事情都做不了，也無法關閉程式，這時就有了事件監聽這種設計，在必要的時候傳指令給程式，讓程式做出對應的功能，像是按下X的時候，系統會送出QUIT的事件，讓程式知道現在要關閉程式釋放資源</p>
 <p>而有事件監聽後，就要有地方來儲存累積起來的事件，讓程式逐一處理，而這就是訊息序列MsgQueue</p>
-<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++">  <span class="k">typedef</span> <span class="k">struct</span> <span class="nc">tagMSG</span> <span class="p">{</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++">  <span class="k">typedef</span> <span class="k">struct</span> <span class="nc">tagMSG</span> <span class="p">{</span>
     <span class="n">HWND</span>   <span class="n">hwnd</span><span class="p">;</span>
     <span class="n">UINT</span>   <span class="n">message</span><span class="p">;</span>
     <span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">;</span>
@@ -249,7 +273,7 @@ e.g. SW_MAXIMIZE (3)、SW_MINIMIZE (6)、SW_SHOWMINNOACTIVE (7 啟動時最小�
   <span class="p">}</span> <span class="n">MSG</span><span class="p">,</span> <span class="o">*</span><span class="n">PMSG</span><span class="p">,</span> <span class="o">*</span><span class="n">LPMSG</span><span class="p">;</span>
 </code></pre></div><h2 id="完整範例code">完整範例Code</h2>
 <p>執行方法，VS建立empte winodws專案，加入CPP檔案並把這段貼上即可</p>
-<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="cp">#include</span> <span class="cpf">&lt;Windows.h&gt;</span><span class="cp">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="cp">#include</span> <span class="cpf">&lt;Windows.h&gt;</span><span class="cp">
 </span><span class="cp"></span>
 <span class="c1">//LRESULT CALLBACK WindowProc(_In_ HWND hwnd, _In_ UINT uMsg, _In_ WPARAM wParam, _In_ LPARAM lParam);
 </span><span class="c1"></span><span class="n">LRESULT</span> <span class="n">CALLBACK</span> <span class="nf">WindowProc</span><span class="p">(</span><span class="n">HWND</span> <span class="n">hwnd</span><span class="p">,</span> <span class="n">UINT</span> <span class="n">uMsg</span><span class="p">,</span> <span class="n">WPARAM</span> <span class="n">wParam</span><span class="p">,</span> <span class="n">LPARAM</span> <span class="n">lParam</span><span class="p">);</span><span class="c1">//MSDN
@@ -367,16 +391,17 @@ e.g. SW_MAXIMIZE (3)、SW_MINIMIZE (6)、SW_SHOWMINNOACTIVE (7 啟動時最小�
     </section>
     </footer>
 
+
     
         <link 
                 rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3&#43;Aro6EYUG4&#43;cU&#43;KJWu/X"crossorigin="anonymous"
+                href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css"integrity="sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn"crossorigin="anonymous"
             ><script 
-                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"integrity="sha384-g7c&#43;Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI&#43;sEnkvrMWph2EDg4"crossorigin="anonymous"
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.js"integrity="sha384-pK1WpvzWVBQiP0/GjnvRxV4mOb0oxFuyRxJlk6vVw146n3egcN5C925NCP7a7BY8"crossorigin="anonymous"
                 defer="true"
                 >
             </script><script 
-                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC&#43;Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa"crossorigin="anonymous"
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/contrib/auto-render.min.js"integrity="sha384-vZTG03m&#43;2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl"crossorigin="anonymous"
                 defer="true"
                 >
             </script><script>
@@ -396,7 +421,7 @@ e.g. SW_MAXIMIZE (3)、SW_MINIMIZE (6)、SW_SHOWMINNOACTIVE (7 啟動時最小�
     <aside class="related-contents--wrapper">
     
     
-        <h2 class="section-title"></h2>
+        <h2 class="section-title">相關文章</h2>
         <div class="related-contents">
             <div class="flex article-list--tile">
                 
@@ -450,7 +475,7 @@ e.g. SW_MAXIMIZE (3)、SW_MINIMIZE (6)、SW_SHOWMINNOACTIVE (7 啟動時最小�
         
         
             <div class="article-image">
-                <img src="/archives/quadtree_in_2d/img/Quad_013.a7ee28c0eeb895aba73c942cef9f742e_hu646d8ae9c65ce621115142c45ba5d5ba_35828_250x150_fill_box_smart1_2.png" 
+                <img src="/archives/quadtree_in_2d/img/Quad_013.a7ee28c0eeb895aba73c942cef9f742e_hu646d8ae9c65ce621115142c45ba5d5ba_35828_250x150_fill_box_smart1_3.png" 
                         width="250" 
                         height="150" 
                         loading="lazy" 
@@ -516,7 +541,7 @@ e.g. SW_MAXIMIZE (3)、SW_MINIMIZE (6)、SW_SHOWMINNOACTIVE (7 啟動時最小�
 </aside>
 
      
-     
+    
         
     <div class="disqus-container">
     <div id="disqus_thread"></div>
@@ -572,10 +597,11 @@ e.g. SW_MAXIMIZE (3)、SW_MINIMIZE (6)、SW_SHOWMINNOACTIVE (7 啟動時最小�
     </section>
     
     <section class="powerby">
-         <br />
-        
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
     </section>
 </footer>
+
 
     
 <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
@@ -671,7 +697,7 @@ e.g. SW_MAXIMIZE (3)、SW_MINIMIZE (6)、SW_SHOWMINNOACTIVE (7 啟動時最小�
 
 
                 </div>
-                <h2 class="widget-title section-title"></h2>
+                <h2 class="widget-title section-title">目錄</h2>
                 
                 <div class="widget--toc">
                     <nav id="TableOfContents">

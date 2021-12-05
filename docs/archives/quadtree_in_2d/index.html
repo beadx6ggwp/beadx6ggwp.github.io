@@ -13,7 +13,7 @@
 <meta name="twitter:title" content="碰撞檢測的優化-四叉樹(Quadtree)">
 <meta name="twitter:description" content="介紹如何優化大量物體的物體碰撞"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://davidhsu666.com/archives/quadtree_in_2d/img/Quad_013.png' />
-    <link rel="shortcut icon" href="/resource/favicon-32x32.png" />
+    <link rel="shortcut icon" href="/blog_resource/favicon-32x32.png" />
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJXR109WY7"></script>
 <script>
@@ -26,15 +26,6 @@ if (!doNotTrack) {
 }
 </script>
 
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&display=swap');
-     
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;800&display=swap');
-    :root {
-        --article-font-family: 'Roboto',"Noto Serif TC", var(--base-font-family);
-    }
-</style>
     </head>
     <body class="
     article-page has-toc
@@ -43,7 +34,7 @@ if (!doNotTrack) {
         (function() {
             const colorSchemeKey = 'StackColorScheme';
             if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
+                localStorage.setItem(colorSchemeKey, "dark");
             }
         })();
     </script><script>
@@ -68,7 +59,7 @@ if (!doNotTrack) {
 ">
     
         <div id="article-toolbar">
-            <a href="https://davidhsu666.com/" class="back-home">
+            <a href="/" class="back-home">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <polyline points="15 6 9 12 15 18" />
@@ -76,7 +67,7 @@ if (!doNotTrack) {
 
 
 
-                <span></span>
+                <span>返回</span>
             </a>
         </div>
     
@@ -115,8 +106,28 @@ if (!doNotTrack) {
     <h3 class="article-subtitle">
         介紹如何優化大量物體的物體碰撞
     </h3>
+    
+
+    
     <footer class="article-time">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Oct 27, 2018</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <circle cx="12" cy="12" r="9" />
   <polyline points="12 7 12 12 15 15" />
@@ -124,8 +135,14 @@ if (!doNotTrack) {
 
 
 
-        <time class="article-time--published">Oct 27, 2018</time>
-    </footer></div>
+                <time class="article-time--reading">
+                    閱讀時間: 3 分鐘
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
 </header>
 
     <section class="article-content">
@@ -142,111 +159,167 @@ if (!doNotTrack) {
 <p>許多遊戲都會需要碰撞檢測來判斷兩物體的碰撞，但這些演算法通常是較為昂貴的操作，如果無法有效率的選擇檢測目標，很可能會大幅降低執行的速度。(像是之前提到的<a class="link" href="https://davidhsu666.com/archives/gamecollisiondetection/"  target="_blank" rel="noopener"
     >SAT碰撞檢測</a>)</p>
 <p>在之前的”多邊形碰撞檢測”文中，也有提到當檢測物體越來越多時，基本逐一檢測的效率會越來越差，複雜度約為O(n^2)，就算排除重複檢測過的物體，只要是逐一檢測的方法就一定會走訪所有物件。</p>
-<p><figure style="flex-grow: 111; flex-basis: 267px">
-		<a href="/archives/quadtree_in_2d/img/Quad_001.png" data-size="303x272"><img src="/archives/quadtree_in_2d/img/Quad_001.png"
-				
-				width="303"
-				height="272"
-				loading="lazy"
-				>
-		</a>
-		
-	</figure></p>
+<p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 111; 
+			flex-basis: 267px"
+	>
+	<a href="/archives/quadtree_in_2d/img/Quad_001.png" data-size="303x272">
+		<img src="/archives/quadtree_in_2d/img/Quad_001.png"
+			width="303"
+			height="272"
+			
+			loading="lazy"
+			>
+	</a>
+	
+</figure></p>
 <p>從上圖可以得知直接全部檢測的話是4 x 5 = 20，如果扣掉重複，至少是4 + 3 + 2 + 1 = 10，但真正的問題是，<strong>就算1和3距離這麼遠，也照樣會檢查它們</strong>，那有沒有方法能解決這種狀況呢?</p>
 <p>這就是文章的主要內容，<strong>QuadTree</strong>。</p>
 <h2 id="1-什麼是quadtree">1. 什麼是QuadTree?</h2>
 <p>四叉樹(QuadTree)是一種劃分2D區域的樹狀資料結構，類似一般的二元樹，但子節點是4個，而不是2個。</p>
 <p>區域的劃分架構類似這樣 :</p>
-<p><figure style="flex-grow: 105; flex-basis: 254px">
-		<a href="/archives/quadtree_in_2d/img/Quad_002.png" data-size="160x151"><img src="/archives/quadtree_in_2d/img/Quad_002.png"
-				
-				width="160"
-				height="151"
-				loading="lazy"
-				alt="將區域分成四塊">
-		</a>
-		
-		<figcaption>將區域分成四塊</figcaption>
-		
-	</figure>
-<figure style="flex-grow: 115; flex-basis: 276px">
-		<a href="/archives/quadtree_in_2d/img/Quad_011.png" data-size="270x234"><img src="/archives/quadtree_in_2d/img/Quad_011.png"
-				
-				width="270"
-				height="234"
-				loading="lazy"
-				alt="每塊再往下劃分">
-		</a>
-		
-		<figcaption>每塊再往下劃分</figcaption>
-		
-	</figure>
-<figure style="flex-grow: 100; flex-basis: 240px">
-		<a href="/archives/quadtree_in_2d/img/Quad_003.png" data-size="402x402"><img src="/archives/quadtree_in_2d/img/Quad_003.png"
-				
-				width="402"
-				height="402"
-				loading="lazy"
-				alt="加入多個物體後的效果">
-		</a>
-		
-		<figcaption>加入多個物體後的效果</figcaption>
-		
-	</figure>
-<figure style="flex-grow: 100; flex-basis: 240px">
-		<a href="/archives/quadtree_in_2d/img/Quad_010.gif" data-size="600x600"><img src="/archives/quadtree_in_2d/img/Quad_010.gif"
-				
-				width="600"
-				height="600"
-				loading="lazy"
-				alt="運行效果，點圖放大">
-		</a>
-		
-		<figcaption>運行效果，點圖放大</figcaption>
-		
-	</figure></p>
+<p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 105; 
+			flex-basis: 254px"
+	>
+	<a href="/archives/quadtree_in_2d/img/Quad_002.png" data-size="160x151">
+		<img src="/archives/quadtree_in_2d/img/Quad_002.png"
+			width="160"
+			height="151"
+			
+			loading="lazy"
+			alt="將區域分成四塊">
+	</a>
+	
+	<figcaption>將區域分成四塊</figcaption>
+	
+</figure>
+<figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 115; 
+			flex-basis: 276px"
+	>
+	<a href="/archives/quadtree_in_2d/img/Quad_011.png" data-size="270x234">
+		<img src="/archives/quadtree_in_2d/img/Quad_011.png"
+			width="270"
+			height="234"
+			
+			loading="lazy"
+			alt="每塊再往下劃分">
+	</a>
+	
+	<figcaption>每塊再往下劃分</figcaption>
+	
+</figure>
+<figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 100; 
+			flex-basis: 240px"
+	>
+	<a href="/archives/quadtree_in_2d/img/Quad_003.png" data-size="402x402">
+		<img src="/archives/quadtree_in_2d/img/Quad_003.png"
+			width="402"
+			height="402"
+			
+			loading="lazy"
+			alt="加入多個物體後的效果">
+	</a>
+	
+	<figcaption>加入多個物體後的效果</figcaption>
+	
+</figure>
+<figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 100; 
+			flex-basis: 240px"
+	>
+	<a href="/archives/quadtree_in_2d/img/Quad_010.gif" data-size="600x600">
+		<img src="/archives/quadtree_in_2d/img/Quad_010.gif"
+			width="600"
+			height="600"
+			
+			loading="lazy"
+			alt="運行效果，點圖放大">
+	</a>
+	
+	<figcaption>運行效果，點圖放大</figcaption>
+	
+</figure></p>
 <p>並限制每個區域能容納的上限，當超過後就將該區域再往下分割4塊，這樣就能夠將每個物體進行區域分類，這樣在檢查的時候就可以鎖定部分區域的物體，從而增加效率。</p>
 <h2 id="2-插入流程">2. 插入流程:</h2>
 <p>假設我先設定每個區域只能容納4個物體，只要超過該容量，就要分割該區域。</p>
 <p>左圖方形區域已經有4個物體，想再加入第5個時，就必須分割成4個子區域，再將第5顆分類到最近的左上角區域中，如右圖:</p>
-<p><figure style="flex-grow: 245; flex-basis: 588px">
-		<a href="/archives/quadtree_in_2d/img/Quad_004.png" data-size="873x356"><img src="/archives/quadtree_in_2d/img/Quad_004.png"
-				
-				width="873"
-				height="356"
-				loading="lazy"
-				alt="超過容量時擴展子樹">
-		</a>
-		
-		<figcaption>超過容量時擴展子樹</figcaption>
-		
-	</figure></p>
+<p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 245; 
+			flex-basis: 588px"
+	>
+	<a href="/archives/quadtree_in_2d/img/Quad_004.png" data-size="873x356">
+		<img src="/archives/quadtree_in_2d/img/Quad_004.png"
+			width="873"
+			height="356"
+			
+			loading="lazy"
+			alt="超過容量時擴展子樹">
+	</a>
+	
+	<figcaption>超過容量時擴展子樹</figcaption>
+	
+</figure></p>
 <p>以此類推，當要放入第9顆物體時，發現黑色區域也滿了，所以就再往下分割紅色區域，並放入離該物體最近的右下角區域中，如下圖:</p>
-<p><figure style="flex-grow: 241; flex-basis: 580px">
-		<a href="/archives/quadtree_in_2d/img/Quad_005.png" data-size="856x354"><img src="/archives/quadtree_in_2d/img/Quad_005.png"
-				
-				width="856"
-				height="354"
-				loading="lazy"
-				alt="此區域也超過後，繼續擴展下去">
-		</a>
-		
-		<figcaption>此區域也超過後，繼續擴展下去</figcaption>
-		
-	</figure></p>
+<p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 241; 
+			flex-basis: 580px"
+	>
+	<a href="/archives/quadtree_in_2d/img/Quad_005.png" data-size="856x354">
+		<img src="/archives/quadtree_in_2d/img/Quad_005.png"
+			width="856"
+			height="354"
+			
+			loading="lazy"
+			alt="此區域也超過後，繼續擴展下去">
+	</a>
+	
+	<figcaption>此區域也超過後，繼續擴展下去</figcaption>
+	
+</figure></p>
 <p>最後，就可以得出這樣的樹狀結構，這就是為什麼會叫做4叉樹的原因，如下圖:</p>
-<p><figure style="flex-grow: 227; flex-basis: 547px">
-		<a href="/archives/quadtree_in_2d/img/Quad_006.png" data-size="807x354"><img src="/archives/quadtree_in_2d/img/Quad_006.png"
-				
-				width="807"
-				height="354"
-				loading="lazy"
-				alt="完整流程">
-		</a>
-		
-		<figcaption>完整流程</figcaption>
-		
-	</figure></p>
+<p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 227; 
+			flex-basis: 547px"
+	>
+	<a href="/archives/quadtree_in_2d/img/Quad_006.png" data-size="807x354">
+		<img src="/archives/quadtree_in_2d/img/Quad_006.png"
+			width="807"
+			height="354"
+			
+			loading="lazy"
+			alt="完整流程">
+	</a>
+	
+	<figcaption>完整流程</figcaption>
+	
+</figure></p>
 <h2 id="3-搜尋流程">3. 搜尋流程:</h2>
 <p>給定一搜尋範圍，並逐一排除不可能的區域，最後取得搜尋範圍內的物體。</p>
 <p>接續前面插入的狀態，假設我要檢測綠色框框內的物體是否發生碰撞，步驟如下 :</p>
@@ -256,43 +329,64 @@ if (!doNotTrack) {
 <li>再往下檢察左上黑框的紅色子區域，並排除左上、左下，發現有3個物體在綠框內，紅框沒有子領域，走訪結束。</li>
 </ol>
 <p>最後回傳搜尋到的5個物體。</p>
-<p><figure style="flex-grow: 142; flex-basis: 341px">
-		<a href="/archives/quadtree_in_2d/img/Quad_008.png" data-size="776x545"><img src="/archives/quadtree_in_2d/img/Quad_008.png"
-				
-				width="776"
-				height="545"
-				loading="lazy"
-				alt="搜尋步驟">
-		</a>
-		
-		<figcaption>搜尋步驟</figcaption>
-		
-	</figure>
-<figure style="flex-grow: 214; flex-basis: 514px">
-		<a href="/archives/quadtree_in_2d/img/Quad_007.png" data-size="759x354"><img src="/archives/quadtree_in_2d/img/Quad_007.png"
-				
-				width="759"
-				height="354"
-				loading="lazy"
-				alt="大致流程">
-		</a>
-		
-		<figcaption>大致流程</figcaption>
-		
-	</figure></p>
+<p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 142; 
+			flex-basis: 341px"
+	>
+	<a href="/archives/quadtree_in_2d/img/Quad_008.png" data-size="776x545">
+		<img src="/archives/quadtree_in_2d/img/Quad_008.png"
+			width="776"
+			height="545"
+			
+			loading="lazy"
+			alt="搜尋步驟">
+	</a>
+	
+	<figcaption>搜尋步驟</figcaption>
+	
+</figure>
+<figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 214; 
+			flex-basis: 514px"
+	>
+	<a href="/archives/quadtree_in_2d/img/Quad_007.png" data-size="759x354">
+		<img src="/archives/quadtree_in_2d/img/Quad_007.png"
+			width="759"
+			height="354"
+			
+			loading="lazy"
+			alt="大致流程">
+	</a>
+	
+	<figcaption>大致流程</figcaption>
+	
+</figure></p>
 <p>如果是碰撞檢測的應用的話，就是把綠框換成該物體周圍可能發生碰撞的範圍，再來套入搜尋，就能更加簡化碰撞檢測的流程，如下圖 :</p>
-<p><figure style="flex-grow: 105; flex-basis: 253px">
-		<a href="/archives/quadtree_in_2d/img/Quad_009.png" data-size="172x163"><img src="/archives/quadtree_in_2d/img/Quad_009.png"
-				
-				width="172"
-				height="163"
-				loading="lazy"
-				alt="給定搜索形狀">
-		</a>
-		
-		<figcaption>給定搜索形狀</figcaption>
-		
-	</figure></p>
+<p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 105; 
+			flex-basis: 253px"
+	>
+	<a href="/archives/quadtree_in_2d/img/Quad_009.png" data-size="172x163">
+		<img src="/archives/quadtree_in_2d/img/Quad_009.png"
+			width="172"
+			height="163"
+			
+			loading="lazy"
+			alt="給定搜索形狀">
+	</a>
+	
+	<figcaption>給定搜索形狀</figcaption>
+	
+</figure></p>
 <p>假設要檢查綠色圈圈與那些物體發生碰撞，透過前述的篩選流程，搜尋到最後，只要針對和綠圈區域相交的3個物體檢測就好，以此達成碰撞效率優化。</p>
 <p>這就是四叉樹的原理，接著進入實作環節吧。</p>
 <h2 id="4-實作quadtree插入">4. 實作QuadTree–插入</h2>
@@ -303,7 +397,7 @@ if (!doNotTrack) {
 <li>如果A區域容量不夠時，將A區域劃分4個子區域，並將該點加入離它最近的子區域</li>
 </ol>
 <p>建立基本物件 :</p>
-<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="kr">class</span> <span class="nx">Point</span> <span class="p">{</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kr">class</span> <span class="nx">Point</span> <span class="p">{</span>
     <span class="nx">constructor</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">collisionType</span> <span class="o">=</span> <span class="s2">&#34;point&#34;</span><span class="p">;</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">x</span><span class="p">;</span>
@@ -321,20 +415,27 @@ if (!doNotTrack) {
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div><p>四個子區域的規劃:</p>
-<p><figure style="flex-grow: 169; flex-basis: 407px">
-		<a href="/archives/quadtree_in_2d/img/Quad_012.png" data-size="1133x667"><img src="/archives/quadtree_in_2d/img/Quad_012.png"
-				
-				width="1133"
-				height="667"
-				loading="lazy"
-				alt="定義每塊區域的範圍">
-		</a>
-		
-		<figcaption>定義每塊區域的範圍</figcaption>
-		
-	</figure></p>
+<p><figure 
+	
+		class="gallery-image" 
+		style="
+			flex-grow: 169; 
+			flex-basis: 407px"
+	>
+	<a href="/archives/quadtree_in_2d/img/Quad_012.png" data-size="1133x667">
+		<img src="/archives/quadtree_in_2d/img/Quad_012.png"
+			width="1133"
+			height="667"
+			
+			loading="lazy"
+			alt="定義每塊區域的範圍">
+	</a>
+	
+	<figcaption>定義每塊區域的範圍</figcaption>
+	
+</figure></p>
 <p>並依照前述所說的插入順序，來建立QuadTree :</p>
-<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="kr">class</span> <span class="nx">QuadTree</span> <span class="p">{</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kr">class</span> <span class="nx">QuadTree</span> <span class="p">{</span>
     <span class="nx">constructor</span><span class="p">(</span><span class="nx">boundary</span><span class="p">,</span> <span class="nx">level</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">MAX_OBJ</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span><span class="c1">// 該容器最大容量
 </span><span class="c1"></span>        <span class="k">this</span><span class="p">.</span><span class="nx">MAX_LEVEL</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span><span class="c1">// 最大深度
@@ -408,7 +509,7 @@ if (!doNotTrack) {
 <span class="p">}</span>
 </code></pre></div><p>至於程式中CheckCollision(ObjectA, ObjectB)，就是單純的點與矩形的碰撞檢測，請參考結尾附上的Code。</p>
 <p>使用方法 :</p>
-<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="c1">// 建立QuadTree
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="c1">// 建立QuadTree
 </span><span class="c1"></span><span class="kd">var</span> <span class="nx">qt</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">QuadTree</span><span class="p">(</span><span class="k">new</span> <span class="nx">Rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">Width</span><span class="p">,</span> <span class="nx">Height</span><span class="p">));</span>
 
 <span class="c1">// 新增物體
@@ -429,7 +530,7 @@ if (!doNotTrack) {
 </ol>
 <p>可以比對一下上面講的搜尋流程，應該會更清楚。</p>
 <p>根據上述步驟，在QuadTree中加入query這個function :</p>
-<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="nx">query</span><span class="p">(</span><span class="nx">range</span><span class="p">,</span> <span class="nx">found</span><span class="p">){</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="nx">query</span><span class="p">(</span><span class="nx">range</span><span class="p">,</span> <span class="nx">found</span><span class="p">){</span>
     <span class="c1">// 如果沒有給定回傳的陣列，就建立一個
 </span><span class="c1"></span>    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">found</span><span class="p">)</span> <span class="nx">found</span> <span class="o">=</span> <span class="p">[];</span>
 
@@ -454,7 +555,7 @@ if (!doNotTrack) {
 </span><span class="c1"></span>    <span class="k">return</span> <span class="nx">found</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div><p>而使用方法也非常簡單，給定一個搜尋區域，接著query就會直接撈出所有在搜尋範圍內的物體了 :</p>
-<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="c1">// 假設queryTree已經新增一些物體了
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="c1">// 假設queryTree已經新增一些物體了
 </span><span class="c1">// 建立一個搜尋範圍
 </span><span class="c1"></span><span class="kd">var</span> <span class="nx">checkRange</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Rect</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">150</span><span class="p">);</span>
 
@@ -470,7 +571,8 @@ if (!doNotTrack) {
 <h2 id="7-總結">7. 總結</h2>
 <p>QuadTree或許不是最好的多物體檢測法，但多數狀況下還堪用，至於QuadTree優化的部分，可以參考這篇文章，講得非常清楚。</p>
 <p>這邊預計要再補上QuadTree跟其他檢測法的優缺點，但目前只研究QuadTree，所以無從比較，日後補上。</p>
-<p>文章中所有的Source Code都在Github中 : <a href="https://github.com/md9830415/JS-QuadTree">https://github.com/md9830415/JS-QuadTree</a></p>
+<p>文章中所有的Source Code都在Github中 : <a class="link" href="https://github.com/md9830415/JS-QuadTree"  target="_blank" rel="noopener"
+    >https://github.com/md9830415/JS-QuadTree</a></p>
 <p>大概就是這樣了，下期再見，掰掰。</p>
 <h2 id="8-參考資源">8. 參考資源</h2>
 <ul>
@@ -510,16 +612,17 @@ if (!doNotTrack) {
     </section>
     </footer>
 
+
     
         <link 
                 rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3&#43;Aro6EYUG4&#43;cU&#43;KJWu/X"crossorigin="anonymous"
+                href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css"integrity="sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn"crossorigin="anonymous"
             ><script 
-                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"integrity="sha384-g7c&#43;Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI&#43;sEnkvrMWph2EDg4"crossorigin="anonymous"
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.js"integrity="sha384-pK1WpvzWVBQiP0/GjnvRxV4mOb0oxFuyRxJlk6vVw146n3egcN5C925NCP7a7BY8"crossorigin="anonymous"
                 defer="true"
                 >
             </script><script 
-                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC&#43;Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa"crossorigin="anonymous"
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/contrib/auto-render.min.js"integrity="sha384-vZTG03m&#43;2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl"crossorigin="anonymous"
                 defer="true"
                 >
             </script><script>
@@ -539,7 +642,7 @@ if (!doNotTrack) {
     <aside class="related-contents--wrapper">
     
     
-        <h2 class="section-title"></h2>
+        <h2 class="section-title">相關文章</h2>
         <div class="related-contents">
             <div class="flex article-list--tile">
                 
@@ -659,7 +762,7 @@ if (!doNotTrack) {
 </aside>
 
      
-     
+    
         
     <div class="disqus-container">
     <div id="disqus_thread"></div>
@@ -715,10 +818,11 @@ if (!doNotTrack) {
     </section>
     
     <section class="powerby">
-         <br />
-        
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
     </section>
 </footer>
+
 
     
 <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
@@ -814,7 +918,7 @@ if (!doNotTrack) {
 
 
                 </div>
-                <h2 class="widget-title section-title"></h2>
+                <h2 class="widget-title section-title">目錄</h2>
                 
                 <div class="widget--toc">
                     <nav id="TableOfContents">
