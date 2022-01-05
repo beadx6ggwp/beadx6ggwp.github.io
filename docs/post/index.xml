@@ -219,6 +219,21 @@ js_dragTest 嘗試製作簡易圖形物件</description>
     </item>
     
     <item>
+      <title>俄羅斯方塊</title>
+      <link>https://davidhsu666.com/archives/js-tetris/</link>
+      <pubDate>Wed, 05 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/js-tetris/</guid>
+      <description> 
+點此遊玩 : ver.0.3
+Source Code : Github
+遊玩方式 :
+ 移動方塊 : 左鍵、右鍵 往下移動 : 下鍵 直接放置方塊 : 空白鍵 保留/交換方塊 : C鍵  遊戲目標 : 越高分越好
+目前功能:
+ 基本操作與消除 底部的方塊位置預覽 能從右側得知接下來的方塊  </description>
+    </item>
+    
+    <item>
       <title>JS Firework 跨年煙火</title>
       <link>https://davidhsu666.com/archives/js-firework-%E8%B7%A8%E5%B9%B4%E7%85%99%E7%81%AB/</link>
       <pubDate>Fri, 31 Aug 2018 10:55:51 +0800</pubDate>

@@ -25,5 +25,20 @@
  透過事件觸發器處理各式地圖事件 像是地圖上下坡，需要切換碰撞層，與NPC對話區域的觸發器，或是走斜坡時會被減速等等   發射劍氣   事件觸發器-加速</description>
     </item>
     
+    <item>
+      <title>俄羅斯方塊</title>
+      <link>https://davidhsu666.com/archives/js-tetris/</link>
+      <pubDate>Wed, 05 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/js-tetris/</guid>
+      <description> 
+點此遊玩 : ver.0.3
+Source Code : Github
+遊玩方式 :
+ 移動方塊 : 左鍵、右鍵 往下移動 : 下鍵 直接放置方塊 : 空白鍵 保留/交換方塊 : C鍵  遊戲目標 : 越高分越好
+目前功能:
+ 基本操作與消除 底部的方塊位置預覽 能從右側得知接下來的方塊  </description>
+    </item>
+    
   </channel>
 </rss>
