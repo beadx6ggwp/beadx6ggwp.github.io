@@ -1,0 +1,5 @@
+hugo new post/[name]/index.md
+
+撰寫文章，並將圖片放在img中
+
+hugo server -D預覽

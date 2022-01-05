@@ -3077,6 +3077,223 @@ $$proj_{\hat n}V_{1}=(V_{1} \cdot \hat{n})\hat{n}$$&lt;/p&gt;
 </description>
         </item>
         <item>
+        <title>Toy project 小程式合輯</title>
+        <link>https://davidhsu666.com/archives/toy-project/</link>
+        <pubDate>Sat, 01 Dec 2018 00:00:00 +0000</pubDate>
+        
+        <guid>https://davidhsu666.com/archives/toy-project/</guid>
+        <description>&lt;img src="https://davidhsu666.com/archives/toy-project/img/front.png" alt="Featured image of post Toy project 小程式合輯" /&gt;&lt;p&gt;Source Code : &lt;a class=&#34;link&#34; href=&#34;https://github.com/beadx6ggwp/toy-project&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Link&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;c-tic-tac-toe&#34;&gt;C# Tic-Tac-Toe&lt;/h2&gt;
+&lt;p&gt;與電腦對戰OOXX&lt;/p&gt;
+&lt;p&gt;&lt;figure 
+	
+		class=&#34;gallery-image&#34; 
+		style=&#34;
+			flex-grow: 149; 
+			flex-basis: 358px&#34;
+	&gt;
+	&lt;a href=&#34;https://davidhsu666.com/archives/toy-project/img/OOXX.png&#34; data-size=&#34;505x338&#34;&gt;
+		&lt;img src=&#34;https://davidhsu666.com/archives/toy-project/img/OOXX.png&#34;
+			width=&#34;505&#34;
+			height=&#34;338&#34;
+			
+			loading=&#34;lazy&#34;
+			&gt;
+	&lt;/a&gt;
+	
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2 id=&#34;c-五子棋&#34;&gt;C# 五子棋&lt;/h2&gt;
+&lt;p&gt;透過累計棋盤分數加權的方式，來完成電腦VS玩家的互動&lt;/p&gt;
+&lt;p&gt;&lt;figure 
+	
+		class=&#34;gallery-image&#34; 
+		style=&#34;
+			flex-grow: 132; 
+			flex-basis: 317px&#34;
+	&gt;
+	&lt;a href=&#34;https://davidhsu666.com/archives/toy-project/img/five.png&#34; data-size=&#34;498x377&#34;&gt;
+		&lt;img src=&#34;https://davidhsu666.com/archives/toy-project/img/five.png&#34;
+			width=&#34;498&#34;
+			height=&#34;377&#34;
+			
+			loading=&#34;lazy&#34;
+			&gt;
+	&lt;/a&gt;
+	
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2 id=&#34;c-ball-game&#34;&gt;C# Ball game&lt;/h2&gt;
+&lt;p&gt;平面射擊遊戲，敵人會一直追著玩家，透過WASD移動，滑鼠左鍵射擊，想嘗試模仿diep.io&lt;/p&gt;
+&lt;p&gt;&lt;figure 
+	
+		class=&#34;gallery-image&#34; 
+		style=&#34;
+			flex-grow: 157; 
+			flex-basis: 377px&#34;
+	&gt;
+	&lt;a href=&#34;https://davidhsu666.com/archives/toy-project/img/ball0.2.jpg&#34; data-size=&#34;726x462&#34;&gt;
+		&lt;img src=&#34;https://davidhsu666.com/archives/toy-project/img/ball0.2.jpg&#34;
+			width=&#34;726&#34;
+			height=&#34;462&#34;
+			
+			loading=&#34;lazy&#34;
+			&gt;
+	&lt;/a&gt;
+	
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2 id=&#34;js_pingpong&#34;&gt;js_pingpong&lt;/h2&gt;
+&lt;p&gt;乒乓球對打&lt;/p&gt;
+&lt;p&gt;線上執行 : &lt;a class=&#34;link&#34; href=&#34;https://davidhsu666.com/downloads/js_pingpong/jstest.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Link&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;第一次學JS，讓我對一些2D平面遊戲撰寫更有了解
+&lt;figure 
+	
+		class=&#34;gallery-image&#34; 
+		style=&#34;
+			flex-grow: 161; 
+			flex-basis: 386px&#34;
+	&gt;
+	&lt;a href=&#34;https://davidhsu666.com/archives/toy-project/img/js_pingpong.png&#34; data-size=&#34;1027x637&#34;&gt;
+		&lt;img src=&#34;https://davidhsu666.com/archives/toy-project/img/js_pingpong.png&#34;
+			width=&#34;1027&#34;
+			height=&#34;637&#34;
+			
+			loading=&#34;lazy&#34;
+			&gt;
+	&lt;/a&gt;
+	
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2 id=&#34;js_memorygame&#34;&gt;js_memorygame&lt;/h2&gt;
+&lt;p&gt;翻牌記憶遊戲&lt;/p&gt;
+&lt;p&gt;線上執行 : &lt;a class=&#34;link&#34; href=&#34;https://davidhsu666.com/downloads/js_memorygame/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Link&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure 
+	
+		class=&#34;gallery-image&#34; 
+		style=&#34;
+			flex-grow: 115; 
+			flex-basis: 276px&#34;
+	&gt;
+	&lt;a href=&#34;https://davidhsu666.com/archives/toy-project/img/memory_game.png&#34; data-size=&#34;786x682&#34;&gt;
+		&lt;img src=&#34;https://davidhsu666.com/archives/toy-project/img/memory_game.png&#34;
+			width=&#34;786&#34;
+			height=&#34;682&#34;
+			
+			loading=&#34;lazy&#34;
+			&gt;
+	&lt;/a&gt;
+	
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2 id=&#34;js_snake&#34;&gt;js_snake&lt;/h2&gt;
+&lt;p&gt;經典貪食蛇&lt;/p&gt;
+&lt;p&gt;線上執行 : &lt;a class=&#34;link&#34; href=&#34;https://davidhsu666.com/downloads/js_snake/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Link&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure 
+	
+		class=&#34;gallery-image&#34; 
+		style=&#34;
+			flex-grow: 172; 
+			flex-basis: 414px&#34;
+	&gt;
+	&lt;a href=&#34;https://davidhsu666.com/archives/toy-project/img/js_snake.png&#34; data-size=&#34;752x435&#34;&gt;
+		&lt;img src=&#34;https://davidhsu666.com/archives/toy-project/img/js_snake.png&#34;
+			width=&#34;752&#34;
+			height=&#34;435&#34;
+			
+			loading=&#34;lazy&#34;
+			&gt;
+	&lt;/a&gt;
+	
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2 id=&#34;js_gerrnraint&#34;&gt;js_gerrnrainT&lt;/h2&gt;
+&lt;p&gt;仿造駭客任務的特效&lt;/p&gt;
+&lt;p&gt;線上執行 : &lt;a class=&#34;link&#34; href=&#34;https://davidhsu666.com/downloads/js_gerrnrainT/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Link&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure 
+	
+		class=&#34;gallery-image&#34; 
+		style=&#34;
+			flex-grow: 164; 
+			flex-basis: 394px&#34;
+	&gt;
+	&lt;a href=&#34;https://davidhsu666.com/archives/toy-project/img/js_gerrnrainT.png&#34; data-size=&#34;1259x766&#34;&gt;
+		&lt;img src=&#34;https://davidhsu666.com/archives/toy-project/img/js_gerrnrainT.png&#34;
+			width=&#34;1259&#34;
+			height=&#34;766&#34;
+			
+			loading=&#34;lazy&#34;
+			&gt;
+	&lt;/a&gt;
+	
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2 id=&#34;js_asteroidgame&#34;&gt;js_AsteroidGame&lt;/h2&gt;
+&lt;p&gt;宇宙飛機打隕石&lt;/p&gt;
+&lt;p&gt;第一次認識Coding train這個頻道，從接觸這頻道後讓我有了一個契機去了解各式演算法與應用&lt;/p&gt;
+&lt;p&gt;線上執行 : &lt;a class=&#34;link&#34; href=&#34;https://davidhsu666.com/downloads/js_AsteroidGame/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Link&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;參考Coding train : &lt;a class=&#34;link&#34; href=&#34;https://www.youtube.com/watch?v=hacZU523FyM&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.youtube.com/watch?v=hacZU523FyM&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure 
+	
+		class=&#34;gallery-image&#34; 
+		style=&#34;
+			flex-grow: 118; 
+			flex-basis: 283px&#34;
+	&gt;
+	&lt;a href=&#34;https://davidhsu666.com/archives/toy-project/img/js_AsteroidGame.png&#34; data-size=&#34;430x364&#34;&gt;
+		&lt;img src=&#34;https://davidhsu666.com/archives/toy-project/img/js_AsteroidGame.png&#34;
+			width=&#34;430&#34;
+			height=&#34;364&#34;
+			
+			loading=&#34;lazy&#34;
+			&gt;
+	&lt;/a&gt;
+	
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2 id=&#34;js_minesweeper&#34;&gt;js_Minesweeper&lt;/h2&gt;
+&lt;p&gt;踩地雷，線上執行 : &lt;a class=&#34;link&#34; href=&#34;https://davidhsu666.com/downloads/js_Minesweeper/Minesweeper0.1/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Link&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure 
+	
+		class=&#34;gallery-image&#34; 
+		style=&#34;
+			flex-grow: 104; 
+			flex-basis: 250px&#34;
+	&gt;
+	&lt;a href=&#34;https://davidhsu666.com/archives/toy-project/img/Minesweeper0.1.png&#34; data-size=&#34;677x649&#34;&gt;
+		&lt;img src=&#34;https://davidhsu666.com/archives/toy-project/img/Minesweeper0.1.png&#34;
+			width=&#34;677&#34;
+			height=&#34;649&#34;
+			
+			loading=&#34;lazy&#34;
+			&gt;
+	&lt;/a&gt;
+	
+&lt;/figure&gt;&lt;/p&gt;
+&lt;h2 id=&#34;js_dragtest&#34;&gt;js_dragTest&lt;/h2&gt;
+&lt;p&gt;嘗試製作簡易圖形物件&lt;/p&gt;
+&lt;p&gt;線上執行 : &lt;a class=&#34;link&#34; href=&#34;https://davidhsu666.com/downloads/js_dragTest/test1/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Link&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure 
+	
+		class=&#34;gallery-image&#34; 
+		style=&#34;
+			flex-grow: 126; 
+			flex-basis: 303px&#34;
+	&gt;
+	&lt;a href=&#34;https://davidhsu666.com/archives/toy-project/img/dragtest.png&#34; data-size=&#34;617x488&#34;&gt;
+		&lt;img src=&#34;https://davidhsu666.com/archives/toy-project/img/dragtest.png&#34;
+			width=&#34;617&#34;
+			height=&#34;488&#34;
+			
+			loading=&#34;lazy&#34;
+			&gt;
+	&lt;/a&gt;
+	
+&lt;/figure&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>碰撞檢測的優化-四叉樹(Quadtree)</title>
         <link>https://davidhsu666.com/archives/quadtree_in_2d/</link>
         <pubDate>Sat, 27 Oct 2018 07:31:13 +0800</pubDate>
@@ -4008,6 +4225,8 @@ S——–E———————M———————–&lt;br&gt;
 &lt;p&gt;這小遊戲是我第一個破千行程式碼的專案，前前後後花了2個月左右，花了很多時間在想架構跟遊戲特效的呈現，到目前的進度算是有點成果，放到網站做個記錄。&lt;/p&gt;
 &lt;h2 id=&#34;遊戲連結&#34;&gt;遊戲連結&lt;/h2&gt;
 &lt;p&gt;ver.0.2.3 : &lt;a class=&#34;link&#34; href=&#34;https://davidhsu666.com/downloads/Shooting Game Algorithm Maniax/project1 ver0.2.3&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;Click Here&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;source code : &lt;a class=&#34;link&#34; href=&#34;https://github.com/beadx6ggwp/js-superball&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Github&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&#34;遊玩方式&#34;&gt;遊玩方式&lt;/h2&gt;
 &lt;p&gt;移動 : 鍵盤上下左右&lt;/p&gt;
 &lt;p&gt;攻擊 : 自動攻擊&lt;/p&gt;

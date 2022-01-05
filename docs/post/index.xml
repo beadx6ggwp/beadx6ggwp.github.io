@@ -155,6 +155,41 @@ nCmdShow : 為一整數，在執行時傳入來控制視窗的樣式 e.g. SW_MAX
     </item>
     
     <item>
+      <title>Toy project 小程式合輯</title>
+      <link>https://davidhsu666.com/archives/toy-project/</link>
+      <pubDate>Sat, 01 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/toy-project/</guid>
+      <description>Source Code : Link
+C# Tic-Tac-Toe 與電腦對戰OOXX
+ 
+C# 五子棋 透過累計棋盤分數加權的方式，來完成電腦VS玩家的互動
+ 
+C# Ball game 平面射擊遊戲，敵人會一直追著玩家，透過WASD移動，滑鼠左鍵射擊，想嘗試模仿diep.io
+ 
+js_pingpong 乒乓球對打
+線上執行 : Link
+第一次學JS，讓我對一些2D平面遊戲撰寫更有了解  
+js_memorygame 翻牌記憶遊戲
+線上執行 : Link
+ 
+js_snake 經典貪食蛇
+線上執行 : Link
+ 
+js_gerrnrainT 仿造駭客任務的特效
+線上執行 : Link
+ 
+js_AsteroidGame 宇宙飛機打隕石
+第一次認識Coding train這個頻道，從接觸這頻道後讓我有了一個契機去了解各式演算法與應用
+線上執行 : Link
+參考Coding train : https://www.youtube.com/watch?v=hacZU523FyM
+ 
+js_Minesweeper 踩地雷，線上執行 : Link
+ 
+js_dragTest 嘗試製作簡易圖形物件</description>
+    </item>
+    
+    <item>
       <title>碰撞檢測的優化-四叉樹(Quadtree)</title>
       <link>https://davidhsu666.com/archives/quadtree_in_2d/</link>
       <pubDate>Sat, 27 Oct 2018 07:31:13 +0800</pubDate>
@@ -240,6 +275,7 @@ float t1 = 0.69 * 10; cout &amp;lt;&amp;lt; setprecision(32) &amp;lt;&amp;lt; t1
       <guid>https://davidhsu666.com/archives/js-superball/</guid>
       <description>JS 超級球球SuperBall 這小遊戲是我第一個破千行程式碼的專案，前前後後花了2個月左右，花了很多時間在想架構跟遊戲特效的呈現，到目前的進度算是有點成果，放到網站做個記錄。
 遊戲連結 ver.0.2.3 : Click Here
+source code : Github
 遊玩方式 移動 : 鍵盤上下左右
 攻擊 : 自動攻擊
 目標 : 通過 8 關
