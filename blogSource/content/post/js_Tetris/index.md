@@ -12,7 +12,7 @@ license:  # CC BY-NC-ND
 hidden: false
 # comments: true #註解掉為開啟
 math: 
-draft: true
+draft: false
 ---
 
 ![](img/Tetris03.gif)
