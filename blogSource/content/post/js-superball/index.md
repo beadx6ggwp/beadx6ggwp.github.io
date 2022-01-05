@@ -23,6 +23,8 @@ draft: false
 
 ver.0.2.3 : <a class="link" href="/downloads/Shooting Game Algorithm Maniax/project1 ver0.2.3" target="_blank" rel="noopener">Click Here</a>
 
+source code : [Github](https://github.com/beadx6ggwp/js-superball)
+
 ## 遊玩方式
 
 移動 : 鍵盤上下左右
