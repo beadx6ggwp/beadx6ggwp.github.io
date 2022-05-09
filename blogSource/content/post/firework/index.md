@@ -2,7 +2,7 @@
 title: "JS Firework 跨年煙火"
 description: 粒子特效來實現簡易煙火
 
-slug: # web path
+slug: js-firework
 image: img/firework3.gif
 date: 2018-08-31T10:55:51+08:00
 categories: [Project]
