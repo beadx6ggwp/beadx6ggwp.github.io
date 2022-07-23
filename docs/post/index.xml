@@ -45,7 +45,7 @@ if (A.max &amp;gt; B.min &amp;amp;&amp;amp; B.max &amp;gt; A.</description>
       <guid>https://davidhsu666.com/archives/wireframe-display/</guid>
       <description>簡介 參考這幾篇文章，並介紹線框繪製的問題點與解決方法:
  Single-Pass Wireframe Rendering, Siggraph 2006 Solid Wireframe, NVIDIA Whitepaper 2007 Two Methods for Antialiased Wireframe Drawing with Hidden Line Removal, SCCG &amp;lsquo;08  文章總結的線框渲染方式都非常簡單直觀，就是在Shader時，找出三角形內的動點P與邊界的最短距離d，當d &amp;lt; LineWidth時就代表P點屬於線框的部分，那就繪製線框的顏色，然後再透過smoothing function給LineWidth這個閥值做平滑，讓線段邊緣的顏色遞減，就這樣
-只是想嘗試敘述研究者一開始所遇到的問題，並循序漸進的解決，到最後得出結論，來設想遇到問題該怎麼著手解決
+只是想嘗試敘述一開始所遇到的問題，並循序漸進的解決，到最後得出結論，來設想遇到問題該怎麼著手解決
 使用myMiniRender渲染的結果 :  (a)只使用const offset, (b)解決方法single pass method:邊距+平滑函數反鋸齒, (c)使用邊距+const offset, 
 介紹 在建立了基本渲染流水線後，原本想要方便Debug，所以在pipeline外，將投影後的頂點座標連成線段三角形，來畫出基本線框方便觀察，而這大致就是gl.LINES的方式
 TextureShader shader; model = model_head; for (int i = 0; i &amp;lt; model-&amp;gt;nfaces(); i++) { Vec4f screen_coords[3];// 投影轉換後的座標  for (int j = 0; j &amp;lt; 3; j++) { screen_coords[j] = shader.</description>
