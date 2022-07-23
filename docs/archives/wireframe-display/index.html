@@ -158,7 +158,7 @@ if (!doNotTrack) {
     >Two Methods for Antialiased Wireframe Drawing with Hidden Line Removal, SCCG &lsquo;08</a></li>
 </ul>
 <p>文章總結的線框渲染方式都非常簡單直觀，就是在Shader時，找出三角形內的動點P與邊界的最短距離d，當<code>d &lt; LineWidth</code>時就代表P點屬於線框的部分，那就繪製線框的顏色，然後再透過smoothing function給LineWidth這個閥值做平滑，讓線段邊緣的顏色遞減，就這樣</p>
-<p>只是想嘗試敘述研究者一開始所遇到的問題，並循序漸進的解決，到最後得出結論，來設想遇到問題該怎麼著手解決</p>
+<p>只是想嘗試敘述一開始所遇到的問題，並循序漸進的解決，到最後得出結論，來設想遇到問題該怎麼著手解決</p>
 <p>使用<a class="link" href="https://github.com/beadx6ggwp/RenderLearningPlan"  target="_blank" rel="noopener"
     >myMiniRender</a>渲染的結果 :
 <figure 
@@ -242,8 +242,8 @@ if (!doNotTrack) {
 <li>物體與線段會使用一樣的頂點，也就代表共用一樣的深度，導致線框深度跟物體深度Z-buffer判斷遮擋的時候，深度一樣，不知道是物體在前，還是線段在前，導致Z-fighting</li>
 </ol>
 <blockquote>
-<p>細節補充 :<br>第一個pass渲染物體並產生Zo，而第二個pass詳細步驟是: 1.將線段頂點處理投影變換(MVP)後得到線段頂點的z-buffer, Zw，2.在光柵化線段像素P時，將P點的線段Zw與物體Zo的深度進行比較，<code>if(Zw(P) &lt;Zo(P)) draw(P);</code>，以此來繪製正確的遮擋線段。<br>
-但這時物體與線段的pass都用一樣的頂點，可能會導致Z-fighting(深度z值一樣不曉得誰前誰後)或不正確的遮擋，所以需要透過深度偏移(depth bias offset)，將物體的深度放在模型後面一點的位置，才能正確讓線框繪製在物體前面。<br><br>
+<p>細節補充 :<br>第一個pass渲染物體並產生Zo，而第二個pass詳細步驟是: 1.將線段頂點處理投影變換(MVP)後得到線段頂點的z-buffer, Zw，2.在光柵化線段像素P時，將P點的線段Zw與物體Zo的深度進行比較<code>if(Zw(P) &lt;Zo(P)) draw(P); //如果Zw(p)線框的點比較靠前，沒被遮擋就繪製</code>，以此來繪製正確的遮擋線段。<br>
+但這時物體與線段的pass都用一樣的頂點，可能會導致Z-fighting(深度z值一樣不曉得誰前誰後)或不正確的遮擋，所以需要透過深度偏移(depth bias offset)，在比較線框與物體的深度時，將原本物體的深度往後面一點的位置，才能正確讓線框繪製在物體前面。<br><br>
 雖然<strong>繪製出的效果不錯</strong>，不過z-buffer的值是透過Perspective的非線性轉換得來，還有精度問題，所以在某些地方可能因為這一點點的前後差距導致一些本該被遮擋的區域未被遮擋，所以在某些時候會有問題</p>
 </blockquote>
 <p>如圖(a)中的紅色的線段能正確被遮擋，且因為有深度偏移，讓線段頂點在物體的前面，所以第一次pass繪製物體產生Zo後，第二次pass在繪製線段時，只要比較線段中P點深度有沒有比Zo更近即可判斷是否繪製，以此達到線段遮擋與背部消除的效果，圖(b)引用<a class="link" href="https://arxiv.org/abs/1810.01175"  target="_blank" rel="noopener"
