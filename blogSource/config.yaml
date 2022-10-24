@@ -186,11 +186,11 @@ menu:
           params:
             icon: brand-github
             
-        - identifier: twitter
-          name: Twitter
-          url: https://twitter.com/beadx6ggwp
-          params:
-            icon: brand-twitter
+        # - identifier: twitter
+        #   name: Twitter
+        #   url: https://twitter.com/beadx6ggwp
+        #   params:
+        #     icon: brand-twitter
 
 related:
     includeNewer: true
