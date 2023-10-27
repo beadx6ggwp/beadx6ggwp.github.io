@@ -1,12 +1,14 @@
 # Collision-MTV
-
-- Online demo : [polygon-MTV-ver1.0-full](http://davidhsu666.com/downloads/Collision-MTV/versions/polygon-MTV-ver1.0-full/)
+MTV (Minimum Translation Vector):
+- Online demo : [here](https://davidhsu666.com/downloads/Collision-MTV/demo/)
 - article : [遊戲中的碰撞檢測Collision Detection](http://davidhsu666.com/archives/gamecollisiondetection/)
 
 
 ## Introduction
 
-MTV目錄為正式Demo
+透過分離軸檢測(SAT)找出兩物體穿透後最小的推出向量(MTV)，來將重疊物體分離
+
+![AllText](example3.gif)
 
 ## How to use
 
@@ -47,11 +49,13 @@ if (result.axis) {
 }
 ```
 
+---
 
-正常的矩形碰撞+MTV.
+
+testcase/MTV-2Rects
 
 ![AllText](example1.gif)
 
-SAT檢測+MTV
+testcase/MTV-multiPolygons
 
 ![AllText](example2.gif)
