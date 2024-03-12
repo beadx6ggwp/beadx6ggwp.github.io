@@ -219,7 +219,7 @@ qt.show(Context);
 
 基本插入範例，滑鼠點擊即可新增物體。新視窗執行 : <a class="link" href="/downloads/js_QuadTree/article/EP1-Insert&show-noLoop" target="_blank" rel="noopener">Here</a>
 
-<script async src="//jsfiddle.net/davidhsu/mpr70djv/embed/result/dark/"></script>
+<script async src="//jsfiddle.net/davidhsu/mpr70djv/7/embed/result/dark/"></script>
 
 然後可以看到，每當一個區域插入4個物體後(MAX_OBJ = 4)，就會將該領域往下分割4個子區域，最多分割5層(MAX_LEVEL = 5)。
 
@@ -274,7 +274,7 @@ var objects = queryTree.query(checkRange);
 
 基本搜尋範例，滑鼠點擊新增物體，移動可取得範圍內的物體。新視窗執行 : <a class="link" href="/downloads/js_QuadTree/article/EP2-query" target="_blank" rel="noopener">Here</a>
 
-<script async src="//jsfiddle.net/davidhsu/3rawty40/embed/result/dark/"></script>
+<script async src="//jsfiddle.net/davidhsu/3rawty40/37/embed/result/dark/"></script>
 
 ## 6. 實際應用
 
@@ -284,7 +284,7 @@ var objects = queryTree.query(checkRange);
 
 在新視窗執行 : <a class="link" href="/downloads/js_QuadTree/article/EP3-ObjectTest" target="_blank" rel="noopener">Here</a>
 
-<script async src="//jsfiddle.net/davidhsu/3hz0jdse/embed/result/dark/"></script>
+<script async src="//jsfiddle.net/davidhsu/3hz0jdse/56/embed/result/dark/"></script>
 
 
 ## 7. 總結

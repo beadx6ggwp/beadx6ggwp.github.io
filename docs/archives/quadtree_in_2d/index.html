@@ -519,7 +519,7 @@ if (!doNotTrack) {
 </span><span class="c1"></span><span class="nx">qt</span><span class="p">.</span><span class="nx">show</span><span class="p">(</span><span class="nx">Context</span><span class="p">);</span>
 </code></pre></div><p>如此一來就能建立基本可新增物體的QuadTree了。</p>
 <p>基本插入範例，滑鼠點擊即可新增物體。新視窗執行 : <a class="link" href="/downloads/js_QuadTree/article/EP1-Insert&show-noLoop" target="_blank" rel="noopener">Here</a></p>
-<script async src="//jsfiddle.net/davidhsu/mpr70djv/embed/result/dark/"></script>
+<script async src="//jsfiddle.net/davidhsu/mpr70djv/7/embed/result/dark/"></script>
 <p>然後可以看到，每當一個區域插入4個物體後(MAX_OBJ = 4)，就會將該領域往下分割4個子區域，最多分割5層(MAX_LEVEL = 5)。</p>
 <h2 id="5-實作quadtree搜尋">5. 實作QuadTree–搜尋</h2>
 <p>搜詢的大致順序 :</p>
@@ -562,12 +562,12 @@ if (!doNotTrack) {
 <span class="c1">// 套用搜尋範圍至queryTree取得範圍內的物體
 </span><span class="c1"></span><span class="kd">var</span> <span class="nx">objects</span> <span class="o">=</span> <span class="nx">queryTree</span><span class="p">.</span><span class="nx">query</span><span class="p">(</span><span class="nx">checkRange</span><span class="p">);</span>
 </code></pre></div><p>基本搜尋範例，滑鼠點擊新增物體，移動可取得範圍內的物體。新視窗執行 : <a class="link" href="/downloads/js_QuadTree/article/EP2-query" target="_blank" rel="noopener">Here</a></p>
-<script async src="//jsfiddle.net/davidhsu/3rawty40/embed/result/dark/"></script>
+<script async src="//jsfiddle.net/davidhsu/3rawty40/37/embed/result/dark/"></script>
 <h2 id="6-實際應用">6. 實際應用</h2>
 <p>我將正常的碰撞檢測與QuadTree檢測放在一起做比較，可以清楚的看到，當物體數量到2000時，No QuadTree的檢測方法已經無法負荷，畫面有明顯卡頓。換成QuadTree檢測後，就只掉一點FPS，透過比對，可以明顯看到效能的提升。</p>
 <p>每當物體碰撞時變成白色，滑鼠點擊新增100個物體，按下按鈕以切換不同檢測模式，觀察效能的差距 :</p>
 <p>在新視窗執行 : <a class="link" href="/downloads/js_QuadTree/article/EP3-ObjectTest" target="_blank" rel="noopener">Here</a></p>
-<script async src="//jsfiddle.net/davidhsu/3hz0jdse/embed/result/dark/"></script>
+<script async src="//jsfiddle.net/davidhsu/3hz0jdse/56/embed/result/dark/"></script>
 <h2 id="7-總結">7. 總結</h2>
 <p>QuadTree或許不是最好的多物體檢測法，但多數狀況下還堪用，至於QuadTree優化的部分，可以參考這篇文章，講得非常清楚。</p>
 <p>這邊預計要再補上QuadTree跟其他檢測法的優缺點，但目前只研究QuadTree，所以無從比較，日後補上。</p>
@@ -814,7 +814,7 @@ if (!doNotTrack) {
         
             2019 - 
         
-        2023 展維隨筆
+        2024 展維隨筆
     </section>
     
     <section class="powerby">
