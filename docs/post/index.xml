@@ -6,7 +6,18 @@
     <description>Recent content in Posts on 展維隨筆</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 03 Jul 2021 23:39:36 +0800</lastBuildDate><atom:link href="https://davidhsu666.com/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 27 Jun 2024 21:51:55 +0800</lastBuildDate><atom:link href="https://davidhsu666.com/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>料理實驗筆記</title>
+      <link>https://davidhsu666.com/archives/testkitchen/</link>
+      <pubDate>Thu, 27 Jun 2024 21:51:55 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/testkitchen/</guid>
+      <description>主要參考:
+ 食物與廚藝 On Food and Cooking 現代主義烹調 Modernist Cuisine At Home 料理的科學 The Science of Good Cooking The Food Lab &amp;hellip;  從農產畜牧的演變、養殖耕作到歷史、食材處理到食品加工甚至食品化學，希望做到理論與實踐並行，知其然也知其所以然
+筆記連結: https://hackmd.io/@beadx6ggwp/TestKitchen</description>
+    </item>
+    
     <item>
       <title>遊戲中的碰撞檢測Collision Detection</title>
       <link>https://davidhsu666.com/archives/gamecollisiondetection/</link>
