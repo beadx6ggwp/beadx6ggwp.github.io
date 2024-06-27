@@ -1,6 +1,6 @@
 ---
 title: "遊戲中的碰撞檢測Collision Detection"
-description: 應該很多人對電腦遊戲中如何處理碰撞處理感興趣，希望大家在讀完這篇文章後能了解如何精確的偵測物體碰撞。
+description: 希望讀完後能了解物體碰撞檢測。
 
 slug: gamecollisiondetection # web path
 image: img/SAT09.jpg
@@ -8,7 +8,7 @@ date: 2018-03-21T05:52:36+08:00
 categories: [CodingNote]
 tags: [Collision]
 
-weight: 1 #至頂
+weight: 2 #至頂
 license:  # CC BY-NC-ND
 hidden: false
 # comments: true #註解掉為開啟

@@ -6,7 +6,26 @@
         <description>Recent content on 展維隨筆</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en-us</language>
-        <lastBuildDate>Sat, 03 Jul 2021 23:39:36 +0800</lastBuildDate><atom:link href="https://davidhsu666.com/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Thu, 27 Jun 2024 21:51:55 +0800</lastBuildDate><atom:link href="https://davidhsu666.com/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>料理實驗筆記</title>
+        <link>https://davidhsu666.com/archives/testkitchen/</link>
+        <pubDate>Thu, 27 Jun 2024 21:51:55 +0800</pubDate>
+        
+        <guid>https://davidhsu666.com/archives/testkitchen/</guid>
+        <description>&lt;img src="https://davidhsu666.com/archives/testkitchen/img/ig1.jpg" alt="Featured image of post 料理實驗筆記" /&gt;&lt;p&gt;主要參考:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;食物與廚藝 On Food and Cooking&lt;/li&gt;
+&lt;li&gt;現代主義烹調 Modernist Cuisine At Home&lt;/li&gt;
+&lt;li&gt;料理的科學 The Science of Good Cooking&lt;/li&gt;
+&lt;li&gt;The Food Lab&lt;/li&gt;
+&lt;li&gt;&amp;hellip;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;從農產畜牧的演變、養殖耕作到歷史、食材處理到食品加工甚至食品化學，希望做到理論與實踐並行，知其然也知其所以然&lt;/p&gt;
+&lt;p&gt;筆記連結: &lt;a class=&#34;link&#34; href=&#34;https://hackmd.io/@beadx6ggwp/TestKitchen&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://hackmd.io/@beadx6ggwp/TestKitchen&lt;/a&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>遊戲中的碰撞檢測Collision Detection</title>
         <link>https://davidhsu666.com/archives/gamecollisiondetection/</link>
         <pubDate>Wed, 21 Mar 2018 05:52:36 +0800</pubDate>
