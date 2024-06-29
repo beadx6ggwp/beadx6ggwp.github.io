@@ -25,4 +25,4 @@ draft: false
 
 從農產畜牧的演變、養殖耕作到歷史、食材處理到食品加工甚至食品化學，希望做到理論與實踐並行
 
-筆記連結: https://hackmd.io/@beadx6ggwp/TestKitchen
+https://hackmd.io/@beadx6ggwp/TestKitchen
