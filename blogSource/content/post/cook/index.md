@@ -3,7 +3,7 @@ title: "料理實驗筆記"
 description: 紀錄料理背後的原理
 
 slug: TestKitchen # web path
-image: img/ig2.jpg
+image: img/ig3.jpg
 date: 2024-06-27T21:51:55+08:00
 categories: []
 tags: [TestKitchen]
