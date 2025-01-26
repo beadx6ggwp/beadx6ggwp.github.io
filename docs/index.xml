@@ -2475,8 +2475,8 @@ e.g. SW_MAXIMIZE (3)、SW_MINIMIZE (6)、SW_SHOWMINNOACTIVE (7 啟動時最小�
         
         <guid>https://davidhsu666.com/archives/2dgame-nonename/</guid>
         <description>&lt;img src="https://davidhsu666.com/archives/2dgame-nonename/img/123213487.png" alt="Featured image of post 從零開始的基礎RPG框架" /&gt;&lt;h1 id=&#34;從零開始的基礎rpg框架&#34;&gt;從零開始的基礎RPG框架&lt;/h1&gt;
-&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://github.com/beadcaptain/2DGameNoneName&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
-    &gt;Sourcecode&lt;/a&gt; : 運行SourceCode時將此目錄丟到Apache中即可&lt;/p&gt;
+&lt;p&gt;Github link: &lt;a class=&#34;link&#34; href=&#34;https://github.com/beadx6ggwp/2D-basicImplement&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/beadx6ggwp/2D-basicImplement&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&#34;遊戲demo連結&#34;&gt;遊戲Demo連結&lt;/h2&gt;
 &lt;p&gt;操作方式: 上下左右、空白鍵衝刺、 Z 攻擊、X 遠程、T 開啟Debug、WASD移動視角、R 重製視角&lt;/p&gt;
 &lt;ul&gt;

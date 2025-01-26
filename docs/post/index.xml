@@ -103,7 +103,7 @@ nCmdShow : 為一整數，在執行時傳入來控制視窗的樣式 e.g. SW_MAX
       <pubDate>Fri, 04 Dec 2020 02:16:07 +0800</pubDate>
       
       <guid>https://davidhsu666.com/archives/2dgame-nonename/</guid>
-      <description>從零開始的基礎RPG框架 Sourcecode : 運行SourceCode時將此目錄丟到Apache中即可
+      <description>從零開始的基礎RPG框架 Github link: https://github.com/beadx6ggwp/2D-basicImplement
 遊戲Demo連結 操作方式: 上下左右、空白鍵衝刺、 Z 攻擊、X 遠程、T 開啟Debug、WASD移動視角、R 重製視角
  ver01(game) : 可以讀取地圖的第一版 基礎展示(game0) : 用簡易的基礎地圖展示所有功能 上下坡事件觸發器(game2) :  透過觸發器更改人物所在圖層，正確判斷上下坡的碰撞  完整的場景(gameshow1) :  右邊兩個圓形為加速事件觸發器，碰到即可變更速度  多邊形碰撞場景(gameshow2) :  滑鼠拖曳後按左鍵發射小球，來觀看多邊形碰撞回饋   目前進度  攝影機 動態碰撞盒 事件觸發器 自訂地圖存取 Debug(圖層、碰撞層顯示)  攝影機、Debug  加入Debug功能方便測試 只顯示視線範圍內的物件 渲染物件的動態圖層顯示 可隨意設定攝影機的追蹤範圍與目標，例如視角綁定在小鳥身上   WASD控制攝影機   透過Z-index畫家排序來處理多圖層 
 碰撞盒:多邊形碰撞與回饋 http://davidhsu666.com/archives/gamecollisiondetection/

@@ -17,7 +17,7 @@ draft: false
 
 # 從零開始的基礎RPG框架
 
-[Sourcecode](https://github.com/beadcaptain/2DGameNoneName) : 運行SourceCode時將此目錄丟到Apache中即可
+Github link: https://github.com/beadx6ggwp/2D-basicImplement
 
 ## 遊戲Demo連結
 
