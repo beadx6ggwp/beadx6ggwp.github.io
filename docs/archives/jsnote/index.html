@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='JavaScript:Understanding the Weird Part'><title>js筆記</title>
+
+<link rel='canonical' href='https://davidhsu666.com/archives/jsnote/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='js筆記'>
+<meta property='og:description' content='JavaScript:Understanding the Weird Part'>
+<meta property='og:url' content='https://davidhsu666.com/archives/jsnote/'>
+<meta property='og:site_name' content='Bead隨筆'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='JS' /><meta property='article:published_time' content='2025-02-18T17:17:33&#43;08:00'/><meta property='article:modified_time' content='2025-02-18T17:17:33&#43;08:00'/><meta property='og:image' content='https://davidhsu666.com/archives/jsnote/img/maxresdefault.jpg' />
+<meta name="twitter:title" content="js筆記">
+<meta name="twitter:description" content="JavaScript:Understanding the Weird Part"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://davidhsu666.com/archives/jsnote/img/maxresdefault.jpg' />
+    <link rel="shortcut icon" href="/blog_resource/favicon-32x32.png" />
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YJXR109WY7"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-YJXR109WY7', { 'anonymize_ip': false });
+}
+</script>
+
+    </head>
+    <body class="
+    article-page has-toc
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        extended
+    
+">
+    
+        <div id="article-toolbar">
+            <a href="/" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>返回</span>
+            </a>
+        </div>
+    
+<main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/archives/jsnote/">
+                <img src="/archives/jsnote/img/maxresdefault.jpg"
+                        
+                        width="1280" 
+                        height="720" 
+                        loading="lazy"
+                        alt="Featured image of post js筆記" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/codingnote/" style="background-color: #EDFF44; color: #000;">
+                程式筆記
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/archives/jsnote/">js筆記</a>
+    </h2>
+
+    
+    <h3 class="article-subtitle">
+        JavaScript:Understanding the Weird Part
+    </h3>
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Feb 18, 2025</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    閱讀時間: 11 分鐘
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    <h1 id="javascript-understanding-the-weird-part">JavaScript: Understanding the Weird Part</h1>
+<p>重點整理</p>
+<p>資源:</p>
+<ul>
+<li>你所不知道的js</li>
+<li>JavaScript：優良部分</li>
+</ul>
+<p>找工作面試的時候被問到不少js內容 希望一次補好知識 再去碰框架</p>
+<p>了解完畢後需要重新整理 目前有點混亂</p>
+<h2 id="section-2-execution-context--lexical-environment">section 2 execution context &amp; lexical environment</h2>
+<blockquote>
+<p><a class="link" href="https://medium.com/@g.smellyshovel/the-ecmascript-executable-code-and-execution-contexts-chapter-explained-fa6e098e230f"  target="_blank" rel="noopener"
+    >The ECMAScript “Executable Code and Execution Contexts” chapter explained</a></p>
+</blockquote>
+<h3 id="ep6-語法解析詞彙環境執行環境">ep6 語法解析、詞彙環境、執行環境</h3>
+<ul>
+<li>
+<p>syntax parser</p>
+</li>
+<li>
+<p>lexical environment
+code在程式中的實際環境 像是scope Closure this 都跟這個相關
+關注於它寫在哪、周圍環境是什麼</p>
+</li>
+<li>
+<p>execution context
+也類似於os中的Context</p>
+</li>
+</ul>
+<p>js並不單單是直譯，為了優化，在剛吃到script時候會預先編譯部份，這也是hoisting的原因</p>
+<h3 id="ep7-namevalue--objects">ep7 name/value &amp; objects</h3>
+<ul>
+<li>
+<p>name/value pairs
+在一個context情況下 一個name(變數)只會對應到唯一的value
+白話:一段執行中的code 同樣名稱的變數 只有一個對應的value 不過這個value 可以是其他的name/value</p>
+</li>
+<li>
+<p>objects
+最簡單的定義: name/value 的集合
+<figure 
+	>
+	<a href="https://hackmd.io/_uploads/H1ZQUV9t1x.png" >
+		<img src="https://hackmd.io/_uploads/H1ZQUV9t1x.png"
+			
+			
+			
+			loading="lazy"
+			alt="image">
+	</a>
+	
+	<figcaption>image</figcaption>
+	
+</figure></p>
+</li>
+</ul>
+<h3 id="ep9-global-environment--global-object">ep9 global environment &amp; global object</h3>
+<p>不論何時 js的code永遠是在一個execution context中執行
+其中base execution context 就是global execution context
+而所謂全域就是指可以在程式中的任何地方使用它
+這個v8提供的環境給予了global object 以及 this 而無論code何時執行 都在這個執行環境底下</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="s1">&#39;hello world&#39;</span>
+
+<span class="kd">function</span> <span class="nx">b</span><span class="p">(){</span>
+    
+<span class="p">}</span>
+</code></pre></div><p>若是這樣寫 其實在瀏覽器執行時 a和b都會被加入到global物件中</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="o">&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">a</span>
+<span class="s1">&#39;hello world&#39;</span>
+</code></pre></div><p><figure 
+	>
+	<a href="https://hackmd.io/_uploads/ryQfA4RKye.png" >
+		<img src="https://hackmd.io/_uploads/ryQfA4RKye.png"
+			
+			
+			
+			loading="lazy"
+			alt="image">
+	</a>
+	
+	<figcaption>image</figcaption>
+	
+</figure></p>
+<h3 id="ep10-execution-context-creation-and-hoisting">ep10 Execution context creation and hoisting</h3>
+<p>在line 宣告並賦值之前 就log(a)
+ex1:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="nx">b</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="s1">&#39;hello world&#39;</span><span class="p">;</span>
+<span class="kd">function</span> <span class="nx">b</span><span class="p">(){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;call b&#39;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="o">&gt;</span> <span class="nx">call</span> <span class="nx">b</span>
+<span class="o">&gt;</span> <span class="kc">undefined</span>
+</code></pre></div><p>但是當把 line 4的宣告完全移除
+ex2:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="nx">b</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="s1">&#39;hello world&#39;</span><span class="p">;</span>
+<span class="kd">function</span> <span class="nx">b</span><span class="p">(){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;call b&#39;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="o">&gt;</span> <span class="nx">call</span> <span class="nx">b</span>
+<span class="o">&gt;</span> <span class="nx">Uncaught</span> <span class="nx">ReferenceError</span><span class="o">:</span> <span class="nx">a</span> <span class="nx">is</span> <span class="nx">not</span> <span class="nx">defined</span>
+</code></pre></div><p>雖然有些會說hoisting 可以看作把宣告往上移動 變成類似這樣
+ex3:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">b</span><span class="p">(){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;call b&#39;</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kd">var</span> <span class="nx">a</span><span class="p">;</span>
+
+<span class="nx">b</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span>
+
+<span class="nx">a</span> <span class="o">=</span> <span class="s1">&#39;hello world&#39;</span>
+</code></pre></div><p>然而 實際上並不能這樣看</p>
+<blockquote>
+<p>個人認為本質是因為JS雖然是直編語言 但還是有編譯的環節
+而hoisting就是在編譯環節 建立Execution Contexts 預先對需要使用的變數進行宣告與基本的分配 是一種編譯的優化手段
+<a class="link" href="https://blog.huli.tw/2019/02/23/javascript-what-is-this/"  target="_blank" rel="noopener"
+    >淺談 JavaScript 頭號難題 this：絕對不完整，但保證好懂</a>
+<a class="link" href="https://blog.huli.tw/2018/11/10/javascript-hoisting-and-tdz/"  target="_blank" rel="noopener"
+    >我知道你懂 hoisting，可是你了解到多深？</a>
+<a class="link" href="https://262.ecma-international.org/6.0/#sec-lexical-environments"  target="_blank" rel="noopener"
+    >ECMA2015 8 Executable Code and Execution Contexts</a>
+<a class="link" href="https://www.freecodecamp.org/news/lets-learn-javascript-closures-66feb44f6a44/"  target="_blank" rel="noopener"
+    >Learn JavaScript Closures with Code Examples</a></p>
+</blockquote>
+<p>執行環境的建立有兩大步驟:
+Execution Context is Create(Creation Phase)
+<figure 
+	>
+	<a href="https://hackmd.io/_uploads/SkFkErAt1x.png" >
+		<img src="https://hackmd.io/_uploads/SkFkErAt1x.png"
+			
+			
+			
+			loading="lazy"
+			alt="image">
+	</a>
+	
+	<figcaption>image</figcaption>
+	
+</figure></p>
+<p>然而 variable跟funciton的處理卻不太一樣</p>
+<p>在ex2中line2執行時 a確實有被分配到memory 但此時值尚未給定 所以給了一個預設值 叫做<code>undefined</code> 而這也是js中的一種特殊type
+而任何variable的預設值 都是undefined</p>
+<h3 id="ep11-js-and-undefined">ep11 js and undefined</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">a</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span>
+</code></pre></div><p>有第一行 <code>var a</code> 會輸出 <code>undefined</code>
+沒這一行 會輸出 <code>Uncaught ReferenceError:a is not defined</code></p>
+<p>這個差異在哪?
+在於underfined 代表這variable已經擁有記憶體空間 但是其內容並沒有給定 比較像是一種&quot;標記&quot;
+而從來沒宣告 代表在編譯階段 並不會分配給他記憶體空間 導致存取時出現ReferenceError</p>
+<p>所以絕對不要手動的去指定變數為undefined</p>
+<h3 id="ep12-the-execution-context-code-execution">ep12 the execution context code execution</h3>
+<p>Execution Context Runs(execution Phase)
+<figure 
+	>
+	<a href="https://hackmd.io/_uploads/ByL4_rRK1g.png" >
+		<img src="https://hackmd.io/_uploads/ByL4_rRK1g.png"
+			
+			
+			
+			loading="lazy"
+			alt="image">
+	</a>
+	
+	<figcaption>image</figcaption>
+	
+</figure></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">b</span><span class="p">(){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;call b&#39;</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nx">b</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="s1">&#39;hello world&#39;</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span>
+
+<span class="o">&gt;</span> <span class="nx">call</span> <span class="nx">b</span>
+<span class="o">&gt;</span> <span class="nx">underfined</span>
+<span class="o">&gt;</span> <span class="nx">hello</span> <span class="nx">world</span>
+</code></pre></div><h3 id="ep13-single-threaded-synchronous-execution">ep13 single threaded, synchronous execution</h3>
+<p>js run code的一大特性 單緒 同步</p>
+<blockquote>
+<p>但其實大多數程式都是這樣 只是在於js執行於其環境(瀏覽器、nodejs) 多緒的方式幾乎都是透過外部engine包裝thread pool後提供的接口 才會有這種js是單執行緒+同步的說法</p>
+</blockquote>
+<h3 id="ep14-function-invocation-and-the-exectuion-stack">ep14 Function Invocation and The Exectuion Stack</h3>
+<p>Invocation: running a function</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">b</span><span class="p">(){</span>
+    
+<span class="p">}</span>
+<span class="kd">function</span> <span class="nx">a</span><span class="p">(){</span>
+    <span class="nx">b</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="nx">a</span><span class="p">();</span>
+</code></pre></div><p>在執行時誰會最先被創造?
+global execution context:
+parser解析 編譯器解析 並創造執行環境 產生global object、this、window object
+然後將這些function放入記憶體中(hoisting)</p>
+<p>接著在執行到a時 建立新的Execution Context並放入execution stack中 分配獨立的memory space
+並同樣會經歷Execution Context的兩個步驟</p>
+<ol>
+<li>creation phase</li>
+<li>execution phase</li>
+</ol>
+<p>此時執行b() 又會再創造一個執行環境 將其推入stack中 並且執行
+然後再一層一層pop執行回去
+<figure 
+	>
+	<a href="https://hackmd.io/_uploads/BkTo2H0tkx.png" >
+		<img src="https://hackmd.io/_uploads/BkTo2H0tkx.png"
+			
+			
+			
+			loading="lazy"
+			alt="image">
+	</a>
+	
+	<figcaption>image</figcaption>
+	
+</figure></p>
+<p>而code lexicalily的排列並不重要 因為function在hoisting的時候早就被實例化存在memory內
+像是把a放到b的前面</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">a</span><span class="p">(){</span>
+    <span class="nx">b</span><span class="p">();</span>
+    <span class="kd">var</span> <span class="nx">c</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kd">function</span> <span class="nx">b</span><span class="p">(){</span>
+    <span class="kd">var</span> <span class="nx">d</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">a</span><span class="p">();</span>
+<span class="kd">var</span> <span class="nx">d</span><span class="p">;</span>
+</code></pre></div><h3 id="ep16-functions-context-and-variable-environments">ep16 functions, context and variable environments</h3>
+<p>Variable environment:只是描述創造這個變數的位置</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">b</span><span class="p">(){</span>
+    <span class="kd">var</span> <span class="nx">myVar</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">myVar</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kd">function</span> <span class="nx">a</span><span class="p">(){</span>
+    <span class="kd">var</span> <span class="nx">myVar</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">myVar</span><span class="p">);</span>
+    <span class="nx">b</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="kd">var</span> <span class="nx">myVar</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">myVar</span><span class="p">);</span>
+<span class="nx">a</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">myVar</span><span class="p">);</span>
+
+<span class="o">&gt;</span> <span class="mi">1</span>
+<span class="o">&gt;</span> <span class="mi">2</span>
+<span class="o">&gt;</span> <span class="kc">undefined</span>
+<span class="o">&gt;</span> <span class="mi">1</span>
+</code></pre></div><p>那麼myVar的值到底為何?
+重點在於 &ldquo;每個execution context擁有自己的variable environment&rdquo;</p>
+<p><figure 
+	>
+	<a href="https://hackmd.io/_uploads/BkBr180KJl.png" >
+		<img src="https://hackmd.io/_uploads/BkBr180KJl.png"
+			
+			
+			
+			loading="lazy"
+			alt="image">
+	</a>
+	
+	<figcaption>image</figcaption>
+	
+</figure></p>
+<p>而這個也和另一個名詞 Scope相關 表示我們可以在哪存取到哪些變數</p>
+<p>在上面這案例中 雖然宣告了三次myVar 但都是在不同的execution context 所以他們都是不同的</p>
+<p>而line 13 因為前面的call stack都消失了 所以現在所處的就是global execution context 所以myVar就是1</p>
+<h3 id="ep16-scope-chain">ep16 scope chain</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">b</span><span class="p">(){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">myVar</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kd">function</span> <span class="nx">a</span><span class="p">(){</span>
+    <span class="kd">var</span> <span class="nx">myVar</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="nx">b</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="kd">var</span> <span class="nx">myVar</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="nx">a</span><span class="p">();</span>
+
+<span class="o">&gt;</span> <span class="mi">1</span>
+</code></pre></div><p><figure 
+	>
+	<a href="https://hackmd.io/_uploads/H1TheICFyl.png" >
+		<img src="https://hackmd.io/_uploads/H1TheICFyl.png"
+			
+			
+			
+			loading="lazy"
+			alt="image">
+	</a>
+	
+	<figcaption>image</figcaption>
+	
+</figure></p>
+<p>當要存取變數時 並不會只在當前execution context的variable environment找
+記住 每一個execution context都有特殊的東西被創造</p>
+<ol>
+<li>this</li>
+<li>references of outer environment
+每一個execution context都有一個references到它的外部環境
+那這個外部環境是什麼?</li>
+</ol>
+<p>在case of function b and function a 他們各自的外部環境就是global execution context
+<figure 
+	>
+	<a href="https://hackmd.io/_uploads/BkWoZICtJe.png" >
+		<img src="https://hackmd.io/_uploads/BkWoZICtJe.png"
+			
+			
+			
+			loading="lazy"
+			alt="image">
+	</a>
+	
+	<figcaption>image</figcaption>
+	
+</figure></p>
+<p>參考到哪些外部環境 取決於lexical environment</p>
+<p>什麼意思?</p>
+<p>如這段的code所示 function b在詞彙上(lexical) 是存在於global environment之上
+表示b並不在a函數之中 在詞彙上 b和line 8的myVar屬於同樣的級別</p>
+<p>在js中 很注重lexical environment 當你在某個execution context無法存取某個變數時 它會到outer reference去找
+而每個function所指向的外部環境 都與函數詞彙上的位置有些不同</p>
+<p>像是<code>function b</code>、<code>function a</code>、line8的<code>myVar</code>其實都是在window物件之中</p>
+<pre tabindex="0"><code>window :{
+    ...
+    b:function(),
+    a:function(),
+    myVar:1
+}
+
+</code></pre><p>複習一次:</p>
+<ol>
+<li>這些execution context被創造的順序 和這些code 詞彙上的位置無關 而是這些execution context何時被創造出來</li>
+<li>但當你invoke這些function時 js的parser會根據這段code的lexical位置來為execution context創造外部環境</li>
+</ol>
+<p>而這一段serching外部環境的過程 稱為scope chain</p>
+<ul>
+<li>scope: 能使用這變數的地方</li>
+<li>chain: 這個執行環境 這段code的lexical位置 所對應的外部環境</li>
+</ul>
+<p>那麼以上面那段code來說 如何改變b的外部參照?</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">a</span><span class="p">(){</span>
+    
+    <span class="kd">function</span> <span class="nx">b</span><span class="p">(){</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">myVar</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="kd">var</span> <span class="nx">myVar</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="nx">b</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="kd">var</span> <span class="nx">myVar</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="nx">a</span><span class="p">();</span>
+<span class="nx">b</span><span class="p">();</span>
+
+<span class="o">&gt;</span> <span class="mi">2</span>
+<span class="o">&gt;</span> <span class="nx">Uncaught</span> <span class="nx">ReferenceError</span><span class="o">:</span><span class="nx">b</span> <span class="nx">is</span> <span class="nx">not</span> <span class="nx">defined</span>
+</code></pre></div><p>先看line12 此時沒辦法在global呼叫b 因為並不存在於這裡的variable environments 而是在a的裡面</p>
+<p><figure 
+	>
+	<a href="https://hackmd.io/_uploads/H17xYL0Yye.png" >
+		<img src="https://hackmd.io/_uploads/H17xYL0Yye.png"
+			
+			
+			
+			loading="lazy"
+			alt="image">
+	</a>
+	
+	<figcaption>image</figcaption>
+	
+</figure>
+現在這樣的狀態就是一層一層往外 所以如果把line 7拿掉 最就會參考到global的myVar 最終輸出1</p>
+<p>從Create phase來看 誰創造了它?
+outer reference會找到自己被創造的執行環境 在目前這情況 function b 在a實際執行之前 都不存在 一開始的global只會有myVar、a</p>
+<p>當a實際執行時 一樣會建立execution context 這時候才創造了b
+因為b是在a執行時創造的 所以b的outer reference就是a</p>
+<h3 id="ep17-scope-es6-let">ep17 scope, es6, let</h3>
+<ul>
+<li>execution context</li>
+<li>execution environment</li>
+<li>variable environment</li>
+<li>lexical environment
+這些東西最終產生出了scope的概念: 變數可以被使用的區域</li>
+</ul>
+<p>而在es6 引入了let 也引入了block scoping</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="k">if</span> <span class="p">(</span><span class="nx">a</span><span class="o">&gt;</span><span class="nx">b</span><span class="p">){</span>
+    
+    <span class="kd">let</span> <span class="nx">c</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+    
+<span class="p">}</span>
+</code></pre></div><p>c一樣會有hoisting 設值為undefined 但是在它實際執行到那一行宣告之前 不能存取它</p>
+<p>block 指的是大括號之中<code>{}</code> let只能在被宣告的區塊使用
+所以在for中的let變數 其實在記憶體中都是不同的</p>
+<h3 id="ep18-what-about-asynchronous-callbacks">ep18 what about asynchronous callbacks?</h3>
+<p>asynchronous: 同一時間不只一個</p>
+<p><figure 
+	>
+	<a href="https://hackmd.io/_uploads/SyxXUAAKyg.png" >
+		<img src="https://hackmd.io/_uploads/SyxXUAAKyg.png"
+			
+			
+			
+			loading="lazy"
+			alt="image">
+	</a>
+	
+	<figcaption>image</figcaption>
+	
+</figure></p>
+<p><figure 
+	>
+	<a href="https://hackmd.io/_uploads/BkALIRRtkg.png" >
+		<img src="https://hackmd.io/_uploads/BkALIRRtkg.png"
+			
+			
+			
+			loading="lazy"
+			alt="image">
+	</a>
+	
+	<figcaption>image</figcaption>
+	
+</figure></p>
+<p><figure 
+	>
+	<a href="https://hackmd.io/_uploads/SyyjUCRtkx.png" >
+		<img src="https://hackmd.io/_uploads/SyyjUCRtkx.png"
+			
+			
+			
+			loading="lazy"
+			alt="image">
+	</a>
+	
+	<figcaption>image</figcaption>
+	
+</figure></p>
+<p><strong>event queue的code 仍然是同步的 只有偵測事件這件事 是非同步</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">waitThreeSeconds</span><span class="p">(){</span>
+    <span class="kd">var</span> <span class="nx">ms</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">().</span><span class="nx">getTime</span><span class="p">()</span> <span class="o">+</span> <span class="mi">3000</span><span class="p">;</span>
+    <span class="k">while</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">().</span><span class="nx">getTime</span><span class="p">()</span> <span class="o">&lt;</span> <span class="nx">ms</span><span class="p">){}</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;finish function&#39;</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kd">function</span> <span class="nx">clickHandler</span><span class="p">(){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;click event&#39;</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">clickHandler</span><span class="p">);</span>
+
+<span class="nx">waitThreeSeconds</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;finish execution&#39;</span><span class="p">);</span>
+</code></pre></div><p>如果在3秒內觸發點擊 那麼執行順序會如何?</p>
+<pre tabindex="0"><code>&gt; finish function
+&gt; finish execution
+&gt; click event
+</code></pre><p>因為直到execution stack為空時 才會去看event queue
+當event queue也空了 就會繼續看queue有沒有東西 這個持續檢查 稱為continuous check</p>
+<h2 id="section3-types-and-operator">Section3 types and operator</h2>
+<h3 id="ep19-types-and-javascript">ep19 types and javascript</h3>
+<p>Dynamic typing: 在執行的時候才會決定如何操作</p>
+<h3 id="ep20-primitive-types">ep20 primitive types</h3>
+<p>雖然不用自己宣告型別 但js有六種基本型別(primitive types)</p>
+<p>primitive type是什麼意思?
+代表它並不是物件 而是single value</p>
+<ul>
+<li>undefined : represents lack of existence 變數建立的初始值 應該保持由引擎給值 不該自己賦予</li>
+<li>null: 這才是可以自行操作的&quot;空值&quot; null 是「存在但沒有東西」，有種刻意用 null 來標記「沒東西」的感覺。</li>
+<li>boolean: True/False</li>
+<li>number: js中只有一種數值型別 稱為floating point number, double-precision 64-bit format IEEE 754-2019</li>
+<li>string: a sequence of character</li>
+<li>symbol: 除了字串以外唯一可以當作 object 的 key 的東西，而每一個 Symbol 的值都是獨一無二的</li>
+</ul>
+<blockquote>
+<p><a class="link" href="https://blog.huli.tw/2022/02/26/javascript-how-many-types/"  target="_blank" rel="noopener"
+    >來數數 JavaScript 的所有資料型別</a></p>
+</blockquote>
+<h3 id="ep21-operators">ep21 operators</h3>
+<p>operator : 是一種特殊的函數
+其中包含著隱式轉換</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">+</span> <span class="mi">4</span><span class="p">;</span>
+<span class="nx">consoloe</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span>
+<span class="o">&gt;</span> <span class="mi">7</span>
+</code></pre></div><p>這裡js是如何知道 + 旁邊的3, 4是數值? 然後相加?
+語法解析會自動處理</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="o">+</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">){</span>
+    <span class="k">return</span> <span class="c1">// add the two #s (# mean number)
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></div><h3 id="ep22-operator-precedence-and-associativity">ep22 operator precedence and associativity</h3>
+<p>運算子的優先性與相依性</p>
+<p>operator precedence: 一行code不只一個運算子時 哪個運算子優先計算
+associativity: 當運算子有同樣的優先級時 依照右/左相依性</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">b</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="nx">c</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+<span class="nx">a</span> <span class="o">=</span> <span class="nx">b</span> <span class="o">=</span> <span class="nx">c</span><span class="p">;</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">b</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">c</span><span class="p">);</span>
+
+<span class="o">&gt;</span> <span class="mi">4</span>
+<span class="o">&gt;</span> <span class="mi">4</span>
+<span class="o">&gt;</span> <span class="mi">4</span>
+<span class="nx">因為</span> <span class="sb">`=`</span> <span class="nx">是</span> <span class="nx">右相依</span> <span class="p">(</span><span class="nx">right</span> <span class="nx">to</span> <span class="nx">left</span><span class="p">)</span>
+<span class="sb">`=`</span><span class="nx">本身會將左邊的值</span> <span class="nx">設定為右邊</span> <span class="nx">並回傳右邊的值</span>
+<span class="nx">所以會先執行</span> <span class="sb">`b=c`</span> <span class="nx">設定b為4</span> <span class="nx">並回傳4</span> <span class="nx">再執行</span> <span class="sb">`a=4`</span>
+</code></pre></div><blockquote>
+<p><a class="link" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_precedence"  target="_blank" rel="noopener"
+    >operator precedence</a></p>
+</blockquote>
+<h3 id="ep24-coercion-強制轉型">ep24 coercion 強制轉型</h3>
+<p>coercion: 轉換一個型別到另一個型別 動態型別</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="s1">&#39;hello&#39;</span> <span class="o">+</span> <span class="s1">&#39;world&#39;</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span>
+<span class="o">&gt;</span> <span class="nx">hello</span> <span class="nx">world</span>
+</code></pre></div><p>此時跟上面的數值相加就不同了 +這個operator會自動判斷成字串串接</p>
+<p>但如果兩個型別不同呢?</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="s1">&#39;2&#39;</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span>
+<span class="o">&gt;</span> <span class="mi">12</span>
+</code></pre></div><p>可以看到 數字1 被轉換成了string 執行串接</p>
+<h3 id="ep25-comparison-operator">ep25 comparison operator</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="mi">3</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">);</span>
+
+<span class="o">&gt;</span> <span class="kc">true</span>
+<span class="o">&gt;</span> <span class="kc">true</span>
+</code></pre></div><p>為什麼???
+首先 <code>&lt;</code>的優先級一樣 所以看associativity 為left-to
+-right
+<code>3 &lt; 2 return false</code> 但這時候就有問題了
+下一個operator其實是在執行:
+<code>false &lt; 1</code> 變成 左參數:boolean,右參數:number
+會嘗試轉換boolean成數字 Number(false)也就是0 此時
+<code>0 &lt; 1 return true</code></p>
+<p>所以回頭看line 1為何會正確?
+<code>1 &lt; 2 return true</code>
+<code>true &lt; 3</code> 其中Number(true)為1
+<code>1 &lt; 3 return true</code> 所以為true</p>
+<p>但並不是每次的轉型都可以預期 像是
+<code>Number(undefined) return NaN</code> Not a Number
+NaN並不是純值 但可以當作是&quot;想把某個東西轉成數值型別 但他不是數值 所以轉不了&quot;
+但是<code>Number(null) return 0</code> 這其實是語言設計的缺陷</p>
+<p>所以這邊想講的就是 轉型結果 完全依賴於js如何解析 除非你了解所有規則 不然是很難知道</p>
+<hr>
+<p>那只要在某些情況不要轉型 不就好了嗎? 檢查兩個東西是否相等
+<code>==</code> Equality operator 但他也會做轉型
+<code>3 == 3, return true</code>
+<code>'3' == 3, return true</code>
+<code>false == 0, return true</code></p>
+<p><code>null == 0, return false</code> ??? Number(null)為0 但為什麼?
+<code>null &lt; 1, return true</code></p>
+<p><code>&quot;&quot; == 0, return true</code>
+<code>&quot;&quot; == false, return true</code></p>
+<p>這種轉換的特性 會導致程式執行容易不符合預期 要怎麼解決?
+Strict Equality 這也是operator 但他並不會強制轉型
+<code>'3'===3, false</code></p>
+<p>所以使用<code>==</code> 應該要是你預期要使用轉型的時候</p>
+<blockquote>
+<p>這篇玩件就完整的解釋做了什麼<a class="link" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness"  target="_blank" rel="noopener"
+    >Equality comparisons and sameness</a></p>
+</blockquote>
+<h3 id="ep27-existence-and-booleans-存在-和-布林">ep27 existence and booleans 存在 和 布林</h3>
+<p>雖然不建議使用內建方法來轉換 但是作為測試還是可以使用</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="nb">Boolean</span><span class="p">(</span><span class="kc">undefined</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="k">return</span> <span class="kc">false</span>
+<span class="nb">Boolean</span><span class="p">(</span><span class="kc">null</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="k">return</span> <span class="kc">false</span>
+<span class="nb">Boolean</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="k">return</span> <span class="kc">false</span>
+</code></pre></div><p>既然這些東西都會被轉換成false 那可以適當的使用這種特性</p>
+<p>在<code>if()</code>中 會嘗試轉換成boolean</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">a</span><span class="p">;</span>
+
+<span class="k">if</span><span class="p">(</span><span class="nx">a</span><span class="p">){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;something is there&#39;</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nx">在creation</span> <span class="nx">phase</span> <span class="k">of</span> <span class="nx">the</span> <span class="nx">execution</span> <span class="nx">context會把a設置為undefined</span>
+<span class="nx">此時</span> <span class="nx">只要a是undefined</span><span class="err">、</span><span class="kc">null</span><span class="err">、</span><span class="s2">&#34;&#34;</span> <span class="nx">都不會進到這個if中</span>
+</code></pre></div><p>但這樣做也有問題 如果<code>a = 0</code> 並不代表不存在 但仍然會被轉形成false
+所以 可能額外添加<code>if(a || a===0)</code></p>
+<h3 id="ep28-default-values">ep28 Default values</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">greet</span><span class="p">(</span><span class="nx">name</span><span class="p">){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span> <span class="o">+</span> <span class="nx">name</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nx">greet</span><span class="p">();</span>
+<span class="o">&gt;</span> <span class="nx">hello</span> <span class="kc">undefined</span>
+</code></pre></div><p>此時 如果greet執行時沒有穿入參數? 在呼叫invoke階段會發生什麼?</p>
+<ul>
+<li>a new execution context is created</li>
+<li>這個variable在函數內被創造 只是傳入值是在呼叫階段被設定 但是在一開始被設定為undefined</li>
+</ul>
+<p>所以name會是undefined</p>
+<p>但這裡有個問題 +operator 看到的是string跟undefined 會強制把這個undefined轉換成string 這可以預期(運算子operator、轉型coercion) 但不會是理想的行為</p>
+<p>那樣怎麼樣給一個default給這個name?</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="nx">雖然ES6有新的做法</span> <span class="nx">但這邊先以原本的方式講解</span>
+<span class="kd">function</span> <span class="nx">greet</span><span class="p">(</span><span class="nx">name</span><span class="p">){</span>
+    <span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span> <span class="o">||</span> <span class="s1">&#39;&lt;your name here&gt;&#39;</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span> <span class="o">+</span> <span class="nx">name</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nx">greet</span><span class="p">();</span>
+<span class="o">&gt;</span> <span class="nx">hello</span> <span class="kc">undefined</span>
+</code></pre></div><p>記住 operator 只是會一種會回傳值的function 所以這個<code>||</code>會回傳什麼?
+回傳可以被強制轉形成true的那一個參數 並優先回傳左到右的第一個被轉形成true的</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kc">undefined</span> <span class="o">||</span> <span class="s1">&#39;hello&#39;</span>
+<span class="o">&gt;</span> <span class="s1">&#39;hello&#39;</span>
+<span class="kc">null</span> <span class="o">||</span> <span class="s1">&#39;hello&#39;</span>
+<span class="o">&gt;</span> <span class="s1">&#39;hello&#39;</span>
+<span class="s2">&#34;&#34;</span> <span class="o">||</span> <span class="s1">&#39;hello&#39;</span>
+<span class="o">&gt;</span> <span class="s1">&#39;hello&#39;</span>
+</code></pre></div><h3 id="ep29-framework-aside-default-value">ep29 framework aside: Default value</h3>
+<pre tabindex="0"><code class="language-html=" data-lang="html=">&lt;script src=&quot;lib1.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;lib2.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;app.js&quot;&gt;&lt;/script&gt;
+</code></pre><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">libraryName</span> <span class="o">=</span> <span class="s2">&#34;lib1&#34;</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">libraryName</span> <span class="o">=</span> <span class="s2">&#34;lib2&#34;</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="nx">consoloe</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">libraryName</span><span class="p">);</span>
+<span class="o">&gt;</span> <span class="nx">lib2</span>
+</code></pre></div><p>這三個script標籤 並不會有三個新的execution context 只是把code分開而已</p>
+<p>所以如果在lib2加入一個檢查
+這個檢查 稱為 checking global namespace</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="nb">window</span><span class="p">.</span><span class="nx">libraryName</span> <span class="o">=</span> <span class="nb">window</span><span class="p">.</span><span class="nx">libraryName</span> <span class="o">||</span> <span class="s2">&#34;lib2&#34;</span>
+</code></pre></div><p>最終app.js</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="o">&gt;</span> <span class="nx">lib1</span>
+</code></pre></div><h2 id="section-4-object--function">section 4 object &amp; function</h2>
+<h3 id="ep30-objtct--dot">ep30 objtct &amp; dot</h3>
+<p>在其他語言中 object跟function確實是不同的東西 但在js中 他們是非常related 甚至有些情況幾乎就是相同的</p>
+<p>在ep7已經提過 object 就是一堆name/value pairs的collection
+但這裡會以其他不同的觀點來看</p>
+<p>在js中 object會如何存在memory?</p>
+<p><figure 
+	>
+	<a href="https://hackmd.io/_uploads/BJ0coX1c1x.png" >
+		<img src="https://hackmd.io/_uploads/BJ0coX1c1x.png"
+			
+			
+			
+			loading="lazy"
+			alt="image">
+	</a>
+	
+	<figcaption>image</figcaption>
+	
+</figure></p>
+<p>既然object是collection of name/value 那這個value 是什麼?</p>
+<ul>
+<li>Primitive &ldquo;property&rdquo; like Bollean, string, number, &hellip;</li>
+<li>Object &ldquo;property&rdquo; 連結到另外一個object 這個連結 也是這object的屬性</li>
+<li>Function &ldquo;method&rdquo;  在object裡面的function 通稱為method 它也是function 但是和物件有所連結</li>
+</ul>
+<p>所以Object的value主要有兩種 property 跟 method</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">person</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Obejct</span><span class="p">();</span>
+
+<span class="nx">person</span><span class="p">[</span><span class="s1">&#39;firstname&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Tony&#39;</span><span class="p">;</span> 
+<span class="c1">// 在mem中產生內容為Tony的string 其key為firstname
+</span><span class="c1">// 這樣就能透過firstname來參考到這段string在mem中的位置
+</span><span class="c1">// 這operator稱為 Computer Member Access
+</span><span class="c1"></span>
+<span class="nx">person</span><span class="p">[</span><span class="s1">&#39;lastname&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Alicea&#39;</span><span class="p">;</span> 
+
+<span class="kd">var</span> <span class="nx">firstNameProperty</span> <span class="o">=</span> <span class="s2">&#34;firstname&#34;</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">person</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">person</span><span class="p">[</span><span class="nx">firstNameProperty</span><span class="p">]);</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">person</span><span class="p">.</span><span class="nx">firstname</span><span class="p">);</span>
+<span class="c1">// dot 這operator 稱為 Member Acess
+</span><span class="c1"></span>
+<span class="nx">person</span><span class="p">.</span><span class="nx">address</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Object</span><span class="p">();</span>
+<span class="c1">// person物件中 再放一個address物件
+</span><span class="c1"></span><span class="nx">person</span><span class="p">.</span><span class="nx">address</span><span class="p">.</span><span class="nx">street</span> <span class="o">=</span> <span class="s2">&#34;111 Main St.&#34;</span><span class="p">;</span>
+<span class="c1">// dot 是 左相依(left-to-right)
+</span><span class="c1">// 先執行左邊 在person物件中 look fo 名為address的property或method 並在記憶體中找到它
+</span><span class="c1">// 第二個dot 就會根據剛剛找到的address物件 找名為street的property or method
+</span><span class="c1">// 在這情況無法找到 所以會自動建立這屬性 並賦予&#34;...&#34;這字串
+</span><span class="c1"></span>
+<span class="o">&gt;</span> <span class="nb">Object</span>
+<span class="o">&gt;</span> <span class="nx">Tony</span>
+
+<span class="o">&gt;</span> <span class="nx">Tony</span>
+</code></pre></div><p>雖然 dot跟中括號都可以存取物件property or method 但最好還是使用dot就好 除非真的需要動態存取 畢竟Computer Member Access的Computer並不是說假的 它的存取方式其實跟dot有些不同</p>
+<h3 id="ep31-objects-and-object-literals-物件與物件實體化">ep31 objects and object literals 物件與物件實體化</h3>
+<p><code>{}</code> 當js執行到大括號時 會自動建立物件 幾乎等價於 <code>new Object();</code> 稱為物體實體化</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">Tony</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">firstname</span><span class="o">:</span> <span class="s1">&#39;Tony&#39;</span><span class="p">,</span>
+    <span class="nx">address</span><span class="o">:</span><span class="p">{</span> <span class="c1">// 再建立另一個address的Object 連結到Tony
+</span><span class="c1"></span>        <span class="nx">street</span><span class="o">:</span> <span class="s2">&#34;111 Main St.&#34;</span> 
+    <span class="p">}</span>    
+<span class="p">}</span>
+</code></pre></div><p>都是做一樣的事 建立物件到記憶體中 並用某中名稱(key)去存取它
+<figure 
+	>
+	<a href="https://hackmd.io/_uploads/BybGQ4191l.png" >
+		<img src="https://hackmd.io/_uploads/BybGQ4191l.png"
+			
+			
+			
+			loading="lazy"
+			alt="image">
+	</a>
+	
+	<figcaption>image</figcaption>
+	
+</figure></p>
+<blockquote>
+<p><a class="link" href="https://www.youtube.com/watch?v=Hci9Bb4_fkA"  target="_blank" rel="noopener"
+    >JavaScript Under The Hood 4 - Memory Storage</a></p>
+</blockquote>
+<h3 id="ep32-framework-aside-faking-namespaces">ep32 FrameWork Aside: Faking Namespaces</h3>
+<p>在多數語言中Namespace是variable和function的容器 通常是解決同樣命名的情況</p>
+<p>在js 沒有這個namespace可以區隔 但是因為Object的特性 一樣可以達到</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">greet</span> <span class="o">=</span> <span class="s1">&#39;hello&#39;</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">greet</span> <span class="o">=</span> <span class="s1">&#39;hola&#39;</span><span class="p">;</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">greet</span><span class="p">);</span>
+<span class="o">&gt;</span> <span class="nx">hola</span>
+</code></pre></div><p>如果這兩個greet是在不同的js被同時宣告呢? 第一個hello被覆蓋掉了
+這時就會利用Object來當作容器 確保不會跟其他的js檔案、global產生衝突</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">english</span> <span class="o">=</span> <span class="p">{};</span>
+<span class="kd">var</span> <span class="nx">spanish</span> <span class="o">=</span> <span class="p">{};</span>
+<span class="nx">english</span><span class="p">.</span><span class="nx">greet</span> <span class="o">=</span> <span class="s1">&#39;hello&#39;</span><span class="p">;</span>
+<span class="nx">spanish</span><span class="p">.</span><span class="nx">greet</span> <span class="o">=</span> <span class="s1">&#39;hello&#39;</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">english</span><span class="p">.</span><span class="nx">greet</span><span class="p">);</span>
+<span class="o">&gt;</span> <span class="nx">hello</span>
+</code></pre></div><p>另一個情況</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="nx">english</span><span class="p">.</span><span class="nx">greetings</span><span class="p">.</span><span class="nx">greet</span> <span class="o">=</span> <span class="s1">&#39;hello&#39;</span>
+<span class="o">&gt;</span> <span class="nx">Uncaught</span> <span class="nx">TypeError</span><span class="o">:</span> <span class="nx">Cannot</span> <span class="nx">set</span> <span class="nx">peoperty</span> <span class="s1">&#39;greet&#39;</span> <span class="k">of</span> <span class="kc">undefined</span>
+</code></pre></div><p>why? 因為dot是operator是左相依(left-to-right) <code>english.greetings</code>先被執行 但是<code>greetings</code> 變數既然宣告在這 那就會初始化為undefined
+接著執行右邊的<code>undefined.greet</code> 但undefined根本不是object 所以沒辦法做這件事
+必須先<code>english.greetings = {}</code></p>
+<p>如此 就能透過物件達到namespace的效果</p>
+<p>但根源是什麼?</p>
+<h3 id="ep33-json-and-object-literals">ep33 json and object literals</h3>
+<p>javascript object notation與物件實體語法</p>
+<p>早期web都是透過XML傳輸 但同個firstname要儲存兩次 這樣會浪費很多頻寬</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">objectLiteral</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">firstname</span><span class="o">:</span> <span class="s1">&#39;Mary&#39;</span><span class="p">,</span>
+    <span class="nx">isAProgrammer</span><span class="o">:</span> <span class="kc">true</span>
+<span class="p">}</span>
+
+<span class="o">&lt;</span><span class="nx">object</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">firstname</span><span class="o">&gt;</span><span class="nx">Mary</span><span class="o">&lt;</span><span class="err">/firstname&gt;</span>
+    <span class="o">&lt;</span><span class="nx">isAProgrammer</span><span class="o">&gt;</span><span class="kc">true</span><span class="o">&lt;</span><span class="err">/isAProgrammer&gt;</span>
+<span class="o">&lt;</span><span class="err">/object&gt;</span>
+
+<span class="nx">JSON</span><span class="o">:</span>
+<span class="p">{</span>
+    <span class="s2">&#34;firstname&#34;</span><span class="o">:</span> <span class="s2">&#34;Mary&#34;</span><span class="p">,</span>
+    <span class="s2">&#34;isAProgrammer&#34;</span><span class="o">:</span> <span class="kc">true</span>
+<span class="p">}</span>
+</code></pre></div><p>JSON本質就是string data 其結構有點像object literals
+像是JSON的property都要包在<code>&quot;&quot;</code>中</p>
+<p>JSON是物件實體化語法的子集合 也就是JSON語法較為嚴格 只要能寫成JSON 那就能寫成物件實體化語法</p>
+<p><strong>JSON本身並不是JS的一部分</strong> 但是在傳輸上非常實用 所以現在有了內建的parser在這之間作轉換</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">objectLiteral</span><span class="p">));</span>
+
+<span class="kd">var</span> <span class="nx">jsonValue</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span> <span class="s1">&#39;{&#34;firstname&#34;: &#34;Mary&#34;, &#34;isAProgrammer&#34;: true}&#39;</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">jsonValue</span><span class="p">);</span>
+</code></pre></div><h3 id="ep34-functions-are-objects">ep34 functions are objects</h3>
+<p>First class function: 任何可以對其他型別 如object, string, numbers, boolean 也都可以對函數做</p>
+<blockquote>
+<p><a class="link" href="https://developer.mozilla.org/en-US/docs/Glossary/First-class_Function"  target="_blank" rel="noopener"
+    >MDN - First-class Function</a></p>
+</blockquote>
+<p>什麼意思?</p>
+<p>可以賦予任意變數的值為function 也可以把function當作參數傳入其他function 也可以用實體語法立刻創造函數(create them on the fly)</p>
+<p>那這個function object是怎樣?
+一個特殊型態的物件 因為它擁有物件該有的 但是多了一些特性
+既然是物件 代表function本身 可以有屬性和方法
+<figure 
+	>
+	<a href="https://hackmd.io/_uploads/Byr2pU191x.png" >
+		<img src="https://hackmd.io/_uploads/Byr2pU191x.png"
+			
+			
+			
+			loading="lazy"
+			alt="image">
+	</a>
+	
+	<figcaption>image</figcaption>
+	
+</figure></p>
+<p>而他會有特殊屬性</p>
+<ul>
+<li>Name: js的function 並不一定要有名稱 can be anonymous</li>
+<li>code: 它本身也承載著實際寫的程式碼 也就是說 所寫的code 會成為函數物件的特殊屬性 而且特別的是 它是可呼叫的 invocable ()</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="c1">// 這段code 只是greet這個function object的特殊屬性
+</span><span class="c1"></span><span class="kd">function</span> <span class="nx">greet</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Hello&#39;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// 這裡新增了一個property到greet這個function物件
+</span><span class="c1"></span><span class="nx">greet</span><span class="p">.</span><span class="nx">language</span> <span class="o">=</span> <span class="s1">&#39;english&#39;</span><span class="p">;</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">greet</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">greet</span><span class="p">.</span><span class="nx">language</span><span class="p">);</span>
+
+<span class="o">&gt;</span> <span class="kd">function</span> <span class="nx">greet</span><span class="p">()</span> <span class="p">{</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Hello&#39;</span><span class="p">);}</span>
+<span class="o">&gt;</span> <span class="nx">english</span>
+</code></pre></div><p>如果執行它 <code>greet()</code> 就會去像前面一樣 去建立execution context
+<figure 
+	>
+	<a href="https://hackmd.io/_uploads/SkChfPy9Jx.png" >
+		<img src="https://hackmd.io/_uploads/SkChfPy9Jx.png"
+			
+			
+			
+			loading="lazy"
+			alt="image">
+	</a>
+	
+	<figcaption>image</figcaption>
+	
+</figure></p>
+<p><strong>函數只是帶有特殊屬性的物件 使其成為程式碼的容器</strong></p>
+<h3 id="ep35-function-statements-and-function-expressions">ep35 function statements and function expressions</h3>
+<p>function陳述句與表示式</p>
+<ul>
+<li>expressions: a unit of code that results in a value
+js中的任何expressions 最終 都會創造一個value 但這value並不一定要被存下來 只是說會產生一個值</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="c1">// a unit of code
+</span><span class="c1">// = is operator, function接受兩個參數 並回傳一個值
+</span><span class="c1"></span><span class="nx">a</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span> 
+<span class="o">&gt;</span> <span class="mi">3</span>
+
+<span class="c1">// other expressions, 但這次只是單單的回傳3 並沒有把這結果存到哪裡
+</span><span class="c1"></span><span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span>
+<span class="o">&gt;</span> <span class="mi">3</span>
+</code></pre></div><ul>
+<li>statements</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">a</span><span class="p">;</span>
+<span class="k">if</span><span class="p">(</span> <span class="nx">a</span><span class="o">===</span><span class="mi">3</span> <span class="p">){</span>
+    
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="k">if</span><span class="p">(</span><span class="nx">a</span><span class="o">==</span><span class="mi">3</span><span class="p">){</span> <span class="p">}</span> <span class="c1">// X
+</span></code></pre></div><p>這個<code>a===3</code>是expressions 但if本身並沒有任何回傳值 只是statements 所以像line6那樣做並沒有作用</p>
+<p>statements會做其他事 expressions則會有回傳值</p>
+<p>而js中的function是object 存在function statements and function expressions</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="c1">// function statements 因對當他被執行 並不回傳任何值
+</span><span class="c1">// 但他還是會做特殊的事 在這裡global的執行環境 creation phase時會hoisting
+</span><span class="c1">// 所以可以在宣告、建立greet之前呼叫greet
+</span><span class="c1"></span><span class="nx">greet</span><span class="p">();</span>
+
+<span class="kd">function</span> <span class="nx">greet</span><span class="p">(){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;hi&#39;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c1">// function expressions
+</span><span class="c1">// 建立一個function物件 設定anonymousGreet這個變數指向這個物件的記憶體位置
+</span><span class="c1">// 這跟上面的差異就在 這個function沒有名稱 (也可以有名稱 但沒意義)
+</span><span class="c1">// 所這個function建立時 其實回傳了一個值 就是他的記憶體位置
+</span><span class="c1"></span><span class="kd">var</span> <span class="nx">anonymousGreet</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;hi&#39;</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nx">anonymousGreet</span><span class="p">();</span>
+</code></pre></div><p>上面的<code>greet()</code> 是function statements因為一開始的hoist 所以在execution phase時 這一段本身並不會做任何事情</p>
+<p>但下面的<code>var anonymousGreet = function()</code> 最一開始hoist的只是anonymousGreet 內容會是undefined
+只有當這段被執行到時 這段statements才會去生成function物件 並回傳這個物件 這就是function expressions 回傳一個值 而值就是這個新物件</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="c1">// 這行被移上來 在宣告、實體化之前呼叫 會如何?
+</span><span class="c1"></span><span class="nx">anonymousGreet</span><span class="p">();</span>
+
+<span class="kd">var</span> <span class="nx">anonymousGreet</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;hi&#39;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="o">&gt;</span> <span class="nx">Uncaught</span> <span class="nx">TypeError</span><span class="o">:</span> <span class="kc">undefined</span> <span class="nx">is</span> <span class="nx">not</span> <span class="nx">a</span> <span class="kd">function</span>
+</code></pre></div><p>所以 實際上會被hoisting的 是function statements 而不是function expressions</p>
+<p>因為他只會hoist variable 並不包含物件 這function物件是直到被執行的當下 才被創造出來</p>
+<p><figure 
+	>
+	<a href="https://hackmd.io/_uploads/S14auw15Jg.png" >
+		<img src="https://hackmd.io/_uploads/S14auw15Jg.png"
+			
+			
+			
+			loading="lazy"
+			alt="image">
+	</a>
+	
+	<figcaption>image</figcaption>
+	
+</figure></p>
+<p>所以可以這樣</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">log</span><span class="p">(</span><span class="nx">a</span><span class="p">){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nx">log</span><span class="p">(</span> <span class="kd">function</span><span class="p">(){</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;hi&#39;</span><span class="p">)}</span> <span class="p">);</span>
+
+<span class="o">&gt;</span> <span class="kd">function</span><span class="p">(){</span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;hi&#39;</span><span class="p">)}</span>
+</code></pre></div><p>此時會立即創造function物件(on the fly) 並傳入log中
+First class function 可以傳入任何 object可以傳入的地方(畢竟創造後就是回傳這物件的所在) 這時只要加上()就可以執行 <code>a()</code></p>
+<p>這就是一級函數的概念 可以把函數像變數一樣傳到其他地方 這概念的延伸 就是functional programming</p>
+<h3 id="ep36-by-value-vs-by-reference">ep36 by value vs by reference</h3>
+<blockquote>
+<p><a class="link" href="https://blog.huli.tw/2018/06/23/javascript-call-by-value-or-reference/"  target="_blank" rel="noopener"
+    >深入探討 JavaScript 中的參數傳遞：call by value 還是 reference？</a></p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">changeA</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span> <span class="p">{</span> <span class="nx">a</span><span class="p">.</span><span class="nx">a</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">changeB</span><span class="p">(</span><span class="nx">b</span><span class="p">)</span> <span class="p">{</span> <span class="nx">b</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span> <span class="p">}</span>
+<span class="kd">function</span> <span class="nx">changeC</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span> <span class="p">{</span> <span class="nx">c</span><span class="o">=</span><span class="p">{</span><span class="nx">c</span><span class="o">:</span><span class="mi">2</span><span class="p">};</span> <span class="p">}</span>
+<span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="p">{</span><span class="nx">a</span><span class="o">:</span> <span class="mi">1</span><span class="p">};</span>
+<span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="p">{</span><span class="nx">c</span><span class="o">:</span> <span class="mi">1</span><span class="p">};</span>
+<span class="nx">changeA</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span>
+<span class="nx">changeB</span><span class="p">(</span><span class="nx">b</span><span class="p">);</span>
+<span class="nx">changeC</span><span class="p">(</span><span class="nx">c</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">b</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">c</span><span class="p">);</span>
+
+<span class="o">&gt;</span> <span class="p">{</span><span class="nx">a</span><span class="o">:</span> <span class="mi">2</span><span class="p">}</span>
+<span class="o">&gt;</span> <span class="mi">1</span>
+<span class="o">&gt;</span> <span class="p">{</span><span class="nx">c</span><span class="o">:</span> <span class="mi">1</span><span class="p">}</span>
+</code></pre></div><p><code>changeC(c);</code> 時，雖然 c 是對象類型，但在函數內部重新賦值並不會改變原始對象。這是因為重新賦值只是在函數內部改變了局部變量 c' 的引用，並沒有改變原始對象的內容。
+只是重新指了一個內部c&rsquo;所指的位置 但並沒有真的動到原本的c
+<figure 
+	>
+	<a href="https://hackmd.io/_uploads/HJH27d19yx.png" >
+		<img src="https://hackmd.io/_uploads/HJH27d19yx.png"
+			
+			
+			
+			loading="lazy"
+			alt="image">
+	</a>
+	
+	<figcaption>image</figcaption>
+	
+</figure></p>
+<p>js中 只要宣告變數都會產生這個變數本身的空間</p>
+<p>但只有primitive types是新的對應值(直接存在該格記憶體)</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="nx">a</span><span class="p">;</span>
+
+<span class="nx">a</span> <span class="mh">0x01</span> <span class="mi">3</span>
+<span class="nx">b</span> <span class="mh">0x04</span> <span class="mi">3</span>
+</code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="s2">&#34;abc&#34;</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="nx">a</span><span class="p">;</span>
+
+<span class="nx">a</span> <span class="mh">0x01</span> <span class="s1">&#39;a&#39;</span>
+  <span class="mh">0x02</span> <span class="s1">&#39;b&#39;</span>
+  <span class="mh">0x03</span> <span class="s1">&#39;c&#39;</span>
+  <span class="mh">0x04</span> <span class="s1">&#39;\0&#39;</span>
+
+<span class="nx">b</span> <span class="mh">0x06</span> <span class="s1">&#39;a&#39;</span>
+  <span class="mh">0x07</span> <span class="s1">&#39;b&#39;</span>
+  <span class="mh">0x08</span> <span class="s1">&#39;c&#39;</span>
+  <span class="mh">0x09</span> <span class="s1">&#39;\0&#39;</span>
+</code></pre></div><p>其他object 都只是更改指標的指向 雖然本質都是by value 但比較主流的說法會認為 所有物件都是by reference</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="c1">// 在heap的某處 生成這物件 並return其位置給a
+</span><span class="c1"></span><span class="kd">var</span> <span class="nx">a</span> <span class="o">=</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span><span class="mi">3</span><span class="p">};</span> 
+<span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="nx">a</span><span class="p">;</span>
+<span class="c1">// 假設heap的位置在0x51,先不考慮物件本身怎麼存的
+</span><span class="c1"></span>  <span class="mh">0x51</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span><span class="mi">3</span><span class="p">}</span> 
+<span class="nx">a</span> <span class="mh">0x02</span> <span class="mh">0x51</span>
+<span class="nx">b</span> <span class="mh">0x04</span> <span class="mh">0x51</span>
+</code></pre></div><p><figure 
+	>
+	<a href="https://hackmd.io/_uploads/B1L7md151e.png" >
+		<img src="https://hackmd.io/_uploads/B1L7md151e.png"
+			
+			
+			
+			loading="lazy"
+			alt="image">
+	</a>
+	
+	<figcaption>image</figcaption>
+	
+</figure></p>
+<p>mutate : 改變某些東西 通常指物件的屬性更改
+immutable : 不可改變</p>
+<h3 id="ep37-objects-functions-and-this">ep37 objects, functions and this</h3>
+<p>複習: 當function呼叫時 會創造新的execution context 放入execution stack
+但不要跟剛剛的function是物件搞混了 這裡指的是function物件的<code>code</code>這個特殊屬性</p>
+<p>當execution context被建立 每個執行環境 都有自己的variable environments及outer environment
+(lexical environment, scope chain 如果變數不在其variable environments 就會到scope chain去找)</p>
+<p>而每當execution context被創造 執行的時候都會給一個特殊的東西 <code>this</code> 它會根據函數如何被呼叫 來決定它指向什麼物件 那麼到底指向誰呢?</p>
+<p><figure 
+	>
+	<a href="https://hackmd.io/_uploads/S1Ufjukq1e.png" >
+		<img src="https://hackmd.io/_uploads/S1Ufjukq1e.png"
+			
+			
+			
+			loading="lazy"
+			alt="image">
+	</a>
+	
+	<figcaption>image</figcaption>
+	
+</figure></p>
+<p>invoke a()時 第一件事是創造execution context 其中的一部分就是創造<code>this</code>
+而<code>this</code>在a的執行環境會是什麼?</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">a</span><span class="p">(){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">newVar</span> <span class="o">=</span> <span class="s1">&#39;hello&#39;</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">b</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nx">a</span><span class="p">();</span> <span class="c1">// 執行a這function物件的code屬性
+</span><span class="c1"></span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">newVar</span><span class="p">);</span> <span class="c1">// 甚至不用使用this.newVar
+</span><span class="c1"></span><span class="nx">b</span><span class="p">();</span> <span class="c1">// 就算在執行階段創造 也一樣
+</span><span class="c1"></span><span class="o">&gt;</span> <span class="nb">window</span>
+<span class="o">&gt;</span> <span class="nb">window</span>
+</code></pre></div><p>所以單純的執行function <code>this</code>仍會指向global object
+此時總共有三個執行環境 global、a、b 都有各自的<code>this</code> 但是他們都指向同個位置 global</p>
+<p>那麼object method呢?
+在obj裡面的primitive type稱為property, function稱為method</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">name</span><span class="o">:</span><span class="s1">&#39;the object&#39;</span><span class="p">,</span>
+    <span class="nx">log</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">&#39;update object&#39;</span><span class="p">;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">log</span><span class="p">();</span>
+
+<span class="o">&gt;</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;the object&#39;</span><span class="p">,</span> <span class="nx">log</span><span class="o">:</span> <span class="nx">ƒ</span><span class="p">}</span>
+</code></pre></div><p>在這時候this就是這物件了 why?</p>
+<p>在看另外一個情況 在裡面再加一個function
+猜 他仍然會指向c物件 因為這function在log這個function物件內 而log在c物件內</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">name</span><span class="o">:</span><span class="s1">&#39;the object&#39;</span><span class="p">,</span>
+    <span class="nx">log</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">&#39;update object&#39;</span><span class="p">;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+        
+        <span class="kd">var</span> <span class="nx">setname</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">newname</span><span class="p">){</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">newname</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nx">setname</span><span class="p">(</span><span class="s1">&#39;update again! the c object&#39;</span><span class="p">);</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">log</span><span class="p">();</span>
+
+<span class="o">&gt;</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;update object&#39;</span><span class="p">,</span> <span class="nx">log</span><span class="o">:</span> <span class="nx">ƒ</span><span class="p">}</span>
+<span class="o">&gt;</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;update object&#39;</span><span class="p">,</span> <span class="nx">log</span><span class="o">:</span> <span class="nx">ƒ</span><span class="p">}</span>
+</code></pre></div><p>line10呼叫後 c物件的name卻沒有被改變 反而是改到global object的window.name了</p>
+<p>要怎麼樣才能確保 我用的this是對的? 在確保是this的地方宣告一個變數去存這個this的位置</p>
+<p>在line10 setname裡面的<code>self.name</code> 這個self並沒有在function中被宣告 這時就會沿著scope chain往外找 看他的outer lexcial reference 從而找到log中的變數self</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">c</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">name</span><span class="o">:</span><span class="s1">&#39;the object&#39;</span><span class="p">,</span>
+    <span class="nx">log</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+        <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span> <span class="c1">// here
+</span><span class="c1"></span>        
+        <span class="nx">self</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="s1">&#39;update object&#39;</span><span class="p">;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">self</span><span class="p">);</span>
+        
+        <span class="kd">var</span> <span class="nx">setname</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">newname</span><span class="p">){</span>
+            <span class="nx">self</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">newname</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nx">setname</span><span class="p">(</span><span class="s1">&#39;update again! the c object&#39;</span><span class="p">);</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">self</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="nx">c</span><span class="p">.</span><span class="nx">log</span><span class="p">();</span>
+
+<span class="o">&gt;</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;update object&#39;</span><span class="p">,</span> <span class="nx">log</span><span class="o">:</span> <span class="nx">ƒ</span><span class="p">}</span>
+<span class="o">&gt;</span> <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;update again! the c object&#39;</span><span class="p">,</span> <span class="nx">log</span><span class="o">:</span> <span class="nx">ƒ</span><span class="p">}</span>
+</code></pre></div><h3 id="ep38-arrays-collections-of-anything">ep38 arrays collections of anything</h3>
+<p>大多數靜態型別中 陣列都是一串相同type的東西</p>
+<p>在js中 因為他是動態型別 能混合放置任何type(不過其實就兩大類primitive、object)</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="c1">// var arr = new Array();
+</span><span class="c1"></span><span class="kd">var</span> <span class="nx">arr</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="mi">1</span><span class="p">,</span> 
+    <span class="kc">false</span><span class="p">,</span> 
+    <span class="p">{</span>
+        <span class="nx">name</span><span class="o">:</span><span class="s1">&#39;tony&#39;</span><span class="p">,</span>
+        <span class="nx">address</span><span class="o">:</span><span class="s1">&#39;111 st.&#39;</span>
+    <span class="p">},</span>
+    <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">){</span>
+        <span class="c1">// 在這的是function expression
+</span><span class="c1"></span>        <span class="kd">var</span> <span class="nx">greeting</span> <span class="o">=</span> <span class="s1">&#39;hello&#39;</span><span class="p">;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">greeting</span> <span class="o">+</span> <span class="nx">name</span><span class="p">);</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;hello&#39;</span>
+<span class="p">];</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">arr</span><span class="p">);</span>
+<span class="nx">arr</span><span class="p">[</span><span class="mi">3</span><span class="p">](</span><span class="nx">arr</span><span class="p">[</span><span class="mi">2</span><span class="p">].</span><span class="nx">name</span><span class="p">);</span>
+<span class="o">&gt;</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="p">{</span><span class="err">…</span><span class="p">},</span> <span class="nx">ƒ</span><span class="p">,</span> <span class="s1">&#39;hello&#39;</span><span class="p">]</span>
+<span class="o">&gt;</span> <span class="nx">hellotony</span>
+</code></pre></div><h3 id="ep39-arguments-and-spread">ep39 arguments and spread</h3>
+<p>js在執行function時自動設置好的</p>
+<p><figure 
+	>
+	<a href="https://hackmd.io/_uploads/SkWMOnl9Jx.png" >
+		<img src="https://hackmd.io/_uploads/SkWMOnl9Jx.png"
+			
+			
+			
+			loading="lazy"
+			alt="image">
+	</a>
+	
+	<figcaption>image</figcaption>
+	
+</figure></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/js/">JS</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css"integrity="sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.js"integrity="sha384-pK1WpvzWVBQiP0/GjnvRxV4mOb0oxFuyRxJlk6vVw146n3egcN5C925NCP7a7BY8"crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/contrib/auto-render.min.js"integrity="sha384-vZTG03m&#43;2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl"crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ]
+        });})
+</script>
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "beadx6ggwp" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2019 - 
+        
+        2025 Bead隨筆
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+        <aside class="sidebar right-sidebar sticky">
+            <section class="widget archives">
+                <div class="widget-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                </div>
+                <h2 class="widget-title section-title">目錄</h2>
+                
+                <div class="widget--toc">
+                    <nav id="TableOfContents">
+  <ol>
+    <li><a href="#section-2-execution-context--lexical-environment">section 2 execution context &amp; lexical environment</a>
+      <ol>
+        <li><a href="#ep6-語法解析詞彙環境執行環境">ep6 語法解析、詞彙環境、執行環境</a></li>
+        <li><a href="#ep7-namevalue--objects">ep7 name/value &amp; objects</a></li>
+        <li><a href="#ep9-global-environment--global-object">ep9 global environment &amp; global object</a></li>
+        <li><a href="#ep10-execution-context-creation-and-hoisting">ep10 Execution context creation and hoisting</a></li>
+        <li><a href="#ep11-js-and-undefined">ep11 js and undefined</a></li>
+        <li><a href="#ep12-the-execution-context-code-execution">ep12 the execution context code execution</a></li>
+        <li><a href="#ep13-single-threaded-synchronous-execution">ep13 single threaded, synchronous execution</a></li>
+        <li><a href="#ep14-function-invocation-and-the-exectuion-stack">ep14 Function Invocation and The Exectuion Stack</a></li>
+        <li><a href="#ep16-functions-context-and-variable-environments">ep16 functions, context and variable environments</a></li>
+        <li><a href="#ep16-scope-chain">ep16 scope chain</a></li>
+        <li><a href="#ep17-scope-es6-let">ep17 scope, es6, let</a></li>
+        <li><a href="#ep18-what-about-asynchronous-callbacks">ep18 what about asynchronous callbacks?</a></li>
+      </ol>
+    </li>
+    <li><a href="#section3-types-and-operator">Section3 types and operator</a>
+      <ol>
+        <li><a href="#ep19-types-and-javascript">ep19 types and javascript</a></li>
+        <li><a href="#ep20-primitive-types">ep20 primitive types</a></li>
+        <li><a href="#ep21-operators">ep21 operators</a></li>
+        <li><a href="#ep22-operator-precedence-and-associativity">ep22 operator precedence and associativity</a></li>
+        <li><a href="#ep24-coercion-強制轉型">ep24 coercion 強制轉型</a></li>
+        <li><a href="#ep25-comparison-operator">ep25 comparison operator</a></li>
+        <li><a href="#ep27-existence-and-booleans-存在-和-布林">ep27 existence and booleans 存在 和 布林</a></li>
+        <li><a href="#ep28-default-values">ep28 Default values</a></li>
+        <li><a href="#ep29-framework-aside-default-value">ep29 framework aside: Default value</a></li>
+      </ol>
+    </li>
+    <li><a href="#section-4-object--function">section 4 object &amp; function</a>
+      <ol>
+        <li><a href="#ep30-objtct--dot">ep30 objtct &amp; dot</a></li>
+        <li><a href="#ep31-objects-and-object-literals-物件與物件實體化">ep31 objects and object literals 物件與物件實體化</a></li>
+        <li><a href="#ep32-framework-aside-faking-namespaces">ep32 FrameWork Aside: Faking Namespaces</a></li>
+        <li><a href="#ep33-json-and-object-literals">ep33 json and object literals</a></li>
+        <li><a href="#ep34-functions-are-objects">ep34 functions are objects</a></li>
+        <li><a href="#ep35-function-statements-and-function-expressions">ep35 function statements and function expressions</a></li>
+        <li><a href="#ep36-by-value-vs-by-reference">ep36 by value vs by reference</a></li>
+        <li><a href="#ep37-objects-functions-and-this">ep37 objects, functions and this</a></li>
+        <li><a href="#ep38-arrays-collections-of-anything">ep38 arrays collections of anything</a></li>
+        <li><a href="#ep39-arguments-and-spread">ep39 arguments and spread</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+                </div>
+            </section>
+        </aside>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

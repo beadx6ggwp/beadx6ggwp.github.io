@@ -6,7 +6,25 @@
     <description>Recent content in JS on Bead隨筆</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 04 Dec 2020 02:16:07 +0800</lastBuildDate><atom:link href="https://davidhsu666.com/tags/js/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 18 Feb 2025 17:17:33 +0800</lastBuildDate><atom:link href="https://davidhsu666.com/tags/js/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>js筆記</title>
+      <link>https://davidhsu666.com/archives/jsnote/</link>
+      <pubDate>Tue, 18 Feb 2025 17:17:33 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/jsnote/</guid>
+      <description>JavaScript: Understanding the Weird Part 重點整理
+資源:
+ 你所不知道的js JavaScript：優良部分  找工作面試的時候被問到不少js內容 希望一次補好知識 再去碰框架
+了解完畢後需要重新整理 目前有點混亂
+section 2 execution context &amp;amp; lexical environment  The ECMAScript “Executable Code and Execution Contexts” chapter explained
+ ep6 語法解析、詞彙環境、執行環境   syntax parser
+  lexical environment code在程式中的實際環境 像是scope Closure this 都跟這個相關 關注於它寫在哪、周圍環境是什麼
+  execution context 也類似於os中的Context
+  js並不單單是直譯，為了優化，在剛吃到script時候會預先編譯部份，這也是hoisting的原因
+ep7 name/value &amp;amp; objects   name/value pairs 在一個context情況下 一個name(變數)只會對應到唯一的value 白話:一段執行中的code 同樣名稱的變數 只有一個對應的value 不過這個value 可以是其他的name/value</description>
+    </item>
+    
     <item>
       <title>從零開始的基礎RPG框架</title>
       <link>https://davidhsu666.com/archives/2dgame-nonename/</link>
