@@ -8,36 +8,6 @@
     <language>en-us</language>
     <lastBuildDate>Tue, 18 Feb 2025 17:17:33 +0800</lastBuildDate><atom:link href="https://davidhsu666.com/categories/codingnote/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>遊戲中的碰撞檢測Collision Detection</title>
-      <link>https://davidhsu666.com/archives/gamecollisiondetection/</link>
-      <pubDate>Wed, 21 Mar 2018 05:52:36 +0800</pubDate>
-      
-      <guid>https://davidhsu666.com/archives/gamecollisiondetection/</guid>
-      <description>遊戲中的碰撞檢測Collision Detection 前言 而這篇文有三個主要目的 :
- 對遊戲中的碰撞感興趣，卻不會寫程式的人可以了解原理 讓有能力實作的人，可以跟著文章寫出精確的多邊形碰撞檢測 自己的學習筆記  讓我們開始吧。
-這次要來介紹的主題是分離軸碰撞檢測(Separating Axis Theorem, SAT)
-分離軸定理通常用語檢測兩個多邊形或多邊形與圓之間的碰撞，跟所有演算法一樣他具有一定的優勢與缺點。
-我會慢慢講解背後的原理，並使用程式碼做簡易的範例。
-範例所使用的語言為Java Script，加上自製的向量函式庫，但我想觀念懂了應該不會有太大問題。
-矩形碰撞檢測 我想先從最簡單的碰撞檢測開始講，這樣比較好讓各位了解為什麼需要分離軸檢測，所以先從一般的矩形碰撞開始。
-AABB碰撞檢測(Axis-aligned Bounding Box): 為了方邊物體之間進行碰撞檢測運算，通常會對物體創建一個長方形將其包圍，AABB包圍盒也被稱為軸對齊包圍盒。
-一般二維的AABB包圍盒具備兩項特點:
- 以矩形包圍物體 矩形的每條邊，皆與坐標系的軸垂直  簡單來說就是用矩形把物體包起來，檢查矩形之間是否發生碰撞
-如下圖，黑框及為包圍盒，在做碰撞檢測時，只需要檢查包圍盒之間是否發生碰撞:
- AABB碰撞盒中的物體 
-那我們就直接來看看AABB碰撞盒是如何運作的吧。
-這裡有兩個矩形A、B，Box A最小邊為A.min、最大邊為A.max，而Box B同理。
- A.max &amp;lt; B.min 
-如上圖所示，當A.max &amp;lt; B.min時，代表兩物體之間仍有縫隙，沒有發生碰撞。
- A.max &amp;gt; B.min 
-上圖可以明顯地看到A與B發生碰撞，當A.max &amp;gt; B.min時，代表兩物體之間沒有縫隙，發生碰撞。
- B.max &amp;gt; A.min 
-但前面只討論B在A右側，當B在A的左側時，條件就要稍微改一下，當B在A的左側時，B.max &amp;gt; A.min時發生碰撞。
-將兩張圖的結果合在一起，整理成code:
-if (A.max &amp;gt; B.min &amp;amp;&amp;amp; B.max &amp;gt; A.</description>
-    </item>
-    
-    <item>
       <title>js筆記</title>
       <link>https://davidhsu666.com/archives/jsnote/</link>
       <pubDate>Tue, 18 Feb 2025 17:17:33 +0800</pubDate>
@@ -211,6 +181,36 @@ float x = 0, y = 0; public Form1() { InitializeComponent(); timer1.Interval = 10
 bool isPowerBy2_(int n) { for (int i = 1; i &amp;lt;= n; i *= 2) if (i == n) return true; return false; } // output: // isPowerBy2(1) =&amp;gt; true // isPowerBy2(2) =&amp;gt; true // isPowerBy2(4) =&amp;gt; true // isPowerBy2(-1) =&amp;gt; false // isPowerBy2(0) =&amp;gt; false // isPowerBy2(3) =&amp;gt; false 雖然這樣就解決了，但我一直在想是否有效率更高的方法。
 我們先來觀察2的次方數轉成2進制的樣子 :
 1 =&amp;gt; 0000 0001 , 1 – 1 =&amp;gt; 0000 0000 2 =&amp;gt; 0000 0010 , 2 – 1 =&amp;gt; 0000 0001 4 =&amp;gt; 0000 0100 , 4 – 1 =&amp;gt; 0000 0011 8 =&amp;gt; 0000 1000 , 8 – 1 =&amp;gt; 0000 0111 16 =&amp;gt; 0001 0000 , 16 – 1 =&amp;gt; 0000 1111 32 =&amp;gt; 0010 0000 , 32 – 1 =&amp;gt; 0001 1111 可以發現，只要該數是2的次方時，除了MSB(最高位元)是 1 其餘都是0，</description>
+    </item>
+    
+    <item>
+      <title>遊戲中的碰撞檢測Collision Detection</title>
+      <link>https://davidhsu666.com/archives/gamecollisiondetection/</link>
+      <pubDate>Wed, 21 Mar 2018 05:52:36 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/gamecollisiondetection/</guid>
+      <description>遊戲中的碰撞檢測Collision Detection 前言 而這篇文有三個主要目的 :
+ 對遊戲中的碰撞感興趣，卻不會寫程式的人可以了解原理 讓有能力實作的人，可以跟著文章寫出精確的多邊形碰撞檢測 自己的學習筆記  讓我們開始吧。
+這次要來介紹的主題是分離軸碰撞檢測(Separating Axis Theorem, SAT)
+分離軸定理通常用語檢測兩個多邊形或多邊形與圓之間的碰撞，跟所有演算法一樣他具有一定的優勢與缺點。
+我會慢慢講解背後的原理，並使用程式碼做簡易的範例。
+範例所使用的語言為Java Script，加上自製的向量函式庫，但我想觀念懂了應該不會有太大問題。
+矩形碰撞檢測 我想先從最簡單的碰撞檢測開始講，這樣比較好讓各位了解為什麼需要分離軸檢測，所以先從一般的矩形碰撞開始。
+AABB碰撞檢測(Axis-aligned Bounding Box): 為了方邊物體之間進行碰撞檢測運算，通常會對物體創建一個長方形將其包圍，AABB包圍盒也被稱為軸對齊包圍盒。
+一般二維的AABB包圍盒具備兩項特點:
+ 以矩形包圍物體 矩形的每條邊，皆與坐標系的軸垂直  簡單來說就是用矩形把物體包起來，檢查矩形之間是否發生碰撞
+如下圖，黑框及為包圍盒，在做碰撞檢測時，只需要檢查包圍盒之間是否發生碰撞:
+ AABB碰撞盒中的物體 
+那我們就直接來看看AABB碰撞盒是如何運作的吧。
+這裡有兩個矩形A、B，Box A最小邊為A.min、最大邊為A.max，而Box B同理。
+ A.max &amp;lt; B.min 
+如上圖所示，當A.max &amp;lt; B.min時，代表兩物體之間仍有縫隙，沒有發生碰撞。
+ A.max &amp;gt; B.min 
+上圖可以明顯地看到A與B發生碰撞，當A.max &amp;gt; B.min時，代表兩物體之間沒有縫隙，發生碰撞。
+ B.max &amp;gt; A.min 
+但前面只討論B在A右側，當B在A的左側時，條件就要稍微改一下，當B在A的左側時，B.max &amp;gt; A.min時發生碰撞。
+將兩張圖的結果合在一起，整理成code:
+if (A.max &amp;gt; B.min &amp;amp;&amp;amp; B.max &amp;gt; A.</description>
     </item>
     
   </channel>

@@ -8,7 +8,7 @@ date: 2018-03-21T05:52:36+08:00
 categories: [CodingNote]
 tags: [Collision]
 
-weight: 2 #至頂
+# weight: 2 #至頂
 license:  # CC BY-NC-ND
 hidden: false
 # comments: true #註解掉為開啟
