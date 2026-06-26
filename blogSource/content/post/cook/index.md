@@ -4,7 +4,7 @@ description: 紀錄料理背後的原理
 
 slug: TestKitchen # web path
 image: img/ig5.jpg
-date: 2024-06-27T21:51:55+08:00
+date: 2025-08-27T21:51:55+08:00
 categories: []
 tags: [TestKitchen]
 

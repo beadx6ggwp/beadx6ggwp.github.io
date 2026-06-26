@@ -9,7 +9,7 @@
         <lastBuildDate>Thu, 14 May 2026 08:10:30 +0800</lastBuildDate><atom:link href="https://davidhsu666.com/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>料理實驗筆記</title>
         <link>https://davidhsu666.com/archives/testkitchen/</link>
-        <pubDate>Thu, 27 Jun 2024 21:51:55 +0800</pubDate>
+        <pubDate>Wed, 27 Aug 2025 21:51:55 +0800</pubDate>
         
         <guid>https://davidhsu666.com/archives/testkitchen/</guid>
         <description>&lt;img src="https://davidhsu666.com/archives/testkitchen/img/ig5.jpg" alt="Featured image of post 料理實驗筆記" /&gt;&lt;p&gt;主要參考:&lt;/p&gt;
@@ -814,6 +814,311 @@ copy 後是 deep copy 嗎?
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://mes0903.github.io/Cpp-Miner/Miner_main/Value_Categories&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;礦坑系列 ── 值類別 Value Categoraries&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
+</description>
+        </item>
+        <item>
+        <title>從 Coordinate Vector 到 Matrix Representation</title>
+        <link>https://davidhsu666.com/archives/linear-algebra-representation-to-matrix/</link>
+        <pubDate>Sun, 26 Apr 2026 18:00:00 +0800</pubDate>
+        
+        <guid>https://davidhsu666.com/archives/linear-algebra-representation-to-matrix/</guid>
+        <description>&lt;img src="https://davidhsu666.com/archives/linear-algebra-representation-to-matrix/img/vector%20representation.jpg" alt="Featured image of post 從 Coordinate Vector 到 Matrix Representation" /&gt;&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
+&lt;p&gt;第一次學線性代數時，很容易把整個科目想成 matrix calculation。&lt;/p&gt;
+&lt;p&gt;看到 linear map，就想成一個 matrix；看到 vector，就想成 column vector。這樣做題很快，但後面遇到 polynomial space、function space、change of basis、isomorphism 時，就會開始覺得符號在飄。&lt;/p&gt;
+&lt;p&gt;原因是 matrix 不是一開始就存在的東西。&lt;/p&gt;
+&lt;p&gt;比較合理的順序應該是先有 vector space，再有 basis。選了 basis 之後，vector 才能被寫成 coordinate vector。接著有 linear map，並且 linear map 會被 basis images 決定。最後，把這些 basis images 寫成 coordinates，才得到 matrix representation。&lt;/p&gt;
+&lt;p&gt;所以這篇不從「matrix 怎麼乘」開始，而是從 representation 的需求開始整理：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;linear combination
+-&amp;gt; span
+-&amp;gt; linear independence
+-&amp;gt; basis
+-&amp;gt; coordinate vector
+-&amp;gt; linear map
+-&amp;gt; matrix representation
+-&amp;gt; composition
+-&amp;gt; inverse
+-&amp;gt; isomorphism
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;這種順序也比較接近 Axler 在 &lt;em&gt;Linear Algebra Done Right&lt;/em&gt; 裡的味道：先把 vector spaces 和 linear maps 當作主要對象，matrix 是選定 bases 之後才出現的表示方式。&lt;/p&gt;
+&lt;h2 id=&#34;先回到-linear-combination&#34;&gt;先回到 Linear Combination&lt;/h2&gt;
+&lt;p&gt;在談 matrix 之前，可以先回到 linear combination。&lt;/p&gt;
+&lt;p&gt;給定 vectors $\vec{v}_1,\ldots,\vec{v}_n$ 和 scalars $a_1,\ldots,a_n$，可以組出：&lt;/p&gt;
+&lt;p&gt;$$ a_1\vec{v}_1+\cdots+a_n\vec{v}_n $$&lt;/p&gt;
+&lt;p&gt;這個式子看起來很普通，但它背後其實已經用到 field 和 vector space 的設定。&lt;/p&gt;
+&lt;p&gt;field 處理的是 scalar 的加法、乘法與消去。vector space 處理的是 vector addition 和 scalar multiplication，而且要求操作後還留在同一個 space 裡。&lt;/p&gt;
+&lt;p&gt;所以 field 和 vector space 不是形式上的開場白。它們先把 linear combination 這件事變成可以反覆使用的操作。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;span能不能表示出來&#34;&gt;Span：能不能表示出來&lt;/h2&gt;
+&lt;p&gt;有了 linear combination 後，接著會問：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;能不能用這組 vectors 做出某個目標 vector？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;這就是 span 處理的問題。&lt;/p&gt;
+&lt;p&gt;若 $S\subseteq V$，那 $\operatorname{span}(S)$ 是所有能由 $S$ 裡的 vectors 做 linear combination 得到的 vectors。&lt;/p&gt;
+&lt;p&gt;所以：&lt;/p&gt;
+&lt;p&gt;$$ x\in\operatorname{span}(S) $$&lt;/p&gt;
+&lt;p&gt;意思是存在某些 coefficients，可以把 $x$ 表示出來。&lt;/p&gt;
+&lt;p&gt;但這裡只保證存在，還沒有保證唯一。&lt;/p&gt;
+&lt;p&gt;例如在 $\mathbb{R}^2$ 中，${(1,0),(0,1),(1,1)}$ 一樣可以 span 整個 $\mathbb{R}^2$，但 $(1,1)$ 其實已經可以由前兩個 vectors 做出來：&lt;/p&gt;
+&lt;p&gt;$$ (1,1)=(1,0)+(0,1) $$&lt;/p&gt;
+&lt;p&gt;所以 spanning set 不一定適合拿來當 coordinates。因為同一個 vector 可能有很多種表示方式。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;linear-independence表示法不能有冗餘&#34;&gt;Linear Independence：表示法不能有冗餘&lt;/h2&gt;
+&lt;p&gt;Linear independence 的定義是：&lt;/p&gt;
+&lt;p&gt;$$ a_1\vec{v}_1+\cdots+a_n\vec{v}_n=\vec{0}\Rightarrow a_1=\cdots=a_n=0 $$&lt;/p&gt;
+&lt;p&gt;這句話表面上是在講 zero vector，但它真正排除的是 redundant representation。&lt;/p&gt;
+&lt;p&gt;如果存在一組不全為零的 coefficients，使得：&lt;/p&gt;
+&lt;p&gt;$$ a_1\vec{v}_1+\cdots+a_n\vec{v}_n=\vec{0} $$&lt;/p&gt;
+&lt;p&gt;那就代表其中某個 vector 可以被其他 vectors 表示。換句話說，這組 vectors 裡有人是多餘的。&lt;/p&gt;
+&lt;p&gt;所以可以先把 span 和 linear independence 分開看：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;span
+-&amp;gt; 每個 vector 至少能被表示
+
+linear independence
+-&amp;gt; 表示法不會有冗餘
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;basis 則是把這兩個條件合起來。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;basis-讓-coordinates-變得合法&#34;&gt;Basis 讓 coordinates 變得合法&lt;/h2&gt;
+&lt;p&gt;一組 basis 同時滿足：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;spans $V$；&lt;/li&gt;
+&lt;li&gt;linearly independent。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;所以如果 $\beta=(\vec{v}_1,\ldots,\vec{v}_n)$ 是 $V$ 的 ordered basis，那每個 $x\in V$ 都可以唯一寫成：&lt;/p&gt;
+&lt;p&gt;$$ x=a_1\vec{v}_1+\cdots+a_n\vec{v}_n $$&lt;/p&gt;
+&lt;p&gt;這時候才可以定義 coordinate vector：&lt;/p&gt;
+&lt;p&gt;$$ [x]_{\beta}=\begin{pmatrix} a_1\ \vdots\ a_n \end{pmatrix} $$&lt;/p&gt;
+&lt;p&gt;這個 column vector 不是 $x$ 本身，而是 $x$ 在 basis $\beta$ 下的 coordinates。&lt;/p&gt;
+&lt;p&gt;如果 basis 改掉，coordinates 也會跟著改掉。&lt;/p&gt;
+&lt;p&gt;所以平常直接把 vector 寫成 column vector，其實是省略了前提：已經選好 ordered basis。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;coordinate-map&#34;&gt;Coordinate Map&lt;/h2&gt;
+&lt;p&gt;選好 basis $\beta$ 後，可以定義 coordinate map：&lt;/p&gt;
+&lt;p&gt;$$ C_{\beta}:V\to F^n $$&lt;/p&gt;
+&lt;p&gt;$$ C_{\beta}(x)=[x]_{\beta} $$&lt;/p&gt;
+&lt;p&gt;它做的事情就是把 abstract vector $x$ 轉成它在 $\beta$ 下的 coordinate vector。&lt;/p&gt;
+&lt;p&gt;這個 map 之所以 well-defined，是因為 basis expansion unique。也就是同一個 $x$ 不會有兩組不同 coordinates。&lt;/p&gt;
+&lt;p&gt;它也是 linear。假設：&lt;/p&gt;
+&lt;p&gt;$$ x=a_1\vec{v}_1+\cdots+a_n\vec{v}_n $$&lt;/p&gt;
+&lt;p&gt;$$ y=b_1\vec{v}_1+\cdots+b_n\vec{v}_n $$&lt;/p&gt;
+&lt;p&gt;那麼：&lt;/p&gt;
+&lt;p&gt;$$ x+y=(a_1+b_1)\vec{v}_1+\cdots+(a_n+b_n)\vec{v}_n $$&lt;/p&gt;
+&lt;p&gt;所以：&lt;/p&gt;
+&lt;p&gt;$$ [x+y]_{\beta}=[x]_{\beta}+[y]_{\beta} $$&lt;/p&gt;
+&lt;p&gt;scalar multiplication 也是一樣：&lt;/p&gt;
+&lt;p&gt;$$ [cx]_{\beta}=c[x]_{\beta} $$&lt;/p&gt;
+&lt;p&gt;因此選定 basis 後，$V$ 可以被翻譯成 $F^n$。但這個翻譯不是天生的，而是依賴你選的 basis。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;linear-map-由-basis-images-決定&#34;&gt;Linear Map 由 Basis Images 決定&lt;/h2&gt;
+&lt;p&gt;接著看 linear map。&lt;/p&gt;
+&lt;p&gt;普通 function 通常不能只靠幾個 input 的結果決定。但 linear map 有額外限制：它必須保留 linear combination。&lt;/p&gt;
+&lt;p&gt;也就是：&lt;/p&gt;
+&lt;p&gt;$$ T(a_1\vec{v}_1+\cdots+a_n\vec{v}_n)=a_1T(\vec{v}_1)+\cdots+a_nT(\vec{v}_n) $$&lt;/p&gt;
+&lt;p&gt;如果 $\beta=(\vec{v}_1,\ldots,\vec{v}_n)$ 是 $V$ 的 basis，任意 $x\in V$ 都可以寫成：&lt;/p&gt;
+&lt;p&gt;$$ x=a_1\vec{v}_1+\cdots+a_n\vec{v}_n $$&lt;/p&gt;
+&lt;p&gt;套用 $T$：&lt;/p&gt;
+&lt;p&gt;$$ T(x)=a_1T(\vec{v}_1)+\cdots+a_nT(\vec{v}_n) $$&lt;/p&gt;
+&lt;p&gt;所以只要知道：&lt;/p&gt;
+&lt;p&gt;$$ T(\vec{v}_1),\ldots,T(\vec{v}_n) $$&lt;/p&gt;
+&lt;p&gt;就能決定 $T$ 對所有 $x\in V$ 的結果。&lt;/p&gt;
+&lt;p&gt;這句話要小心，不是說「知道幾個 input 的 output 就能決定 function」。它成立是因為那幾個 input 是 basis，而且 map 是 linear。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;matrix-representation記錄-basis-images-的-coordinates&#34;&gt;Matrix Representation：記錄 Basis Images 的 Coordinates&lt;/h2&gt;
+&lt;p&gt;現在令：&lt;/p&gt;
+&lt;p&gt;$$ T:V\to W $$&lt;/p&gt;
+&lt;p&gt;是 linear map。&lt;/p&gt;
+&lt;p&gt;選兩組 ordered bases：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\beta=(\vec{v}_1,\ldots,\vec{v}_n)$ for $V$；&lt;/li&gt;
+&lt;li&gt;$\gamma=(\vec{w}_1,\ldots,\vec{w}_m)$ for $W$。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;這裡先不要急著寫 matrix，可以先看 $T$ 對 domain basis vector 做了什麼。&lt;/p&gt;
+&lt;p&gt;對每個 $\vec{v}_k$，有：&lt;/p&gt;
+&lt;p&gt;$$ T(\vec{v}_k)\in W $$&lt;/p&gt;
+&lt;p&gt;因為 $\gamma$ 是 $W$ 的 basis，所以 $T(\vec{v}_k)$ 可以唯一寫成：&lt;/p&gt;
+&lt;p&gt;$$ T(\vec{v}_k)=A_{1,k}\vec{w}_1+\cdots+A_{m,k}\vec{w}_m $$&lt;/p&gt;
+&lt;p&gt;這裡的 $A_{j,k}$ 就是 matrix 裡第 $j$ row、第 $k$ column 的 entry。&lt;/p&gt;
+&lt;p&gt;也就是說，matrix 不是先被定義出來，再拿來套到 $T$ 上。比較自然的方向是反過來：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;先看 T(v_k)
+-&amp;gt; 把 T(v_k) 寫成 gamma basis 的 linear combination
+-&amp;gt; coefficients 放進第 k 個 column
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;因此 $T$ relative to domain basis $\beta$ and codomain basis $\gamma$ 的 matrix representation 可以寫成：&lt;/p&gt;
+&lt;p&gt;$$ [T]^{\gamma}_{\beta}=([T(\vec{v}_1)]_{\gamma},[T(\vec{v}_2)]_{\gamma},\ldots,[T(\vec{v}_n)]_{\gamma}) $$&lt;/p&gt;
+&lt;p&gt;這個式子裡的 columns 不是排版用的。第 $k$ 欄就是 $T(\vec{v}_k)$ 在 $\gamma$ 底下的 coordinate vector。&lt;/p&gt;
+&lt;p&gt;所以 matrix representation 其實只是把 linear map 對 basis 的作用結果，用 coordinates 存起來。&lt;/p&gt;
+&lt;h2 id=&#34;matrix-representation-的公式&#34;&gt;Matrix Representation 的公式&lt;/h2&gt;
+&lt;p&gt;若：&lt;/p&gt;
+&lt;p&gt;$$ x=a_1\vec{v}_1+\cdots+a_n\vec{v}_n $$&lt;/p&gt;
+&lt;p&gt;那：&lt;/p&gt;
+&lt;p&gt;$$ [x]_{\beta}=\begin{pmatrix} a_1\ \vdots\ a_n \end{pmatrix} $$&lt;/p&gt;
+&lt;p&gt;而：&lt;/p&gt;
+&lt;p&gt;$$ T(x)=a_1T(\vec{v}_1)+\cdots+a_nT(\vec{v}_n) $$&lt;/p&gt;
+&lt;p&gt;把右邊轉成 $\gamma$ coordinates：&lt;/p&gt;
+&lt;p&gt;$$ [T(x)]_{\gamma}=a_1[T(\vec{v}_1)]_{\gamma}+\cdots+a_n[T(\vec{v}_n)]_{\gamma} $$&lt;/p&gt;
+&lt;p&gt;這正好就是 matrix columns 對 coefficients 做 linear combination：&lt;/p&gt;
+&lt;p&gt;$$ [T(x)]_{\gamma}=[T]^{\gamma}_{\beta}[x]_{\beta} $$&lt;/p&gt;
+&lt;p&gt;這句話如果直接背，很容易忽略它其實在做兩次翻譯：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;先把 x 翻成 beta coordinates
+再把 T(x) 翻成 gamma coordinates
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;所以可以把每個 object 放回它所在的位置：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;object&lt;/th&gt;
+&lt;th&gt;所在位置&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;$x$&lt;/td&gt;
+&lt;td&gt;$V$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;$[x]_{\beta}$&lt;/td&gt;
+&lt;td&gt;$F^n$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;$T(x)$&lt;/td&gt;
+&lt;td&gt;$W$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;$[T(x)]_{\gamma}$&lt;/td&gt;
+&lt;td&gt;$F^m$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;$[T]^{\gamma}_{\beta}$&lt;/td&gt;
+&lt;td&gt;$M_{m\times n}(F)$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;所以 matrix 不是直接吃 abstract vector $x$。它吃的是 $[x]_{\beta}$。&lt;/p&gt;
+&lt;p&gt;matrix 的輸出也不是 $T(x)$ 本身，而是 $[T(x)]_{\gamma}$。&lt;/p&gt;
+&lt;p&gt;整個流程可以寫成：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;x in V
+-&amp;gt; [x]_beta in F^n
+-&amp;gt; [T(x)]_gamma in F^m
+-&amp;gt; T(x) in W
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id=&#34;上下標在記錄方向&#34;&gt;上下標在記錄方向&lt;/h2&gt;
+&lt;p&gt;$[T]^{\gamma}_{\beta}$ 裡面：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\beta$ 是 domain basis；&lt;/li&gt;
+&lt;li&gt;$\gamma$ 是 codomain basis。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;所以它做的是：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;beta coordinates
+-&amp;gt; gamma coordinates
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;如果換 basis，同一個 linear map $T$ 會得到不同的 matrix。&lt;/p&gt;
+&lt;p&gt;所以不能直接說 linear map 就是 matrix。比較精確地說，是選定 domain basis 和 codomain basis 後，linear map 才會有對應的 matrix representation。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;composition右邊的-matrix-先作用&#34;&gt;Composition：右邊的 matrix 先作用&lt;/h2&gt;
+&lt;p&gt;現在令：&lt;/p&gt;
+&lt;p&gt;$$ T:V\to W $$&lt;/p&gt;
+&lt;p&gt;$$ U:W\to Z $$&lt;/p&gt;
+&lt;p&gt;composition 是：&lt;/p&gt;
+&lt;p&gt;$$ U\circ T:V\to Z $$&lt;/p&gt;
+&lt;p&gt;也就是先做 $T$，再做 $U$。&lt;/p&gt;
+&lt;p&gt;選 bases：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\alpha$ for $V$；&lt;/li&gt;
+&lt;li&gt;$\beta$ for $W$；&lt;/li&gt;
+&lt;li&gt;$\gamma$ for $Z$。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;對 $x\in V$，先做 $T$：&lt;/p&gt;
+&lt;p&gt;$$ [T(x)]_{\beta}=[T]^{\beta}_{\alpha}[x]_{\alpha} $$&lt;/p&gt;
+&lt;p&gt;再做 $U$：&lt;/p&gt;
+&lt;p&gt;$$ [U(T(x))]_{\gamma}=[U]^{\gamma}_{\beta}[T(x)]_{\beta} $$&lt;/p&gt;
+&lt;p&gt;代入前一式：&lt;/p&gt;
+&lt;p&gt;$$ [(U\circ T)(x)]_{\gamma}=[U]^{\gamma}_{\beta}[T]^{\beta}_{\alpha}[x]_{\alpha} $$&lt;/p&gt;
+&lt;p&gt;所以：&lt;/p&gt;
+&lt;p&gt;$$ [U\circ T]^{\gamma}_{\alpha}=[U]^{\gamma}_{\beta}[T]^{\beta}_{\alpha} $$&lt;/p&gt;
+&lt;p&gt;這也能看出為什麼右邊的 matrix 先作用。。&lt;/p&gt;
+&lt;p&gt;因為 column vector 放在最右邊，越靠近 input coordinates 的 matrix 越先被套用。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;[x]_alpha
+-&amp;gt; [T(x)]_beta
+-&amp;gt; [U(T(x))]_gamma
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id=&#34;identity-map-和-change-of-coordinates&#34;&gt;Identity Map 和 Change of Coordinates&lt;/h2&gt;
+&lt;p&gt;如果 $I_V:V\to V$ 是 identity map，那：&lt;/p&gt;
+&lt;p&gt;$$ I_V(x)=x $$&lt;/p&gt;
+&lt;p&gt;如果 domain basis 和 codomain basis 都是 $\beta$，那：&lt;/p&gt;
+&lt;p&gt;$$ [I_V]^{\beta}_{\beta}=I $$&lt;/p&gt;
+&lt;p&gt;但如果 domain basis 是 $\alpha$，codomain basis 是 $\beta$，那：&lt;/p&gt;
+&lt;p&gt;$$ [I_V]^{\beta}_{\alpha} $$&lt;/p&gt;
+&lt;p&gt;就不是單純的 identity matrix，而是在把 $\alpha$ coordinates 轉成 $\beta$ coordinates。&lt;/p&gt;
+&lt;p&gt;所以 identity map 的 matrix 不一定是 identity matrix。它取決於兩邊用的是不是同一組 basis。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;inversemap-反過來basis-也反過來&#34;&gt;Inverse：Map 反過來，Basis 也反過來&lt;/h2&gt;
+&lt;p&gt;如果 $T:V\to W$ is invertible，那有：&lt;/p&gt;
+&lt;p&gt;$$ T^{-1}:W\to V $$&lt;/p&gt;
+&lt;p&gt;滿足：&lt;/p&gt;
+&lt;p&gt;$$ T^{-1}\circ T=I_V $$&lt;/p&gt;
+&lt;p&gt;$$ T\circ T^{-1}=I_W $$&lt;/p&gt;
+&lt;p&gt;選 basis $\beta$ for $V$，basis $\gamma$ for $W$。&lt;/p&gt;
+&lt;p&gt;因為 $T$ 是：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;beta coordinates
+-&amp;gt; gamma coordinates
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;所以 $T^{-1}$ 是：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;gamma coordinates
+-&amp;gt; beta coordinates
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;因此：&lt;/p&gt;
+&lt;p&gt;$$ [T^{-1}]^{\beta}_{\gamma}=([T]^{\gamma}_{\beta})^{-1} $$&lt;/p&gt;
+&lt;p&gt;這個式子可以直接從方向看。&lt;/p&gt;
+&lt;p&gt;$T$ 原本把 $V$ 送到 $W$，所以在 coordinates 裡是從 $\beta$ 走到 $\gamma$。&lt;/p&gt;
+&lt;p&gt;$T^{-1}$ 則把 $W$ 送回 $V$，所以在 coordinates 裡就從 $\gamma$ 走回 $\beta$。&lt;/p&gt;
+&lt;p&gt;也就是說，inverse 不只是把 matrix 取 inverse，也要把它連接的兩套 coordinate systems 反過來看。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;isomorphism&#34;&gt;Isomorphism&lt;/h2&gt;
+&lt;p&gt;最後看 isomorphism。&lt;/p&gt;
+&lt;p&gt;一個 linear map $T:V\to W$ 如果 bijective，就稱為 linear isomorphism。&lt;/p&gt;
+&lt;p&gt;它不是說 $V$ 和 $W$ 裡的元素長得一樣，而是說兩邊的 linear combination structure 可以互相翻譯，而且不丟資訊。&lt;/p&gt;
+&lt;p&gt;如果 $V$ 和 $W$ 都是 finite-dimensional vector spaces over the same field，那：&lt;/p&gt;
+&lt;p&gt;$$ V\cong W\Longleftrightarrow \dim(V)=\dim(W) $$&lt;/p&gt;
+&lt;p&gt;原因是：&lt;/p&gt;
+&lt;p&gt;如果 $V\cong W$，isomorphism 會把 basis 對應到 basis，所以 dimension 相同。&lt;/p&gt;
+&lt;p&gt;反過來，如果 dimension 相同，可以選兩邊的 basis，然後把一邊的 basis vectors 對應到另一邊，再 linear extend 成一個 isomorphism。&lt;/p&gt;
+&lt;p&gt;但這裡只是在說 abstract vector space structure。&lt;/p&gt;
+&lt;p&gt;如果還有 inner product、norm、metric、topology、orientation 這些額外結構，只看 dimension 不一定夠。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;回頭看-notation&#34;&gt;回頭看 Notation&lt;/h2&gt;
+&lt;p&gt;到這裡再看 $[T]^{\gamma}_{\beta}$，它就不只是上下標比較多的 matrix。&lt;/p&gt;
+&lt;p&gt;下標 $\beta$ 表示 input coordinate system，也就是這個 matrix 預期吃的是 $[x]_{\beta}$。&lt;/p&gt;
+&lt;p&gt;上標 $\gamma$ 表示 output coordinate system，也就是這個 matrix 算出來的是 $[T(x)]_{\gamma}$。&lt;/p&gt;
+&lt;p&gt;因此：&lt;/p&gt;
+&lt;p&gt;$$ [T(x)]_{\gamma}=[T]^{\gamma}_{\beta}[x]_{\beta} $$&lt;/p&gt;
+&lt;p&gt;這個 notation 其實是在標出資料流：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;beta coordinates -&amp;gt; gamma coordinates
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;composition 也是同一件事。&lt;/p&gt;
+&lt;p&gt;如果：&lt;/p&gt;
+&lt;p&gt;$$ [T]^{\beta}_{\alpha} $$&lt;/p&gt;
+&lt;p&gt;把 $\alpha$ coordinates 轉成 $\beta$ coordinates，而：&lt;/p&gt;
+&lt;p&gt;$$ [U]^{\gamma}_{\beta} $$&lt;/p&gt;
+&lt;p&gt;把 $\beta$ coordinates 轉成 $\gamma$ coordinates，那它們中間的 $\beta$ 對得上，所以可以接起來：&lt;/p&gt;
+&lt;p&gt;$$ [U\circ T]^{\gamma}_{\alpha}=[U]^{\gamma}_{\beta}[T]^{\beta}_{\alpha} $$&lt;/p&gt;
+&lt;p&gt;右邊的 $[T]^{\beta}_{\alpha}$ 先作用，是因為 column vector 放在最右邊。這不是 notation 故意反直覺，而是 function composition 寫成 $U(T(x))$ 後，最靠近 $x$ 的東西先作用。&lt;/p&gt;
+&lt;p&gt;inverse 也可以用同一個方式看。&lt;/p&gt;
+&lt;p&gt;如果 $T$ 是：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;beta coordinates -&amp;gt; gamma coordinates
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;那 $T^{-1}$ 就是：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;gamma coordinates -&amp;gt; beta coordinates
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;所以：&lt;/p&gt;
+&lt;p&gt;$$ [T^{-1}]^{\beta}_{\gamma}=([T]^{\gamma}_{\beta})^{-1} $$&lt;/p&gt;
+&lt;p&gt;這裡上下標反過來，不是額外多背一條規則，而是 map 的方向反過來後自然發生的事情。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;結論&#34;&gt;結論&lt;/h2&gt;
+&lt;p&gt;從 coordinate vector 走到 matrix representation，最後整理出來的是：matrix 是 linear map 在 chosen bases 下的記錄方式。&lt;/p&gt;
+&lt;p&gt;basis 先讓 abstract vector 有唯一 coordinates。linear map 因為保留 linear combination，所以只要知道 basis vectors 被送到哪裡，就能決定整個 map。&lt;/p&gt;
+&lt;p&gt;matrix representation 接著做的事情，就是把這些 images 轉成 codomain basis 下的 coordinates，再依序放進 columns。&lt;/p&gt;
+&lt;p&gt;所以 matrix 不是 linear map 的起點，而是後面的表示結果。&lt;/p&gt;
+&lt;p&gt;composition 會對應到 matrix multiplication，是因為 coordinate representation 要跟 function composition 相容。&lt;/p&gt;
+&lt;p&gt;inverse 的上下標會反過來，是因為 map 的方向反過來，domain basis 和 codomain basis 也跟著交換。&lt;/p&gt;
+&lt;p&gt;如果之後要繼續看 change of basis、similar matrices、eigenvalues，這個觀念會一直出現：很多 matrix statement 背後真正不變的東西是 linear map，matrix 則是選了 basis 之後看到的樣子。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;references&#34;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Sheldon Axler, &lt;em&gt;Linear Algebra Done Right&lt;/em&gt;, 4th edition&lt;/li&gt;
+&lt;li&gt;Stephen H. Friedberg, Arnold J. Insel, Lawrence E. Spence, &lt;em&gt;Linear Algebra&lt;/em&gt;, 4th edition&lt;/li&gt;
+&lt;li&gt;李宏毅 Linear Algebra Lecture&lt;/li&gt;
+&lt;/ul&gt;
 </description>
         </item>
         <item>
@@ -2793,7 +3098,7 @@ $ P= (1-u-v)A + uB + vC $&lt;/p&gt;
 &lt;h2 id=&#34;結論&#34;&gt;結論&lt;/h2&gt;
 &lt;p&gt;暫無，之後再補&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id=&#34;reference&#34;&gt;Reference&lt;/h2&gt;
+&lt;h2 id=&#34;references&#34;&gt;References&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;Fundamentals of Computer Graphics 4th&lt;/li&gt;
 &lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.scratchapixel.com/lessons/3d-basic-rendering/rasterization-practical-implementation/rasterization-stage&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;

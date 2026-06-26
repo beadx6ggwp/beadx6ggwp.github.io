@@ -10,7 +10,7 @@
     <item>
       <title>料理實驗筆記</title>
       <link>https://davidhsu666.com/archives/testkitchen/</link>
-      <pubDate>Thu, 27 Jun 2024 21:51:55 +0800</pubDate>
+      <pubDate>Wed, 27 Aug 2025 21:51:55 +0800</pubDate>
       
       <guid>https://davidhsu666.com/archives/testkitchen/</guid>
       <description>主要參考:
@@ -29,6 +29,20 @@ https://hackmd.io/@beadx6ggwp/TestKitchen</description>
  copy 到底是什麼? 一個 object 被 copy 之後, resource ownership 要怎麼辦? 如果不能 copy, 那 ownership 又該怎麼交出去?  這些問題一路牽出 RAII, copy constructor, deleted copy, move constructor, std::move, xvalue, 以及 C++17 的 prvalue model
 也因此, 這篇與其說是在介紹 move semantics, 不如說是在整理 C++ 怎麼讓一個 object 自己說清楚: 它能不能被 copy, 能不能被 move, 以及它負責管理哪些 resource
 一開始的問題: 這段 code 到底有沒有 copy? 我整理 move semantics 這個題目時, 其實一開始不是從 move 開始的.</description>
+    </item>
+    
+    <item>
+      <title>從 Coordinate Vector 到 Matrix Representation</title>
+      <link>https://davidhsu666.com/archives/linear-algebra-representation-to-matrix/</link>
+      <pubDate>Sun, 26 Apr 2026 18:00:00 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/linear-algebra-representation-to-matrix/</guid>
+      <description>前言 第一次學線性代數時，很容易把整個科目想成 matrix calculation。
+看到 linear map，就想成一個 matrix；看到 vector，就想成 column vector。這樣做題很快，但後面遇到 polynomial space、function space、change of basis、isomorphism 時，就會開始覺得符號在飄。
+原因是 matrix 不是一開始就存在的東西。
+比較合理的順序應該是先有 vector space，再有 basis。選了 basis 之後，vector 才能被寫成 coordinate vector。接著有 linear map，並且 linear map 會被 basis images 決定。最後，把這些 basis images 寫成 coordinates，才得到 matrix representation。
+所以這篇不從「matrix 怎麼乘」開始，而是從 representation 的需求開始整理：
+linear combination -&amp;gt; span -&amp;gt; linear independence -&amp;gt; basis -&amp;gt; coordinate vector -&amp;gt; linear map -&amp;gt; matrix representation -&amp;gt; composition -&amp;gt; inverse -&amp;gt; isomorphism 這種順序也比較接近 Axler 在 Linear Algebra Done Right 裡的味道：先把 vector spaces 和 linear maps 當作主要對象，matrix 是選定 bases 之後才出現的表示方式。</description>
     </item>
     
     <item>

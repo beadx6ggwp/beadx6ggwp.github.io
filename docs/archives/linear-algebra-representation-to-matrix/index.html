@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='整理 basis、coordinate vector、linear map、matrix representation、composition、inverse 與 isomorphism 的關係。'><title>從 Coordinate Vector 到 Matrix Representation</title>
+
+<link rel='canonical' href='https://davidhsu666.com/archives/linear-algebra-representation-to-matrix/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='從 Coordinate Vector 到 Matrix Representation'>
+<meta property='og:description' content='整理 basis、coordinate vector、linear map、matrix representation、composition、inverse 與 isomorphism 的關係。'>
+<meta property='og:url' content='https://davidhsu666.com/archives/linear-algebra-representation-to-matrix/'>
+<meta property='og:site_name' content='Bead隨筆'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='LinearAlgebra' /><meta property='article:published_time' content='2026-04-26T18:00:00&#43;08:00'/><meta property='article:modified_time' content='2026-04-26T18:00:00&#43;08:00'/><meta property='og:image' content='https://davidhsu666.com/archives/linear-algebra-representation-to-matrix/img/vector%20representation.jpg' />
+<meta name="twitter:title" content="從 Coordinate Vector 到 Matrix Representation">
+<meta name="twitter:description" content="整理 basis、coordinate vector、linear map、matrix representation、composition、inverse 與 isomorphism 的關係。"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://davidhsu666.com/archives/linear-algebra-representation-to-matrix/img/vector%20representation.jpg' />
+    <link rel="shortcut icon" href="/blog_resource/favicon-32x32.png" />
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YJXR109WY7"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-YJXR109WY7', { 'anonymize_ip': false });
+}
+</script>
+
+    </head>
+    <body class="
+    article-page has-toc
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        extended
+    
+">
+    
+        <div id="article-toolbar">
+            <a href="/" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>返回</span>
+            </a>
+        </div>
+    
+<main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/archives/linear-algebra-representation-to-matrix/">
+                <img src="/archives/linear-algebra-representation-to-matrix/img/vector%20representation.jpg"
+                        
+                        width="960" 
+                        height="484" 
+                        loading="lazy"
+                        alt="Featured image of post 從 Coordinate Vector 到 Matrix Representation" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/math/" >
+                Math
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/archives/linear-algebra-representation-to-matrix/">從 Coordinate Vector 到 Matrix Representation</a>
+    </h2>
+
+    
+    <h3 class="article-subtitle">
+        整理 basis、coordinate vector、linear map、matrix representation、composition、inverse 與 isomorphism 的關係。
+    </h3>
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Apr 26, 2026</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    閱讀時間: 6 分鐘
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    <h2 id="前言">前言</h2>
+<p>第一次學線性代數時，很容易把整個科目想成 matrix calculation。</p>
+<p>看到 linear map，就想成一個 matrix；看到 vector，就想成 column vector。這樣做題很快，但後面遇到 polynomial space、function space、change of basis、isomorphism 時，就會開始覺得符號在飄。</p>
+<p>原因是 matrix 不是一開始就存在的東西。</p>
+<p>比較合理的順序應該是先有 vector space，再有 basis。選了 basis 之後，vector 才能被寫成 coordinate vector。接著有 linear map，並且 linear map 會被 basis images 決定。最後，把這些 basis images 寫成 coordinates，才得到 matrix representation。</p>
+<p>所以這篇不從「matrix 怎麼乘」開始，而是從 representation 的需求開始整理：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">linear combination
+-&gt; span
+-&gt; linear independence
+-&gt; basis
+-&gt; coordinate vector
+-&gt; linear map
+-&gt; matrix representation
+-&gt; composition
+-&gt; inverse
+-&gt; isomorphism
+</code></pre></div><p>這種順序也比較接近 Axler 在 <em>Linear Algebra Done Right</em> 裡的味道：先把 vector spaces 和 linear maps 當作主要對象，matrix 是選定 bases 之後才出現的表示方式。</p>
+<h2 id="先回到-linear-combination">先回到 Linear Combination</h2>
+<p>在談 matrix 之前，可以先回到 linear combination。</p>
+<p>給定 vectors $\vec{v}_1,\ldots,\vec{v}_n$ 和 scalars $a_1,\ldots,a_n$，可以組出：</p>
+<p>$$ a_1\vec{v}_1+\cdots+a_n\vec{v}_n $$</p>
+<p>這個式子看起來很普通，但它背後其實已經用到 field 和 vector space 的設定。</p>
+<p>field 處理的是 scalar 的加法、乘法與消去。vector space 處理的是 vector addition 和 scalar multiplication，而且要求操作後還留在同一個 space 裡。</p>
+<p>所以 field 和 vector space 不是形式上的開場白。它們先把 linear combination 這件事變成可以反覆使用的操作。</p>
+<hr>
+<h2 id="span能不能表示出來">Span：能不能表示出來</h2>
+<p>有了 linear combination 後，接著會問：</p>
+<blockquote>
+<p>能不能用這組 vectors 做出某個目標 vector？</p>
+</blockquote>
+<p>這就是 span 處理的問題。</p>
+<p>若 $S\subseteq V$，那 $\operatorname{span}(S)$ 是所有能由 $S$ 裡的 vectors 做 linear combination 得到的 vectors。</p>
+<p>所以：</p>
+<p>$$ x\in\operatorname{span}(S) $$</p>
+<p>意思是存在某些 coefficients，可以把 $x$ 表示出來。</p>
+<p>但這裡只保證存在，還沒有保證唯一。</p>
+<p>例如在 $\mathbb{R}^2$ 中，${(1,0),(0,1),(1,1)}$ 一樣可以 span 整個 $\mathbb{R}^2$，但 $(1,1)$ 其實已經可以由前兩個 vectors 做出來：</p>
+<p>$$ (1,1)=(1,0)+(0,1) $$</p>
+<p>所以 spanning set 不一定適合拿來當 coordinates。因為同一個 vector 可能有很多種表示方式。</p>
+<hr>
+<h2 id="linear-independence表示法不能有冗餘">Linear Independence：表示法不能有冗餘</h2>
+<p>Linear independence 的定義是：</p>
+<p>$$ a_1\vec{v}_1+\cdots+a_n\vec{v}_n=\vec{0}\Rightarrow a_1=\cdots=a_n=0 $$</p>
+<p>這句話表面上是在講 zero vector，但它真正排除的是 redundant representation。</p>
+<p>如果存在一組不全為零的 coefficients，使得：</p>
+<p>$$ a_1\vec{v}_1+\cdots+a_n\vec{v}_n=\vec{0} $$</p>
+<p>那就代表其中某個 vector 可以被其他 vectors 表示。換句話說，這組 vectors 裡有人是多餘的。</p>
+<p>所以可以先把 span 和 linear independence 分開看：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">span
+-&gt; 每個 vector 至少能被表示
+
+linear independence
+-&gt; 表示法不會有冗餘
+</code></pre></div><p>basis 則是把這兩個條件合起來。</p>
+<hr>
+<h2 id="basis-讓-coordinates-變得合法">Basis 讓 coordinates 變得合法</h2>
+<p>一組 basis 同時滿足：</p>
+<ol>
+<li>spans $V$；</li>
+<li>linearly independent。</li>
+</ol>
+<p>所以如果 $\beta=(\vec{v}_1,\ldots,\vec{v}_n)$ 是 $V$ 的 ordered basis，那每個 $x\in V$ 都可以唯一寫成：</p>
+<p>$$ x=a_1\vec{v}_1+\cdots+a_n\vec{v}_n $$</p>
+<p>這時候才可以定義 coordinate vector：</p>
+<p>$$ [x]_{\beta}=\begin{pmatrix} a_1\ \vdots\ a_n \end{pmatrix} $$</p>
+<p>這個 column vector 不是 $x$ 本身，而是 $x$ 在 basis $\beta$ 下的 coordinates。</p>
+<p>如果 basis 改掉，coordinates 也會跟著改掉。</p>
+<p>所以平常直接把 vector 寫成 column vector，其實是省略了前提：已經選好 ordered basis。</p>
+<hr>
+<h2 id="coordinate-map">Coordinate Map</h2>
+<p>選好 basis $\beta$ 後，可以定義 coordinate map：</p>
+<p>$$ C_{\beta}:V\to F^n $$</p>
+<p>$$ C_{\beta}(x)=[x]_{\beta} $$</p>
+<p>它做的事情就是把 abstract vector $x$ 轉成它在 $\beta$ 下的 coordinate vector。</p>
+<p>這個 map 之所以 well-defined，是因為 basis expansion unique。也就是同一個 $x$ 不會有兩組不同 coordinates。</p>
+<p>它也是 linear。假設：</p>
+<p>$$ x=a_1\vec{v}_1+\cdots+a_n\vec{v}_n $$</p>
+<p>$$ y=b_1\vec{v}_1+\cdots+b_n\vec{v}_n $$</p>
+<p>那麼：</p>
+<p>$$ x+y=(a_1+b_1)\vec{v}_1+\cdots+(a_n+b_n)\vec{v}_n $$</p>
+<p>所以：</p>
+<p>$$ [x+y]_{\beta}=[x]_{\beta}+[y]_{\beta} $$</p>
+<p>scalar multiplication 也是一樣：</p>
+<p>$$ [cx]_{\beta}=c[x]_{\beta} $$</p>
+<p>因此選定 basis 後，$V$ 可以被翻譯成 $F^n$。但這個翻譯不是天生的，而是依賴你選的 basis。</p>
+<hr>
+<h2 id="linear-map-由-basis-images-決定">Linear Map 由 Basis Images 決定</h2>
+<p>接著看 linear map。</p>
+<p>普通 function 通常不能只靠幾個 input 的結果決定。但 linear map 有額外限制：它必須保留 linear combination。</p>
+<p>也就是：</p>
+<p>$$ T(a_1\vec{v}_1+\cdots+a_n\vec{v}_n)=a_1T(\vec{v}_1)+\cdots+a_nT(\vec{v}_n) $$</p>
+<p>如果 $\beta=(\vec{v}_1,\ldots,\vec{v}_n)$ 是 $V$ 的 basis，任意 $x\in V$ 都可以寫成：</p>
+<p>$$ x=a_1\vec{v}_1+\cdots+a_n\vec{v}_n $$</p>
+<p>套用 $T$：</p>
+<p>$$ T(x)=a_1T(\vec{v}_1)+\cdots+a_nT(\vec{v}_n) $$</p>
+<p>所以只要知道：</p>
+<p>$$ T(\vec{v}_1),\ldots,T(\vec{v}_n) $$</p>
+<p>就能決定 $T$ 對所有 $x\in V$ 的結果。</p>
+<p>這句話要小心，不是說「知道幾個 input 的 output 就能決定 function」。它成立是因為那幾個 input 是 basis，而且 map 是 linear。</p>
+<hr>
+<h2 id="matrix-representation記錄-basis-images-的-coordinates">Matrix Representation：記錄 Basis Images 的 Coordinates</h2>
+<p>現在令：</p>
+<p>$$ T:V\to W $$</p>
+<p>是 linear map。</p>
+<p>選兩組 ordered bases：</p>
+<ul>
+<li>$\beta=(\vec{v}_1,\ldots,\vec{v}_n)$ for $V$；</li>
+<li>$\gamma=(\vec{w}_1,\ldots,\vec{w}_m)$ for $W$。</li>
+</ul>
+<p>這裡先不要急著寫 matrix，可以先看 $T$ 對 domain basis vector 做了什麼。</p>
+<p>對每個 $\vec{v}_k$，有：</p>
+<p>$$ T(\vec{v}_k)\in W $$</p>
+<p>因為 $\gamma$ 是 $W$ 的 basis，所以 $T(\vec{v}_k)$ 可以唯一寫成：</p>
+<p>$$ T(\vec{v}_k)=A_{1,k}\vec{w}_1+\cdots+A_{m,k}\vec{w}_m $$</p>
+<p>這裡的 $A_{j,k}$ 就是 matrix 裡第 $j$ row、第 $k$ column 的 entry。</p>
+<p>也就是說，matrix 不是先被定義出來，再拿來套到 $T$ 上。比較自然的方向是反過來：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">先看 T(v_k)
+-&gt; 把 T(v_k) 寫成 gamma basis 的 linear combination
+-&gt; coefficients 放進第 k 個 column
+</code></pre></div><p>因此 $T$ relative to domain basis $\beta$ and codomain basis $\gamma$ 的 matrix representation 可以寫成：</p>
+<p>$$ [T]^{\gamma}_{\beta}=([T(\vec{v}_1)]_{\gamma},[T(\vec{v}_2)]_{\gamma},\ldots,[T(\vec{v}_n)]_{\gamma}) $$</p>
+<p>這個式子裡的 columns 不是排版用的。第 $k$ 欄就是 $T(\vec{v}_k)$ 在 $\gamma$ 底下的 coordinate vector。</p>
+<p>所以 matrix representation 其實只是把 linear map 對 basis 的作用結果，用 coordinates 存起來。</p>
+<h2 id="matrix-representation-的公式">Matrix Representation 的公式</h2>
+<p>若：</p>
+<p>$$ x=a_1\vec{v}_1+\cdots+a_n\vec{v}_n $$</p>
+<p>那：</p>
+<p>$$ [x]_{\beta}=\begin{pmatrix} a_1\ \vdots\ a_n \end{pmatrix} $$</p>
+<p>而：</p>
+<p>$$ T(x)=a_1T(\vec{v}_1)+\cdots+a_nT(\vec{v}_n) $$</p>
+<p>把右邊轉成 $\gamma$ coordinates：</p>
+<p>$$ [T(x)]_{\gamma}=a_1[T(\vec{v}_1)]_{\gamma}+\cdots+a_n[T(\vec{v}_n)]_{\gamma} $$</p>
+<p>這正好就是 matrix columns 對 coefficients 做 linear combination：</p>
+<p>$$ [T(x)]_{\gamma}=[T]^{\gamma}_{\beta}[x]_{\beta} $$</p>
+<p>這句話如果直接背，很容易忽略它其實在做兩次翻譯：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">先把 x 翻成 beta coordinates
+再把 T(x) 翻成 gamma coordinates
+</code></pre></div><p>所以可以把每個 object 放回它所在的位置：</p>
+<table>
+<thead>
+<tr>
+<th>object</th>
+<th>所在位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$x$</td>
+<td>$V$</td>
+</tr>
+<tr>
+<td>$[x]_{\beta}$</td>
+<td>$F^n$</td>
+</tr>
+<tr>
+<td>$T(x)$</td>
+<td>$W$</td>
+</tr>
+<tr>
+<td>$[T(x)]_{\gamma}$</td>
+<td>$F^m$</td>
+</tr>
+<tr>
+<td>$[T]^{\gamma}_{\beta}$</td>
+<td>$M_{m\times n}(F)$</td>
+</tr>
+</tbody>
+</table>
+<p>所以 matrix 不是直接吃 abstract vector $x$。它吃的是 $[x]_{\beta}$。</p>
+<p>matrix 的輸出也不是 $T(x)$ 本身，而是 $[T(x)]_{\gamma}$。</p>
+<p>整個流程可以寫成：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">x in V
+-&gt; [x]_beta in F^n
+-&gt; [T(x)]_gamma in F^m
+-&gt; T(x) in W
+</code></pre></div><hr>
+<h2 id="上下標在記錄方向">上下標在記錄方向</h2>
+<p>$[T]^{\gamma}_{\beta}$ 裡面：</p>
+<ul>
+<li>$\beta$ 是 domain basis；</li>
+<li>$\gamma$ 是 codomain basis。</li>
+</ul>
+<p>所以它做的是：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">beta coordinates
+-&gt; gamma coordinates
+</code></pre></div><p>如果換 basis，同一個 linear map $T$ 會得到不同的 matrix。</p>
+<p>所以不能直接說 linear map 就是 matrix。比較精確地說，是選定 domain basis 和 codomain basis 後，linear map 才會有對應的 matrix representation。</p>
+<hr>
+<h2 id="composition右邊的-matrix-先作用">Composition：右邊的 matrix 先作用</h2>
+<p>現在令：</p>
+<p>$$ T:V\to W $$</p>
+<p>$$ U:W\to Z $$</p>
+<p>composition 是：</p>
+<p>$$ U\circ T:V\to Z $$</p>
+<p>也就是先做 $T$，再做 $U$。</p>
+<p>選 bases：</p>
+<ul>
+<li>$\alpha$ for $V$；</li>
+<li>$\beta$ for $W$；</li>
+<li>$\gamma$ for $Z$。</li>
+</ul>
+<p>對 $x\in V$，先做 $T$：</p>
+<p>$$ [T(x)]_{\beta}=[T]^{\beta}_{\alpha}[x]_{\alpha} $$</p>
+<p>再做 $U$：</p>
+<p>$$ [U(T(x))]_{\gamma}=[U]^{\gamma}_{\beta}[T(x)]_{\beta} $$</p>
+<p>代入前一式：</p>
+<p>$$ [(U\circ T)(x)]_{\gamma}=[U]^{\gamma}_{\beta}[T]^{\beta}_{\alpha}[x]_{\alpha} $$</p>
+<p>所以：</p>
+<p>$$ [U\circ T]^{\gamma}_{\alpha}=[U]^{\gamma}_{\beta}[T]^{\beta}_{\alpha} $$</p>
+<p>這也能看出為什麼右邊的 matrix 先作用。。</p>
+<p>因為 column vector 放在最右邊，越靠近 input coordinates 的 matrix 越先被套用。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">[x]_alpha
+-&gt; [T(x)]_beta
+-&gt; [U(T(x))]_gamma
+</code></pre></div><hr>
+<h2 id="identity-map-和-change-of-coordinates">Identity Map 和 Change of Coordinates</h2>
+<p>如果 $I_V:V\to V$ 是 identity map，那：</p>
+<p>$$ I_V(x)=x $$</p>
+<p>如果 domain basis 和 codomain basis 都是 $\beta$，那：</p>
+<p>$$ [I_V]^{\beta}_{\beta}=I $$</p>
+<p>但如果 domain basis 是 $\alpha$，codomain basis 是 $\beta$，那：</p>
+<p>$$ [I_V]^{\beta}_{\alpha} $$</p>
+<p>就不是單純的 identity matrix，而是在把 $\alpha$ coordinates 轉成 $\beta$ coordinates。</p>
+<p>所以 identity map 的 matrix 不一定是 identity matrix。它取決於兩邊用的是不是同一組 basis。</p>
+<hr>
+<h2 id="inversemap-反過來basis-也反過來">Inverse：Map 反過來，Basis 也反過來</h2>
+<p>如果 $T:V\to W$ is invertible，那有：</p>
+<p>$$ T^{-1}:W\to V $$</p>
+<p>滿足：</p>
+<p>$$ T^{-1}\circ T=I_V $$</p>
+<p>$$ T\circ T^{-1}=I_W $$</p>
+<p>選 basis $\beta$ for $V$，basis $\gamma$ for $W$。</p>
+<p>因為 $T$ 是：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">beta coordinates
+-&gt; gamma coordinates
+</code></pre></div><p>所以 $T^{-1}$ 是：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">gamma coordinates
+-&gt; beta coordinates
+</code></pre></div><p>因此：</p>
+<p>$$ [T^{-1}]^{\beta}_{\gamma}=([T]^{\gamma}_{\beta})^{-1} $$</p>
+<p>這個式子可以直接從方向看。</p>
+<p>$T$ 原本把 $V$ 送到 $W$，所以在 coordinates 裡是從 $\beta$ 走到 $\gamma$。</p>
+<p>$T^{-1}$ 則把 $W$ 送回 $V$，所以在 coordinates 裡就從 $\gamma$ 走回 $\beta$。</p>
+<p>也就是說，inverse 不只是把 matrix 取 inverse，也要把它連接的兩套 coordinate systems 反過來看。</p>
+<hr>
+<h2 id="isomorphism">Isomorphism</h2>
+<p>最後看 isomorphism。</p>
+<p>一個 linear map $T:V\to W$ 如果 bijective，就稱為 linear isomorphism。</p>
+<p>它不是說 $V$ 和 $W$ 裡的元素長得一樣，而是說兩邊的 linear combination structure 可以互相翻譯，而且不丟資訊。</p>
+<p>如果 $V$ 和 $W$ 都是 finite-dimensional vector spaces over the same field，那：</p>
+<p>$$ V\cong W\Longleftrightarrow \dim(V)=\dim(W) $$</p>
+<p>原因是：</p>
+<p>如果 $V\cong W$，isomorphism 會把 basis 對應到 basis，所以 dimension 相同。</p>
+<p>反過來，如果 dimension 相同，可以選兩邊的 basis，然後把一邊的 basis vectors 對應到另一邊，再 linear extend 成一個 isomorphism。</p>
+<p>但這裡只是在說 abstract vector space structure。</p>
+<p>如果還有 inner product、norm、metric、topology、orientation 這些額外結構，只看 dimension 不一定夠。</p>
+<hr>
+<h2 id="回頭看-notation">回頭看 Notation</h2>
+<p>到這裡再看 $[T]^{\gamma}_{\beta}$，它就不只是上下標比較多的 matrix。</p>
+<p>下標 $\beta$ 表示 input coordinate system，也就是這個 matrix 預期吃的是 $[x]_{\beta}$。</p>
+<p>上標 $\gamma$ 表示 output coordinate system，也就是這個 matrix 算出來的是 $[T(x)]_{\gamma}$。</p>
+<p>因此：</p>
+<p>$$ [T(x)]_{\gamma}=[T]^{\gamma}_{\beta}[x]_{\beta} $$</p>
+<p>這個 notation 其實是在標出資料流：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">beta coordinates -&gt; gamma coordinates
+</code></pre></div><p>composition 也是同一件事。</p>
+<p>如果：</p>
+<p>$$ [T]^{\beta}_{\alpha} $$</p>
+<p>把 $\alpha$ coordinates 轉成 $\beta$ coordinates，而：</p>
+<p>$$ [U]^{\gamma}_{\beta} $$</p>
+<p>把 $\beta$ coordinates 轉成 $\gamma$ coordinates，那它們中間的 $\beta$ 對得上，所以可以接起來：</p>
+<p>$$ [U\circ T]^{\gamma}_{\alpha}=[U]^{\gamma}_{\beta}[T]^{\beta}_{\alpha} $$</p>
+<p>右邊的 $[T]^{\beta}_{\alpha}$ 先作用，是因為 column vector 放在最右邊。這不是 notation 故意反直覺，而是 function composition 寫成 $U(T(x))$ 後，最靠近 $x$ 的東西先作用。</p>
+<p>inverse 也可以用同一個方式看。</p>
+<p>如果 $T$ 是：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">beta coordinates -&gt; gamma coordinates
+</code></pre></div><p>那 $T^{-1}$ 就是：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">gamma coordinates -&gt; beta coordinates
+</code></pre></div><p>所以：</p>
+<p>$$ [T^{-1}]^{\beta}_{\gamma}=([T]^{\gamma}_{\beta})^{-1} $$</p>
+<p>這裡上下標反過來，不是額外多背一條規則，而是 map 的方向反過來後自然發生的事情。</p>
+<hr>
+<h2 id="結論">結論</h2>
+<p>從 coordinate vector 走到 matrix representation，最後整理出來的是：matrix 是 linear map 在 chosen bases 下的記錄方式。</p>
+<p>basis 先讓 abstract vector 有唯一 coordinates。linear map 因為保留 linear combination，所以只要知道 basis vectors 被送到哪裡，就能決定整個 map。</p>
+<p>matrix representation 接著做的事情，就是把這些 images 轉成 codomain basis 下的 coordinates，再依序放進 columns。</p>
+<p>所以 matrix 不是 linear map 的起點，而是後面的表示結果。</p>
+<p>composition 會對應到 matrix multiplication，是因為 coordinate representation 要跟 function composition 相容。</p>
+<p>inverse 的上下標會反過來，是因為 map 的方向反過來，domain basis 和 codomain basis 也跟著交換。</p>
+<p>如果之後要繼續看 change of basis、similar matrices、eigenvalues，這個觀念會一直出現：很多 matrix statement 背後真正不變的東西是 linear map，matrix 則是選了 basis 之後看到的樣子。</p>
+<hr>
+<h2 id="references">References</h2>
+<ul>
+<li>Sheldon Axler, <em>Linear Algebra Done Right</em>, 4th edition</li>
+<li>Stephen H. Friedberg, Arnold J. Insel, Lawrence E. Spence, <em>Linear Algebra</em>, 4th edition</li>
+<li>李宏毅 Linear Algebra Lecture</li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/linearalgebra/">LinearAlgebra</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css"integrity="sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.js"integrity="sha384-pK1WpvzWVBQiP0/GjnvRxV4mOb0oxFuyRxJlk6vVw146n3egcN5C925NCP7a7BY8"crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/contrib/auto-render.min.js"integrity="sha384-vZTG03m&#43;2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl"crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ]
+        });})
+</script>
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "beadx6ggwp" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2019 - 
+        
+        2026 Bead隨筆
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+        <aside class="sidebar right-sidebar sticky">
+            <section class="widget archives">
+                <div class="widget-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                </div>
+                <h2 class="widget-title section-title">目錄</h2>
+                
+                <div class="widget--toc">
+                    <nav id="TableOfContents">
+  <ol>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#先回到-linear-combination">先回到 Linear Combination</a></li>
+    <li><a href="#span能不能表示出來">Span：能不能表示出來</a></li>
+    <li><a href="#linear-independence表示法不能有冗餘">Linear Independence：表示法不能有冗餘</a></li>
+    <li><a href="#basis-讓-coordinates-變得合法">Basis 讓 coordinates 變得合法</a></li>
+    <li><a href="#coordinate-map">Coordinate Map</a></li>
+    <li><a href="#linear-map-由-basis-images-決定">Linear Map 由 Basis Images 決定</a></li>
+    <li><a href="#matrix-representation記錄-basis-images-的-coordinates">Matrix Representation：記錄 Basis Images 的 Coordinates</a></li>
+    <li><a href="#matrix-representation-的公式">Matrix Representation 的公式</a></li>
+    <li><a href="#上下標在記錄方向">上下標在記錄方向</a></li>
+    <li><a href="#composition右邊的-matrix-先作用">Composition：右邊的 matrix 先作用</a></li>
+    <li><a href="#identity-map-和-change-of-coordinates">Identity Map 和 Change of Coordinates</a></li>
+    <li><a href="#inversemap-反過來basis-也反過來">Inverse：Map 反過來，Basis 也反過來</a></li>
+    <li><a href="#isomorphism">Isomorphism</a></li>
+    <li><a href="#回頭看-notation">回頭看 Notation</a></li>
+    <li><a href="#結論">結論</a></li>
+    <li><a href="#references">References</a></li>
+  </ol>
+</nav>
+                </div>
+            </section>
+        </aside>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
