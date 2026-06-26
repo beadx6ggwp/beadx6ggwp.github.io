@@ -817,12 +817,12 @@ copy 後是 deep copy 嗎?
 </description>
         </item>
         <item>
-        <title>從 Coordinate Vector 到 Matrix Representation</title>
+        <title>Linear Algebra: 從Coordinate Vector到Matrix Representation</title>
         <link>https://davidhsu666.com/archives/linear-algebra-representation-to-matrix/</link>
         <pubDate>Sun, 26 Apr 2026 18:00:00 +0800</pubDate>
         
         <guid>https://davidhsu666.com/archives/linear-algebra-representation-to-matrix/</guid>
-        <description>&lt;img src="https://davidhsu666.com/archives/linear-algebra-representation-to-matrix/img/vector%20representation.jpg" alt="Featured image of post 從 Coordinate Vector 到 Matrix Representation" /&gt;&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
+        <description>&lt;img src="https://davidhsu666.com/archives/linear-algebra-representation-to-matrix/img/vector%20representation.jpg" alt="Featured image of post Linear Algebra: 從Coordinate Vector到Matrix Representation" /&gt;&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
 &lt;p&gt;第一次學線性代數時，很容易把整個科目想成 matrix calculation。&lt;/p&gt;
 &lt;p&gt;看到 linear map，就想成一個 matrix；看到 vector，就想成 column vector。這樣做題很快，但後面遇到 polynomial space、function space、change of basis、isomorphism 時，就會開始覺得符號在飄。&lt;/p&gt;
 &lt;p&gt;原因是 matrix 不是一開始就存在的東西。&lt;/p&gt;

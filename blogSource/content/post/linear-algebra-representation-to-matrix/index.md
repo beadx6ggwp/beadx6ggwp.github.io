@@ -1,5 +1,5 @@
 ---
-title: "從 Coordinate Vector 到 Matrix Representation"
+title: "Linear Algebra: 從Coordinate Vector到Matrix Representation"
 description: "整理 basis、coordinate vector、linear map、matrix representation、composition、inverse 與 isomorphism 的關係。"
 slug: linear-algebra-representation-to-matrix
 image: img/vector representation.jpg
