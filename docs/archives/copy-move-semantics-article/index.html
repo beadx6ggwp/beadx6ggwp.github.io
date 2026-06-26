@@ -699,27 +699,27 @@ return statement 另有 implicit move rule.
 </span><span class="c1"></span>    <span class="n">use</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">t</span><span class="p">));</span>   <span class="c1">// (B)
 </span><span class="c1"></span>    <span class="n">use</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">T</span><span class="p">{}));</span> <span class="c1">// (C)
 </span><span class="c1"></span><span class="p">}</span>
-</code></pre></div><p><code>(A)</code>:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">use</span><span class="p">(</span><span class="n">t</span><span class="p">);</span>
-</code></pre></div><p><code>t</code> 有名字, 所以 expression <code>t</code> 是 lvalue. 因此會 call:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">use</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span><span class="p">)</span>
-</code></pre></div><p><code>(B)</code>:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">use</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">t</span><span class="p">));</span>
-</code></pre></div><p><code>std::move(t)</code> 把 <code>t</code> 這個 lvalue expression 轉成 xvalue. 因此會 bind 到:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">use</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;&amp;</span><span class="p">)</span>
-</code></pre></div><p><code>(C)</code>:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">use</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">T</span><span class="p">{}));</span>
-</code></pre></div><p>這個比較容易怪. <code>T{}</code> 是 prvalue. 那對一個 prvalue 做 <code>std::move</code> 會變什麼?</p>
+</code></pre></div><ul>
+<li>
+<p>(A): <code>use(t);</code>:</p>
+<p><code>t</code> 有名字, 所以 expression <code>t</code> 是 lvalue. 因此會 call: <code>use(const T&amp;)</code></p>
+</li>
+<li>
+<p>(B):<code>use(std::move(t));</code></p>
+<p><code>std::move(t)</code> 把 <code>t</code> 這個 lvalue expression 轉成 xvalue. 因此會 bind 到: <code>use(T&amp;&amp;)</code></p>
+</li>
+<li>
+<p>(C): <code>use(std::move(T{}));</code></p>
+<p>這個比較容易怪. <code>T{}</code> 是 prvalue. 那對一個 prvalue 做 <code>std::move</code> 會變什麼?</p>
+</li>
+</ul>
 <p>可以回想 <code>std::move</code> 大概是:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
 <span class="n">std</span><span class="o">::</span><span class="n">remove_reference_t</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;&amp;</span> <span class="n">move</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;&amp;</span> <span class="n">t</span><span class="p">);</span>
 </code></pre></div><p><code>T{}</code> 要傳進去時, 會先因為 reference binding 觸發 Temporary Materialization Conversion, 也就是先 materialize 成 temporary object. 然後 <code>std::move</code> 回傳 <code>T&amp;&amp;</code>, 而 function returning <code>T&amp;&amp;</code> 的 expression 是 xvalue.</p>
 <p>也可以換成更接近實作的說法: <code>std::move</code> 只是把 argument cast 成 <code>T&amp;&amp;</code> 再 return. 對 <code>T{}</code> 來說, 為了進入這個 <code>T&amp;&amp;</code> parameter, 它先被 materialize, 接著整個 <code>std::move(T{})</code> 因為回傳 <code>T&amp;&amp;</code> 而成為 xvalue.</p>
-<p>所以:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">T</span><span class="p">{})</span>
-</code></pre></div><p>是 xvalue, 也會 bind 到:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">use</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;&amp;</span><span class="p">)</span>
-</code></pre></div><p>這裡再次強調:</p>
+<p>所以: <code>std::move(T{})</code> 是 xvalue, 也會 bind 到: <code>use(T&amp;&amp;)</code></p>
+<p>這裡再次強調:</p>
 <blockquote>
 <p><strong><code>std::move</code> 不真的 move.</strong></p>
 <p>它只是讓 expression 變成 xvalue. 真正的 move 發生在後續的 move constructor 或 <code>T&amp;&amp;</code> overload.</p>
@@ -775,7 +775,7 @@ after:
 </blockquote>
 <p>不是:</p>
 <blockquote>
-<p><del><code>std::move</code> 本身把 <code>a</code> 搬走.</del></p>
+<p><code>std::move</code> 本身把 <code>a</code> 搬走.</p>
 </blockquote>
 <h2 id="回到最一開始-為什麼-return-t-沒有東西可以-move">回到最一開始: 為什麼 return T{} 沒有東西可以 move?</h2>
 <p>最後回到一開始的 code:</p>

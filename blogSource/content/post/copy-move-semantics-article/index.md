@@ -863,37 +863,17 @@ void process_data(T&& t) {
 }
 ```
 
-`(A)`:
+- (A): `use(t);`: 
 
-```cpp
-use(t);
-```
+    `t` 有名字, 所以 expression `t` 是 lvalue. 因此會 call: `use(const T&)`
 
-`t` 有名字, 所以 expression `t` 是 lvalue. 因此會 call:
+- (B):`use(std::move(t));`
 
-```cpp
-use(const T&)
-```
+    `std::move(t)` 把 `t` 這個 lvalue expression 轉成 xvalue. 因此會 bind 到: `use(T&&)`
 
-`(B)`:
+- (C): `use(std::move(T{}));` 
 
-```cpp
-use(std::move(t));
-```
-
-`std::move(t)` 把 `t` 這個 lvalue expression 轉成 xvalue. 因此會 bind 到:
-
-```cpp
-use(T&&)
-```
-
-`(C)`:
-
-```cpp
-use(std::move(T{}));
-```
-
-這個比較容易怪. `T{}` 是 prvalue. 那對一個 prvalue 做 `std::move` 會變什麼?
+    這個比較容易怪. `T{}` 是 prvalue. 那對一個 prvalue 做 `std::move` 會變什麼?
 
 可以回想 `std::move` 大概是:
 
@@ -906,17 +886,7 @@ std::remove_reference_t<T>&& move(T&& t);
 
 也可以換成更接近實作的說法: `std::move` 只是把 argument cast 成 `T&&` 再 return. 對 `T{}` 來說, 為了進入這個 `T&&` parameter, 它先被 materialize, 接著整個 `std::move(T{})` 因為回傳 `T&&` 而成為 xvalue.
 
-所以:
-
-```cpp
-std::move(T{})
-```
-
-是 xvalue, 也會 bind 到:
-
-```cpp
-use(T&&)
-```
+所以: `std::move(T{})` 是 xvalue, 也會 bind 到: `use(T&&)`
 
 這裡再次強調:
 
@@ -1004,7 +974,7 @@ after:
 
 不是:
 
-> ~~`std::move` 本身把 `a` 搬走.~~
+> `std::move` 本身把 `a` 搬走.
 
 ## 回到最一開始: 為什麼 return T{} 沒有東西可以 move?
 
