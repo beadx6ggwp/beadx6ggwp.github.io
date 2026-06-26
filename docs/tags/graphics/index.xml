@@ -6,7 +6,19 @@
     <description>Recent content in Graphics on Bead隨筆</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 21 Mar 2018 10:48:34 +0800</lastBuildDate><atom:link href="https://davidhsu666.com/tags/graphics/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 26 Feb 2026 08:19:30 +0800</lastBuildDate><atom:link href="https://davidhsu666.com/tags/graphics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>UI 到底是怎麼被畫出來的</title>
+      <link>https://davidhsu666.com/archives/how-ui-is-drawn-render-pipeline-note/</link>
+      <pubDate>Thu, 26 Feb 2026 08:19:30 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/how-ui-is-drawn-render-pipeline-note/</guid>
+      <description>示意圖為libiui: https://sysprog21.github.io/libiui/
+UI 到底是怎麼被畫出來的 以前看到 UI, 比較容易先想到 framework 或 library, 例如 Web UI, Qt, GTK, Dear ImGui, Nuklear, microui, libiui. 但如果把問題放回 rendering system, UI 就不是停在 button, text field, menu, window 這些元件名稱上. 它最後要變成 pixels, 再進到螢幕上.
+所以這篇先從一條比較通用的路徑開始:
+state -&amp;gt; UI description -&amp;gt; drawing intent -&amp;gt; backend execution -&amp;gt; framebuffer / render target / surface -&amp;gt; display backend / compositor -&amp;gt; screen 這條線裡有幾個問題會反覆出現. UI state 要怎麼變成 drawing intent? 文字要在哪裡量測和繪製? clip rect 是誰管理? draw command 要不要先收集?</description>
+    </item>
+    
     <item>
       <title>Doublebuffer雙重緩衝</title>
       <link>https://davidhsu666.com/archives/doublebuffer/</link>

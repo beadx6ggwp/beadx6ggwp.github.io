@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='整理UI如何從state, layout, command一路變成pixels'><title>UI 到底是怎麼被畫出來的</title>
+
+<link rel='canonical' href='https://davidhsu666.com/archives/how-ui-is-drawn-render-pipeline-note/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='UI 到底是怎麼被畫出來的'>
+<meta property='og:description' content='整理UI如何從state, layout, command一路變成pixels'>
+<meta property='og:url' content='https://davidhsu666.com/archives/how-ui-is-drawn-render-pipeline-note/'>
+<meta property='og:site_name' content='Bead隨筆'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='graphics' /><meta property='article:published_time' content='2026-02-26T08:19:30&#43;08:00'/><meta property='article:modified_time' content='2026-02-26T08:19:30&#43;08:00'/><meta property='og:image' content='https://davidhsu666.com/archives/how-ui-is-drawn-render-pipeline-note/img/libiui-img.jpg' />
+<meta name="twitter:title" content="UI 到底是怎麼被畫出來的">
+<meta name="twitter:description" content="整理UI如何從state, layout, command一路變成pixels"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://davidhsu666.com/archives/how-ui-is-drawn-render-pipeline-note/img/libiui-img.jpg' />
+    <link rel="shortcut icon" href="/blog_resource/favicon-32x32.png" />
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YJXR109WY7"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-YJXR109WY7', { 'anonymize_ip': false });
+}
+</script>
+
+    </head>
+    <body class="
+    article-page has-toc
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        extended
+    
+">
+    
+        <div id="article-toolbar">
+            <a href="/" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>返回</span>
+            </a>
+        </div>
+    
+<main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/archives/how-ui-is-drawn-render-pipeline-note/">
+                <img src="/archives/how-ui-is-drawn-render-pipeline-note/img/libiui-img.jpg"
+                        
+                        width="946" 
+                        height="532" 
+                        loading="lazy"
+                        alt="Featured image of post UI 到底是怎麼被畫出來的" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/computergraphics/" style="background-color: #95C6EE; color: #000;">
+                Computer Graphics
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/archives/how-ui-is-drawn-render-pipeline-note/">UI 到底是怎麼被畫出來的</a>
+    </h2>
+
+    
+    <h3 class="article-subtitle">
+        整理UI如何從state, layout, command一路變成pixels
+    </h3>
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Feb 26, 2026</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    閱讀時間: 9 分鐘
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    <p>示意圖為libiui: <a class="link" href="https://sysprog21.github.io/libiui/"  target="_blank" rel="noopener"
+    >https://sysprog21.github.io/libiui/</a></p>
+<h1 id="ui-到底是怎麼被畫出來的">UI 到底是怎麼被畫出來的</h1>
+<p>以前看到 UI, 比較容易先想到 framework 或 library, 例如 Web UI, Qt, GTK, Dear ImGui, Nuklear, microui, libiui. 但如果把問題放回 rendering system, UI 就不是停在 button, text field, menu, window 這些元件名稱上. 它最後要變成 pixels, 再進到螢幕上.</p>
+<p>所以這篇先從一條比較通用的路徑開始:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">state
+-&gt; UI description
+-&gt; drawing intent
+-&gt; backend execution
+-&gt; framebuffer / render target / surface
+-&gt; display backend / compositor
+-&gt; screen
+</code></pre></div><p>這條線裡有幾個問題會反覆出現. UI state 要怎麼變成 drawing intent? 文字要在哪裡量測和繪製? clip rect 是誰管理? draw command 要不要先收集? 最後的 pixels 是寫到自己的 framebuffer, 寫到某個 surface, 還是交給 compositor?</p>
+<p>目前比較想把 UI 放進 render pipeline 裡看, 而不是只從 retained mode UI 和 immediate mode UI 的分類開始看. retained / immediate 是重要差異, 但它們比較像回答 &ldquo;UI description 怎麼保存或重新產生&rdquo;. 這篇更想先追的是: UI 從 state 到 pixels, 中間經過哪些層.</p>
+<h2 id="一個-frame-裡的兩條來源">一個 frame 裡的兩條來源</h2>
+<p>如果只看 3D rendering, 一個簡化的 pipeline 可能長這樣:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">scene / camera / material
+-&gt; render commands
+-&gt; vertex processing
+-&gt; primitive assembly
+-&gt; rasterization
+-&gt; depth / blend
+-&gt; framebuffer
+-&gt; present
+</code></pre></div><p>3D 那邊的輸入通常不是 pixels, 而是 vertex data, index buffer, material, texture, shader state. 三角形會經過 transform, clipping, primitive assembly, rasterization, 後面才會進到 fragment color, depth test, blending, framebuffer write.</p>
+<p>UI 也有自己的路徑:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">input / UI state
+-&gt; widget state
+-&gt; layout result
+-&gt; UI drawing intent
+-&gt; rect / text / image / clip
+-&gt; framebuffer / surface
+-&gt; present / composition
+</code></pre></div><p>這兩條線最後都要變成 pixels, 但不一定永遠寫進同一塊 framebuffer. software renderer 裡, 3D 和 UI 可能真的都寫進同一個 color buffer. browser, mobile OS, desktop compositor 裡, application 更常是提交 layer, surface, texture, 或 compositor frame, 後面再由 compositor 合成.</p>
+<p>所以 UI 不是單純 &ldquo;最後多畫一層&rdquo;. 在小型 renderer 裡, 它可以是一段 overlay pass. 在更完整的系統裡, 它可能是一組 layer, surface, display list, texture tiles, 或 compositor inputs. 形式不同, 但都在處理 UI description 到 pixels 的轉換.</p>
+<h2 id="ui-和-3d-怎麼在同一個-frame-合流">UI 和 3D 怎麼在同一個 frame 合流</h2>
+<p>如果先用 software renderer 或 game HUD 來想, 3D scene 和 UI 合在一起的方式可以很直接:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">Frame begin
+  clear color / depth buffer
+
+  3D pass
+    mesh vertices
+    -&gt; triangles
+    -&gt; rasterize triangles
+    -&gt; depth test
+    -&gt; write color framebuffer
+
+  UI pass
+    widgets / layout
+    -&gt; rects / text / images
+    -&gt; alpha blend over color framebuffer
+
+  present framebuffer
+Frame end
+</code></pre></div><p>這個版本適合理解 in-app overlay, debug UI, editor panel, HUD. 3D pass 通常會使用 depth buffer, UI pass 則多半使用 screen-space coordinate, 直接畫在 scene color 上. UI pass 不一定要參與同一套 depth test, 因為它的問題比較像 2D layout, text, clip, blending.</p>
+<p>GPU renderer 裡, UI 也常常會變成 GPU 可以處理的資料. rectangle 可以變成 quads, text 可以透過 font atlas 變成 textured quads, icon 或 image 也可以是 texture quad. 這時候 UI 不是繞過 rendering pipeline, 而是換成比較適合 2D 的 geometry 和 texture 資料, 再用另一個 render pass 或另一批 draw calls 疊到 scene 上.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">3D scene commands
+  -&gt; draw meshes into scene color
+
+UI commands
+  -&gt; generate quads / text atlas draws
+  -&gt; draw with alpha blending
+
+final color
+  -&gt; present / compositor
+</code></pre></div><p>這個想法主要適合 game engine, editor UI, in-app HUD. 平台 UI system 和 browser UI 不一定是這種形狀. 它們中間通常還會有 layer tree, surface, render server, compositor 之類的結構.</p>
+<h2 id="三種比較常見的-path">三種比較常見的 path</h2>
+<p>如果把文章主線壓成幾種路徑, 目前可以先分成三種. 這不是完整分類, 比較像幫自己定位 UI 放進 pipeline 的方式.</p>
+<p>第一種是 software framebuffer path. UI 最後直接被 rasterize / blend 到 renderer 自己管理的 framebuffer. 這種情境很適合學 software renderer, 因為 render target, framebuffer, display backend 的邊界比較容易看清楚.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">UI drawing intent
+-&gt; CPU raster / text draw / blend
+-&gt; owned framebuffer
+-&gt; display backend
+</code></pre></div><p>第二種是 engine render pass path. UI 會被轉成 engine renderer 能處理的資料, 例如 quads, mesh, text atlas, texture draw. Unity, Unreal, game HUD, editor overlay, VR / world-space UI 都比較容易放到這條線上看.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">UI framework
+-&gt; layout / draw elements
+-&gt; quads / mesh / texture atlas
+-&gt; engine renderer
+-&gt; render target
+</code></pre></div><p>第三種是 platform compositor path. UI 不一定直接寫進 application 自己的 framebuffer, 而是變成 layer, surface, display list, compositor frame, 後面再由 browser compositor, OS compositor, render server, display server 接手.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">UI tree / layer tree
+-&gt; paint records / surface / layer
+-&gt; compositor
+-&gt; final frame
+</code></pre></div><p>這三種 path 會互相重疊. browser 可能同時有 software raster, GPU tiles, compositor frame. game engine UI 可能有 screen-space overlay, camera-space UI, world-space UI. mobile OS 可能有 app process, render server, GPU compositor. 這裡先不把它們整理成絕對分類, 只是用來幫文章定主軸.</p>
+<h2 id="ui-前半段-state-layout-interaction">UI 前半段: state, layout, interaction</h2>
+<p>一開始可能會覺得 UI 就是呼叫一些 2D drawing API, 像是畫矩形, 畫文字, 畫圖片. 但真的放到 pipeline 裡, 會發現前面還有一大段.</p>
+<p>button 會有 hover, pressed, disabled, focused. text field 會有 cursor, selection, composition, scroll offset. scroll view 會有 content size, viewport, clip, scroll position. modal 或 menu 會影響 input capture 和 z-order. 這些東西還沒進入 rasterization, 但已經會決定後面要畫什麼.</p>
+<p>所以 UI drawing 前半段比較像 state machine + layout system, 後半段才比較像 2D renderer:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">input
+-&gt; interaction state
+-&gt; layout
+-&gt; visual style
+-&gt; drawing intent
+-&gt; raster / blend
+</code></pre></div><p>這也是 UI 繪製比一開始想像中麻煩的地方. 它不是單純把幾個元件畫出來, 而是要把互動狀態, 幾何位置, 文字量測, clipping, draw order 一起整理成可以被 backend 執行的內容.</p>
+<h2 id="ui-description-是保存-還是重新產生">UI description 是保存, 還是重新產生</h2>
+<p>retained UI 和 immediate UI 可以放在 UI description 的 lifetime 這一段看.</p>
+<p>retained UI 比較像是在 UI update 和 drawing intent 中間, 保留一份比較長期存在的 representation, 可能是 widget tree, DOM tree, layout tree, paint tree. state 改變時, 系統可以沿著這些中間表示更新後面的結果:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">state changed
+-&gt; update UI representation
+-&gt; update layout / paint data
+-&gt; produce draw commands or paint records
+</code></pre></div><p>Web UI 是一個很大的例子. application state 改變後, 可能經過 framework update, DOM mutation, style, layout, paint, raster, composite. React 的 render 比較接近 application state 到 UI description, browser 後面的 style, layout, paint, raster, composite 才比較接近把它一路推到 pixels.</p>
+<p>看 Chromium RenderingNG 的文章時, 這條線會更明顯. 它把 browser rendering 拆成 animate, style, layout, pre-paint, scroll, paint, commit, layerize, raster, activate, aggregate, draw 這些 stage. 這比單純說 &ldquo;browser render&rdquo; 更能說明問題, 因為 UI 更新中間會產生很多不同層級的資料, 不只是一次性地把 DOM 畫到螢幕上.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">DOM / CSS / input
+-&gt; style
+-&gt; layout
+-&gt; pre-paint
+-&gt; paint records / display list
+-&gt; layerize
+-&gt; raster into tiles
+-&gt; compositor frame
+-&gt; aggregate
+-&gt; draw
+</code></pre></div><p>RenderNG 是 Chromium 的 browser rendering 架構, 不能直接拿來當成所有 UI system 的通用 pipeline. 放在這篇裡, 它比較像一個大型 retained / compositor-based system 的參考. 比較重要的是它把 UI 更新拆成很多中間階段: 先算 layout, 再產生繪製資料, 接著 raster 成可合成的內容, 最後交給 compositor. 這樣就足夠支撐這篇要看的問題: UI 的中間結果會被保存在哪裡, 又在哪一層被轉成 pixels.</p>
+<p>畫面更新也不是單一步驟. 文字內容改了, 可能要重新量文字和排版. 顏色改了, layout 可能不需要動. hover state 改了, 可能只影響一小塊 visual output. scroll offset 改了, 會牽涉 viewport, clip, content position, 以及後面要更新的區域.</p>
+<p>immediate UI 則比較像每一 frame 用 code path 重新描述 UI:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">ui_begin_frame</span><span class="p">(</span><span class="n">input</span><span class="p">);</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">ui_button</span><span class="p">(</span><span class="s">&#34;Save&#34;</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">save_file</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="n">ui_slider</span><span class="p">(</span><span class="s">&#34;Exposure&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">exposure</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">,</span> <span class="mf">4.0f</span><span class="p">);</span>
+
+<span class="n">ui_end_frame</span><span class="p">();</span>
+</code></pre></div><p>這種寫法不一定保留長期存在的 widget tree, 但它仍然需要 runtime state. ID, layout cursor, active item, focused item, input capture, scroll state, text editing state, clip stack, text measurement cache, draw batch, 這些東西還是會出現. 所以 retained / immediate 不是 &ldquo;有沒有狀態&rdquo; 的差別, 比較像 UI description 怎麼被保存或重新產生. 最後它們還是會回到同一件事: 產生 drawing intent, 再交給 backend 畫出去.</p>
+<h2 id="dirty-update-放在後半段看">dirty update 放在後半段看</h2>
+<p>UI state 改變後, 不一定每次都要整張畫面重來. 這件事比較接近 pipeline 後半段:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">UI state changed
+-&gt; drawing intent changed
+-&gt; affected bounds changed
+-&gt; framebuffer region changed
+-&gt; display transfer changed
+</code></pre></div><p>在 retained UI 裡, dirty 可能從 node 或 layout tree 開始傳. 在 immediate UI 裡, 也可能透過 command bounds, text cache, draw batch, ink bounds 之類的方式留下線索. 所以 dirty update 不完全等於 retained mode, 它比較像在問: 這次變動最後影響到哪些 pixels, 以及哪些 pixels 真的需要重新傳出去.</p>
+<p>小 OLED UI 很適合看這件事:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">button / encoder
+-&gt; menu state
+-&gt; UI drawing
+-&gt; 1bpp framebuffer
+-&gt; OLED driver
+-&gt; I2C / SPI
+-&gt; screen
+</code></pre></div><p>128x64 monochrome OLED 的 framebuffer 只有:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">128 * 64 / 8 = 1024 bytes
+</code></pre></div><p>但它已經會碰到完整問題. pixel coordinate 和 memory layout 不一定一樣, 一個 byte 可能打包 8 個 pixels, controller 可能用 page addressing. 所以畫面改變時, 不只是重新畫某個 widget, 還要處理哪些 bytes 變了, 哪些 pages 要 flush, dirty rect 要不要對齊 page, I2C / SPI 傳輸成本在哪裡. 把這件事放大到 browser 或桌面系統, 就會變成 damage region, layer update, compositor update 這類問題.</p>
+<h2 id="幾種具體系統裡的-ui-pipeline">幾種具體系統裡的 UI pipeline</h2>
+<p>Browser 可以放在 platform compositor path 裡看. DOM / CSS / input 會一路走到 style, layout, paint records, raster tiles, compositor frame. RenderingNG 的架構很適合作為 browser pipeline 的參考, 但它代表的是 Chromium 的實作脈絡, 不是所有 UI 系統的通用模型.</p>
+<p>iOS 也適合放在 platform UI pipeline 的脈絡裡看. touch event 進入 app 後, UI 更新不只是 application 自己畫幾個 pixels. 中間會經過 UIView / CALayer changes, Core Animation transaction, render server, GPU compositing, framebuffer, display hardware.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">touch
+-&gt; app event / run loop
+-&gt; UIView / CALayer changes
+-&gt; CATransaction commit
+-&gt; render server
+-&gt; GPU compositing
+-&gt; framebuffer
+-&gt; display hardware
+</code></pre></div><p>Game engine 則比較適合拿來看 engine render pass path. Unity 文件把 UI Toolkit, uGUI, IMGUI 放在同一個比較脈絡裡, 可以對應不同 UI description 和 runtime 用途. Unreal 則可以先用 UMG 和 Slate 當參考. 從這篇的角度看, 它們可以放在 UI description 到 engine renderer 之間的位置: widget tree / layout / invalidation / draw elements / render target.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">engine state / gameplay state
+-&gt; UI framework
+-&gt; layout / widget tree
+-&gt; draw elements / mesh / texture quads
+-&gt; engine renderer
+-&gt; scene color / render target / compositor
+</code></pre></div><p>game engine UI 不一定只是 screen-space overlay. 它可能是 world-space UI, VR UI, editor tooling, debug panel, 或 engine editor 本身. 差異在於 UI 的 geometry, depth, input, hit-test, render target, composition 位置不同.</p>
+<h2 id="backend-contract-rhi-framebuffer">backend contract, RHI, framebuffer</h2>
+<p><code>libiui</code> 可以當成一個小型 backend contract 的參考. 它的 API 風格偏 immediate mode, 但放在這篇的脈絡裡, 更適合觀察的是 UI layer 怎麼接到 backend. UI layer 處理 input, context, layout, widget state. backend 則透過 renderer callback 提供基本 drawing capability, 例如畫 box, 畫 text, 設定 clip, 以及量測文字寬度.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">widget / layout / input
+-&gt; drawing intent
+-&gt; renderer callback
+-&gt; backend implementation
+</code></pre></div><p>這個 boundary 還不是完整 RHI, 但已經把 UI frontend 和具體 platform 隔開了一層.</p>
+<p>Skia 也可以放在這裡看, 只是它的位置和 libiui 不一樣. libiui 比較像 UI layer 加上一個很小的 renderer callback contract. Skia 則更像 2D graphics backend: 它提供 canvas, paint, path, image, surface 這類 drawing model, 用來承接更高層產生的繪製需求. 對這篇文章來說, Skia 適合拿來理解 drawing intent 到 pixels 之間的那一段, 也就是 text, path, image, blend, clip 這些 2D 繪製工作怎麼被整理成一個可跨平台的 graphics layer.</p>
+<p>從這種小型 backend contract 往外看, 會接到更大的 render backend 抽象. 小型 UI backend 可能只需要畫 box, 畫 text, 設 clip. 比較完整的 renderer 則會開始處理 GPU resource, render pass, command submission, present 這些問題.</p>
+<p>這時候問題不只是 &ldquo;多包一層 API&rdquo;, 而是上層描述 drawing intent 或 render intent 時, 要怎麼避開直接依賴底層平台的 resource 和 lifetime. 所以 <code>SetPixel()</code> 和 <code>Clear()</code> 這種東西, 比較像 framebuffer access abstraction 或 render target writer. 如果要一路長到 RHI, 還要處理 resource lifetime, backend switching, present boundary 這類更大的邊界.</p>
+<p>framebuffer 這邊也要放寬一點看. 在 software renderer 裡, 可以先用 owned framebuffer 當 reference point:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">renderer backend
+-&gt; framebuffer
+-&gt; display backend
+-&gt; screen
+</code></pre></div><p>這條線可以先分開看 renderer 寫出的結果, 以及 display backend 怎麼把結果交出去. 但在現代桌面系統裡, application 畫完通常也不是直接到螢幕. 中間還會有 window surface, backing store, GPU texture, compositor layer, damage region, vsync, final composition. 所以 UI 在 render pipeline 裡的位置, 不能只想成 &ldquo;畫在 framebuffer 上&rdquo;. 更外層還有 OS window system 和 compositor.</p>
+<h2 id="想法總結">想法總結</h2>
+<p>整理到這裡, UI 繪製不像一開始想像的那麼單純. 它不是 &ldquo;畫幾個按鈕和文字&rdquo; 而已, 也不是選一個 retained UI 或 immediate UI library 就結束. 只要問 UI 最後怎麼變成 pixels, 問題就會一路往 render pipeline 裡延伸.</p>
+<p>UI 從 input / state 開始, 經過 layout, interaction, drawing intent, backend execution, framebuffer / render target / surface, display backend, compositor, 最後才變成螢幕上的畫面. 不同系統的差異, 可能在於它們在哪裡保存中間結果, 怎麼產生 drawing intent, 怎麼接 backend, 最後怎麼交給 framebuffer / surface / compositor.</p>
+<p>所以這篇整理到最後, 反而比較像是把 UI 放回 rendering system 裡看. UI 不是 rendering system 外面的附加功能, 它本身就橫跨了 state, layout, command, backend, framebuffer, present, compositor 這些層次. 後面如果繼續往下看, 應該會很自然接到 OS window system, compositor, display server, GPU surface, damage tracking, vsync, 以及更完整的 rendering backend 抽象.</p>
+<h2 id="references">References</h2>
+<ul>
+<li>Chrome Developers: <a class="link" href="https://developer.chrome.com/docs/chromium/renderingng-architecture"  target="_blank" rel="noopener"
+    >RenderingNG architecture</a></li>
+<li>Chrome Developers: <a class="link" href="https://developer.chrome.com/docs/chromium/renderingng-data-structures"  target="_blank" rel="noopener"
+    >Key data structures in RenderingNG</a></li>
+<li>Jacob Bartlett: <a class="link" href="https://blog.jacobstechtavern.com/p/ui-pipeline-internals"  target="_blank" rel="noopener"
+    >Touch to Pixels: UI Pipeline Internals on iOS</a></li>
+<li>Unity Manual: <a class="link" href="https://docs.unity3d.com/Manual/UIE-ui-renderer.html"  target="_blank" rel="noopener"
+    >UI Renderer</a></li>
+<li>Unity Manual: <a class="link" href="https://docs.unity3d.com/Manual/UIE-generate-2d-visual-content.html"  target="_blank" rel="noopener"
+    >Generate 2D visual content</a></li>
+<li>YawLighthouse: <a class="link" href="https://github.com/YawLighthouse/UMG-Slate-Compendium"  target="_blank" rel="noopener"
+    >UMG-Slate Compendium</a></li>
+<li>Unreal Engine Documentation: <a class="link" href="https://dev.epicgames.com/documentation/en-us/unreal-engine/slate-ui-framework-in-unreal-engine"  target="_blank" rel="noopener"
+    >Slate UI Framework</a></li>
+<li>Skia: <a class="link" href="https://skia.org/docs/user/api/"  target="_blank" rel="noopener"
+    >API Reference and Overview</a></li>
+<li>Skia: <a class="link" href="https://skia.org/docs/dev/design/raster_tragedy/"  target="_blank" rel="noopener"
+    >The Raster Tragedy in Skia</a></li>
+<li>Dear ImGui: <a class="link" href="https://github.com/ocornut/imgui"  target="_blank" rel="noopener"
+    >Dear ImGui repository</a></li>
+<li>libiui: <a class="link" href="https://github.com/sysprog21/libiui"  target="_blank" rel="noopener"
+    >sysprog21/libiui</a></li>
+</ul>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/graphics/">Graphics</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css"integrity="sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.js"integrity="sha384-pK1WpvzWVBQiP0/GjnvRxV4mOb0oxFuyRxJlk6vVw146n3egcN5C925NCP7a7BY8"crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/contrib/auto-render.min.js"integrity="sha384-vZTG03m&#43;2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl"crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ]
+        });})
+</script>
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">相關文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="has-image">
+    <a href="/archives/wireframe-display/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/wireframe-display/img/ps/teapot_5.1.2dee5b84212e253ef876e1d95adc707c_hu20421198acf28d6e0ed46afbf62eddc2_184246_250x150_fill_box_smart1_3.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="Wireframe-display" 
+                        data-hash="md5-Le5bhCEuJT74duHZWtxwfA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Shader重心座標的線框繪製</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/archives/barycentric-coordinates/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/barycentric-coordinates/img/bary5.4a03e80a96d0f77266a7a6acc1458aa8_hue81f62b7405bab549196555b4ed33b8e_122589_250x150_fill_box_smart1_3.png" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="Barycentric-Coordinates" 
+                        data-hash="md5-SgPoCpbQ93Jmp6aswUWKqA==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">重心座標的推導與使用 Barycentric Coordinates</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "beadx6ggwp" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2019 - 
+        
+        2026 Bead隨筆
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+        <aside class="sidebar right-sidebar sticky">
+            <section class="widget archives">
+                <div class="widget-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                </div>
+                <h2 class="widget-title section-title">目錄</h2>
+                
+                <div class="widget--toc">
+                    <nav id="TableOfContents">
+  <ol>
+    <li><a href="#一個-frame-裡的兩條來源">一個 frame 裡的兩條來源</a></li>
+    <li><a href="#ui-和-3d-怎麼在同一個-frame-合流">UI 和 3D 怎麼在同一個 frame 合流</a></li>
+    <li><a href="#三種比較常見的-path">三種比較常見的 path</a></li>
+    <li><a href="#ui-前半段-state-layout-interaction">UI 前半段: state, layout, interaction</a></li>
+    <li><a href="#ui-description-是保存-還是重新產生">UI description 是保存, 還是重新產生</a></li>
+    <li><a href="#dirty-update-放在後半段看">dirty update 放在後半段看</a></li>
+    <li><a href="#幾種具體系統裡的-ui-pipeline">幾種具體系統裡的 UI pipeline</a></li>
+    <li><a href="#backend-contract-rhi-framebuffer">backend contract, RHI, framebuffer</a></li>
+    <li><a href="#想法總結">想法總結</a></li>
+    <li><a href="#references">References</a></li>
+  </ol>
+</nav>
+                </div>
+            </section>
+        </aside>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
