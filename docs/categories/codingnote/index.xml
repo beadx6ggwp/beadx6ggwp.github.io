@@ -6,7 +6,20 @@
     <description>Recent content in 程式筆記 on Bead隨筆</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 18 Feb 2025 17:17:33 +0800</lastBuildDate><atom:link href="https://davidhsu666.com/categories/codingnote/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 14 May 2026 08:10:30 +0800</lastBuildDate><atom:link href="https://davidhsu666.com/categories/codingnote/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>從 Copy 到 Move: 理解 C&#43;&#43; 的 Ownership 語意</title>
+      <link>https://davidhsu666.com/archives/copy-move-semantics-article/</link>
+      <pubDate>Thu, 14 May 2026 08:10:30 +0800</pubDate>
+      
+      <guid>https://davidhsu666.com/archives/copy-move-semantics-article/</guid>
+      <description>簡介 最初和朋友只是想搞懂一個很小的問題: 一段看起來應該會 copy 的 code, 為什麼實際跑起來沒有 copy? 但討論到後來, 我們發現這個問題如果只用「compiler 做了最佳化」來解釋, 反而會跳過更重要的部分
+因為在理解發生什麼事情之前, 其實應該先問:
+ copy 到底是什麼? 一個 object 被 copy 之後, resource ownership 要怎麼辦? 如果不能 copy, 那 ownership 又該怎麼交出去?  這些問題一路牽出 RAII, copy constructor, deleted copy, move constructor, std::move, xvalue, 以及 C++17 的 prvalue model
+也因此, 這篇與其說是在介紹 move semantics, 不如說是在整理 C++ 怎麼讓一個 object 自己說清楚: 它能不能被 copy, 能不能被 move, 以及它負責管理哪些 resource
+一開始的問題: 這段 code 到底有沒有 copy? 我整理 move semantics 這個題目時, 其實一開始不是從 move 開始的.</description>
+    </item>
+    
     <item>
       <title>js筆記</title>
       <link>https://davidhsu666.com/archives/jsnote/</link>

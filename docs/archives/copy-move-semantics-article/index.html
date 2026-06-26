@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='為什麼 std::move 不真的 Move'><title>從 Copy 到 Move: 理解 C&#43;&#43; 的 Ownership 語意</title>
+
+<link rel='canonical' href='https://davidhsu666.com/archives/copy-move-semantics-article/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='從 Copy 到 Move: 理解 C&#43;&#43; 的 Ownership 語意'>
+<meta property='og:description' content='為什麼 std::move 不真的 Move'>
+<meta property='og:url' content='https://davidhsu666.com/archives/copy-move-semantics-article/'>
+<meta property='og:site_name' content='Bead隨筆'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='c&#43;&#43;' /><meta property='article:published_time' content='2026-05-14T08:10:30&#43;08:00'/><meta property='article:modified_time' content='2026-05-14T08:10:30&#43;08:00'/><meta property='og:image' content='https://davidhsu666.com/archives/copy-move-semantics-article/img/Back%20to%20Basics%20Move%20Semantics.jpg' />
+<meta name="twitter:title" content="從 Copy 到 Move: 理解 C&#43;&#43; 的 Ownership 語意">
+<meta name="twitter:description" content="為什麼 std::move 不真的 Move"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://davidhsu666.com/archives/copy-move-semantics-article/img/Back%20to%20Basics%20Move%20Semantics.jpg' />
+    <link rel="shortcut icon" href="/blog_resource/favicon-32x32.png" />
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YJXR109WY7"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-YJXR109WY7', { 'anonymize_ip': false });
+}
+</script>
+
+    </head>
+    <body class="
+    article-page has-toc
+">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "dark");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex 
+    
+        extended
+    
+">
+    
+        <div id="article-toolbar">
+            <a href="/" class="back-home">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+                <span>返回</span>
+            </a>
+        </div>
+    
+<main class="main full-width">
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/archives/copy-move-semantics-article/">
+                <img src="/archives/copy-move-semantics-article/img/Back%20to%20Basics%20Move%20Semantics.jpg"
+                        
+                        width="1311" 
+                        height="502" 
+                        loading="lazy"
+                        alt="Featured image of post 從 Copy 到 Move: 理解 C&#43;&#43; 的 Ownership 語意" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/codingnote/" style="background-color: #EDFF44; color: #000;">
+                程式筆記
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/archives/copy-move-semantics-article/">從 Copy 到 Move: 理解 C&#43;&#43; 的 Ownership 語意</a>
+    </h2>
+
+    
+    <h3 class="article-subtitle">
+        為什麼 std::move 不真的 Move
+    </h3>
+    
+
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">May 14, 2026</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    閱讀時間: 15 分鐘
+                </time>
+            </div>
+        
+    </footer>
+    
+</div>
+</header>
+
+    <section class="article-content">
+    <h2 id="簡介">簡介</h2>
+<p>最初和朋友只是想搞懂一個很小的問題: 一段看起來應該會 copy 的 code, 為什麼實際跑起來沒有 copy? 但討論到後來, 我們發現這個問題如果只用「compiler 做了最佳化」來解釋, 反而會跳過更重要的部分</p>
+<p>因為在理解發生什麼事情之前, 其實應該先問:</p>
+<ul>
+<li>copy 到底是什麼?</li>
+<li>一個 object 被 copy 之後, resource ownership 要怎麼辦?</li>
+<li>如果不能 copy, 那 ownership 又該怎麼交出去?</li>
+</ul>
+<p>這些問題一路牽出 RAII, copy constructor, deleted copy, move constructor, std::move, xvalue, 以及 C++17 的 prvalue model</p>
+<p>也因此, 這篇與其說是在介紹 move semantics, 不如說是在整理 C++ 怎麼讓一個 object 自己說清楚: 它能不能被 copy, 能不能被 move, 以及它負責管理哪些 resource</p>
+<h2 id="一開始的問題-這段-code-到底有沒有-copy">一開始的問題: 這段 code 到底有沒有 copy?</h2>
+<p>我整理 move semantics 這個題目時, 其實一開始不是從 move 開始的. 我最一開始想問的是這段 code:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">T</span> <span class="nf">make</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">T</span><span class="p">{};</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">T</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div><p>如果 <code>T</code> 長這樣:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">struct</span> <span class="nc">T</span> <span class="p">{</span>
+    <span class="n">T</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;default constructor</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">T</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;copy constructor</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="o">~</span><span class="n">T</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;destructor</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div><p>直覺上好像會覺得:</p>
+<ul>
+<li><code>make()</code> 裡面先建立一個 <code>T{}</code> temporary object.</li>
+<li>然後 return 給 <code>main()</code>.</li>
+<li><code>main()</code> 再拿這個 temporary object 建立 <code>y</code>.</li>
+</ul>
+<p>所以可能會猜 output 是:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">default constructor
+copy constructor
+destructor
+destructor
+</code></pre></div><p>但真的跑起來後, 會發現它可能根本沒有呼叫 copy constructor. 實際 output 比較像:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">default constructor
+destructor
+</code></pre></div><p>這時候就會有一個很自然的疑問:</p>
+<blockquote>
+<p><strong>compiler 為什麼沒有做 copy?</strong></p>
+</blockquote>
+<p>這個現象當然跟 RVO / copy elision 有關. 但如果一開始就把它當成最佳化問題, 會很容易漏掉更前面的問題:</p>
+<ul>
+<li><strong>copy 到底是什麼?</strong></li>
+<li><strong>move 到底又是在解決什麼?</strong></li>
+</ul>
+<p>因為如果不知道 copy 的語意是什麼, 就很難真的理解為什麼 move 需要被設計出來, 也很難理解為什麼有時候 &ldquo;根本沒有東西可以 move&rdquo;</p>
+<h2 id="把-copy-縮到最簡單的-case">把 copy 縮到最簡單的 case</h2>
+<p>我先把問題縮到最簡單的 <code>Point</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">struct</span> <span class="nc">Point</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">y</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">Point</span> <span class="n">a</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">};</span>
+<span class="n">Point</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+</code></pre></div><p>這種 copy 很直覺. <code>Point</code> 裡面只有兩個 <code>int</code>, 所以 <code>Point b = a;</code> 基本上就是:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">b</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="n">x</span>
+<span class="n">b</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="n">y</span>
+</code></pre></div><p>copy 之後, <code>b</code> 就是一個可以正常使用的 <code>Point</code>. 這裡不太會有什麼 ownership 問題, 因為 <code>Point</code> 沒有管理任何外部資源.</p>
+<p>但如果 object 裡面不是只有 <code>int</code> 呢? 例如一個 object 可能管理:</p>
+<ul>
+<li>heap memory</li>
+<li>file handle</li>
+<li>mutex lock</li>
+<li>GPU resource</li>
+<li>reference-counted control block</li>
+</ul>
+<p>copy 完以後, 問題就不只是:</p>
+<blockquote>
+<p><strong>member 的值有沒有複製過去?</strong></p>
+</blockquote>
+<p>而是:</p>
+<ul>
+<li>copy 出來的 <code>b</code> 能不能正常使用?</li>
+<li><code>b</code> 需不需要釋放某個 resource?</li>
+<li><code>b</code> 應該跟 <code>a</code> 指向同一份 resource, 還是應該有自己的 resource?</li>
+<li><code>b</code> 死掉時會不會影響 <code>a</code>?</li>
+<li><code>a</code> 死掉時會不會影響 <code>b</code>?</li>
+</ul>
+<p>這些問題才是後面 copy / move 會一路牽出來的主軸.</p>
+<h2 id="buffer-看起來只是-copy-其實可能-double-free">Buffer: 看起來只是 copy, 其實可能 double free</h2>
+<p>同樣的 copy 直覺, 換成一個 C-style <code>Buffer</code> 就開始不一樣:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+    <span class="kt">char</span><span class="o">*</span> <span class="n">ptr</span><span class="p">;</span> <span class="c1">// Points to a heap block
+</span><span class="c1"></span>    <span class="n">size_t</span> <span class="n">size</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">Buffer</span><span class="p">;</span>
+
+<span class="n">Buffer</span> <span class="nf">buffer_create</span><span class="p">(</span><span class="n">size_t</span> <span class="n">size</span><span class="p">);</span>
+<span class="kt">void</span> <span class="nf">buffer_destroy</span><span class="p">(</span><span class="n">Buffer</span><span class="o">*</span> <span class="n">buffer</span><span class="p">);</span>
+</code></pre></div><p>假設有這段操作:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="n">Buffer</span> <span class="n">a</span> <span class="o">=</span> <span class="n">buffer_create</span><span class="p">(</span><span class="mi">1024</span><span class="p">);</span>
+<span class="n">Buffer</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+
+<span class="n">buffer_destroy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">);</span>
+<span class="n">buffer_destroy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="p">);</span>
+</code></pre></div><p><code>Buffer b = a;</code> 這行做了什麼? 其實在這一行當下, 還不一定會出事. 它只是把 member value 複製過去:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="n">b</span><span class="p">.</span><span class="n">ptr</span>  <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="n">ptr</span>
+<span class="n">b</span><span class="p">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="n">size</span>
+</code></pre></div><p>真正的問題在後面:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="n">buffer_destroy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">);</span>
+<span class="n">buffer_destroy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="p">);</span>
+</code></pre></div><p>因為 <code>a.ptr</code> 和 <code>b.ptr</code> 指向同一塊 heap block:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">a.ptr ----+
+          +----&gt; same heap block
+b.ptr ----+
+</code></pre></div><p>所以 destroy 的時候可能變成:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">a destroy -&gt; free heap block
+b destroy -&gt; free same heap block again
+</code></pre></div><p>也就是 double free.</p>
+<p>這邊的重點不是 &ldquo;C 不能 copy struct&rdquo;. C 當然可以 copy struct. 真正的問題是:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="n">Buffer</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+</code></pre></div><p>這一行只表達了 &ldquo;把 <code>ptr</code> 和 <code>size</code> 的值複製過去&rdquo;. 但它沒有表達:</p>
+<ul>
+<li><code>Buffer</code> 能不能 copy?</li>
+<li>copy 是 shallow copy 還是 deep copy?</li>
+<li>copy 之後誰 owns heap block?</li>
+<li>誰負責 destroy?</li>
+</ul>
+<p>也就是說, 這裡有 representation copy, 但語意沒有跟著被說清楚.</p>
+<h2 id="shallow-copy-和-deep-copy">Shallow copy 和 deep copy</h2>
+<p>剛剛 <code>Buffer b = a;</code> 做的是 shallow copy. shallow copy 很便宜, 因為它只複製表面上的值. 對 pointer 來說, 它複製的是 pointer value 本身:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">b.ptr = a.ptr
+</code></pre></div><p>它不是去 dereference <code>a.ptr</code>, 然後把 heap block 裡面的內容複製一份. 所以結果會是:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">a.ptr ----+
+          +----&gt; heap block
+b.ptr ----+
+</code></pre></div><p><code>a</code> 和 <code>b</code> 都以為自己擁有同一塊 heap block.</p>
+<p>這裡的 cheap 只是說這個 operation 很便宜, 不是說它語意上一定正確. pointer value 被 copy 過去後, <code>a.ptr</code> 和 <code>b.ptr</code> 都指到同一個 heap block. 如果後面的 destroy 邏輯把兩個 <code>Buffer</code> 都當成 owner, 問題才真正爆出來.</p>
+<p>一個解法是 deep copy. 也就是讓 <code>b.ptr</code> 指向另一塊新的 heap block, 但是那塊新的 heap block 裡面有和 <code>a</code> 一樣的內容.</p>
+<p>例如:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="n">Buffer</span> <span class="nf">buffer_clone</span><span class="p">(</span><span class="k">const</span> <span class="n">Buffer</span><span class="o">*</span> <span class="n">src</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Buffer</span> <span class="n">dst</span> <span class="o">=</span> <span class="n">buffer_create</span><span class="p">(</span><span class="n">src</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">);</span>
+    <span class="n">memcpy</span><span class="p">(</span><span class="n">dst</span><span class="p">.</span><span class="n">ptr</span><span class="p">,</span> <span class="n">src</span><span class="o">-&gt;</span><span class="n">ptr</span><span class="p">,</span> <span class="n">src</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">dst</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><p>然後使用時寫:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="n">Buffer</span> <span class="n">a</span> <span class="o">=</span> <span class="n">buffer_create</span><span class="p">(</span><span class="mi">1024</span><span class="p">);</span>
+<span class="n">Buffer</span> <span class="n">b</span> <span class="o">=</span> <span class="n">buffer_clone</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">);</span>
+
+<span class="n">buffer_destroy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">);</span>
+<span class="n">buffer_destroy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">b</span><span class="p">);</span>
+</code></pre></div><p>這樣 <code>a</code> 和 <code>b</code> 就各自擁有不同的 heap block. <code>buffer_destroy(&amp;a)</code> 和 <code>buffer_destroy(&amp;b)</code> 都合理, 因為它們 release 的是不同資源.</p>
+<p>但 deep copy 通常比較貴, 因為它要做兩件事:</p>
+<ul>
+<li>allocate 一塊新的 memory</li>
+<li>把 heap block A 的內容 copy 到 heap block B</li>
+</ul>
+<p>到這裡, copy 的問題開始變得比較清楚:</p>
+<blockquote>
+<p><strong>copy 不是只有一種意思.</strong></p>
+<p>對 <code>Point</code> 來說, memberwise copy 很合理.<br>
+對 <code>Buffer</code> 來說, memberwise copy 可能會 double free.</p>
+</blockquote>
+<h2 id="c-可以做到-但語意靠人記得">C 可以做到, 但語意靠人記得</h2>
+<p>上面的問題在 C 裡不是不能解. 可以規定:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="n">Buffer</span> <span class="nf">buffer_clone</span><span class="p">(</span><span class="k">const</span> <span class="n">Buffer</span><span class="o">*</span> <span class="n">src</span><span class="p">);</span>
+</code></pre></div><p>使用時也遵守這個規則:</p>
+<ul>
+<li>要複製 <code>Buffer</code> 的時候, 不要寫 <code>Buffer b = a</code>.</li>
+<li>請寫 <code>Buffer b = buffer_clone(&amp;a)</code>.</li>
+</ul>
+<p>這樣可以解. 但問題是, 這個正確性不是從 <code>Buffer b = a</code> 這個語法本身看出來的, 而是靠:</p>
+<ul>
+<li>naming</li>
+<li>documentation</li>
+<li>team convention</li>
+<li>code review</li>
+<li>使用者記得不要犯錯</li>
+</ul>
+<p>如果今天讀這段 code 的人沒有完整上下文, 只是沿著既有型別繼續寫功能.</p>
+<p>他看到:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="n">Buffer</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span>
+</code></pre></div><p>光看語法本身, 他很難知道這行對 <code>Buffer</code> 來說是不安全的, 也不一定知道真正應該要 call:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="n">buffer_clone</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a</span><span class="p">)</span>
+</code></pre></div><p>然後 code 就炸了. 所以問題不是 C 完全做不到, 而是語意不在語言結構裡.</p>
+<blockquote>
+<p><strong>C 做得到, 但很多語意藏在 convention 裡.</strong></p>
+</blockquote>
+<p><code>Buffer b = a;</code> 這個語法看起來像 copy. 可是對 <code>Buffer</code> 來說, 真正合理的 copy 可能是 clone. 當語法和真正想表達的語意不一致時, 使用者就很容易踩坑.</p>
+<h2 id="c-想把這些語意放進-type-裡">C++ 想把這些語意放進 type 裡</h2>
+<p>所以 C++ 不是只是把:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="n">buffer_create</span><span class="p">()</span>
+<span class="n">buffer_destroy</span><span class="p">()</span>
+</code></pre></div><p>換成 constructor / destructor 而已.</p>
+<p>真正重要的是, 這個 type 到底:</p>
+<ul>
+<li>能不能 copy?</li>
+<li>copy 之後誰 owns <code>ptr</code>?</li>
+<li>destroy 時誰負責 free?</li>
+<li>能不能把 ownership 轉移出去?</li>
+</ul>
+<p>這些問題不應該只藏在文件裡, 而是應該盡量寫進 type 自己的操作裡.</p>
+<p>例如:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">class</span> <span class="nc">Buffer</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="k">explicit</span> <span class="n">Buffer</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">size_t</span> <span class="n">size</span><span class="p">);</span>
+    <span class="o">~</span><span class="n">Buffer</span><span class="p">();</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="kt">char</span><span class="o">*</span> <span class="n">ptr</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">size_t</span> <span class="n">size</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div><p>如果 destructor 寫成:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="o">~</span><span class="n">Buffer</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">delete</span><span class="p">[]</span> <span class="n">ptr</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><p>這其實就在說:</p>
+<ul>
+<li><code>Buffer</code> owns <code>ptr</code>.</li>
+<li><code>Buffer</code> 死掉時要 release <code>ptr</code>.</li>
+</ul>
+<p>那下一個問題馬上出現:</p>
+<blockquote>
+<p><strong>如果 <code>Buffer</code> 可以 copy, 那 copy 之後誰 owns <code>ptr</code>?</strong></p>
+</blockquote>
+<p>這就應該由 copy constructor 來定義. 如果要 deep copy, 就在 copy constructor 裡 allocate new memory. 如果根本不允許 duplicate, 就應該禁止 copy.</p>
+<p>重點是:</p>
+<blockquote>
+<p><strong>copy / destroy / move 這些操作, 應該成為 type 語意的一部分.</strong></p>
+</blockquote>
+<p>這就是我想說的:</p>
+<blockquote>
+<p><strong>Copy / Destroy become type-semantic</strong></p>
+</blockquote>
+<h2 id="有些-object-不應該被-copy">有些 object 不應該被 copy</h2>
+<p>有些 type 本來就不應該有兩個 owner, 例如一個唯一擁有 heap block 的 <code>Buffer</code>, 或一個 file handle owner. 在 C 裡, 很難直接禁止使用者複製, 但 C++ 可以寫:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">Buffer</span><span class="p">(</span><span class="k">const</span> <span class="n">Buffer</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+<span class="n">Buffer</span><span class="o">&amp;</span> <span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">Buffer</span><span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</code></pre></div><p>這樣 compiler 就會直接擋下 copy. 也就是 type 自己明確說:</p>
+<blockquote>
+<p><strong>我不允許 duplicate.</strong></p>
+</blockquote>
+<p>但這也帶出新的問題:</p>
+<ul>
+<li>不能 copy 的 object, 要怎麼 return from function?</li>
+<li>不能 copy 的 object, 要怎麼放進 container?</li>
+<li>不能 copy 的 object, 要怎麼從一個地方交給另一個地方?</li>
+</ul>
+<p>這個問題可以具體化成兩個很常見的場景:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">Buffer</span> <span class="nf">make_buffer</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">Buffer</span> <span class="n">b</span><span class="p">(</span><span class="mi">1024</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">b</span><span class="p">;</span> <span class="c1">// cannot copy
+</span><span class="c1"></span><span class="p">}</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Buffer</span><span class="o">&gt;</span> <span class="n">buffers</span><span class="p">;</span> <span class="c1">// vector cannot copy type Buffer
+</span></code></pre></div><p>一旦 <code>Buffer</code> 明確禁止 copy, 它確實比較安全, 但原本習慣的 value-style 使用方式也會卡住. 這個 tension 才是 move 要進場的原因.</p>
+<p>這就是 move 要出場的地方.</p>
+<h2 id="auto_ptr-把-ownership-transfer-塞進-copy-operation-的問題">auto_ptr: 把 ownership transfer 塞進 copy operation 的問題</h2>
+<p>在 C++11 以前, 語言還沒有正式的 move semantics. 但需求已經存在:</p>
+<ul>
+<li>這個 object 不能 duplicate.</li>
+<li>可是我想把 ownership 交出去.</li>
+</ul>
+<p>於是有了 <code>std::auto_ptr</code>. 它的想法大概是:</p>
+<blockquote>
+<p><strong>既然不能 copy ownership, 那我在 copy constructor 裡把 ownership 轉移出去總可以吧?</strong></p>
+</blockquote>
+<p>先補一個 technical note: <code>auto_ptr</code> 在 C++11 deprecated, C++17 removed. 這裡只把它當成歷史案例, 用來說明為什麼 ownership transfer 不該藏在 copy operation 裡. 現代 C++ 應該用 <code>std::unique_ptr</code>.</p>
+<p>簡化後像這樣:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+<span class="k">class</span> <span class="nc">auto_ptr</span> <span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="k">explicit</span> <span class="n">auto_ptr</span><span class="p">(</span><span class="n">T</span><span class="o">*</span> <span class="n">p</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">)</span> <span class="o">:</span> <span class="n">ptr</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="p">{}</span>
+
+    <span class="o">~</span><span class="n">auto_ptr</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">delete</span> <span class="n">ptr</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">auto_ptr</span><span class="p">(</span><span class="n">auto_ptr</span><span class="o">&amp;</span> <span class="n">other</span><span class="p">)</span>
+        <span class="o">:</span> <span class="n">ptr</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">release</span><span class="p">())</span> <span class="p">{}</span>
+
+    <span class="n">T</span><span class="o">*</span> <span class="nf">release</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">T</span><span class="o">*</span> <span class="n">p</span> <span class="o">=</span> <span class="n">ptr</span><span class="p">;</span>
+        <span class="n">ptr</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">p</span><span class="p">;</span>
+    <span class="p">}</span>
+
+<span class="k">private</span><span class="o">:</span>
+    <span class="n">T</span><span class="o">*</span> <span class="n">ptr</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div><p>使用起來像 copy:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">std</span><span class="o">::</span><span class="n">auto_ptr</span><span class="o">&lt;</span><span class="n">Buffer</span><span class="o">&gt;</span> <span class="n">a</span><span class="p">(</span><span class="k">new</span> <span class="n">Buffer</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">auto_ptr</span><span class="o">&lt;</span><span class="n">Buffer</span><span class="o">&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">;</span> <span class="c1">// looks like copy
+</span></code></pre></div><p>但實際上不是 copy. 實際上是:</p>
+<ul>
+<li><code>b</code> 接手 ownership.</li>
+<li><code>a</code> 變成 <code>nullptr</code>.</li>
+</ul>
+<p>也就是:</p>
+<blockquote>
+<p><strong><code>auto_ptr</code> 把 ownership transfer 放進 copy constructor 裡表達.</strong></p>
+</blockquote>
+<p>表面上看起來像 copy, 實際上 consumes the source. 一開始看起來好像可以: 我確實做到 ownership transfer 了, 而且還只用了 copy constructor, 沒有什麼花俏的新語法.</p>
+<p>但問題出在 generic code. 例如把 <code>auto_ptr</code> 放進 STL algorithm:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">auto_ptr</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&gt;</span> <span class="n">v</span><span class="p">(...);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">sort</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">v</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>
+</code></pre></div><p>template 不知道 <code>auto_ptr</code> 的 copy constructor 會 transfer ownership. 對 generic algorithm 來說, 它只看到:</p>
+<blockquote>
+<p><strong>copy constructor</strong></p>
+</blockquote>
+<p>所以它會把這個 operation 當 copy 來用. 但 <code>auto_ptr</code> 的 copy 會讓 source 失去 ownership. 結果就是:</p>
+<ul>
+<li>STL 以為它只是 copy.</li>
+<li>實際上 source 被搬空.</li>
+<li>後面如果 STL 繼續使用 source, 就可能出事.</li>
+</ul>
+<p>這就是為什麼 ownership transfer 不應該藏在 copy 裡. <code>auto_ptr</code> 的問題, 本質上不是它完全做不到 ownership transfer. 它做得到. 問題是它把 transfer 塞進了 copy operation, 所以 generic code 看到的是 copy, 實際發生的卻是 consume source.</p>
+<p>這代表語言少了一種明確表達 &ldquo;我要轉移 ownership&rdquo; 的方式.</p>
+<h2 id="缺少的明確表示法-xvalue">缺少的明確表示法: xvalue</h2>
+<p>經過 <code>auto_ptr</code> 的例子, 我覺得這裡才是 <code>xvalue</code> 最自然出現的位置. 如果一個語言需要用 proxy trick 來表達常見需求, 那通常代表語言本身缺少一種明確表示法. 在這裡, 少掉的就是:</p>
+<blockquote>
+<p><strong>這個 expression 可以被當成 ownership transfer 的來源.</strong></p>
+</blockquote>
+<p>也就是說, 這裡需要一種跟 copy 明確區分開來的表示法. 原本的 copy constructor 是:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">Buffer</span><span class="p">(</span><span class="k">const</span> <span class="n">Buffer</span><span class="o">&amp;</span><span class="p">);</span>
+</code></pre></div><p>新的 move constructor 則是另一條 overload:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">Buffer</span><span class="p">(</span><span class="n">Buffer</span><span class="o">&amp;&amp;</span><span class="p">);</span>
+</code></pre></div><p>但光有 <code>Buffer(Buffer&amp;&amp;)</code> 還不夠. compiler 還需要知道:</p>
+<blockquote>
+<p><strong>這個 expression 到底能不能 bind 到 <code>T&amp;&amp;</code>?</strong></p>
+</blockquote>
+<p>如果全部都走 copy 那條路, 最後又會回到 <code>auto_ptr</code> 的問題. 所以 C++ 需要一種 expression category, 專門表示:</p>
+<blockquote>
+<p><strong>這個 expression 指向某個 object, 而且可以被當成 resource reuse / move source 的來源.</strong></p>
+</blockquote>
+<p>這個 category 就是 <code>xvalue</code>. 用標準術語說, xvalue 是一種 glvalue, 表示它 denoting 的 object 可以讓 resource 被 reused. 在這篇的脈絡裡, 可以先把 <code>xvalue</code> 理解成:</p>
+<blockquote>
+<p><strong>xvalue = 可以作為 move source 的 expression.</strong></p>
+</blockquote>
+<p>這裡的重點不是先背 value category 表, 而是看出它在這條脈絡裡的作用: 把 ownership transfer 從 copy operation 裡拆出來.</p>
+<p>粗略看, 常見 expression 可以分成三類:</p>
+<ul>
+<li><strong>lvalue</strong>: 像 <code>x</code>, <code>*ptr</code>, 回傳 <code>T&amp;</code> 的 function. 它們有 identity, 通常不應該被默默搬走.</li>
+<li><strong>xvalue</strong>: 像 <code>std::move(x)</code>, 回傳 <code>T&amp;&amp;</code> 的 function, <code>Point{}.y</code>. 它們可以作為 move source.</li>
+<li><strong>prvalue</strong>: 像 <code>42</code>, <code>true</code>, <code>std::string{}</code>, 回傳 <code>T</code> 的 function. 它們比較像用來產生值的 expression.</li>
+</ul>
+<p>這張分類表只是入口. 真正判斷時, 我比較喜歡再壓成兩個問題.</p>
+<h2 id="value-category-的判斷模型">Value category 的判斷模型</h2>
+<p>value category 可以先壓成三個欄位:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">1. Has specific memory location?
+2. Moveable?
+3. Identity protected?
+</code></pre></div><p>先提醒: 這三欄不是標準術語, 而是這篇用來理解 move source 的模型. 標準定義會從 expression 是否是 glvalue, 是否 determines identity, 以及 xvalue 是否代表 resources can be reused 來描述.</p>
+<p>實際判斷時可以看 <code>1 + 2</code>, 也可以看 <code>1 + 3</code>. 因為 <code>Moveable</code> 和 <code>Identity protected</code> 在這個模型裡剛好是反方向的理解.</p>
+<p>我比較喜歡看 <code>Identity protected?</code>, 因為這比較接前面 ownership transfer 的問題. 重點不是問 &ldquo;這東西看起來快死了嗎?&rdquo;, 而是問:</p>
+<blockquote>
+<p><strong>這個 expression 背後的 identity / ownership 需不需要被保護?</strong></p>
+</blockquote>
+<p>第一個問題可以先看:</p>
+<blockquote>
+<p><strong>這個 expression 有沒有具體的 memory location?</strong></p>
+</blockquote>
+<p>如果沒有, 它就是 prvalue. 因為它還不是一個有身份, 有位置, 可以被別人指到的 object.</p>
+<p>如果有 memory location, 再看第二個問題:</p>
+<blockquote>
+<p><strong>這個 expression 的 identity 需要被保護嗎?</strong></p>
+</blockquote>
+<p>用這個角度看:</p>
+<ul>
+<li><strong>lvalue</strong>: 有 memory location, identity protected, 所以不能被默默 move.</li>
+<li><strong>xvalue</strong>: 有 memory location, identity not protected, 所以可以作為 move source.</li>
+<li><strong>prvalue</strong>: 在 C++17 之後不會急著 materialize 成獨立 temporary, 通常可以直接 initialize result object.</li>
+</ul>
+<p>這裡容易卡住的是 prvalue. 如果 prvalue 沒有具體 object, 為什麼表裡又常說它是 moveable?</p>
+<p>這裡的 <code>moveable</code> 不是標準術語, 也不是說它已經有一份 ownership 可以被轉走. 比較精準地說, prvalue 可以作為 <code>T&amp;&amp;</code> binding source. 包含 move constructor 在內, 很多接受 <code>T&amp;&amp;</code> 的介面都可以吃 prvalue.</p>
+<p>換成 <code>Identity protected?</code> 會比較直覺:</p>
+<ul>
+<li>lvalue 有身份, 有位置, 所以不應該被隱式當成可以搬走的來源.</li>
+<li>xvalue 有身份, 有位置, 但這個 expression 已經明確表示可以作為 move source.</li>
+<li>prvalue 不需要先有一個獨立 temporary object, 自然也沒有 named object 那種 identity / ownership 需要保護.</li>
+</ul>
+<p>這裡的 <code>protected</code> 不是 standard 的正式術語, 也不是說 compiler 會保證 <code>x</code> 的內容永遠不變. 它比較精準的意思是:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">一般寫出 named object expression x 時,
+compiler 不會自動把它當成可以被 consume 的 move source.
+</code></pre></div><p>也就是保護 <code>x</code> 不會在普通使用中不小心進入 <code>T&amp;&amp;</code> overload 或 move constructor, 進而讓 ownership / resource 被轉走.</p>
+<p>所以這是一個教學模型, 但對理解 move 很有幫助. 尤其是 <code>std::move(x)</code>: <code>x</code> 本來是 lvalue, 因為它有名字, 它預設不會被當成 move source.</p>
+<p>當我們寫:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</code></pre></div><p>意思不是 &ldquo;現在立刻搬走 x&rdquo;</p>
+<p>意思是:</p>
+<blockquote>
+<p><strong>我明確允許 <code>x</code> 被當成 move source. 後面的 operation 可以從它轉移 ownership.</strong></p>
+</blockquote>
+<p>所以 <code>std::move(x)</code> 是 xvalue.</p>
+<h2 id="pointy-為什麼是-xvalue">Point{}.y 為什麼是 xvalue?</h2>
+<p>有一個例子很容易卡住:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">Point</span><span class="p">{}.</span><span class="n">y</span>
+</code></pre></div><p><code>Point{}</code> 本身是 prvalue. 在 C++17 的模型裡, prvalue 不會急著 materialize 成一個獨立 temporary. 它可以先理解成 &ldquo;用來 initialize result object 的 expression&rdquo;.</p>
+<p>如果只寫:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">Point</span><span class="p">{}</span>
+</code></pre></div><p>那它會停在 prvalue 這個狀態. 也就是說, 到這一步還不需要先假設已經有一個獨立的匿名 <code>Point</code> temporary object.</p>
+<p>但當你寫:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">Point</span><span class="p">{}.</span><span class="n">y</span>
+</code></pre></div><p>要取 <code>.y</code>, member access 需要一個 glvalue object expression. 所以 <code>Point{}</code> 這個 prvalue 會先經過 temporary materialization, 產生一個 temporary <code>Point</code> object, 接著才取它的 data member.</p>
+<p>materialize 後, 這個 temporary object 有 memory location, 對應前面的第一個 check:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">Has specific memory location? yes
+</code></pre></div><p>而 <code>a.m</code> 這類 member access 在 <code>a</code> 是 rvalue 且 <code>m</code> 是 non-static data member of object type 時, 會是 xvalue. 對應到這裡, <code>Point{}</code> materialize 後仍然是可以作為 move source 的 temporary, 所以 <code>Point{}.y</code> 是 xvalue.</p>
+<p>所以:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">Point</span><span class="p">{}.</span><span class="n">y</span>
+</code></pre></div><p>是 xvalue.</p>
+<p>重點不是它看起來快死了. 重點是:</p>
+<ul>
+<li><code>.y</code> 觸發 materialization.</li>
+<li>materialized temporary 的 member expression 可以作為 move source.</li>
+<li><code>Point{}</code> 後面沒有接 <code>.y</code> 時, 它仍然是 prvalue.</li>
+</ul>
+<h2 id="function-return-type-也會影響-value-category">function return type 也會影響 value category</h2>
+<p>function call expression 的 value category 可以先用 return type 判斷:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">T</span> <span class="nf">f</span><span class="p">();</span>    <span class="c1">// f() 是 prvalue
+</span><span class="c1"></span><span class="n">T</span><span class="o">&amp;</span> <span class="n">f</span><span class="p">();</span>   <span class="c1">// f() 是 lvalue
+</span><span class="c1"></span><span class="n">T</span><span class="o">&amp;&amp;</span> <span class="n">f</span><span class="p">();</span>  <span class="c1">// f() 是 xvalue
+</span></code></pre></div><p>這會影響 <code>std::move</code>, 因為 <code>std::move</code> 大概就是回傳 <code>T&amp;&amp;</code>.</p>
+<p>所以:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</code></pre></div><p>整個 expression 是 xvalue.</p>
+<h2 id="temporary-materialization-conversion">Temporary Materialization Conversion</h2>
+<p>前面提到 xvalue 還有一種來源是 <code>TMC</code>, 也就是 Temporary Materialization Conversion.</p>
+<p>這裡的起點還是 C++17 的 prvalue model:</p>
+<blockquote>
+<p><strong>prvalue 不會急著 materialize 成獨立 temporary. 它可以直接 initialize final destination, 也可以在需要時才 materialize.</strong></p>
+</blockquote>
+<p>但 &ldquo;不急著 materialize&rdquo; 不等於永遠不 materialize. 有些情況下, compiler 不得不讓 prvalue materialize 成真的 temporary object.</p>
+<p>下面就是一個不得不 materialize 的例子:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">struct</span> <span class="nc">T</span> <span class="p">{</span>
+    <span class="n">T</span><span class="p">()</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;default</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">;</span> <span class="p">}</span>
+    <span class="n">T</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;&amp;</span><span class="p">)</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;move</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">;</span> <span class="p">}</span>
+    <span class="n">T</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span><span class="p">)</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;copy</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;&amp;</span> <span class="n">ref</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="n">f</span><span class="p">(</span><span class="n">T</span><span class="p">{});</span>
+</code></pre></div><p><code>T{}</code> 一開始是 prvalue. 但現在它要 bind 到:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">T</span><span class="o">&amp;&amp;</span> <span class="n">ref</span>
+</code></pre></div><p>reference 需要真的 refer to 某個 object. 如果完全沒有 runtime object, <code>ref</code> 就沒有東西可以 reference.</p>
+<p>所以 compiler 必須 materialize 這個 prvalue, 讓它變成一個 temporary object. 套回前面的判斷模型, 這個 temporary object 現在有具體 identity, 而且可以作為 <code>T&amp;&amp;</code> 的 binding source. 所以這一步可以先理解成:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">prvalue -&gt; temporary materialization -&gt; xvalue
+</code></pre></div><p>這就是 Temporary Materialization Conversion.</p>
+<p>這裡先用這個方式簡化理解:</p>
+<blockquote>
+<p><strong>prvalue 原本可以直接 initialize result object; 但如果需要被 reference 綁住, 就會 materialize 成 temporary object.</strong></p>
+</blockquote>
+<h2 id="有名字的-rvalue-reference-仍然是-lvalue">有名字的 rvalue reference 仍然是 lvalue</h2>
+<p>另一個很容易混淆的點:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">T</span> <span class="nf">f</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;&amp;</span> <span class="n">rref</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ... do something
+</span><span class="c1"></span>    <span class="k">return</span> <span class="n">rref</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><p><code>rref</code> 的 declaration type 是 <code>T&amp;&amp;</code>. 它看起來好像很 rvalue, 而且它可能真的是從 rvalue bind 進來的. 所以直覺上可能覺得:</p>
+<ul>
+<li>它看起來快死了.</li>
+<li>它應該是 rvalue.</li>
+</ul>
+<p>但不是. expression <code>rref</code> 是 lvalue. 原因是:</p>
+<ul>
+<li><code>rref</code> 有名字.</li>
+<li>named object expression 是 lvalue.</li>
+</ul>
+<p>這也是 declaration type 和 value category 必須分開看的原因.</p>
+<h2 id="declaration-type-不是-value-category">Declaration type 不是 value category</h2>
+<p>這段可以把 declaration type 和 value category 的差異拉出來:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">T</span><span class="o">&amp;&amp;</span> <span class="n">rr</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>
+</code></pre></div><p><code>rr</code> 的 declaration type 是:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">T</span><span class="o">&amp;&amp;</span>
+</code></pre></div><p>這代表:</p>
+<ul>
+<li><code>rr</code> 是一個 rvalue reference 變數.</li>
+<li>它的 binding source 必須是 xvalue 或 prvalue.</li>
+</ul>
+<p>可以粗略整理成這樣:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">Reference   Binding source category
+T&amp;          lvalue
+T&amp;&amp;         xvalue or prvalue
+const T&amp;    all categories are valid
+</code></pre></div><p>所以這些例子會長這樣:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">T</span> <span class="n">x</span><span class="p">;</span> <span class="c1">// x: lvalue
+</span><span class="c1"></span>
+<span class="n">T</span><span class="o">&amp;</span> <span class="n">r1</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>                         <span class="c1">// OK, T&amp; can bind to lvalue
+</span><span class="c1"></span><span class="n">T</span><span class="o">&amp;</span> <span class="n">r2</span> <span class="o">=</span> <span class="n">T</span><span class="p">{};</span>                       <span class="c1">// FAIL, non-const T&amp; cannot bind to prvalue
+</span><span class="c1"></span><span class="n">T</span><span class="o">&amp;</span> <span class="n">r3</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>              <span class="c1">// FAIL, non-const T&amp; cannot bind to xvalue
+</span><span class="c1"></span>
+<span class="n">T</span><span class="o">&amp;&amp;</span> <span class="n">rr1</span> <span class="o">=</span> <span class="n">T</span><span class="p">{};</span>                     <span class="c1">// OK, T&amp;&amp; can bind to prvalue
+</span><span class="c1"></span><span class="n">T</span><span class="o">&amp;&amp;</span> <span class="n">rr2</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>            <span class="c1">// OK, T&amp;&amp; can bind to xvalue
+</span><span class="c1"></span><span class="n">T</span><span class="o">&amp;&amp;</span> <span class="n">rr3</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>                       <span class="c1">// FAIL, T&amp;&amp; cannot bind to lvalue
+</span><span class="c1"></span>
+<span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">cr1</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>                  <span class="c1">// OK, const T&amp; can bind to lvalue
+</span><span class="c1"></span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">cr2</span> <span class="o">=</span> <span class="n">T</span><span class="p">{};</span>                <span class="c1">// OK, const T&amp; can bind to prvalue
+</span><span class="c1"></span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span> <span class="n">cr3</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">x</span><span class="p">);</span>       <span class="c1">// OK, const T&amp; can bind to xvalue
+</span></code></pre></div><p>這些規則是在講 declaration 可以從哪些 source expression 綁進來.</p>
+<p>但當你在 expression 裡寫:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">rr</span>
+</code></pre></div><p>這個 expression 的 type 是 <code>T</code>, value category 是 lvalue.</p>
+<p>所以要分清楚:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">Declaration:
+    Type: T&amp;&amp;
+
+Expression:
+    Type: T
+    Value category: lvalue
+</code></pre></div><p>這裡先只是在判斷 expression <code>rref</code> 本身的 value category. 也就是說, 在一般 expression context 裡:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">rref</span>
+</code></pre></div><p>仍然是 lvalue.</p>
+<p>但 <code>return</code> statement 要另外小心. C++ 對 return operand 有 automatic move / move-eligible 的特殊規則. 尤其在 value-returning function 裡, 如果 return operand 是符合條件的 local variable 或 parameter, overload resolution 可能會先把它當成 rvalue 來選 move constructor. C++20 之後, rvalue reference parameter 也被納入這類 move-eligible case.</p>
+<p>所以這段不能簡化成:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">return rref; 一定不會 move
+</code></pre></div><p>比較安全的說法是:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">expression rref 本身是 lvalue.
+return statement 另有 implicit move rule.
+</code></pre></div><p>如果不在 return 的特殊規則裡, 而是一般 function call 想把 <code>rref</code> 當成 <code>T&amp;&amp;</code> 傳出去, 才需要明確寫:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">use</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">rref</span><span class="p">));</span>
+</code></pre></div><p>語意上它是在說:</p>
+<blockquote>
+<p><strong>我允許從 <code>rref</code> 轉移 resource.</strong></p>
+</blockquote>
+<h2 id="為什麼-named-object-預設被保護">為什麼 named object 預設被保護?</h2>
+<p>為什麼 C++ 要設計成 named object expression 是 lvalue? 我覺得可以從兩個 option 看:</p>
+<ul>
+<li><strong>Option A</strong>: named object 預設可以 move.</li>
+<li><strong>Option B</strong>: named object 預設被保護.</li>
+</ul>
+<p>如果選 Option A, 很多變數可能在不明顯的地方被搬空. 這會很像 <code>auto_ptr</code> 的問題:</p>
+<ul>
+<li>看起來只是普通使用.</li>
+<li>結果 ownership 被轉走.</li>
+</ul>
+<p>所以 C++ 選比較保守的設計. named object 預設是 lvalue.</p>
+<p>如果真的要 move, 就要明確寫:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</code></pre></div><p>也就是明確告訴 compiler:</p>
+<blockquote>
+<p><strong>我願意放棄對這個 object 的保護.</strong></p>
+</blockquote>
+<h2 id="練習-t-stdmovet-stdmovet">練習: t, std::move(t), std::move(T{})</h2>
+<p>用這段當練習:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="kt">void</span> <span class="nf">use</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span><span class="p">)</span> <span class="p">{}</span>
+<span class="kt">void</span> <span class="nf">use</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;&amp;</span><span class="p">)</span> <span class="p">{}</span>
+
+<span class="kt">void</span> <span class="nf">process_data</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;&amp;</span> <span class="n">t</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">use</span><span class="p">(</span><span class="n">t</span><span class="p">);</span>              <span class="c1">// (A)
+</span><span class="c1"></span>    <span class="n">use</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">t</span><span class="p">));</span>   <span class="c1">// (B)
+</span><span class="c1"></span>    <span class="n">use</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">T</span><span class="p">{}));</span> <span class="c1">// (C)
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></div><p><code>(A)</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">use</span><span class="p">(</span><span class="n">t</span><span class="p">);</span>
+</code></pre></div><p><code>t</code> 有名字, 所以 expression <code>t</code> 是 lvalue. 因此會 call:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">use</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span><span class="o">&amp;</span><span class="p">)</span>
+</code></pre></div><p><code>(B)</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">use</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">t</span><span class="p">));</span>
+</code></pre></div><p><code>std::move(t)</code> 把 <code>t</code> 這個 lvalue expression 轉成 xvalue. 因此會 bind 到:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">use</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;&amp;</span><span class="p">)</span>
+</code></pre></div><p><code>(C)</code>:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">use</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">T</span><span class="p">{}));</span>
+</code></pre></div><p>這個比較容易怪. <code>T{}</code> 是 prvalue. 那對一個 prvalue 做 <code>std::move</code> 會變什麼?</p>
+<p>可以回想 <code>std::move</code> 大概是:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">template</span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">T</span><span class="o">&gt;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">remove_reference_t</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;&amp;&amp;</span> <span class="n">move</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;&amp;</span> <span class="n">t</span><span class="p">);</span>
+</code></pre></div><p><code>T{}</code> 要傳進去時, 會先因為 reference binding 觸發 Temporary Materialization Conversion, 也就是先 materialize 成 temporary object. 然後 <code>std::move</code> 回傳 <code>T&amp;&amp;</code>, 而 function returning <code>T&amp;&amp;</code> 的 expression 是 xvalue.</p>
+<p>也可以換成更接近實作的說法: <code>std::move</code> 只是把 argument cast 成 <code>T&amp;&amp;</code> 再 return. 對 <code>T{}</code> 來說, 為了進入這個 <code>T&amp;&amp;</code> parameter, 它先被 materialize, 接著整個 <code>std::move(T{})</code> 因為回傳 <code>T&amp;&amp;</code> 而成為 xvalue.</p>
+<p>所以:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">T</span><span class="p">{})</span>
+</code></pre></div><p>是 xvalue, 也會 bind 到:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">use</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;&amp;</span><span class="p">)</span>
+</code></pre></div><p>這裡再次強調:</p>
+<blockquote>
+<p><strong><code>std::move</code> 不真的 move.</strong></p>
+<p>它只是讓 expression 變成 xvalue. 真正的 move 發生在後續的 move constructor 或 <code>T&amp;&amp;</code> overload.</p>
+</blockquote>
+<h2 id="move-constructor-實際做什麼">Move constructor 實際做什麼?</h2>
+<p>有了前面的 <code>T&amp;&amp;</code> binding 概念後, move constructor 就比較好讀. 一個簡化版 <code>Buffer</code> move constructor:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">Buffer</span><span class="p">(</span><span class="n">Buffer</span><span class="o">&amp;&amp;</span> <span class="n">other</span><span class="p">)</span>
+    <span class="o">:</span> <span class="n">ptr</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">ptr</span><span class="p">),</span> <span class="n">size</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">size</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">other</span><span class="p">.</span><span class="n">ptr</span> <span class="o">=</span> <span class="k">nullptr</span><span class="p">;</span>
+    <span class="n">other</span><span class="p">.</span><span class="n">size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><p>move 前:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">a.ptr ----&gt; heap block
+b.ptr ----&gt; nothing
+</code></pre></div><p>move 後:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">b.ptr ----&gt; heap block
+a.ptr ----&gt; empty / null / safe state
+</code></pre></div><p>也就是:</p>
+<ul>
+<li><code>b</code> 接手 <code>a</code> 原本的 heap block.</li>
+<li><code>a</code> 不再擁有那塊 heap block.</li>
+</ul>
+<p>這樣 destructor 執行時:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">b&#39;s destructor -&gt; delete[] heap block
+a&#39;s destructor -&gt; delete[] nullptr
+</code></pre></div><p>不會 double free. 注意, move 之後的 <code>a</code> 還是存在. 它不是消失了, 而是進入 moved-from state.</p>
+<p>對 standard library type 來說, 常見保證是 moved-from object 仍然:</p>
+<blockquote>
+<p><strong>valid but unspecified</strong></p>
+</blockquote>
+<p>也就是 object 還能被 destroy, assign, 或用在該 type 明確允許的操作上, 但原本的 value 不應該再被假設.</p>
+<p>在這個 <code>Buffer</code> 例子裡, moved-from state 被設計成:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">a.ptr  -&gt; nullptr
+a.size -&gt; 0
+</code></pre></div><p>但自己寫 type 時, 不一定每個 type 都要把 moved-from state 設計成 <code>nullptr + 0</code>. 重點是這個 state 必須仍然能安全 destruct, 而且不破壞 ownership invariant.</p>
+<h2 id="什麼時候用-move">什麼時候用 move?</h2>
+<p>move 適合在這種情況:</p>
+<ul>
+<li>我不在乎 source object 原本的 value 了.</li>
+<li>我只想把它背後的 resource ownership 交出去.</li>
+</ul>
+<p>也就是:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">before:
+    a.ptr ----&gt; heap block
+    b.ptr ----&gt; nothing
+
+after:
+    b.ptr ----&gt; heap block
+    a.ptr ----&gt; empty / null / safe state
+</code></pre></div><p>所以 <code>std::move(a)</code> 可以理解成:</p>
+<blockquote>
+<p><strong>我允許後續 operation 從 <code>a</code> 轉移 ownership.</strong></p>
+</blockquote>
+<p>不是:</p>
+<blockquote>
+<p><del><code>std::move</code> 本身把 <code>a</code> 搬走.</del></p>
+</blockquote>
+<h2 id="回到最一開始-為什麼-return-t-沒有東西可以-move">回到最一開始: 為什麼 return T{} 沒有東西可以 move?</h2>
+<p>最後回到一開始的 code:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">T</span> <span class="nf">make</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">T</span><span class="p">{};</span>
+<span class="p">}</span>
+
+<span class="n">T</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make</span><span class="p">();</span>
+</code></pre></div><p>前面已經知道三件事:</p>
+<ol>
+<li>move 是 ownership transfer.</li>
+<li><code>std::move</code> 不真的 move.</li>
+<li>C++17 之後, prvalue 不會急著 materialize 成獨立 temporary, 而是可以直接 initialize final destination.</li>
+</ol>
+<p>再看原本那個直覺:</p>
+<ul>
+<li><code>T{}</code> 先 initialize 一個 temporary object.</li>
+<li><code>make()</code> return 這個 temporary object.</li>
+<li>caller 再用它 move construct <code>y</code>.</li>
+</ul>
+<p>哪裡怪怪的?</p>
+<p>怪在第一步:</p>
+<blockquote>
+<p><strong><code>T{}</code> 真的先 initialize 了一個獨立 temporary object 嗎?</strong></p>
+</blockquote>
+<p>在這裡, 甚至沒有 reference 要綁住它.</p>
+<p><code>T{}</code> 本身是 prvalue, 而 <code>make()</code> 這個 function call expression 也是 prvalue. 在 C++17 的 prvalue model 下, 可以把它理解成:</p>
+<ul>
+<li><code>T{}</code> 直接描述一個 <code>T</code> result object 要怎麼被 initialized.</li>
+<li><code>make()</code> 的 result 也是一個 <code>T</code> prvalue.</li>
+<li>caller 用這個 prvalue 直接 initialize <code>y</code>.</li>
+</ul>
+<p>所以從 caller 看:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">T</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make</span><span class="p">();</span>
+</code></pre></div><p>在這種情況下很接近:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">T</span> <span class="n">y</span> <span class="o">=</span> <span class="n">T</span><span class="p">{};</span>
+</code></pre></div><p>除了 <code>y</code> 本身以外, 中間不需要有另一個獨立 temporary object 存在. 既然沒有獨立 source object, 自然也沒有東西可以 move.</p>
+<p>這就是那句:</p>
+<blockquote>
+<p><strong>Sometimes there are nothing to move.</strong></p>
+</blockquote>
+<p>我覺得這也是整個主題最有趣的地方. 一開始以為問題是:</p>
+<blockquote>
+<p><strong>compiler 怎麼把 copy / move 省掉?</strong></p>
+</blockquote>
+<p>但最後更像是:</p>
+<blockquote>
+<p><strong>在現代 C++ 的 object model 裡, 這個 object 根本可以直接在最後的位置被 initialize.</strong></p>
+</blockquote>
+<p>所以 function 邊界在這裡有點像是透明的. 概念上, result object 的 storage 已經是最後要放 <code>y</code> 的地方, prvalue 直接用來 initialize 那個 result object.</p>
+<h2 id="結尾-從-c-convention-到-c-semantic-lifting">結尾: 從 C convention 到 C++ semantic lifting</h2>
+<p>如果只把這篇看成 move semantics, 其實會太小.</p>
+<p>從一開始的 <code>Buffer b = a;</code> 到最後的 <code>return T{};</code>, 我真正想整理的是:</p>
+<blockquote>
+<p><strong>C++ 怎麼維護 object / resource 的語意?</strong></p>
+</blockquote>
+<p>在 C 裡, 很多事情不是做不到. <code>Buffer</code> 可以自己寫 <code>buffer_create</code>, <code>buffer_destroy</code>, <code>buffer_clone</code>. lock 可以自己記得 unlock. file 可以自己記得 close.</p>
+<p>問題是, 這些規則常常散在:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">naming
+documentation
+team convention
+code review
+programmer discipline
+</code></pre></div><p>也就是說, 真正知道語意的人常常是寫 code 的人. 但 code 本身不一定說得清楚:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">這個 pointer 是 owner 還是 borrower?
+這個 object 能不能 copy?
+copy 是 shallow copy 還是 deep copy?
+誰負責 release resource?
+source 被 transfer 後還能不能用?
+</code></pre></div><p>所以我覺得這條線可以叫做:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">C convention -&gt; C++ semantic lifting
+</code></pre></div><p><code>semantic lifting</code> 的意思不是 C++ 神奇地消滅所有 bug, 而是把原本靠人記得的語意, 盡量提升到 type, object lifetime, type operation, library abstraction, language rule 裡.</p>
+<p>套回這篇文章, 對應會長這樣:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">C helper convention:
+    buffer_create / buffer_destroy
+
+C++ lifetime operation:
+    constructor / destructor / RAII
+
+C shallow copy danger:
+    Buffer b = a
+
+C++ copy semantic:
+    copy constructor / deleted copy
+
+C ownership transfer convention:
+    誰拿走 ptr 靠 API 文件說明
+
+C++ transfer semantic:
+    move constructor / std::move / xvalue
+
+C out / temporary / return convention:
+    呼叫者和被呼叫者約定 object 放哪
+
+C++ return-by-value rule:
+    prvalue / copy elision / direct initialization
+</code></pre></div><p>這也是為什麼 RAII 會自然長出來.</p>
+<p>如果一個 resource 需要成對操作:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">malloc / free
+open / close
+lock / unlock
+create / destroy
+</code></pre></div><p>那 C++ 會想把這個 pairing 綁到 object lifetime:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">constructor:
+    acquire resource
+
+destructor:
+    release resource
+</code></pre></div><p>這就是 RAII 的核心直覺:</p>
+<blockquote>
+<p><strong>resource lifetime follows object lifetime.</strong></p>
+</blockquote>
+<p>但只做到 destructor 還不夠. 一旦 type owns resource, copy / move 也會立刻變成同一個 ownership 問題的一部分.</p>
+<p>如果 object 可以 copy:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">copy 後兩邊都 owns resource 嗎?
+copy 後是 shared ownership 嗎?
+copy 後是 deep copy 嗎?
+</code></pre></div><p>如果 object 不該 copy:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">copy 要不要 delete?
+不能 copy 的 object 要怎麼放進 container?
+不能 copy 的 object 要怎麼 return?
+</code></pre></div><p>所以 RAII, copy constructor, deleted copy, move constructor, <code>std::move</code>, value category, return-by-value rules 不是分散的語法點. 它們都是同一個方向的不同層:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">把 resource / lifetime / ownership / transfer 的語意,
+從 convention 提升到 C++ object model 裡.
+</code></pre></div><p>最後回到這篇的三個核心操作:</p>
+<ul>
+<li><strong>copy</strong>: <code>A</code> 和 <code>B</code> 都要一份語意上合理的 object.</li>
+<li><strong>move</strong>: <code>A</code> 已經有 resource, 但 <code>A</code> 不需要了, <code>B</code> 接手 ownership.</li>
+<li><strong>prvalue / <code>return T{}</code></strong>: 有時候根本不用先有 <code>A</code>, result object 可以直接在 <code>B</code> 的位置被 initialize.</li>
+</ul>
+<p>所以 <code>std::move</code> 不是單純讓程式變快. RVO 也不是單純 compiler trick.</p>
+<p>更大的主題是:</p>
+<blockquote>
+<p><strong>C++ 想保留 C 的低階成本模型, 同時把更多語意放進 type operation 和 object lifetime 裡.</strong></p>
+</blockquote>
+<p>這也是我覺得 C++ 難但有趣的地方. 它不是只問 &ldquo;這段 memory 怎麼搬?&rdquo;, 而是一直在追問:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">這個 object 代表什麼?
+它擁有什麼?
+它能不能被複製?
+它能不能被轉移?
+它什麼時候開始 lifetime?
+它什麼時候結束 lifetime?
+</code></pre></div><p>也就是:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">type is not just layout.
+</code></pre></div><h2 id="references">References:</h2>
+<ol>
+<li><a class="link" href="https://www.youtube.com/watch?v=szU5b972F7E"  target="_blank" rel="noopener"
+    >Back to Basics: Move Semantics - Ben Saks - CppCon 2025</a></li>
+<li><a class="link" href="https://www.youtube.com/watch?v=7Qgd9B1KuMQ"  target="_blank" rel="noopener"
+    >Back to Basics: RAII and the Rule of Zero - Arthur O&rsquo;Dwyer - CppCon 2019</a></li>
+<li><a class="link" href="https://mes0903.github.io/Cpp-Miner/Miner_main/Value_Categories"  target="_blank" rel="noopener"
+    >礦坑系列 ── 值類別 Value Categoraries</a></li>
+</ol>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/c&#43;&#43;/">C&#43;&#43;</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.css"integrity="sha384-RZU/ijkSsFbcmivfdRBQDtwuwVqK7GMOw6IMvKyeWL2K5UAlyp6WonmB8m7Jd0Hn"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/katex.min.js"integrity="sha384-pK1WpvzWVBQiP0/GjnvRxV4mOb0oxFuyRxJlk6vVw146n3egcN5C925NCP7a7BY8"crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.13.13/dist/contrib/auto-render.min.js"integrity="sha384-vZTG03m&#43;2yp6N6BNi5iM4rW4oIwk5DfcNdFfxkk9ZWpDriOkXX8voJBFrAO7MpVl"crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ]
+        });})
+</script>
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">相關文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="has-image">
+    <a href="/archives/jsnote/">
+        
+        
+            <div class="article-image">
+                <img src="/archives/jsnote/img/maxresdefault.a7ac9decc3508998d484461e833e46e6_hu516e00237564fc9a91528d1ee0782fcd_49697_250x150_fill_q75_box_smart1.jpg" 
+                        width="250" 
+                        height="150" 
+                        loading="lazy" 
+                        data-key="jsnote" 
+                        data-hash="md5-p6yd7MNQiZjUhEYegz5G5g==">
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">js筆記</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "beadx6ggwp" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2019 - 
+        
+        2026 Bead隨筆
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.5.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+    
+        <aside class="sidebar right-sidebar sticky">
+            <section class="widget archives">
+                <div class="widget-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+                </div>
+                <h2 class="widget-title section-title">目錄</h2>
+                
+                <div class="widget--toc">
+                    <nav id="TableOfContents">
+  <ol>
+    <li><a href="#簡介">簡介</a></li>
+    <li><a href="#一開始的問題-這段-code-到底有沒有-copy">一開始的問題: 這段 code 到底有沒有 copy?</a></li>
+    <li><a href="#把-copy-縮到最簡單的-case">把 copy 縮到最簡單的 case</a></li>
+    <li><a href="#buffer-看起來只是-copy-其實可能-double-free">Buffer: 看起來只是 copy, 其實可能 double free</a></li>
+    <li><a href="#shallow-copy-和-deep-copy">Shallow copy 和 deep copy</a></li>
+    <li><a href="#c-可以做到-但語意靠人記得">C 可以做到, 但語意靠人記得</a></li>
+    <li><a href="#c-想把這些語意放進-type-裡">C++ 想把這些語意放進 type 裡</a></li>
+    <li><a href="#有些-object-不應該被-copy">有些 object 不應該被 copy</a></li>
+    <li><a href="#auto_ptr-把-ownership-transfer-塞進-copy-operation-的問題">auto_ptr: 把 ownership transfer 塞進 copy operation 的問題</a></li>
+    <li><a href="#缺少的明確表示法-xvalue">缺少的明確表示法: xvalue</a></li>
+    <li><a href="#value-category-的判斷模型">Value category 的判斷模型</a></li>
+    <li><a href="#pointy-為什麼是-xvalue">Point{}.y 為什麼是 xvalue?</a></li>
+    <li><a href="#function-return-type-也會影響-value-category">function return type 也會影響 value category</a></li>
+    <li><a href="#temporary-materialization-conversion">Temporary Materialization Conversion</a></li>
+    <li><a href="#有名字的-rvalue-reference-仍然是-lvalue">有名字的 rvalue reference 仍然是 lvalue</a></li>
+    <li><a href="#declaration-type-不是-value-category">Declaration type 不是 value category</a></li>
+    <li><a href="#為什麼-named-object-預設被保護">為什麼 named object 預設被保護?</a></li>
+    <li><a href="#練習-t-stdmovet-stdmovet">練習: t, std::move(t), std::move(T{})</a></li>
+    <li><a href="#move-constructor-實際做什麼">Move constructor 實際做什麼?</a></li>
+    <li><a href="#什麼時候用-move">什麼時候用 move?</a></li>
+    <li><a href="#回到最一開始-為什麼-return-t-沒有東西可以-move">回到最一開始: 為什麼 return T{} 沒有東西可以 move?</a></li>
+    <li><a href="#結尾-從-c-convention-到-c-semantic-lifting">結尾: 從 C convention 到 C++ semantic lifting</a></li>
+    <li><a href="#references">References:</a></li>
+  </ol>
+</nav>
+                </div>
+            </section>
+        </aside>
+    
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
