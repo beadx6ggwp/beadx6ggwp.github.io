@@ -1,29 +1,17 @@
 <!DOCTYPE html>
 <html lang="en-us">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='快速判斷N是否為2的次方數 前陣子遇到一個題目 : 請你判斷一個正整數N是否為2的次方。
-我遇到這題目時，直覺想到的就是，透過迴圈從1開始檢查所有2的次方數，像這樣 :
-bool isPowerBy2_(int n) { for (int i = 1; i &amp;lt;= n; i *= 2) if (i == n) return true; return false; } // output: // isPowerBy2(1) =&amp;gt; true // isPowerBy2(2) =&amp;gt; true // isPowerBy2(4) =&amp;gt; true // isPowerBy2(-1) =&amp;gt; false // isPowerBy2(0) =&amp;gt; false // isPowerBy2(3) =&amp;gt; false 雖然這樣就解決了，但我一直在想是否有效率更高的方法。
-我們先來觀察2的次方數轉成2進制的樣子 :
-1 =&amp;gt; 0000 0001 , 1 – 1 =&amp;gt; 0000 0000 2 =&amp;gt; 0000 0010 , 2 – 1 =&amp;gt; 0000 0001 4 =&amp;gt; 0000 0100 , 4 – 1 =&amp;gt; 0000 0011 8 =&amp;gt; 0000 1000 , 8 – 1 =&amp;gt; 0000 0111 16 =&amp;gt; 0001 0000 , 16 – 1 =&amp;gt; 0000 1111 32 =&amp;gt; 0010 0000 , 32 – 1 =&amp;gt; 0001 1111 可以發現，只要該數是2的次方時，除了MSB(最高位元)是 1 其餘都是0，'><title>快速判斷N是否為2的次方數</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='快速判斷N是否為2的次方數 前陣子遇到一個題目 : 請你判斷一個正整數N是否為2的次方。 我遇到這題目時，直覺想到的就是，透過迴圈從1開始檢查所有2'><title>快速判斷N是否為2的次方數</title>
 
 <link rel='canonical' href='https://davidhsu666.com/archives/ispowerby2/'>
 
 <link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='快速判斷N是否為2的次方數'>
-<meta property='og:description' content='快速判斷N是否為2的次方數 前陣子遇到一個題目 : 請你判斷一個正整數N是否為2的次方。
-我遇到這題目時，直覺想到的就是，透過迴圈從1開始檢查所有2的次方數，像這樣 :
-bool isPowerBy2_(int n) { for (int i = 1; i &amp;lt;= n; i *= 2) if (i == n) return true; return false; } // output: // isPowerBy2(1) =&amp;gt; true // isPowerBy2(2) =&amp;gt; true // isPowerBy2(4) =&amp;gt; true // isPowerBy2(-1) =&amp;gt; false // isPowerBy2(0) =&amp;gt; false // isPowerBy2(3) =&amp;gt; false 雖然這樣就解決了，但我一直在想是否有效率更高的方法。
-我們先來觀察2的次方數轉成2進制的樣子 :
-1 =&amp;gt; 0000 0001 , 1 – 1 =&amp;gt; 0000 0000 2 =&amp;gt; 0000 0010 , 2 – 1 =&amp;gt; 0000 0001 4 =&amp;gt; 0000 0100 , 4 – 1 =&amp;gt; 0000 0011 8 =&amp;gt; 0000 1000 , 8 – 1 =&amp;gt; 0000 0111 16 =&amp;gt; 0001 0000 , 16 – 1 =&amp;gt; 0000 1111 32 =&amp;gt; 0010 0000 , 32 – 1 =&amp;gt; 0001 1111 可以發現，只要該數是2的次方時，除了MSB(最高位元)是 1 其餘都是0，'>
+<meta property='og:description' content='快速判斷N是否為2的次方數 前陣子遇到一個題目 : 請你判斷一個正整數N是否為2的次方。 我遇到這題目時，直覺想到的就是，透過迴圈從1開始檢查所有2'>
 <meta property='og:url' content='https://davidhsu666.com/archives/ispowerby2/'>
 <meta property='og:site_name' content='Bead隨筆'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='ProblemSolving' /><meta property='article:published_time' content='2018-03-21T09:31:46&#43;08:00'/><meta property='article:modified_time' content='2018-03-21T09:31:46&#43;08:00'/>
 <meta name="twitter:title" content="快速判斷N是否為2的次方數">
-<meta name="twitter:description" content="快速判斷N是否為2的次方數 前陣子遇到一個題目 : 請你判斷一個正整數N是否為2的次方。
-我遇到這題目時，直覺想到的就是，透過迴圈從1開始檢查所有2的次方數，像這樣 :
-bool isPowerBy2_(int n) { for (int i = 1; i &amp;lt;= n; i *= 2) if (i == n) return true; return false; } // output: // isPowerBy2(1) =&amp;gt; true // isPowerBy2(2) =&amp;gt; true // isPowerBy2(4) =&amp;gt; true // isPowerBy2(-1) =&amp;gt; false // isPowerBy2(0) =&amp;gt; false // isPowerBy2(3) =&amp;gt; false 雖然這樣就解決了，但我一直在想是否有效率更高的方法。
-我們先來觀察2的次方數轉成2進制的樣子 :
-1 =&amp;gt; 0000 0001 , 1 – 1 =&amp;gt; 0000 0000 2 =&amp;gt; 0000 0010 , 2 – 1 =&amp;gt; 0000 0001 4 =&amp;gt; 0000 0100 , 4 – 1 =&amp;gt; 0000 0011 8 =&amp;gt; 0000 1000 , 8 – 1 =&amp;gt; 0000 0111 16 =&amp;gt; 0001 0000 , 16 – 1 =&amp;gt; 0000 1111 32 =&amp;gt; 0010 0000 , 32 – 1 =&amp;gt; 0001 1111 可以發現，只要該數是2的次方時，除了MSB(最高位元)是 1 其餘都是0，">
+<meta name="twitter:description" content="快速判斷N是否為2的次方數 前陣子遇到一個題目 : 請你判斷一個正整數N是否為2的次方。 我遇到這題目時，直覺想到的就是，透過迴圈從1開始檢查所有2">
     <link rel="shortcut icon" href="/blog_resource/favicon-32x32.png" />
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJXR109WY7"></script>

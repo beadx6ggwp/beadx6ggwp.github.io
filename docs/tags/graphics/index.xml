@@ -13,10 +13,7 @@
       <pubDate>Thu, 26 Feb 2026 08:19:30 +0800</pubDate>
       
       <guid>https://davidhsu666.com/archives/how-ui-is-drawn-render-pipeline-note/</guid>
-      <description>示意圖為libiui: https://sysprog21.github.io/libiui/
-UI 到底是怎麼被畫出來的 以前看到 UI, 比較容易先想到 framework 或 library, 例如 Web UI, Qt, GTK, Dear ImGui, Nuklear, microui, libiui. 但如果把問題放回 rendering system, UI 就不是停在 button, text field, menu, window 這些元件名稱上. 它最後要變成 pixels, 再進到螢幕上.
-所以這篇先從一條比較通用的路徑開始:
-state -&amp;gt; UI description -&amp;gt; drawing intent -&amp;gt; backend execution -&amp;gt; framebuffer / render target / surface -&amp;gt; display backend / compositor -&amp;gt; screen 這條線裡有幾個問題會反覆出現. UI state 要怎麼變成 drawing intent? 文字要在哪裡量測和繪製? clip rect 是誰管理? draw command 要不要先收集?</description>
+      <description>示意圖為libiui: https://sysprog21.github.io/libiui/ UI 到底是怎麼被畫出來的 以前看到 UI, 比較容易先想到 framework 或 library, 例如 Web UI, Qt, GTK, Dear ImGui, Nuklear, microui, libiui. 但如果把問題放回 rendering system, UI 就不是停在 button, text field, menu, window</description>
     </item>
     
     <item>
@@ -25,14 +22,7 @@ state -&amp;gt; UI description -&amp;gt; drawing intent -&amp;gt; backend execut
       <pubDate>Wed, 21 Mar 2018 10:48:34 +0800</pubDate>
       
       <guid>https://davidhsu666.com/archives/doublebuffer/</guid>
-      <description>我在網路上搜尋到一些解決方法，在這裡做個整理。
-正常更新畫面的方法都是先將畫面清空後，再將新的畫面畫上去，
-導致清空的剎那，好像畫面閃爍了
- 
-解決方法:
- 畫面重繪時，不直接在螢幕上重繪，而是先畫在緩衝區，等整個畫面都重繪完成，才一次放到螢幕上。 想像我們用兩張紙來做更新，一張紙是當前畫面，另一張是緩衝區，在更新時把圖畫在第二章紙上，畫完後再一次把這張紙覆蓋到主畫面。  1.把DoubleBuffered 屬性設為 true。(參考自C# MSDN使用表單和控制項的雙重緩衝)
-public Form1() { InitializeComponent(); this.DoubleBuffered = true; } 2.使用 BufferedGraphicsContext 。(參考自MSDN手動管理緩衝的圖形)
-float x = 0, y = 0; public Form1() { InitializeComponent(); timer1.Interval = 1000 / 60; timer1.Start(); } private void timer1_Tick(object sender, EventArgs e) { x += 1; BufferedGraphicsContext currentContext = BufferedGraphicsManager.Current; BufferedGraphics myBuffer = currentContext.Allocate(this.CreateGraphics(), this.DisplayRectangle); //清除繪圖畫面，並用原本的背景色填充，否則背景呈現黑色  myBuffer.Graphics.Clear(this.BackColor); //在圖形緩衝區中畫圖  myBuffer.Graphics.DrawEllipse(Pens.Blue, x, y, 70, 70); //將圖形緩衝區的內容畫到指定的畫布上  myBuffer.</description>
+      <description>我在網路上搜尋到一些解決方法，在這裡做個整理。 正常更新畫面的方法都是先將畫面清空後，再將新的畫面畫上去， 導致清空的剎那，好像畫面閃爍了 解決方</description>
     </item>
     
   </channel>

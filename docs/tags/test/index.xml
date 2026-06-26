@@ -13,12 +13,7 @@
       <pubDate>Sun, 19 Apr 2015 03:35:50 +0800</pubDate>
       
       <guid>https://davidhsu666.com/archives/just-test/</guid>
-      <description>這裡是第一篇文章的測試 相簿測試
- Photo1   Photo2   Photo1   Photo2 
- Photo1   Photo2 
- 
-code test
-std::cout &amp;lt;&amp;lt; &amp;#34;hello world&amp;#34;; </description>
+      <description>這裡是第一篇文章的測試 相簿測試 Photo1 Photo2 Photo1 Photo2 Photo1 Photo2 code test std::cout &amp;lt;&amp;lt; &amp;#34;hello world&amp;#34;;</description>
     </item>
     
   </channel>
